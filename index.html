@@ -12,61 +12,79 @@
       color: #fff;
       text-align: center;
       margin: 0;
-      padding: 2em;
+      padding: 2em 1em;
     }
 
     h1 {
-      font-size: 2.5em;
+      font-size: 2.2em;
       margin-bottom: 1em;
       color: #ffffff;
       text-shadow: 2px 2px 4px #000;
     }
 
-    .card {
-      margin: 0 auto;
-      display: inline-block;
-    }
-
     table {
       border-collapse: separate;
       border-spacing: 6px;
-      background-color: rgba(255, 255, 255, 0.05);
-      box-shadow: 0 0 30px rgba(0,0,0,0.5);
+      margin: 0 auto;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+
+    tr {
+      display: flex;
     }
 
     td {
-      width: 100px;
-      height: 100px;
+      flex: 1;
+      width: 80px;
+      height: 80px;
+      aspect-ratio: 1 / 1;
       border: 2px solid #e0e0e0;
       text-align: center;
       vertical-align: middle;
-      font-size: 14px;
-      padding: 10px;
+      font-size: clamp(8px, 1.3vw, 14px);
+      padding: 4px;
       cursor: pointer;
       background: linear-gradient(to bottom, #2a2a2a, #3b3b3b);
       color: #d4e6f4;
-      border-radius: 10px;
+      border-radius: 6px;
       box-shadow: inset -2px -2px 6px rgba(255,255,255,0.1), inset 2px 2px 6px rgba(0,0,0,0.6);
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       word-wrap: break-word;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    td span {
+      display: block;
+      width: 100%;
+      line-height: 1.2;
     }
 
     td:hover {
       background: linear-gradient(to bottom, #384b5f, #2e3f52);
     }
 
-    td.marked {
+    td.marked,
+    .free {
       background: linear-gradient(to bottom, #3a8dd0, #2a6ba5) !important;
       color: #ffffff;
       font-weight: bold;
       box-shadow: inset -2px -2px 6px rgba(255,255,255,0.1), inset 2px 2px 6px rgba(0,0,0,0.7);
     }
 
-    .free {
-      background: linear-gradient(to bottom, #3a8dd0, #2a6ba5) !important;
-      color: #ffffff;
-      font-weight: bold;
-      box-shadow: inset -2px -2px 6px rgba(255,255,255,0.1), inset 2px 2px 6px rgba(0,0,0,0.7);
+    @media (max-width: 600px) {
+      tr {
+        flex-direction: row;
+      }
+
+      td {
+        width: 50px;
+        height: 50px;
+        font-size: clamp(6px, 2vw, 10px);
+        padding: 2px;
+      }
     }
   </style>
 </head>
@@ -128,15 +146,15 @@
         table += '<tr>';
         for (let c = 0; c < 5; c++) {
           if (r === 2 && c === 2) {
-            table += '<td class="free">FREE</td>';
+            table += '<td class="free"><span>FREE</span></td>';
           } else {
-            table += `<td onclick="this.classList.toggle('marked')">${selected[i++]}</td>`;
+            table += `<td onclick="this.classList.toggle('marked')"><span>${selected[i++]}</span></td>`;
           }
         }
         table += '</tr>';
       }
       table += '</table>';
-      return `<div class="card">${table}</div>`;
+      return table;
     }
 
     function getUserDailySeed() {
