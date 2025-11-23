@@ -29,9 +29,40 @@
     h2 {
       font-size: 1em;
       margin-top: 0;
-      margin-bottom: 1.4em;
+      margin-bottom: 1em;
       color: #ffe9b3;
       text-shadow: 0 0 6px rgba(0,0,0,0.6);
+    }
+
+    .controls {
+      margin-bottom: 1.2em;
+    }
+
+    button#new-board {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+      font-size: 0.95em;
+      padding: 0.6em 1.4em;
+      border-radius: 999px;
+      border: 2px solid #ffe082;
+      background: linear-gradient(135deg, #2e7d32, #c62828);
+      color: #fffdf5;
+      cursor: pointer;
+      box-shadow: 0 0 12px rgba(0,0,0,0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    button#new-board:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 16px rgba(255,255,255,0.5);
+      background: linear-gradient(135deg, #43a047, #e53935);
+    }
+
+    button#new-board:active {
+      transform: translateY(1px);
+      box-shadow: 0 0 8px rgba(0,0,0,0.8);
     }
 
     table {
@@ -134,7 +165,7 @@
     }
 
     .footer-note {
-      margin-top: 1.4em;
+      margin-top: 1.2em;
       font-size: 0.85em;
       color: #f9e2c0;
       opacity: 0.9;
@@ -143,6 +174,22 @@
     .holly {
       font-family: 'Mountains of Christmas', cursive;
       color: #ffeb3b;
+    }
+
+    .bingo-message {
+      margin-top: 0.8em;
+      font-size: 1em;
+      font-weight: 700;
+      color: #ffeb3b;
+      text-shadow: 0 0 8px rgba(0,0,0,0.8);
+      opacity: 0;
+      transform: translateY(5px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .bingo-message.show {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     @media (max-width: 600px) {
@@ -169,8 +216,17 @@
 </head>
 <body>
   <h1>Hallmark Christmas Movie Bingo</h1>
-  <h2>Mark a square when the trope happens. First Bingo = take a shooter. 🎄</h2>
+  <h2>Mark a square when the trope happens. First Bingo = everyone takes one shooter. 🎄</h2>
+
+  <div class="controls">
+    <button id="new-board" onclick="generateNewBoard()">🎬 New Movie, New Board</button>
+  </div>
+
   <div id="cards"></div>
+
+  <div id="bingo-message" class="bingo-message">
+    🎉 BINGO! Everyone takes a shooter, then start a new board for the next movie. 🎄
+  </div>
 
   <p class="footer-note">
     Play as a group per movie. Keep it cozy, not chaotic. <span class="holly">Ho ho ho.</span>
@@ -178,7 +234,7 @@
 
   <script>
     const defaultOptions = [
-      // Hallmark-y tropes – lots so boards feel unique
+      // Hallmark-y tropes – big pool so boards feel unique
       "Big city woman returns to small hometown",
       "Christmas tree farm is in trouble",
       "Small town name sounds very Christmassy",
@@ -283,10 +339,44 @@
       "Someone wears a Santa hat indoors"
     ];
 
+    // Track marked cells (including free space at center)
+    let markedIndices = [];
+    let hasBingo = false;
+
+    const winningLines = [
+      // Rows
+      [0,1,2,3,4],
+      [5,6,7,8,9],
+      [10,11,12,13,14],
+      [15,16,17,18,19],
+      [20,21,22,23,24],
+      // Cols
+      [0,5,10,15,20],
+      [1,6,11,16,21],
+      [2,7,12,17,22],
+      [3,8,13,18,23],
+      [4,9,14,19,24],
+      // Diagonals
+      [0,6,12,18,24],
+      [4,8,12,16,20]
+    ];
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
     function createCard(words) {
+      markedIndices = [12]; // free center space always counts
+      hasBingo = false;
+      updateBingoMessage(false);
+
       const selected = words.slice(0, 24);
       let i = 0;
       let table = '<table>';
+
       for (let r = 0; r < 5; r++) {
         table += '<tr>';
         for (let c = 0; c < 5; c++) {
@@ -295,75 +385,64 @@
             table += '<td class="free"><span>FREE<br>HOT COCOA</span></td>';
           } else {
             const word = selected[i++];
-            const marked = getMarkedCells().includes(index) ? 'marked' : '';
-            table += `<td data-index="${index}" onclick="toggleMarked(this)" class="${marked}"><span>${word}</span></td>`;
+            table += `<td data-index="${index}" onclick="toggleMarked(this)"><span>${word}</span></td>`;
           }
         }
         table += '</tr>';
       }
+
       table += '</table>';
       return table;
     }
 
-    function getUserDailySeed() {
-      const today = new Date().toISOString().slice(0, 10);
-      const key = `bingo-seed-${today}`;
-      let seed = localStorage.getItem(key);
-      if (!seed) {
-        seed = Math.floor(Math.random() * 1000000000);
-        localStorage.setItem(key, seed);
-      }
-      return parseInt(seed, 10);
-    }
-
-    function seededShuffle(array, seed) {
-      let random = mulberry32(seed);
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-    }
-
-    function mulberry32(a) {
-      return function() {
-        var t = a += 0x6D2B79F5;
-        t = Math.imul(t ^ t >>> 15, t | 1);
-        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
-        return ((t ^ t >>> 14) >>> 0) / 4294967296;
-      }
-    }
-
     function toggleMarked(cell) {
       if (cell.classList.contains('free')) return;
+
       cell.classList.toggle('marked');
-      const index = parseInt(cell.getAttribute('data-index'));
-      const today = new Date().toISOString().slice(0, 10);
-      const key = `marked-cells-${today}`;
-      let marked = getMarkedCells();
+      const index = parseInt(cell.getAttribute('data-index'), 10);
+
       if (cell.classList.contains('marked')) {
-        if (!marked.includes(index)) marked.push(index);
+        if (!markedIndices.includes(index)) markedIndices.push(index);
       } else {
-        marked = marked.filter(i => i !== index);
+        markedIndices = markedIndices.filter(i => i !== index);
       }
-      localStorage.setItem(key, JSON.stringify(marked));
+
+      checkBingo();
     }
 
-    function getMarkedCells() {
-      const today = new Date().toISOString().slice(0, 10);
-      const key = `marked-cells-${today}`;
-      const marked = localStorage.getItem(key);
-      return marked ? JSON.parse(marked) : [];
+    function checkBingo() {
+      for (const line of winningLines) {
+        if (line.every(i => markedIndices.includes(i))) {
+          if (!hasBingo) {
+            hasBingo = true;
+            updateBingoMessage(true);
+          }
+          return true;
+        }
+      }
+      updateBingoMessage(false);
+      return false;
     }
 
-    function generateDailyCard() {
-      const seed = getUserDailySeed();
+    function updateBingoMessage(on) {
+      const el = document.getElementById('bingo-message');
+      if (!el) return;
+      if (on) {
+        el.classList.add('show');
+      } else {
+        el.classList.remove('show');
+      }
+    }
+
+    function generateNewBoard() {
       const words = [...defaultOptions];
-      seededShuffle(words, seed);
+      shuffleArray(words);
       const html = createCard(words);
       document.getElementById('cards').innerHTML = html;
     }
 
-    window.onload = generateDailyCard;
+    // First board on load
+    window.onload = generateNewBoard;
   </script>
 </body>
 </html>
