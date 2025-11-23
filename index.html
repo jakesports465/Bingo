@@ -3,30 +3,46 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DanQ Bingo Card</title>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+  <title>Hallmark Christmas Movie Bingo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&family=Nunito:wght@300;600&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Anton', sans-serif;
-      background: linear-gradient(135deg, #1c1c1c, #2a2a2a);
+      font-family: 'Nunito', sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.18), transparent 55%),
+        linear-gradient(135deg, #05131c, #0f2a14);
       color: #fff;
       text-align: center;
       margin: 0;
-      padding: 2em 1em;
+      padding: 2em 1em 3em;
     }
 
     h1 {
-      font-size: 2.2em;
-      margin-bottom: 1em;
-      color: #ffffff;
-      text-shadow: 2px 2px 4px #000;
+      font-family: 'Mountains of Christmas', cursive;
+      font-size: 2.6em;
+      margin-bottom: 0.2em;
+      color: #fffdf5;
+      text-shadow: 0 0 10px rgba(0,0,0,0.8);
+      letter-spacing: 1px;
+    }
+
+    h2 {
+      font-size: 1em;
+      margin-top: 0;
+      margin-bottom: 1.4em;
+      color: #ffe9b3;
+      text-shadow: 0 0 6px rgba(0,0,0,0.6);
     }
 
     table {
       border-collapse: separate;
       border-spacing: 6px;
       margin: 0 auto;
-      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+      box-shadow: 0 0 25px rgba(0,0,0,0.7);
+      padding: 10px;
+      border-radius: 16px;
+      background: linear-gradient(145deg, rgba(10,35,18,0.95), rgba(5,15,24,0.98));
+      border: 2px solid rgba(255, 255, 255, 0.12);
     }
 
     tr {
@@ -38,104 +54,233 @@
       width: 80px;
       height: 80px;
       aspect-ratio: 1 / 1;
-      border: 2px solid #e0e0e0;
+      border: 2px solid rgba(255,255,255,0.7);
       text-align: center;
       vertical-align: middle;
       font-size: clamp(8px, 1.3vw, 14px);
       padding: 4px;
       cursor: pointer;
-      background: linear-gradient(to bottom, #2a2a2a, #3b3b3b);
-      color: #d4e6f4;
-      border-radius: 6px;
-      box-shadow: inset -2px -2px 6px rgba(255,255,255,0.1), inset 2px 2px 6px rgba(0,0,0,0.6);
-      transition: all 0.2s ease;
+      background: linear-gradient(145deg, #b00020, #347a34);
+      color: #fffdf7;
+      border-radius: 10px;
+      box-shadow:
+        inset -2px -2px 6px rgba(255,255,255,0.15),
+        inset 2px 2px 6px rgba(0,0,0,0.7);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
       word-wrap: break-word;
       overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
+      position: relative;
+    }
+
+    td::before {
+      content: "";
+      position: absolute;
+      inset: 3px;
+      border-radius: 8px;
+      border: 1px dashed rgba(255,255,255,0.25);
+      pointer-events: none;
     }
 
     td span {
       display: block;
       width: 100%;
       line-height: 1.2;
+      position: relative;
+      z-index: 1;
     }
 
     td:hover {
-      background: linear-gradient(to bottom, #384b5f, #2e3f52);
+      transform: translateY(-2px);
+      box-shadow:
+        0 0 10px rgba(255,255,255,0.3),
+        inset 0 0 0 rgba(0,0,0,0);
+      background: linear-gradient(145deg, #e53935, #43a047);
     }
 
-    td.marked,
+    td.marked {
+      background: radial-gradient(circle at top, #ffd54f, #c62828);
+      color: #1b0b09;
+      font-weight: 700;
+      box-shadow:
+        0 0 12px rgba(255,255,255,0.6),
+        inset -2px -2px 6px rgba(255,255,255,0.35),
+        inset 2px 2px 6px rgba(0,0,0,0.8);
+      border-color: #fff9c4;
+    }
+
+    td.marked::before {
+      border-color: rgba(255,255,255,0.5);
+    }
+
     .free {
-      background: linear-gradient(to bottom, #3a8dd0, #2a6ba5) !important;
-      color: #ffffff;
-      font-weight: bold;
-      box-shadow: inset -2px -2px 6px rgba(255,255,255,0.1), inset 2px 2px 6px rgba(0,0,0,0.7);
+      cursor: default;
+      background: radial-gradient(circle at top, #fff59d, #ef6c00);
+      color: #4a1b06;
+      font-family: 'Mountains of Christmas', cursive;
+      font-size: 1.1em;
+      text-shadow: 0 0 4px rgba(255,255,255,0.8);
+      border-color: #fff3c0;
+      box-shadow:
+        0 0 16px rgba(255,255,255,0.8),
+        inset -2px -2px 6px rgba(255,255,255,0.45),
+        inset 2px 2px 6px rgba(0,0,0,0.85);
+    }
+
+    .free span {
+      line-height: 1.1;
+    }
+
+    .footer-note {
+      margin-top: 1.4em;
+      font-size: 0.85em;
+      color: #f9e2c0;
+      opacity: 0.9;
+    }
+
+    .holly {
+      font-family: 'Mountains of Christmas', cursive;
+      color: #ffeb3b;
     }
 
     @media (max-width: 600px) {
-      tr {
-        flex-direction: row;
+      body {
+        padding: 1.4em 0.4em 2em;
       }
 
       td {
-        width: 50px;
-        height: 50px;
-        font-size: clamp(6px, 2vw, 10px);
+        width: 54px;
+        height: 54px;
+        font-size: clamp(7px, 2.1vw, 11px);
         padding: 2px;
+      }
+
+      h1 {
+        font-size: 2.1em;
+      }
+
+      h2 {
+        font-size: 0.9em;
       }
     }
   </style>
 </head>
 <body>
-  <h1>DanQ8000 Stream Bingo</h1>
+  <h1>Hallmark Christmas Movie Bingo</h1>
+  <h2>Mark a square when the trope happens. First Bingo = take a shooter. 🎄</h2>
   <div id="cards"></div>
+
+  <p class="footer-note">
+    Play as a group per movie. Keep it cozy, not chaotic. <span class="holly">Ho ho ho.</span>
+  </p>
 
   <script>
     const defaultOptions = [
-      "70s or 80s mentioned by John",
-      "Sports mentioned by Jake",
-      "Fox answers for Dan",
-      "John says \"Dan Rocks\"",
-      "Jake mentions having a meeting",
-      "Beer mentioned by John",
-      "Dan shrieks",
-      "\"What game is this?\"",
-      "\"What difficulty is this?\"",
-      "Someone in chat complains about the team Dan chose",
-      "Super Chat Sent",
-      "Member gifted",
-      "John has a typo",
-      "Ham is meat",
-      "\"You know they dead\"",
-      "\"Oh wow appreciate the...\"",
-      "Nipples mentioned by Dan",
-      "PB&J mentioned by John",
-      "Dan does an English accent",
-      "John shares a life story",
-      "Someone in chat says they found Dan through KOTOR",
-      "\"What would you rate this game?\"",
-      "Someone sends a no context message",
-      "Dan quotes random movie",
-      "\"No early access?\"",
-      "\"Dan are you going to play 'X' game?\"",
-      "Dan gets scared",
-      "Someone doesn't understand time zones",
-      "Dan sings a song",
-      "John is behind in stream",
-      "Someone keeps asking same question",
-      "Member goal reached",
-      "One of Dan's cats appears/mentioned on stream",
-      "Dan wearing Oilers gear",
-      "Nightbot warns someone for using all caps",
-      "Dan adjusts the graphics settings more than once",
-      "\"What is this game about?\"",
-      "Someone tells Dan/chat about their day unprompted",
-      "\"It's my birthday\"",
-      "\"It's some random person's birthday\"",
-      "Someone asks Dan to play a game he already has",
-      "Dan makes a pun"
+      // Hallmark-y tropes – lots so boards feel unique
+      "Big city woman returns to small hometown",
+      "Christmas tree farm is in trouble",
+      "Small town name sounds very Christmassy",
+      "Character literally named Holly, Noel, Nick, or Joy",
+      "Someone says \"Christmas miracle\"",
+      "Someone says \"That’s not what Christmas is about\"",
+      "Workaholic says they \"don’t have time for Christmas\"",
+      "Hot cocoa with whipped cream is shown",
+      "Gingerbread house decorating scene",
+      "Christmas cookie baking montage",
+      "Snowball fight breaks out",
+      "Town Christmas festival or market",
+      "Tree lighting ceremony in the town square",
+      "Decorating the Christmas tree montage",
+      "Main character hates Christmas at the start",
+      "Old wise person gives heartfelt holiday advice",
+      "Dead parent is mentioned",
+      "Single dad or single mom raising a cute kid",
+      "Kid tries to push the adults together",
+      "Character almost falls and is caught by love interest",
+      "Almost kiss interrupted at the last second",
+      "Big misunderstanding caused by overhearing something",
+      "Ex shows up to cause drama",
+      "Main character has a big city job offer",
+      "Choosing between career and love",
+      "Main character is a baker / owns a bakery",
+      "Someone owns an inn or lodge",
+      "Toy store or Christmas shop is important",
+      "Community center needs to be saved",
+      "Charity event or toy drive",
+      "Christmas pageant or school play",
+      "Christmas Eve deadline on a work project",
+      "Boss calls about work during holiday event",
+      "Someone burns or ruins a Christmas dish",
+      "Power outage during a key moment",
+      "Snowstorm threatens travel plans",
+      "Flights canceled because of weather",
+      "Car breaks down in the snow",
+      "Airport scene with rushing to catch someone",
+      "Someone can’t get home for Christmas",
+      "Mistletoe scene (planned or awkward)",
+      "Romantic ice skating scene",
+      "Sleigh or wagon ride",
+      "Cozy cabin in the snow",
+      "Montage with pop-style Christmas song",
+      "Perfectly wrapped Christmas present shown",
+      "Ornament has deep sentimental meaning",
+      "Dog or pet wearing a Christmas accessory",
+      "Ugly Christmas sweater makes an appearance",
+      "Ugly sweater party or contest",
+      "Family photo scene in front of the tree",
+      "Character shares sad Christmas story from childhood",
+      "Sentimental family recipe is passed down",
+      "Reference to \"12 Days of Christmas\"",
+      "\"Best Christmas ever\" is said",
+      "\"This is my hometown\" speech",
+      "\"I haven’t been back here in years\"",
+      "\"I used to come here as a kid\"",
+      "\"You wouldn’t understand\" dramatic line",
+      "Character says they lost their Christmas spirit",
+      "\"That’s just not me\" about a festive activity",
+      "\"You still like hot cocoa with extra marshmallows\"",
+      "Character wears a bright red coat",
+      "Obvious product placement for hot cocoa or coffee",
+      "Love interest fixes something around the house",
+      "Christmas ornament breaks dramatically",
+      "Characters slow dance in a living room",
+      "Snow starts right at the kiss",
+      "Closing line is about believing in magic or love",
+      "Random background couple also gets a happy ending",
+      "Someone bakes cookies for a contest",
+      "Christmas carolers appear",
+      "Santa appears and might be actually real",
+      "Someone literally says \"I’m fine\" when they’re not",
+      "City montage at the beginning with Christmas music",
+      "Small-town diner where everyone knows each other",
+      "Christmas market vendor knows everyone by name",
+      "Love interest shows up just in time for the event",
+      "A handmade gift wins over an expensive gift",
+      "Character works in publishing or advertising",
+      "Main character is a photographer or writer",
+      "One character doesn’t know the words to carols",
+      "Gift exchange where they \"accidentally\" swap gifts",
+      "Snow angel scene or reference",
+      "Overly festive best friend encourages romance",
+      "Christmas tree shopping lot scene",
+      "Someone decorates late at night to surprise another",
+      "Main character decides to stay in the small town",
+      "Job magically works out so they can have both",
+      "Royal prince/princess in disguise (or clearly royal)",
+      "Adorable grandma runs the town gossip network",
+      "Character says \"I just want a simple Christmas\"",
+      "Someone leaves town then turns around to come back",
+      "Christmas-themed small business (wreaths, ornaments)",
+      "Advent calendar with hidden meaning",
+      "Someone is snowed in at the inn or cabin",
+      "Corny holiday pun gets a genuine laugh",
+      "Reference to a Christmas wish list",
+      "“We need to save the festival” emergency meeting",
+      "A big check or donation saves the day",
+      "Holiday baking montage with flour on noses",
+      "Someone wears a Santa hat indoors"
     ];
 
     function createCard(words) {
@@ -147,7 +292,7 @@
         for (let c = 0; c < 5; c++) {
           const index = r * 5 + c;
           if (r === 2 && c === 2) {
-            table += '<td class="free"><span>FREE</span></td>';
+            table += '<td class="free"><span>FREE<br>HOT COCOA</span></td>';
           } else {
             const word = selected[i++];
             const marked = getMarkedCells().includes(index) ? 'marked' : '';
@@ -189,6 +334,7 @@
     }
 
     function toggleMarked(cell) {
+      if (cell.classList.contains('free')) return;
       cell.classList.toggle('marked');
       const index = parseInt(cell.getAttribute('data-index'));
       const today = new Date().toISOString().slice(0, 10);
