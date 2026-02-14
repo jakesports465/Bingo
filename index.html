@@ -1,55 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>USA Hockey Goal</title>
 <style>
-  body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(to bottom, #0a1f44, #ffffff, #b22234);
+  body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: linear-gradient(to bottom, #0a1f44 0%, #ffffff 50%, #b22234 100%);
     font-family: Arial, Helvetica, sans-serif;
   }
-
-  button {
-    font-size: 5rem;
-    padding: 40px 80px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    background-color: #b22234;
-    color: white;
-    font-weight: bold;
-    letter-spacing: 5px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    transition: transform 0.1s ease, background-color 0.2s ease;
+  button{
+    font-size:5rem;
+    padding:40px 80px;
+    border:none;
+    border-radius:20px;
+    cursor:pointer;
+    background:#b22234;
+    color:#fff;
+    font-weight:900;
+    letter-spacing:6px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+    transition:transform 0.1s ease, background-color 0.2s ease;
   }
-
-  button:hover {
-    background-color: #e63946;
-    transform: scale(1.05);
-  }
-
-  button:active {
-    transform: scale(0.95);
+  button:hover{ background:#e63946; transform:scale(1.05); }
+  button:active{ transform:scale(0.95); }
+  .note{
+    position:fixed;
+    bottom:14px;
+    left:0; right:0;
+    text-align:center;
+    font-size:14px;
+    color:#0a1f44;
+    opacity:0.8;
+    user-select:none;
   }
 </style>
 </head>
 <body>
 
-<button onclick="playGoal()">GOAL!</button>
-
-<audio id="goalSound" src="freedom.mp3"></audio>
+<button id="goalBtn">GOAL!</button>
+<div class="note">Plays freedom.mp3 • Volume boost enabled</div>
 
 <script>
-  function playGoal() {
-    const audio = document.getElementById("goalSound");
-    audio.currentTime = 0; // restart if clicked multiple times
-    audio.play();
+  // ====== SETTINGS ======
+  const FILE = "freedom.mp3"; // must be in same folder
+  const BOOST = 2.0;          // 1.0 = normal, 1.5 = louder, 2.0 = much louder (may distort)
+  // ======================
+
+  let audio, ctx, src, gain;
+
+  function initAudioOnce(){
+    if (ctx) return;
+
+    audio = new Audio(FILE);
+    audio.preload = "auto";
+
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    src = ctx.createMediaElementSource(audio);
+    gain = ctx.createGain();
+    gain.gain.value = BOOST;
+
+    src.connect(gain).connect(ctx.destination);
   }
+
+  function playGoal(){
+    initAudioOnce();
+
+    // Some browsers require user gesture to start/resume audio context
+    if (ctx.state === "suspended") ctx.resume();
+
+    audio.currentTime = 0;
+    audio.play().catch(() => {
+      // If autoplay policy blocks it, user can click again
+    });
+  }
+
+  document.getElementById("goalBtn").addEventListener("click", playGoal);
 </script>
 
 </body>
