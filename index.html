@@ -19,33 +19,30 @@
     --warn:#ffd37a;
     --bad:#ff6b86;
 
-    /* ===== BIGGER FOR 32" @ 10ft ===== */
-    --h2: 36px;
-    --h3: 20px;
+    /* tuned so content fits clean */
+    --h2: 34px;
+    --h3: 19px;
 
-    /* big number line */
-    --big: 52px;
+    --big: 46px;
 
-    /* base text */
-    --base: 24px;
-    --small: 18px;
+    --small: 17px;
 
-    /* ticker */
-    --ticker: 30px;
+    --ticker: 28px;
 
-    /* module header + key small text */
-    --cellTitle: 20px;
-    --cellSmall: 26px;
+    --cellTitle: 18px;
+    --cellSmall: 22px;
 
-    /* lists */
-    --listFont: 22px;
-    --listRight: 22px;
+    --kvKey: 18px;
+    --kvVal: 20px;
 
-    /* bubbles/pills */
-    --pillText: 17px;
-    --tagText: 16px;
-    --bubblePadY: 12px;
-    --bubblePadX: 18px;
+    --listFont: 20px;
+    --listRight: 20px;
+
+    --pillText: 16px;
+    --tagText: 15px;
+
+    --bubblePadY: 10px;
+    --bubblePadX: 16px;
   }
 
   *{box-sizing:border-box}
@@ -80,6 +77,7 @@
     align-items:center;
     justify-content:space-between;
     gap:16px;
+    min-width:0;
   }
 
   .brand{display:flex;flex-direction:column;gap:6px;min-width:0}
@@ -97,22 +95,24 @@
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
-    max-width: 780px;
+    max-width: 820px;
   }
 
   .status{
     display:flex; gap:12px; align-items:center;
     font-variant-numeric: tabular-nums;
+    flex-shrink:0;
   }
   .pill{
     border-radius: 999px;
     border: 1px solid rgba(255,255,255,.14);
     background: rgba(255,255,255,.06);
-    padding: 12px 16px;
+    padding: 11px 14px;
     font-weight: 900;
     letter-spacing: .3px;
     font-size: var(--pillText);
     display:flex; align-items:center; gap:10px;
+    white-space:nowrap;
   }
   .dot{
     width:12px;height:12px;border-radius:99px;
@@ -137,14 +137,17 @@
     min-height:0;
     display:flex;
     flex-direction:column;
+    min-width:0;
   }
   .hd{
     padding: 14px 16px;
     display:flex;
     align-items:center;
     justify-content:space-between;
+    gap:12px;
     background: rgba(0,0,0,.22);
     border-bottom: 1px solid rgba(255,255,255,.08);
+    min-width:0;
   }
   .hd .h{
     font-size: var(--h3);
@@ -152,6 +155,10 @@
     letter-spacing: 1px;
     text-transform: uppercase;
     color: var(--muted);
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
   }
   .bd{
     padding: 16px;
@@ -159,8 +166,10 @@
     display:flex;
     flex-direction:column;
     gap:14px;
+    min-width:0;
   }
 
+  /* APOD */
   .hero{
     position:relative;
     flex:1;
@@ -188,13 +197,18 @@
     position:absolute;
     left:16px; right:16px; bottom:14px;
     display:flex; flex-direction:column; gap:10px;
+    min-width:0;
   }
   .heroTitle{
-    font-size: 42px;
+    font-size: 40px;
     font-weight: 1000;
     letter-spacing: .2px;
     line-height: 1.1;
     text-shadow: 0 10px 24px rgba(0,0,0,.55);
+    max-width: 100%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
   }
   .heroMeta{
     display:flex;
@@ -203,6 +217,7 @@
     color: var(--muted);
     font-size: var(--small);
     align-items:center;
+    min-width:0;
   }
 
   .tag{
@@ -224,20 +239,24 @@
   .tag.warn{border-color: rgba(255,211,122,.40); background: rgba(255,211,122,.12); color:#fff1d1}
   .tag.bad{border-color: rgba(255,107,134,.40); background: rgba(255,107,134,.12); color:#ffd4dd}
 
-  .stack{display:flex; flex-direction:column; gap:12px; min-height:0;}
+  /* Right column modules */
+  .stack{display:flex; flex-direction:column; gap:12px; min-height:0; min-width:0;}
   .mini{
     border-radius: 20px;
     border:1px solid rgba(255,255,255,.10);
     background: rgba(0,0,0,.18);
-    padding: 18px;
+    padding: 16px;
     display:flex;
     flex-direction:column;
-    gap:12px;
+    gap:10px;
     min-height: 0;
+    min-width:0;
+    overflow:hidden; /* key: keep everything clean inside */
   }
 
   .miniTop{
     display:flex; align-items:center; justify-content:space-between; gap:10px;
+    min-width:0;
   }
   .miniTop .k{
     color: rgba(255,255,255,.72);
@@ -245,6 +264,10 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: 1000;
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
   }
   .miniTop .s{
     font-size: var(--tagText);
@@ -257,6 +280,7 @@
     background: rgba(255,255,255,.06);
     color: var(--text);
     white-space:nowrap;
+    flex-shrink:0;
   }
 
   .bigLine{
@@ -265,54 +289,69 @@
     letter-spacing: .2px;
     line-height: 1.05;
     font-variant-numeric: tabular-nums;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
   }
   .smallLine{
     color: var(--muted);
     font-size: var(--cellSmall);
-    line-height: 1.25;
+    line-height: 1.2;
     font-variant-numeric: tabular-nums;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
   }
 
   .kv{
     display:grid;
     grid-template-columns: 1fr auto;
-    gap:10px 14px;
+    gap:8px 12px;
     align-items:center;
     font-variant-numeric: tabular-nums;
+    min-width:0;
   }
   .kv .k{
     color: rgba(255,255,255,.70);
     font-weight: 950;
-    font-size: 20px;
-    letter-spacing:.2px;
+    font-size: var(--kvKey);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    min-width:0;
   }
   .kv .v{
     font-weight: 1000;
-    font-size: 22px;
+    font-size: var(--kvVal);
     color: rgba(255,255,255,.88);
     white-space:nowrap;
+    flex-shrink:0;
   }
 
   .list{
-    display:flex; flex-direction:column; gap:12px;
+    display:flex; flex-direction:column; gap:10px;
     font-variant-numeric: tabular-nums;
     overflow:hidden;
+    min-width:0;
   }
   .li{
     display:flex; justify-content:space-between; gap:12px;
     font-size: var(--listFont);
     font-weight: 950;
+    min-width:0;
   }
   .li span:last-child{
     color:rgba(255,255,255,.72);
     font-weight:1000;
     font-size: var(--listRight);
     white-space:nowrap;
+    flex-shrink:0;
   }
   .li span:first-child{
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
+    min-width:0;
     max-width: 72%;
   }
 
@@ -350,7 +389,7 @@
     gap:56px;
     white-space:nowrap;
     padding-left: 18px;
-    animation: scroll 30s linear infinite;
+    animation: scroll 38s linear infinite; /* slower */
     font-weight: 1000;
     font-size: var(--ticker);
   }
@@ -372,7 +411,7 @@
   <header>
     <div class="brand">
       <div class="title">Ambient Command Center</div>
-      <div class="subtitle">space • earth • aurora • aircraft • iss • earthquakes • spacex • zero news</div>
+      <div class="subtitle">space • earth • aurora • aircraft • iss • earthquakes • zero news</div>
     </div>
     <div class="status">
       <div class="pill"><span class="dot" id="dot"></span><span id="net">Online</span></div>
@@ -429,13 +468,12 @@ const CONFIG = {
     aircraft: 30 * 1000,
     iss:      12 * 1000,
     quakes:   60 * 1000,
-    spacex:   5  * 60 * 1000,
     geocode:  60 * 1000
   },
 
   tickerBase: [
     "Ambient mode • live feeds only • no news",
-    "APOD • Aurora • Aircraft • ISS • Quakes • SpaceX"
+    "APOD • Aurora • Aircraft • ISS • Quakes"
   ]
 };
 
@@ -443,9 +481,12 @@ const CONFIG = {
 const $ = (id)=>document.getElementById(id);
 function esc(s){ return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));}
 function fmtTime(d){ return d.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"}); }
+function fmtClock(d){
+  return d.toLocaleDateString([], {weekday:"short", month:"short", day:"numeric"}) + " • " + fmtTime(d);
+}
 function setClock(){
   const d = new Date();
-  $("clock").textContent = `${d.toLocaleDateString([], {weekday:"short", month:"short", day:"numeric"})} • ${fmtTime(d)}`;
+  $("clock").textContent = fmtClock(d);
 }
 setInterval(setClock, 1000); setClock();
 
@@ -474,18 +515,13 @@ function haversineMi(lat1, lon1, lat2, lon2){
   const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
   return 2 * R * Math.asin(Math.sqrt(a));
 }
-
-function countdown(toDate){
-  if(!toDate) return "—";
-  const ms = toDate - new Date();
-  if(ms <= 0) return "now";
-  const s = Math.floor(ms/1000);
-  const d = Math.floor(s/86400);
-  const h = Math.floor((s%86400)/3600);
-  const m = Math.floor((s%3600)/60);
-  if(d>0) return `${d}d ${h}h ${m}m`;
-  if(h>0) return `${h}h ${m}m`;
-  return `${m}m`;
+function lastRow(arr){
+  if(!Array.isArray(arr)) return null;
+  for(let i=arr.length-1;i>=0;i--){
+    const row = arr[i];
+    if(Array.isArray(row)) return row;
+  }
+  return null;
 }
 
 function moduleHTML(title, statusHTML, bigHTML, smallHTML, listLines, kvPairs){
@@ -509,85 +545,11 @@ function moduleHTML(title, statusHTML, bigHTML, smallHTML, listLines, kvPairs){
   `;
 }
 
-/* ===== Aircraft helpers ===== */
-const TYPE_MAP = {
-  B738: "Boeing 737-800", B737: "Boeing 737", B739: "Boeing 737-900", B38M: "Boeing 737 MAX 8",
-  B752: "Boeing 757-200", B763: "Boeing 767-300", B77W: "Boeing 777-300ER", B788: "Boeing 787-8", B789: "Boeing 787-9",
-  A319: "Airbus A319", A320: "Airbus A320", A321: "Airbus A321", A20N: "Airbus A320neo", A21N: "Airbus A321neo",
-  A332: "Airbus A330-200", A333: "Airbus A330-300", A359: "Airbus A350-900",
-  BCS1: "Airbus A220-100", BCS3: "Airbus A220-300",
-  E170: "Embraer E170", E175: "Embraer E175", E75L: "Embraer E175", E190: "Embraer E190", E195: "Embraer E195",
-  CRJ9: "CRJ-900", CRJ7: "CRJ-700",
-  P28R: "Piper Arrow", PA32: "Piper Saratoga", PA34: "Piper Seneca",
-  C172: "Cessna 172", C56X: "Cessna Citation Excel/XLS", SR22: "Cirrus SR22"
-};
-function friendlyType(code){
-  if(!code) return "Unknown type";
-  const c = String(code).toUpperCase().trim();
-  return TYPE_MAP[c] || c;
-}
-
-/* airline mapping (best effort) */
-const AIRLINE_PREFIX = {
-  DAL: "Delta", UAL: "United", AAL: "American", SWA: "Southwest",
-  JBU: "JetBlue", NKS: "Spirit", FFT: "Frontier", ASA: "Alaska",
-  SKW: "SkyWest", RPA: "Republic", ENY: "Envoy", JIA: "PSA", AWI: "Air Wisconsin",
-  UPS: "UPS", FDX: "FedEx"
-};
-const PROVIDER_HINT = {
-  SKW: "United/Delta/American Express",
-  RPA: "United/Delta/American Express",
-  ENY: "American Eagle",
-  JIA: "American Eagle",
-  AWI: "United Express"
-};
-
-function cleanCallsign(raw){
-  const s = String(raw || "").trim();
-  return s || "UNKNOWN";
-}
-function flightPretty(cs){
-  return String(cs).toUpperCase().replace(/\s+/g,"").replace(/[^A-Z0-9]/g,"");
-}
-function callsignPrefix(cs){
-  const t = String(cs).toUpperCase().replace(/[^A-Z0-9]/g,"");
-  const m = t.match(/^([A-Z]{3})/);
-  return m ? m[1] : "";
-}
-function providerLabel(cs){
-  const prefix = callsignPrefix(cs);
-  if(!prefix) return "General Aviation";
-  if(AIRLINE_PREFIX[prefix]){
-    const base = AIRLINE_PREFIX[prefix];
-    const hint = PROVIDER_HINT[prefix];
-    return hint ? `${base}` : base;
-  }
-  if(/^N[0-9A-Z]+$/i.test(cs)) return "General Aviation";
-  return "Other";
-}
-
-/* ===== Aurora helpers ===== */
-function normLon(lon){
-  let x = Number(lon);
-  if(!Number.isFinite(x)) return null;
-  if(x > 180) x = x - 360;
-  return x;
-}
-function lastRow(arr){
-  if(!Array.isArray(arr)) return null;
-  for(let i=arr.length-1;i>=0;i--){
-    const row = arr[i];
-    if(Array.isArray(row)) return row;
-  }
-  return null;
-}
-
 /* ===== data state ===== */
 let aurora = null;        // { kp, ts, bz, speed, kpForecastMax }
-let aircraft = null;      // { count, closest, list, topProviders, highestAltFt }
+let aircraft = null;      // { count, closest, list, topAirlines, highestPlane }
 let iss = null;           // { lat, lon, over, ts }
-let quakes = null;        // { count, maxMag, closestMi, closestPlace, ts }
-let spacex = null;        // { name, date, statusTag, displayTime, precision, windowNote }
+let quakes = null;        // { count, maxMag, closestMi, closestPlace, items, ts }
 let apod = null;
 
 /* ===== NASA APOD ===== */
@@ -636,7 +598,7 @@ async function refreshApod(){
   }
 }
 
-/* ===== Aurora (remove local/global; keep only “meaningful” values) ===== */
+/* ===== Aurora ===== */
 async function refreshAurora(){
   try{
     const kpUrl      = "https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json";
@@ -696,19 +658,55 @@ async function refreshAurora(){
       kpForecastMax = m;
     }
 
-    aurora = {
-      kp: kpVal,
-      ts: kpTs || new Date(),
-      bz,
-      speed,
-      kpForecastMax
-    };
+    aurora = { kp: kpVal, ts: kpTs || new Date(), bz, speed, kpForecastMax };
   } catch(e){
     aurora = null;
   }
 }
 
-/* ===== Aircraft (cell shows only list; summary goes to ticker) ===== */
+/* ===== Aircraft ===== */
+const TYPE_MAP = {
+  B738: "Boeing 737-800", B737: "Boeing 737", B739: "Boeing 737-900", B38M: "Boeing 737 MAX 8",
+  B752: "Boeing 757-200", B763: "Boeing 767-300", B77W: "Boeing 777-300ER", B788: "Boeing 787-8", B789: "Boeing 787-9",
+  A319: "Airbus A319", A320: "Airbus A320", A321: "Airbus A321", A20N: "Airbus A320neo", A21N: "Airbus A321neo",
+  A332: "Airbus A330-200", A333: "Airbus A330-300", A359: "Airbus A350-900",
+  BCS1: "Airbus A220-100", BCS3: "Airbus A220-300",
+  E170: "Embraer E170", E175: "Embraer E175", E75L: "Embraer E175", E190: "Embraer E190", E195: "Embraer E195",
+  CRJ9: "CRJ-900", CRJ7: "CRJ-700",
+  P28R: "Piper Arrow", PA32: "Piper Saratoga", PA34: "Piper Seneca",
+  C172: "Cessna 172", C56X: "Cessna Citation Excel/XLS", SR22: "Cirrus SR22"
+};
+function friendlyType(code){
+  if(!code) return "Unknown type";
+  const c = String(code).toUpperCase().trim();
+  return TYPE_MAP[c] || c;
+}
+const AIRLINE_PREFIX = {
+  DAL: "Delta", UAL: "United", AAL: "American", SWA: "Southwest",
+  JBU: "JetBlue", NKS: "Spirit", FFT: "Frontier", ASA: "Alaska",
+  SKW: "SkyWest", RPA: "Republic", ENY: "Envoy", JIA: "PSA", AWI: "Air Wisconsin",
+  UPS: "UPS", FDX: "FedEx"
+};
+function cleanCallsign(raw){
+  const s = String(raw || "").trim();
+  return s || "UNKNOWN";
+}
+function flightPretty(cs){
+  return String(cs).toUpperCase().replace(/\s+/g,"").replace(/[^A-Z0-9]/g,"");
+}
+function callsignPrefix(cs){
+  const t = String(cs).toUpperCase().replace(/[^A-Z0-9]/g,"");
+  const m = t.match(/^([A-Z]{3})/);
+  return m ? m[1] : "";
+}
+function providerLabel(cs){
+  const prefix = callsignPrefix(cs);
+  if(!prefix) return "General Aviation";
+  if(AIRLINE_PREFIX[prefix]) return AIRLINE_PREFIX[prefix];
+  if(/^N[0-9A-Z]+$/i.test(cs)) return "General Aviation";
+  return "Other";
+}
+
 async function refreshAircraft(){
   try{
     const {lat, lon} = CONFIG.home;
@@ -730,36 +728,42 @@ async function refreshAircraft(){
         const typeCode = (a.t ?? a.type ?? a.icao_type ?? a.icaoType ?? "").toString().trim().toUpperCase();
         const typeName = friendlyType(typeCode);
 
-        const alt = a.alt_baro ?? a.altitude ?? a.alt ?? null;
+        const alt = Number(a.alt_baro ?? a.altitude ?? a.alt);
+        const altOk = Number.isFinite(alt) ? alt : null;
+
         const provider = providerLabel(flight);
 
-        return {provider, flight, typeName, alt, dist};
+        return {provider, flight, typeName, alt: altOk, dist};
       })
       .filter(x => x.dist != null)
       .sort((x,y) => x.dist - y.dist);
 
     const closest = cleaned[0] || null;
 
-    let highestAltFt = null;
+    // Highest plane record (store full plane info)
+    let highestPlane = null;
     for(const x of cleaned){
-      const a = Number(x.alt);
-      if(Number.isFinite(a)){
-        highestAltFt = (highestAltFt==null) ? a : Math.max(highestAltFt, a);
+      if(x.alt == null) continue;
+      if(!highestPlane || x.alt > highestPlane.alt){
+        highestPlane = x;
       }
     }
 
+    // Top airline counts EXCLUDING General Aviation + Other
     const counts = {};
     for(const x of cleaned){
-      const k = x.provider || "Other";
-      counts[k] = (counts[k] || 0) + 1;
+      if(!x.provider) continue;
+      if(x.provider === "General Aviation") continue;
+      if(x.provider === "Other") continue;
+      counts[x.provider] = (counts[x.provider] || 0) + 1;
     }
-    const topProviders = Object.entries(counts)
+    const topAirlines = Object.entries(counts)
       .sort((a,b)=>b[1]-a[1])
       .slice(0,3)
       .map(([name,cnt]) => ({name, cnt}));
 
-    // Cell list: provider + aircraft model on left; flight + miles on right
-    const topList = cleaned.slice(0,5).map(x => ({
+    // Cell list still includes GA/Other (as you wanted)
+    const topList = cleaned.slice(0,6).map(x => ({
       left: `${x.provider} • ${x.typeName}`,
       right: `${x.flight} • ${x.dist.toFixed(1)}mi`
     }));
@@ -768,8 +772,8 @@ async function refreshAircraft(){
       count: cleaned.length,
       closest,
       list: topList,
-      topProviders,
-      highestAltFt
+      topAirlines,
+      highestPlane
     };
   } catch(e){
     aircraft = null;
@@ -822,12 +826,39 @@ async function refreshQuakes(){
     const {lat, lon} = CONFIG.home;
 
     let maxMag = null;
+    let maxMagPlace = null;
+    let maxMagTime = null;
+
     let closestMi = null;
     let closestPlace = null;
+    let closestTime = null;
+    let closestMag = null;
+
+    const items = [];
 
     for(const f of feats){
       const mag = Number(f?.properties?.mag);
-      const place = String(f?.properties?.place || "").trim();
+      const place = String(f?.properties?.place || "").trim() || "Unknown location";
+      const timeMs = Number(f?.properties?.time);
+      const when = Number.isFinite(timeMs) ? new Date(timeMs) : null;
+
+      // list items (cell)
+      if(Number.isFinite(mag) && when){
+        items.push({
+          when,
+          mag,
+          place
+        });
+      }
+
+      // max mag
+      if(Number.isFinite(mag) && (!maxMag || mag > maxMag)){
+        maxMag = mag;
+        maxMagPlace = place;
+        maxMagTime = when;
+      }
+
+      // closest
       const coords = f?.geometry?.coordinates;
       if(Array.isArray(coords) && coords.length >= 2){
         const qlon = Number(coords[0]);
@@ -836,93 +867,35 @@ async function refreshQuakes(){
           const dist = haversineMi(lat, lon, qlat, qlon);
           if(closestMi == null || dist < closestMi){
             closestMi = dist;
-            closestPlace = place || "Unknown location";
+            closestPlace = place;
+            closestTime = when;
+            closestMag = Number.isFinite(mag) ? mag : null;
           }
         }
       }
-      if(Number.isFinite(mag)){
-        maxMag = (maxMag == null) ? mag : Math.max(maxMag, mag);
-      }
     }
+
+    // sort newest first for the cell, keep top 6
+    items.sort((a,b)=>b.when - a.when);
+    const list = items.slice(0,6).map(x => ({
+      left: `${fmtTime(x.when)} • M${x.mag.toFixed(1)} • ${x.place}`,
+      right: ""
+    }));
 
     quakes = {
       count: feats.length,
       maxMag,
+      maxMagPlace,
+      maxMagTime,
       closestMi,
       closestPlace,
+      closestTime,
+      closestMag,
+      list,
       ts: new Date()
     };
   } catch(e){
     quakes = null;
-  }
-}
-
-/* ===== SpaceX (fix: /next can go stale; use /upcoming + pick first FUTURE launch) ===== */
-function formatLocal(date){
-  if(!date) return "—";
-  return date.toLocaleString([], {weekday:"short", month:"short", day:"numeric", hour:"2-digit", minute:"2-digit"});
-}
-async function refreshSpaceX(){
-  try{
-    // Pull upcoming list, pick nearest future by date_utc
-    const list = await getJson("https://api.spacexdata.com/v5/launches/upcoming");
-    const now = Date.now();
-    const upcoming = Array.isArray(list) ? list
-      .map(x => ({
-        name: x?.name || "Upcoming launch",
-        date: x?.date_utc ? new Date(x.date_utc) : null,
-        precision: x?.date_precision || "",
-        tbd: !!x?.tbd,
-        net: !!x?.net
-      }))
-      .filter(x => x.date && Number.isFinite(x.date.getTime()))
-      .filter(x => x.date.getTime() > now + 5*60*1000) // must be > 5 minutes in the future
-      .sort((a,b)=>a.date-b.date)
-      : [];
-
-    const pick = upcoming[0] || null;
-
-    if(!pick){
-      // fallback: keep last known but mark TBD
-      spacex = spacex ? {...spacex, statusTag:"TBD", displayTime:"Awaiting updated time"} : {
-        name: "SpaceX",
-        date: null,
-        precision: "",
-        statusTag: "TBD",
-        displayTime: "Awaiting updated time",
-        windowNote: ""
-      };
-      return;
-    }
-
-    // Determine if time is precise enough to countdown
-    const precision = String(pick.precision || "").toLowerCase();
-    const precise = (precision === "hour") || (precision === "day"); // hour is ideal; day we'll show date (no countdown)
-    let statusTag = "NEXT";
-    let displayTime = "";
-
-    if(pick.tbd || precision === "month" || precision === "year"){
-      statusTag = "TBD";
-      displayTime = "Awaiting updated time";
-    } else if(precision === "day"){
-      statusTag = "NEXT";
-      displayTime = `NET ${formatLocal(pick.date)}`;
-    } else {
-      // hour-ish: show countdown + local time
-      statusTag = "NEXT";
-      displayTime = `T-minus ${countdown(pick.date)} • ${formatLocal(pick.date)}`;
-    }
-
-    spacex = {
-      name: pick.name,
-      date: pick.date,
-      precision: pick.precision,
-      statusTag,
-      displayTime,
-      windowNote: pick.net ? "NET" : ""
-    };
-  } catch(e){
-    spacex = null;
   }
 }
 
@@ -947,14 +920,18 @@ function buildTicker(){
   if(aircraft){
     const n = aircraft.count ?? 0;
     const c = aircraft.closest;
-    const highest = aircraft.highestAltFt != null ? `${Math.round(aircraft.highestAltFt).toLocaleString()} ft` : "—";
-    const topMix = (aircraft.topProviders || []).map(x => `${x.name} ${x.cnt}`).join(" • ");
+    const topMix = (aircraft.topAirlines || []).map(x => `${x.name} ${x.cnt}`).join(" • ");
+
+    const highest = aircraft.highestPlane
+      ? `${aircraft.highestPlane.provider} • ${aircraft.highestPlane.typeName} • ${aircraft.highestPlane.flight} • ${Math.round(aircraft.highestPlane.alt).toLocaleString()} ft`
+      : "—";
 
     const cTxt = c
       ? `Closest: ${esc(c.provider)} • ${esc(c.typeName)} • ${esc(c.flight)} • ${c.dist.toFixed(1)}mi`
       : `Closest: —`;
 
-    live.push(`Aircraft • <b>${esc(n)}</b> in range • <b>${cTxt}</b> • Highest: <b>${esc(highest)}</b>${topMix ? " • Top: <b>"+esc(topMix)+"</b>" : ""}`);
+    live.push(`Aircraft • <b>${esc(n)}</b> in range • <b>${cTxt}</b>${topMix ? " • Top: <b>"+esc(topMix)+"</b>" : ""}`);
+    live.push(`Sky scan • highest plane <b>${esc(highest)}</b>`);
   } else {
     live.push(`Aircraft • <b>loading</b>`);
   }
@@ -966,17 +943,14 @@ function buildTicker(){
   }
 
   if(quakes){
-    const mm = (quakes.maxMag != null) ? quakes.maxMag.toFixed(1) : "—";
-    const cd = (quakes.closestMi != null) ? quakes.closestMi.toFixed(0) + "mi" : "—";
-    live.push(`Quakes • <b>${esc(quakes.count)}</b> last hour • max M<b>${esc(mm)}</b> • closest <b>${esc(cd)}</b>`);
+    const count = quakes.count ?? 0;
+    const largest = (quakes.maxMag != null) ? `M${quakes.maxMag.toFixed(1)} • ${quakes.maxMagPlace || "—"}` : "—";
+    const closest = (quakes.closestMi != null)
+      ? `${quakes.closestMi.toFixed(0)}mi • ${quakes.closestMag != null ? "M"+quakes.closestMag.toFixed(1) : "M—"} • ${quakes.closestPlace || "—"}`
+      : "—";
+    live.push(`Quakes • <b>${esc(count)}</b> last hour • largest <b>${esc(largest)}</b> • closest <b>${esc(closest)}</b>`);
   } else {
     live.push(`Quakes • <b>loading</b>`);
-  }
-
-  if(spacex){
-    live.push(`SpaceX • <b>${esc(spacex.name)}</b> • <b>${esc(spacex.displayTime || "—")}</b>`);
-  } else {
-    live.push(`SpaceX • <b>loading</b>`);
   }
 
   const lines = [...CONFIG.tickerBase, ...live].filter(Boolean);
@@ -987,27 +961,18 @@ function buildTicker(){
 function renderRight(){
   const blocks = [];
 
-  // AURORA (no local/global; clearer meaning)
+  // Aurora
   if(aurora){
     const kpTag = aurora.kp != null ? `KP ${aurora.kp.toFixed(1)}` : "KP —";
     const stamp = aurora.ts ? `Updated ${fmtTime(aurora.ts)}` : "Updated recently";
-
     const kv = [
       {k:"Kp now", v: aurora.kp != null ? aurora.kp.toFixed(1) : "—"},
       {k:"Solar wind", v: aurora.speed != null ? `${Math.round(aurora.speed)} km/s` : "—"},
       {k:"Bz", v: aurora.bz != null ? `${aurora.bz.toFixed(1)} nT` : "—"},
       {k:"Kp forecast max", v: aurora.kpForecastMax != null ? aurora.kpForecastMax.toFixed(1) : "—"}
     ];
-
     blocks.push({
-      html: moduleHTML(
-        "Aurora Forecast",
-        `<span class="tag good">${esc(kpTag)}</span>`,
-        "",
-        stamp,
-        [],
-        kv
-      )
+      html: moduleHTML("Aurora Forecast", `<span class="tag good">${esc(kpTag)}</span>`, "", stamp, [], kv)
     });
   } else {
     blocks.push({
@@ -1015,7 +980,7 @@ function renderRight(){
     });
   }
 
-  // AIRCRAFT (cell: list only)
+  // Aircraft (cell list only)
   if(aircraft){
     const n = aircraft.count ?? 0;
     blocks.push({
@@ -1023,7 +988,7 @@ function renderRight(){
         "Aircraft Overhead",
         `<span class="tag good">RANGE ${esc(CONFIG.aircraftRadiusNm)} NM</span>`,
         `${esc(n)} aircraft`,
-        "",                 // no summary line in the cell
+        "",
         aircraft.list || [],
         []
       )
@@ -1047,52 +1012,22 @@ function renderRight(){
     });
   }
 
-  // Earthquakes
+  // Earthquakes: list of when/how big/where
   if(quakes){
     const count = quakes.count ?? 0;
-    const maxMag = (quakes.maxMag != null) ? quakes.maxMag.toFixed(1) : "—";
-    const closest = (quakes.closestMi != null) ? `${quakes.closestMi.toFixed(0)}mi` : "—";
-    const place = quakes.closestPlace ? quakes.closestPlace : "—";
-
-    const kv = [
-      {k:"Last hour", v:`${count} total`},
-      {k:"Largest", v:`M${maxMag}`},
-      {k:"Closest", v:`${closest}`},
-      {k:"Closest area", v: place}
-    ];
-
     blocks.push({
       html: moduleHTML(
         "Earthquakes",
         `<span class="tag good">USGS 1 HR</span>`,
         `${esc(count)} quakes`,
         `Updated ${fmtTime(quakes.ts)}`,
-        [],
-        kv
-      )
-    });
-  } else {
-    blocks.push({
-      html: moduleHTML("Earthquakes", `<span class="tag warn">USGS 1 HR</span>`, "Loading…", "Waiting on data…", [], [])
-    });
-  }
-
-  // SpaceX
-  if(spacex){
-    const tagClass = spacex.statusTag === "TBD" ? "warn" : "good";
-    blocks.push({
-      html: moduleHTML(
-        "SpaceX",
-        `<span class="tag ${tagClass}">${esc(spacex.statusTag)}</span>`,
-        esc(spacex.name || "Upcoming launch"),
-        esc(spacex.displayTime || "—"),
-        [],
+        quakes.list || [],
         []
       )
     });
   } else {
     blocks.push({
-      html: moduleHTML("SpaceX", `<span class="tag warn">TBD</span>`, "Loading…", "Waiting on data…", [], [])
+      html: moduleHTML("Earthquakes", `<span class="tag warn">USGS 1 HR</span>`, "Loading…", "Waiting on data…", [], [])
     });
   }
 
@@ -1118,7 +1053,6 @@ refreshAurora();
 refreshAircraft();
 refreshISS();
 refreshQuakes();
-refreshSpaceX();
 renderRight();
 
 setInterval(refreshISSOver, CONFIG.refreshMs.geocode);
@@ -1128,7 +1062,6 @@ setInterval(refreshAurora,   CONFIG.refreshMs.aurora);
 setInterval(refreshAircraft, CONFIG.refreshMs.aircraft);
 setInterval(refreshISS,      CONFIG.refreshMs.iss);
 setInterval(refreshQuakes,   CONFIG.refreshMs.quakes);
-setInterval(refreshSpaceX,   CONFIG.refreshMs.spacex);
 
 setInterval(renderRight, 22 * 1000);
 setTimeout(refreshISSOver, 2500);
