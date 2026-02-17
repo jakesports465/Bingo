@@ -19,33 +19,38 @@
     --warn:#ffd37a;
     --bad:#ff6b86;
 
-    /* ===== readable on 32" @ 10ft ===== */
+    /* Base design resolution (we'll scale the entire UI to fit) */
+    --designW: 1920;
+    --designH: 1080;
+
+    /* Overscan safety (TVs crop edges sometimes) */
+    --safe: 18px;
+
+    /* Global scale computed by JS */
+    --uiScale: 1;
+
+    /* readable sizes at DESIGN scale */
     --h2: 34px;
     --h3: 18px;
 
-    /* module text */
-    --big: 42px;
+    --big: 40px;
     --cellTitle: 19px;
-    --cellSmall: 20px;
+    --cellSmall: 19px;
 
-    /* list rows */
-    --listFont: 19px;
-    --listRight: 19px;
+    --listFont: 18px;
+    --listRight: 18px;
 
-    /* key/value rows (aurora + quakes) */
-    --kvKey: 18px;
-    --kvVal: 20px;
+    --kvKey: 17px;
+    --kvVal: 18px;
 
-    /* ticker */
     --ticker: 26px;
-    --tickerSpeed: 42s; /* adjust here (higher = slower) */
+    --tickerSpeed: 40s; /* higher = slower */
 
-    /* tag “bubbles” */
+    /* tag bubbles */
     --tagText: 15px;
     --bubblePadY: 11px;
     --bubblePadX: 18px;
 
-    /* layout */
     --headerH: 92px;
     --footerH: 74px;
     --gap: 12px;
@@ -66,29 +71,22 @@
     overflow:hidden;
   }
 
-  /* ===== Fire TV / Silk “smoosh” fix ===== */
-  .tv-compact{
-    --h2: 30px;
-    --big: 38px;
-    --cellTitle: 18px;
-    --cellSmall: 18px;
-    --listFont: 18px;
-    --listRight: 18px;
-    --kvKey: 17px;
-    --kvVal: 18px;
-    --ticker: 24px;
-
-    --headerH: 84px;
-    --footerH: 68px;
-    --gap: 10px;
-    --pad: 12px;
-
-    --tickerSpeed: 46s;
-    --bubblePadY: 10px;
-    --bubblePadX: 16px;
+  /* ===== TV FIT WRAPPER ===== */
+  .stage{
+    position:fixed;
+    inset:0;
+    padding: var(--safe);
+    overflow:hidden;
+  }
+  .app{
+    width: calc(var(--designW) * 1px);
+    height: calc(var(--designH) * 1px);
+    transform: scale(var(--uiScale));
+    transform-origin: top left;
   }
 
   .wrap{
+    width:100%;
     height:100%;
     padding: var(--pad);
     display:grid;
@@ -125,7 +123,7 @@
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
-    max-width: 760px;
+    max-width: 900px;
   }
 
   .status{
@@ -157,7 +155,6 @@
     grid-template-columns: 1.35fr 1fr;
     gap: var(--gap);
   }
-  .tv-compact main{ grid-template-columns: 1.22fr 1fr; }
 
   .card{
     border-radius: var(--r);
@@ -198,7 +195,7 @@
     gap: 10px;
   }
 
-  /* ===== APOD ===== */
+  /* APOD */
   .hero{
     position:relative;
     flex:1;
@@ -213,13 +210,13 @@
     height:100%;
     object-fit:cover;
     filter: saturate(1.05) contrast(1.05);
-    opacity:.88;
+    opacity:.90;
     transform: scale(1.02);
   }
   .heroOverlay{
     position:absolute; inset:0;
     background:
-      linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.80)),
+      linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.82)),
       radial-gradient(900px 420px at 20% 20%, rgba(107,181,255,.18), transparent 55%);
   }
   .heroText{
@@ -229,19 +226,15 @@
     min-height:0;
   }
   .heroTitle{
-    font-size: 40px;
+    font-size: 38px;
     font-weight: 1000;
-    letter-spacing: .2px;
     line-height: 1.08;
     text-shadow: 0 10px 30px rgba(0,0,0,.55);
-    /* always fits */
     display:-webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow:hidden;
   }
-  .tv-compact .heroTitle{ font-size: 34px; }
-
   .heroMeta{
     display:flex;
     gap:10px;
@@ -255,14 +248,13 @@
     margin-left:auto;
     color: rgba(255,255,255,.72);
     font-weight:900;
-    max-width: 52%;
+    max-width: 55%;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
   }
-  .tv-compact .heroMeta .metaTail{ max-width: 46%; }
 
-  /* ===== tags ===== */
+  /* Tags */
   .tag{
     display:inline-flex;
     align-items:center;
@@ -282,14 +274,13 @@
   .tag.warn{border-color: rgba(255,211,122,.40); background: rgba(255,211,122,.12); color:#fff1d1}
   .tag.bad{border-color: rgba(255,107,134,.40); background: rgba(255,107,134,.12); color:#ffd4dd}
 
-  /* ===== Right modules ===== */
+  /* Right modules: ONLY TWO AT A TIME */
   .stack{
     display:grid;
-    grid-template-rows: 1fr 1fr; /* ONLY TWO CELLS AT A TIME */
+    grid-template-rows: 1fr 1fr;
     gap: 10px;
     min-height:0;
   }
-
   .mini{
     border-radius: 20px;
     border:1px solid rgba(255,255,255,.10);
@@ -299,9 +290,8 @@
     flex-direction:column;
     gap: 10px;
     min-height:0;
-    overflow:hidden; /* hard stop: never spill outside */
+    overflow:hidden; /* never spill outside */
   }
-
   .miniTop{
     display:flex; align-items:center; justify-content:space-between; gap:10px;
     flex:0 0 auto;
@@ -316,7 +306,7 @@
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
-    max-width: 72%;
+    max-width: 70%;
   }
   .miniTop .s{
     font-size: var(--tagText);
@@ -331,13 +321,10 @@
     white-space:nowrap;
     flex-shrink:0;
   }
-
   .bigLine{
     font-size: var(--big);
     font-weight: 1000;
-    letter-spacing: .2px;
     line-height: 1.05;
-    font-variant-numeric: tabular-nums;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
@@ -346,13 +333,12 @@
     color: rgba(255,255,255,.74);
     font-size: var(--cellSmall);
     line-height: 1.22;
-    font-variant-numeric: tabular-nums;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
   }
 
-  /* key/value list (no scrollbars, fits by clamping rows) */
+  /* key/value rows */
   .kv{
     display:flex;
     flex-direction:column;
@@ -375,7 +361,7 @@
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
-    max-width: 62%;
+    max-width: 58%;
   }
   .kvVal{
     font-size: var(--kvVal);
@@ -384,17 +370,17 @@
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
-    max-width: 38%;
+    max-width: 42%;
     text-align:right;
   }
 
-  /* aircraft list */
+  /* list rows (quakes + aircraft) */
   .list{
     display:flex;
     flex-direction:column;
     gap:10px;
     min-height:0;
-    overflow:hidden; /* no scrollbars */
+    overflow:hidden;
     flex: 1 1 auto;
   }
   .li{
@@ -408,20 +394,20 @@
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
-    max-width: 74%;
+    max-width: 42%;
   }
   .li span:last-child{
-    color:rgba(255,255,255,.75);
+    color:rgba(255,255,255,.78);
     font-weight:1000;
     font-size: var(--listRight);
     white-space:nowrap;
-    max-width: 26%;
     overflow:hidden;
     text-overflow:ellipsis;
+    max-width: 58%;
     text-align:right;
   }
 
-  /* ===== ticker ===== */
+  /* ticker */
   footer{
     border-radius: var(--r);
     border: 1px solid var(--line);
@@ -479,61 +465,80 @@
 </head>
 
 <body>
-<div class="wrap">
-  <header>
-    <div class="brand">
-      <div class="title">Ambient Command Center</div>
-      <div class="subtitle">space • earth • aurora • aircraft • iss • earthquakes • zero news</div>
-    </div>
-    <div class="status">
-      <div class="pill"><span class="dot" id="dot"></span><span id="net">Online</span></div>
-      <div class="pill">Updated <span id="upd">—</span></div>
-      <div class="pill"><span id="clock">—</span></div>
-    </div>
-  </header>
+<div class="stage">
+  <div class="app" id="app">
+    <div class="wrap">
+      <header>
+        <div class="brand">
+          <div class="title">Ambient Command Center</div>
+          <div class="subtitle">space • earth • aurora • aircraft • iss • earthquakes • zero news</div>
+        </div>
+        <div class="status">
+          <div class="pill"><span class="dot" id="dot"></span><span id="net">Online</span></div>
+          <div class="pill">Updated <span id="upd">—</span></div>
+          <div class="pill"><span id="clock">—</span></div>
+        </div>
+      </header>
 
-  <main>
-    <section class="card">
-      <div class="hd">
-        <div class="h">NASA — Astronomy Picture of the Day</div>
-        <div class="tag" id="apodTag">loading</div>
-      </div>
-      <div class="bd">
-        <div class="hero">
-          <img id="apodImg" alt="" src="" />
-          <div class="heroOverlay"></div>
-          <div class="heroText">
-            <div class="heroTitle" id="apodTitle">Loading…</div>
-            <div class="heroMeta" id="apodMeta"></div>
+      <main>
+        <section class="card">
+          <div class="hd">
+            <div class="h">NASA — Astronomy Picture of the Day</div>
+            <div class="tag" id="apodTag">loading</div>
           </div>
-        </div>
-      </div>
-    </section>
+          <div class="bd">
+            <div class="hero">
+              <img id="apodImg" alt="" src="" />
+              <div class="heroOverlay"></div>
+              <div class="heroText">
+                <div class="heroTitle" id="apodTitle">Loading…</div>
+                <div class="heroMeta" id="apodMeta"></div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-    <section class="card">
-      <div class="hd"><div class="h" id="rightHd">Live Modules</div><div class="tag" id="rightTag">auto</div></div>
-      <div class="bd">
-        <div class="stack">
-          <div class="mini" id="mod1"></div>
-          <div class="mini" id="mod2"></div>
-        </div>
-      </div>
-    </section>
-  </main>
+        <section class="card">
+          <div class="hd"><div class="h" id="rightHd">Live Modules</div><div class="tag" id="rightTag">auto</div></div>
+          <div class="bd">
+            <div class="stack">
+              <div class="mini" id="mod1"></div>
+              <div class="mini" id="mod2"></div>
+            </div>
+          </div>
+        </section>
+      </main>
 
-  <footer>
-    <div class="footerLeft">Live</div>
-    <div class="marquee"><div class="track" id="track"></div></div>
-  </footer>
+      <footer>
+        <div class="footerLeft">Live</div>
+        <div class="marquee"><div class="track" id="track"></div></div>
+      </footer>
+    </div>
+  </div>
 </div>
 
 <script>
-/* ===== Fire TV / Silk compact mode detection ===== */
-(function(){
-  const ua = navigator.userAgent || "";
-  const isFireTV = /AFT|AmazonWebAppPlatform|Silk/i.test(ua);
-  if(isFireTV) document.documentElement.classList.add("tv-compact");
-})();
+/* ===== TV FIT SCALER =====
+   Scales 1920x1080 "app" into whatever viewport the Firestick actually gives. */
+function setUIScale(){
+  const root = document.documentElement;
+  const safe = parseFloat(getComputedStyle(root).getPropertyValue("--safe")) || 0;
+
+  const vw = window.innerWidth  - safe*2;
+  const vh = window.innerHeight - safe*2;
+
+  const designW = parseFloat(getComputedStyle(root).getPropertyValue("--designW")) || 1920;
+  const designH = parseFloat(getComputedStyle(root).getPropertyValue("--designH")) || 1080;
+
+  const s = Math.min(vw / designW, vh / designH);
+
+  // clamp so it never upscales too hard (keeps it crisp)
+  const scale = Math.max(0.55, Math.min(1, s));
+
+  root.style.setProperty("--uiScale", scale.toFixed(4));
+}
+addEventListener("resize", setUIScale);
+setUIScale();
 
 /* ===== CONFIG ===== */
 const CONFIG = {
@@ -630,9 +635,9 @@ const TYPE_MAP = {
   A319: "Airbus A319", A320: "Airbus A320", A321: "Airbus A321", A20N: "Airbus A320neo", A21N: "Airbus A321neo",
   A332: "Airbus A330-200", A333: "Airbus A330-300", A359: "Airbus A350-900",
   BCS1: "Airbus A220-100", BCS3: "Airbus A220-300",
-  E170: "Embraer E170", E175: "Embraer E175", E75L: "Embraer E175", E190: "Embraer E190", E195: "Embraer E195",
+  E170: "Embraer E170", E175: "Embraer E175", E190: "Embraer E190", E195: "Embraer E195",
   CRJ9: "CRJ-900", CRJ7: "CRJ-700",
-  P28R: "Piper Arrow", PA32: "Piper Saratoga", PA34: "Piper Seneca",
+  P28R: "Piper Arrow", PA32: "Piper Saratoga",
   C172: "Cessna 172", C56X: "Cessna Citation Excel/XLS", SR22: "Cirrus SR22"
 };
 function friendlyType(code){
@@ -659,12 +664,6 @@ function providerLabel(cs){
 }
 
 /* ===== Aurora helpers ===== */
-function normLon(lon){
-  let x = Number(lon);
-  if(!Number.isFinite(x)) return null;
-  if(x > 180) x = x - 360;
-  return x;
-}
 function lastRow(arr){
   if(!Array.isArray(arr)) return null;
   for(let i=arr.length-1;i>=0;i--){
@@ -675,18 +674,18 @@ function lastRow(arr){
 }
 
 /* ===== state ===== */
-let aurora=null;   // {kp,bz,speed,kpForecastMax,ts}
-let aircraft=null; // {count,list,closest,highest:{provider,typeName,flight,altFt,distMi}, topAirlines:[{name,cnt}]}
-let iss=null;      // {lat,lon,over,ts}
-let quakes=null;   // {count,items:[{t,mag,place}], largest:{mag,place}, closest:{mi,place}, ts}
+let aurora=null;
+let aircraft=null;
+let iss=null;
+let quakes=null;
 let apod=null;
 
 /* ===== APOD ===== */
 async function refreshApod(){
   try{
-    // DEMO_KEY is rate-limited. If it hits limit, APOD will show offline (by design).
     const d = await getJson("https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY");
     apod = d;
+
     $("apodTitle").textContent = d.title || "NASA APOD";
     $("apodTag").textContent = d.date || "today";
 
@@ -695,12 +694,9 @@ async function refreshApod(){
     } else {
       $("apodImg").src = "data:image/svg+xml," + encodeURIComponent(`
         <svg xmlns='http://www.w3.org/2000/svg' width='1920' height='1080'>
-          <defs><linearGradient id='g' x1='0' x2='1'>
-            <stop stop-color='#0b1020' offset='0'/><stop stop-color='#081018' offset='1'/>
-          </linearGradient></defs>
-          <rect width='100%' height='100%' fill='url(#g)'/>
-          <text x='70' y='170' fill='white' font-size='64' font-family='Arial' font-weight='800'>NASA APOD is a video today</text>
-          <text x='70' y='235' fill='#a7b0c2' font-size='34' font-family='Arial'>Showing placeholder background</text>
+          <rect width='100%' height='100%' fill='#070a12'/>
+          <text x='70' y='150' fill='white' font-size='64' font-family='Arial' font-weight='800'>NASA APOD is a video today</text>
+          <text x='70' y='220' fill='#a7b0c2' font-size='34' font-family='Arial'>Showing placeholder background</text>
         </svg>
       `);
     }
@@ -732,7 +728,7 @@ async function refreshApod(){
   }
 }
 
-/* ===== Aurora (NOAA SWPC) ===== */
+/* ===== Aurora ===== */
 async function refreshAurora(){
   try{
     const kpUrl   = "https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json";
@@ -742,7 +738,6 @@ async function refreshAurora(){
 
     const [kp, mag, plasma, kpFc] = await Promise.all([getJson(kpUrl), getJson(magUrl), getJson(plUrl), getJson(kpFcUrl)]);
 
-    // current Kp
     let kpVal = null;
     if(Array.isArray(kp)){
       for(let i=kp.length-1;i>=0;i--){
@@ -754,7 +749,6 @@ async function refreshAurora(){
       }
     }
 
-    // Bz
     let bz = null;
     const m = lastRow(mag);
     if(m && m.length>=4){
@@ -762,7 +756,6 @@ async function refreshAurora(){
       if(Number.isFinite(v)) bz = v;
     }
 
-    // Speed
     let speed = null;
     const p = lastRow(plasma);
     if(p && p.length>=3){
@@ -770,7 +763,6 @@ async function refreshAurora(){
       if(Number.isFinite(v)) speed = v;
     }
 
-    // forecast max
     let kpForecastMax = null;
     if(Array.isArray(kpFc)){
       let mx = null;
@@ -789,7 +781,7 @@ async function refreshAurora(){
   }
 }
 
-/* ===== Aircraft (airplanes.live) ===== */
+/* ===== Aircraft ===== */
 async function refreshAircraft(){
   try{
     const {lat, lon} = CONFIG.home;
@@ -817,30 +809,18 @@ async function refreshAircraft(){
       return {provider, flight, typeName, altFt, dist};
     }).filter(x => x.dist != null).sort((a,b)=>a.dist-b.dist);
 
-    // list for cell (top 6)
     const list = cleaned.slice(0,6).map(x => ({
       left: `${x.provider} • ${x.typeName}`,
       right: `${x.flight} • ${x.dist.toFixed(1)}mi`
     }));
 
-    // highest aircraft (include which flight/type)
     let highest = null;
     for(const x of cleaned){
       if(x.altFt != null){
         if(!highest || x.altFt > highest.altFt) highest = x;
       }
     }
-    if(highest){
-      highest = {
-        provider: highest.provider,
-        typeName: highest.typeName,
-        flight: highest.flight,
-        altFt: highest.altFt,
-        distMi: highest.dist
-      };
-    }
 
-    // top airlines ONLY (exclude General Aviation + Other)
     const counts = {};
     for(const x of cleaned){
       if(x.provider && x.provider !== "General Aviation" && x.provider !== "Other"){
@@ -853,7 +833,7 @@ async function refreshAircraft(){
       count: cleaned.length,
       list,
       closest: cleaned[0] || null,
-      highest,
+      highest: highest ? {provider: highest.provider, typeName: highest.typeName, flight: highest.flight, altFt: highest.altFt, distMi: highest.dist} : null,
       topAirlines
     };
   }catch(e){
@@ -861,7 +841,7 @@ async function refreshAircraft(){
   }
 }
 
-/* ===== ISS + reverse geocode ===== */
+/* ===== ISS ===== */
 async function refreshISS(){
   try{
     const d = await getJson("https://api.wheretheiss.at/v1/satellites/25544");
@@ -899,12 +879,11 @@ async function refreshISSOver(){
   }
 }
 
-/* ===== Earthquakes (USGS last hour) ===== */
+/* ===== Quakes ===== */
 async function refreshQuakes(){
   try{
     const d = await getJson("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson");
     const feats = Array.isArray(d?.features) ? d.features : [];
-
     const {lat, lon} = CONFIG.home;
 
     let largest = null;
@@ -940,19 +919,13 @@ async function refreshQuakes(){
       };
     }).sort((a,b) => (b.mag ?? -999) - (a.mag ?? -999));
 
-    quakes = {
-      count: feats.length,
-      items,
-      largest,
-      closest,
-      ts: new Date()
-    };
+    quakes = { count: feats.length, items, largest, closest, ts: new Date() };
   }catch(e){
     quakes = null;
   }
 }
 
-/* ===== Render ticker + modules (ONLY 2 at a time) ===== */
+/* ===== Render ===== */
 let phase = 0;
 
 function buildTicker(){
@@ -974,7 +947,6 @@ function buildTicker(){
     const topAir = (aircraft.topAirlines||[]).map(x => `${x.name} ${x.cnt}`).join(" • ");
     const closestTxt = c ? `${c.provider} • ${c.typeName} • ${c.flight} • ${c.dist.toFixed(1)}mi` : "—";
     live.push(`Aircraft • <b>${esc(n)}</b> in range • closest <b>${esc(closestTxt)}</b>${topAir ? " • top: <b>"+esc(topAir)+"</b>" : ""}`);
-
     if(aircraft.highest){
       const h = aircraft.highest;
       live.push(`Highest plane • <b>${esc(h.provider)}</b> • <b>${esc(h.typeName)}</b> • <b>${esc(h.flight)}</b> • <b>${esc(Math.round(h.altFt).toLocaleString())}</b> ft`);
@@ -985,7 +957,6 @@ function buildTicker(){
     live.push(`ISS • <b>${esc(iss.over || "Locating…")}</b>`);
   } else live.push(`ISS • <b>loading</b>`);
 
-  // Quakes: ticker shows largest + closest only (per your request)
   if(quakes){
     const lg = quakes.largest ? `largest M<b>${esc(quakes.largest.mag.toFixed(1))}</b> • ${esc(quakes.largest.place)}` : "largest <b>—</b>";
     const cl = quakes.closest ? `closest <b>${esc(quakes.closest.mi.toFixed(0))}</b> mi • ${esc(quakes.closest.place)}` : "closest <b>—</b>";
@@ -1010,16 +981,10 @@ function renderRight(){
       kvRows: []
     });
   } else {
-    blocks.push({
-      title: "ISS Position",
-      statusHTML: `<span class="tag warn">LIVE</span>`,
-      bigHTML: "Loading…",
-      smallHTML: "Waiting on data…",
-      kvRows: []
-    });
+    blocks.push({ title:"ISS Position", statusHTML:`<span class="tag warn">LIVE</span>`, bigHTML:"Loading…", smallHTML:"Waiting on data…", kvRows:[] });
   }
 
-  // Earthquakes (cell shows list of when / mag / where)
+  // Earthquakes list
   if(quakes){
     const rows = clampRows(quakes.items, 6).map(q => ({
       left: `${q.when} • M${q.mag != null ? q.mag.toFixed(1) : "—"}`,
@@ -1033,66 +998,45 @@ function renderRight(){
       listLines: rows
     });
   } else {
-    blocks.push({
-      title: "Earthquakes",
-      statusHTML: `<span class="tag warn">USGS 1 HR</span>`,
-      bigHTML: "Loading…",
-      smallHTML: "Waiting on data…",
-      listLines: []
-    });
+    blocks.push({ title:"Earthquakes", statusHTML:`<span class="tag warn">USGS 1 HR</span>`, bigHTML:"Loading…", smallHTML:"Waiting on data…", listLines:[] });
   }
 
-  // Aurora (NO local/global chance, just the meaningful stuff)
+  // Aurora (no local/global chance)
   if(aurora){
     const kp = aurora.kp != null ? aurora.kp.toFixed(1) : "—";
     const fc = aurora.kpForecastMax != null ? aurora.kpForecastMax.toFixed(1) : "—";
     const sp = aurora.speed != null ? `${Math.round(aurora.speed)} km/s` : "—";
     const bz = aurora.bz != null ? `${aurora.bz.toFixed(1)} nT` : "—";
-
-    const kvRows = [
-      {left:"Kp now", right: kp},
-      {left:"Kp forecast max", right: fc},
-      {left:"Solar wind speed", right: sp},
-      {left:"Bz (north/south)", right: bz}
-    ];
-
     blocks.push({
       title: "Aurora Forecast",
       statusHTML: `<span class="tag good">KP ${esc(kp)}</span>`,
       bigHTML: esc("Space weather"),
       smallHTML: esc(`Updated ${fmtTime(aurora.ts)}`),
-      kvRows: kvRows
+      kvRows: [
+        {left:"Kp now", right: kp},
+        {left:"Kp forecast max", right: fc},
+        {left:"Solar wind speed", right: sp},
+        {left:"Bz (north/south)", right: bz}
+      ]
     });
   } else {
-    blocks.push({
-      title: "Aurora Forecast",
-      statusHTML: `<span class="tag warn">NOAA</span>`,
-      bigHTML: "Loading…",
-      smallHTML: "Waiting on data…",
-      kvRows: []
-    });
+    blocks.push({ title:"Aurora Forecast", statusHTML:`<span class="tag warn">NOAA</span>`, bigHTML:"Loading…", smallHTML:"Waiting on data…", kvRows:[] });
   }
 
-  // Aircraft (cell = ONLY the list)
+  // Aircraft (list only)
   if(aircraft){
     blocks.push({
       title: "Aircraft Overhead",
       statusHTML: `<span class="tag good">RANGE ${esc(CONFIG.aircraftRadiusNm)} NM</span>`,
       bigHTML: esc(`${aircraft.count ?? 0} aircraft`),
-      smallHTML: "",     // intentionally blank (your request)
+      smallHTML: "",
       listLines: clampRows(aircraft.list || [], 6)
     });
   } else {
-    blocks.push({
-      title: "Aircraft Overhead",
-      statusHTML: `<span class="tag warn">RANGE ${esc(CONFIG.aircraftRadiusNm)} NM</span>`,
-      bigHTML: "Loading…",
-      smallHTML: "Waiting on data…",
-      listLines: []
-    });
+    blocks.push({ title:"Aircraft Overhead", statusHTML:`<span class="tag warn">RANGE ${esc(CONFIG.aircraftRadiusNm)} NM</span>`, bigHTML:"Loading…", smallHTML:"Waiting on data…", listLines:[] });
   }
 
-  // show ONLY 2 at a time, rotate
+  // show 2 at a time
   const a = blocks[phase % blocks.length];
   const b = blocks[(phase + 1) % blocks.length];
 
@@ -1102,7 +1046,7 @@ function renderRight(){
   $("mod2").className = "mini fade";
   $("mod2").innerHTML = moduleHTML(b);
 
-  $("rightHd").textContent = ["Live Modules", "Sky + Orbit", "Earth Systems"][phase % 3];
+  $("rightHd").textContent = ["Live Modules","Sky + Orbit","Earth Systems"][phase % 3];
   $("rightTag").textContent = "auto";
 
   phase++;
@@ -1119,14 +1063,13 @@ refreshQuakes();
 renderRight();
 
 setInterval(refreshISSOver, CONFIG.refreshMs.geocode);
-
 setInterval(refreshApod,     CONFIG.refreshMs.apod);
 setInterval(refreshAurora,   CONFIG.refreshMs.aurora);
 setInterval(refreshAircraft, CONFIG.refreshMs.aircraft);
 setInterval(refreshISS,      CONFIG.refreshMs.iss);
 setInterval(refreshQuakes,   CONFIG.refreshMs.quakes);
 
-setInterval(renderRight, 18 * 1000); // rotate 2 cells
+setInterval(renderRight, 18 * 1000);
 setTimeout(refreshISSOver, 2500);
 </script>
 </body>
