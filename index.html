@@ -4,7 +4,6 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Ambient Command Center</title>
-
 <style>
   :root{
     --bg:#05060a;
@@ -22,8 +21,7 @@
     /* Big TV readability */
     --h2: 34px;
     --h3: 19px;
-
-    --big: 44px;         /* headline inside modules */
+    --big: 44px;      /* headline inside modules */
     --small: 17px;
 
     /* Right module typography */
@@ -31,8 +29,7 @@
     --cellSmall: 22px;
     --kvKey: 20px;
     --kvVal: 22px;
-
-    --listFont: 21px;    /* rows in lists */
+    --listFont: 21px; /* rows in lists */
     --listLineH: 1.22;
 
     /* Bubbles bigger */
@@ -45,7 +42,7 @@
 
     /* ticker */
     --ticker: 28px;
-    --tickerSpeed: 38s;  /* medium */
+    --tickerSpeed: 42s; /* slower */
   }
 
   *{box-sizing:border-box}
@@ -102,10 +99,13 @@
   }
 
   .status{
-    display:flex; gap:12px; align-items:center;
+    display:flex;
+    gap:12px;
+    align-items:center;
     font-variant-numeric: tabular-nums;
     flex-shrink:0;
   }
+
   .pill{
     border-radius: 999px;
     border: 1px solid rgba(255,255,255,.14);
@@ -114,9 +114,12 @@
     font-weight: 900;
     letter-spacing: .3px;
     font-size: var(--pillText);
-    display:flex; align-items:center; gap:10px;
+    display:flex;
+    align-items:center;
+    gap:10px;
     white-space:nowrap;
   }
+
   .dot{
     width:12px;height:12px;border-radius:99px;
     background: var(--good);
@@ -153,6 +156,7 @@
     border-bottom: 1px solid rgba(255,255,255,.08);
     min-width:0;
   }
+
   .hd .h{
     font-size: var(--h3);
     font-weight: 950;
@@ -193,15 +197,20 @@
     transform: scale(1.02);
   }
   .heroOverlay{
-    position:absolute; inset:0;
+    position:absolute;
+    inset:0;
     background:
       linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.72)),
       radial-gradient(900px 420px at 20% 20%, rgba(107,181,255,.18), transparent 55%);
   }
   .heroText{
     position:absolute;
-    left:16px; right:16px; bottom:14px;
-    display:flex; flex-direction:column; gap:10px;
+    left:16px;
+    right:16px;
+    bottom:14px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
     min-width:0;
   }
   .heroTitle{
@@ -244,10 +253,7 @@
   .tag.warn{border-color: rgba(255,211,122,.40); background: rgba(255,211,122,.12); color:#fff1d1}
   .tag.bad{border-color: rgba(255,107,134,.40); background: rgba(255,107,134,.12); color:#ffd4dd}
 
-  .chgUp{ color: var(--good); font-weight:1000; }
-  .chgDn{ color: var(--bad);  font-weight:1000; }
-
-  /* Right column shows ONLY 2 modules */
+  /* Right column shows ONLY 2 modules (bigger cards so everything fits) */
   .stack{
     display:grid;
     grid-template-rows: 1fr 1fr;
@@ -255,6 +261,7 @@
     min-height:0;
     min-width:0;
   }
+
   .mini{
     border-radius: 20px;
     border:1px solid rgba(255,255,255,.10);
@@ -269,9 +276,13 @@
   }
 
   .miniTop{
-    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
     min-width:0;
   }
+
   .miniTop .k{
     color: rgba(255,255,255,.72);
     font-size: var(--cellTitle);
@@ -283,6 +294,7 @@
     text-overflow:ellipsis;
     white-space:nowrap;
   }
+
   .miniTop .s{
     font-size: var(--tagText);
     font-weight: 1000;
@@ -307,6 +319,7 @@
     overflow:hidden;
     text-overflow:ellipsis;
   }
+
   .smallLine{
     color: var(--muted);
     font-size: var(--cellSmall);
@@ -343,7 +356,7 @@
     flex-shrink:0;
   }
 
-  /* Lists */
+  /* Lists: forced to FIT (no scroll). We clamp lines and limit item count in JS */
   .list{
     display:flex;
     flex-direction:column;
@@ -377,7 +390,7 @@
     flex-shrink:0;
   }
 
-  /* Earthquake list rows: allow 2 lines max */
+  /* Earthquake list rows: allow 2 lines max so nothing overlaps */
   .li.wrap2{
     display:block;
   }
@@ -399,6 +412,7 @@
     display:flex;
     align-items:center;
   }
+
   .footerLeft{
     padding: 0 14px;
     height:100%;
@@ -412,6 +426,7 @@
     background: rgba(107,181,255,.08);
     font-size: 19px;
   }
+
   .marquee{
     flex:1;
     overflow:hidden;
@@ -419,6 +434,7 @@
     display:flex;
     align-items:center;
   }
+
   .track{
     display:flex;
     gap:56px;
@@ -428,25 +444,29 @@
     font-weight: 1000;
     font-size: var(--ticker);
   }
+
   .track span b{color:rgba(255,255,255,.72)}
+
   @keyframes scroll{
     0%{transform:translateX(0)}
     100%{transform:translateX(-50%)}
   }
-  .fade{ animation: fadein .55s ease-out both; }
+
+  .fade{
+    animation: fadein .55s ease-out both;
+  }
   @keyframes fadein{
     from{opacity:.0; transform:translateY(6px)}
     to{opacity:1; transform:translateY(0)}
   }
 </style>
 </head>
-
 <body>
 <div class="wrap">
   <header>
     <div class="brand">
       <div class="title">Ambient Command Center</div>
-      <div class="subtitle">space • earth • aurora • aircraft • iss • earthquakes • finance • zero news</div>
+      <div class="subtitle">space • earth • aurora • aircraft • iss • earthquakes • zero news</div>
     </div>
     <div class="status">
       <div class="pill"><span class="dot" id="dot"></span><span id="net">Online</span></div>
@@ -495,41 +515,45 @@
 const CONFIG = {
   home: { lat: 42.9098, lon: -85.7631, name: "Grandville" },
   aircraftRadiusNm: 120,
-
   refreshMs: {
-    apod:     60 * 60 * 1000,
-    aurora:   5  * 60 * 1000,
+    apod: 60 * 60 * 1000,
+    aurora: 5 * 60 * 1000,
     aircraft: 30 * 1000,
-    iss:      12 * 1000,
-    quakes:   60 * 1000,
-    geocode:  5  * 60 * 1000,   // slower to avoid rate limits
-    finance:  5  * 60 * 1000    // Alpha Vantage safe refresh
+    iss: 12 * 1000,
+    quakes: 60 * 1000,
+    geocode: 60 * 1000
   },
-
   tickerBase: [
     "Ambient mode • live feeds only • no news",
-    "APOD • Aurora • Aircraft • ISS • Quakes • Finance"
+    "APOD • Aurora • Aircraft • ISS • Quakes"
   ],
-
   /* hard caps so NOTHING can overflow */
   listCaps: {
-    aircraft: 6,
-    quakes: 5
-  },
-
-  alphaVantageKey: "HU5Z2WLRFSNRP0GR",
-  financeSymbols: ["VOO","QQQ","GLD","SLV"]
+    aircraft: 6, // list rows shown
+    quakes: 5    // quake rows shown (wrap2, 2-line clamp)
+  }
 };
 
 /* ===== utils ===== */
 const $ = (id)=>document.getElementById(id);
-function esc(s){ return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));}
-function fmtTime(d){ return d.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"}); }
+
+function esc(s){
+  return String(s ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+
+function fmtTime(d){
+  return d.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
+}
+
 function fmtClock(d){
   return d.toLocaleDateString([], {weekday:"short", month:"short", day:"numeric"}) + " • " + fmtTime(d);
 }
+
 function setClock(){ $("clock").textContent = fmtClock(new Date()); }
-setInterval(setClock, 1000); setClock();
+setInterval(setClock, 1000);
+setClock();
 
 function setOnline(){
   const online = navigator.onLine;
@@ -556,6 +580,7 @@ function haversineMi(lat1, lon1, lat2, lon2){
   const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
   return 2 * R * Math.asin(Math.sqrt(a));
 }
+
 function lastRow(arr){
   if(!Array.isArray(arr)) return null;
   for(let i=arr.length-1;i>=0;i--){
@@ -575,7 +600,7 @@ function moduleHTML(title, statusHTML, bigHTML, smallHTML, listLines, kvPairs){
     ${smallHTML ? `<div class="smallLine">${smallHTML}</div>` : ``}
     ${Array.isArray(kvPairs) && kvPairs.length ? `
       <div class="kv">
-        ${kvPairs.map(p => `<div class="k">${esc(p.k)}</div><div class="v">${p.vHTML ? p.vHTML : esc(p.v)}</div>`).join("")}
+        ${kvPairs.map(p => `<div class="k">${esc(p.k)}</div><div class="v">${esc(p.v)}</div>`).join("")}
       </div>
     ` : ``}
     ${listLines && listLines.length ? `
@@ -587,12 +612,11 @@ function moduleHTML(title, statusHTML, bigHTML, smallHTML, listLines, kvPairs){
 }
 
 /* ===== data state ===== */
-let aurora = null;        // { kp, ts, bz, speed, kpForecastMax }
-let aircraft = null;      // { count, closest, list, topAirlines, highestPlane }
-let iss = null;           // { lat, lon, over, ts }
-let quakes = null;        // { count, maxMag, maxMagPlace, closestMi, closestPlace, closestMag, list, ts }
+let aurora = null;   // { kp, ts, bz, speed, kpForecastMax }
+let aircraft = null; // { count, closest, list, topAirlines, highestPlane }
+let iss = null;      // { lat, lon, over, ts }
+let quakes = null;   // { count, maxMag, maxMagPlace, closestMi, closestPlace, closestMag, list, ts }
 let apod = null;
-let finance = null;       // { ts, quotes: {SYM:{price,chg,chgPct}} }
 
 /* ===== NASA APOD ===== */
 function setApodFallback(msgTop, msgSub){
@@ -607,6 +631,7 @@ function setApodFallback(msgTop, msgSub){
     </svg>
   `);
 }
+
 async function refreshApod(){
   try{
     const d = await getJson("https://api.nasa.gov/planetary/apod?api_key=8hIeIebshtbWaaufqV1oSvuQlNUgN0LUjqqw8XU9");
@@ -626,6 +651,7 @@ async function refreshApod(){
     const credit = d.copyright ? `© ${d.copyright}` : "NASA";
     const explRaw = (d.explanation || "");
     const expl = explRaw.slice(0, 140).trim() + (explRaw.length > 140 ? "…" : "");
+
     $("apodMeta").innerHTML = `
       <span class="tag">SPACE</span>
       <span class="tag">${esc(credit)}</span>
@@ -643,20 +669,18 @@ async function refreshApod(){
 /* ===== Aurora ===== */
 async function refreshAurora(){
   try{
-    const kpUrl      = "https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json";
-    const magUrl     = "https://services.swpc.noaa.gov/products/solar-wind/mag-1-day.json";
-    const plasmaUrl  = "https://services.swpc.noaa.gov/products/solar-wind/plasma-1-day.json";
-    const kpFcUrl    = "https://services.swpc.noaa.gov/products/noaa-planetary-k-index-forecast.json";
+    const kpUrl = "https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json";
+    const magUrl = "https://services.swpc.noaa.gov/products/solar-wind/mag-1-day.json";
+    const plasmaUrl = "https://services.swpc.noaa.gov/products/solar-wind/plasma-1-day.json";
+    const kpFcUrl = "https://services.swpc.noaa.gov/products/noaa-planetary-k-index-forecast.json";
 
     const [kp, mag, plasma, kpFc] = await Promise.all([
-      getJson(kpUrl),
-      getJson(magUrl),
-      getJson(plasmaUrl),
-      getJson(kpFcUrl)
+      getJson(kpUrl), getJson(magUrl), getJson(plasmaUrl), getJson(kpFcUrl)
     ]);
 
     let kpVal = null;
     let kpTs = null;
+
     if(Array.isArray(kp)){
       for(let i=kp.length-1; i>=0; i--){
         const row = kp[i];
@@ -706,7 +730,8 @@ async function refreshAurora(){
 /* ===== Aircraft ===== */
 const TYPE_MAP = {
   B738: "Boeing 737-800", B737: "Boeing 737", B739: "Boeing 737-900", B38M: "Boeing 737 MAX 8",
-  B752: "Boeing 757-200", B763: "Boeing 767-300", B77W: "Boeing 777-300ER", B788: "Boeing 787-8", B789: "Boeing 787-9",
+  B752: "Boeing 757-200", B763: "Boeing 767-300", B77W: "Boeing 777-300ER",
+  B788: "Boeing 787-8", B789: "Boeing 787-9",
   A319: "Airbus A319", A320: "Airbus A320", A321: "Airbus A321", A20N: "Airbus A320neo", A21N: "Airbus A321neo",
   A332: "Airbus A330-200", A333: "Airbus A330-300", A359: "Airbus A350-900",
   BCS1: "Airbus A220-100", BCS3: "Airbus A220-300",
@@ -715,17 +740,19 @@ const TYPE_MAP = {
   P28R: "Piper Arrow", PA32: "Piper Saratoga", PA34: "Piper Seneca",
   C172: "Cessna 172", C56X: "Cessna Citation Excel/XLS", SR22: "Cirrus SR22"
 };
+
 function friendlyType(code){
   if(!code) return "Unknown type";
   const c = String(code).toUpperCase().trim();
   return TYPE_MAP[c] || c;
 }
+
 const AIRLINE_PREFIX = {
-  DAL: "Delta", UAL: "United", AAL: "American", SWA: "Southwest",
-  JBU: "JetBlue", NKS: "Spirit", FFT: "Frontier", ASA: "Alaska",
-  SKW: "SkyWest", RPA: "Republic", ENY: "Envoy", JIA: "PSA", AWI: "Air Wisconsin",
-  UPS: "UPS", FDX: "FedEx"
+  DAL: "Delta", UAL: "United", AAL: "American", SWA: "Southwest", JBU: "JetBlue",
+  NKS: "Spirit", FFT: "Frontier", ASA: "Alaska", SKW: "SkyWest", RPA: "Republic",
+  ENY: "Envoy", JIA: "PSA", AWI: "Air Wisconsin", UPS: "UPS", FDX: "FedEx"
 };
+
 function cleanCallsign(raw){
   const s = String(raw || "").trim();
   return s || "UNKNOWN";
@@ -771,7 +798,6 @@ async function refreshAircraft(){
         const altOk = Number.isFinite(alt) ? alt : null;
 
         const provider = providerLabel(flight);
-
         return {provider, flight, typeName, alt: altOk, dist};
       })
       .filter(x => x.dist != null)
@@ -792,6 +818,7 @@ async function refreshAircraft(){
       if(x.provider === "Other") continue;
       counts[x.provider] = (counts[x.provider] || 0) + 1;
     }
+
     const topAirlines = Object.entries(counts)
       .sort((a,b)=>b[1]-a[1])
       .slice(0,3)
@@ -808,48 +835,25 @@ async function refreshAircraft(){
   }
 }
 
-/* ===== ISS + reverse geocode (cached + never overwrites with Unknown) ===== */
-let lastGeocodeAt = 0;
-let lastGeocodeKey = ""; // rounded lat/lon key
-
+/* ===== ISS + reverse geocode ===== */
 async function refreshISS(){
   try{
     const d = await getJson("https://api.wheretheiss.at/v1/satellites/25544");
-    iss = {
-      lat: Number(d.latitude),
-      lon: Number(d.longitude),
-      ts: new Date(),
-      over: iss?.over ?? "Locating…"
-    };
+    iss = { lat: Number(d.latitude), lon: Number(d.longitude), ts: new Date(), over: iss?.over ?? "Locating…" };
   } catch(e){
     iss = null;
   }
 }
 
-function geoKey(lat, lon){
-  // rounding reduces unnecessary geocode churn
-  return `${lat.toFixed(1)},${lon.toFixed(1)}`;
-}
-
 async function refreshISSOver(){
   if(!iss || !Number.isFinite(iss.lat) || !Number.isFinite(iss.lon)) return;
-
-  const now = Date.now();
-  const key = geoKey(iss.lat, iss.lon);
-
-  // only geocode if time passed AND it actually moved enough (key changed)
-  if((now - lastGeocodeAt) < CONFIG.refreshMs.geocode && key === lastGeocodeKey) return;
-
-  lastGeocodeAt = now;
-  lastGeocodeKey = key;
-
   try{
     const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${iss.lat}&longitude=${iss.lon}&localityLanguage=en`;
     const g = await getJson(url);
 
     const locality = g.locality || g.city || "";
-    const region   = g.principalSubdivision || "";
-    const country  = g.countryName || "";
+    const region = g.principalSubdivision || "";
+    const country = g.countryName || "";
     const ocean = g.localityInfo?.informative?.find(x => (x.description||"").toLowerCase().includes("ocean"))?.name;
 
     let over = "";
@@ -861,8 +865,7 @@ async function refreshISSOver(){
 
     iss.over = over;
   } catch(e){
-    // IMPORTANT: do NOT overwrite good value with "Unknown"
-    // Just keep last known iss.over.
+    iss.over = "Unknown";
   }
 }
 
@@ -875,7 +878,6 @@ async function refreshQuakes(){
 
     let maxMag = null;
     let maxMagPlace = null;
-
     let closestMi = null;
     let closestPlace = null;
     let closestMag = null;
@@ -920,68 +922,9 @@ async function refreshQuakes(){
       wrap2: true
     }));
 
-    quakes = {
-      count: feats.length,
-      maxMag,
-      maxMagPlace,
-      closestMi,
-      closestPlace,
-      closestMag,
-      list,
-      ts: new Date()
-    };
+    quakes = { count: feats.length, maxMag, maxMagPlace, closestMi, closestPlace, closestMag, list, ts: new Date() };
   } catch(e){
     quakes = null;
-  }
-}
-
-/* ===== Finance (Alpha Vantage) ===== */
-function parsePct(p){
-  // "0.52%" -> 0.52
-  const n = Number(String(p || "").replace("%","").trim());
-  return Number.isFinite(n) ? n : null;
-}
-
-function chgHTML(pct){
-  if(pct == null) return `<span style="color:rgba(255,255,255,.75)">—</span>`;
-  const cls = pct >= 0 ? "chgUp" : "chgDn";
-  const sign = pct >= 0 ? "+" : "";
-  return `<span class="${cls}">${sign}${pct.toFixed(2)}%</span>`;
-}
-
-async function fetchQuote(sym){
-  const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${encodeURIComponent(sym)}&apikey=${encodeURIComponent(CONFIG.alphaVantageKey)}`;
-  const j = await getJson(url);
-
-  // Rate limit or error responses:
-  if(j?.Note || j?.Information || j?.Error_Message) throw new Error("AlphaVantage limited");
-
-  const q = j?.["Global Quote"];
-  if(!q) throw new Error("No quote");
-
-  const price = Number(q["05. price"]);
-  const chg = Number(q["09. change"]);
-  const chgPct = parsePct(q["10. change percent"]);
-
-  return {
-    price: Number.isFinite(price) ? price : null,
-    chg: Number.isFinite(chg) ? chg : null,
-    chgPct
-  };
-}
-
-async function refreshFinance(){
-  try{
-    const out = {};
-    for(const sym of CONFIG.financeSymbols){
-      out[sym] = await fetchQuote(sym);
-      // tiny spacing so we don't slam at once (still fast)
-      await new Promise(r => setTimeout(r, 250));
-    }
-    finance = { ts: new Date(), quotes: out };
-  } catch(e){
-    // keep last known finance if we have it
-    finance = finance || null;
   }
 }
 
@@ -992,23 +935,6 @@ function buildTicker(){
   const live = [];
 
   if(apod?.title) live.push(`APOD • <b>${esc(apod.title)}</b>`);
-
-  if(finance?.quotes){
-    const q = finance.quotes;
-    const line = (sym)=>{
-      const qq = q[sym];
-      if(!qq || qq.price == null) return `${sym} <b>—</b>`;
-      const px = qq.price.toFixed(2);
-      const pct = qq.chgPct;
-      const cls = (pct != null && pct >= 0) ? "chgUp" : "chgDn";
-      const sign = (pct != null && pct >= 0) ? "+" : "";
-      const pctTxt = (pct != null) ? `${sign}${pct.toFixed(2)}%` : "—";
-      return `${sym} <b>${esc(px)}</b> <span class="${cls}">${esc(pctTxt)}</span>`;
-    };
-    live.push(`Markets • ${line("VOO")} • ${line("QQQ")} • ${line("GLD")} • ${line("SLV")}`);
-  } else {
-    live.push(`Markets • <b>loading</b>`);
-  }
 
   if(aurora){
     const kp = (aurora.kp != null) ? `Kp <b>${esc(aurora.kp.toFixed(1))}</b>` : `Kp <b>—</b>`;
@@ -1022,11 +948,9 @@ function buildTicker(){
     const n = aircraft.count ?? 0;
     const c = aircraft.closest;
     const topMix = (aircraft.topAirlines || []).map(x => `${x.name} ${x.cnt}`).join(" • ");
-
     const highest = aircraft.highestPlane
       ? `${aircraft.highestPlane.provider} • ${aircraft.highestPlane.typeName} • ${aircraft.highestPlane.flight} • ${Math.round(aircraft.highestPlane.alt).toLocaleString()} ft`
       : "—";
-
     const cTxt = c
       ? `Closest: ${esc(c.provider)} • ${esc(c.typeName)} • ${esc(c.flight)} • ${c.dist.toFixed(1)}mi`
       : `Closest: —`;
@@ -1055,44 +979,6 @@ function buildTicker(){
 function renderRight(){
   const blocks = [];
 
-  // Finance module
-  if(finance?.quotes){
-    const q = finance.quotes;
-    const row = (sym, label)=>{
-      const qq = q[sym];
-      const px = (qq?.price != null) ? qq.price.toFixed(2) : "—";
-      const pct = qq?.chgPct ?? null;
-      return {
-        k: `${label} (${sym})`,
-        v: px,
-        vHTML: `${esc(px)}  ${chgHTML(pct)}`
-      };
-    };
-
-    const stamp = finance.ts ? `Updated ${fmtTime(finance.ts)}` : "Updated recently";
-    blocks.push({
-      html: moduleHTML(
-        "Finance",
-        `<span class="tag good">LIVE</span>`,
-        "",
-        stamp,
-        [],
-        [ row("VOO","S&P 500 ETF"), row("QQQ","Nasdaq 100 ETF"), row("GLD","Gold"), row("SLV","Silver") ]
-      )
-    });
-  } else {
-    blocks.push({
-      html: moduleHTML(
-        "Finance",
-        `<span class="tag warn">LOADING</span>`,
-        "",
-        "Waiting on quotes…",
-        [],
-        []
-      )
-    });
-  }
-
   // Aurora
   if(aurora){
     const kpTag = aurora.kp != null ? `KP ${aurora.kp.toFixed(1)}` : "KP —";
@@ -1103,9 +989,13 @@ function renderRight(){
       {k:"Bz", v: aurora.bz != null ? `${aurora.bz.toFixed(1)} nT` : "—"},
       {k:"Kp forecast max", v: aurora.kpForecastMax != null ? aurora.kpForecastMax.toFixed(1) : "—"}
     ];
-    blocks.push({ html: moduleHTML("Aurora Forecast", `<span class="tag good">${esc(kpTag)}</span>`, "", stamp, [], kv) });
+    blocks.push({
+      html: moduleHTML("Aurora Forecast", `<span class="tag good">${esc(kpTag)}</span>`, "", stamp, [], kv)
+    });
   } else {
-    blocks.push({ html: moduleHTML("Aurora Forecast", `<span class="tag warn">NOAA</span>`, "", "Waiting on data…", [], []) });
+    blocks.push({
+      html: moduleHTML("Aurora Forecast", `<span class="tag warn">NOAA</span>`, "", "Waiting on data…", [], [])
+    });
   }
 
   // Aircraft
@@ -1122,19 +1012,32 @@ function renderRight(){
       )
     });
   } else {
-    blocks.push({ html: moduleHTML("Aircraft Overhead", `<span class="tag warn">RANGE ${esc(CONFIG.aircraftRadiusNm)} NM</span>`, "Loading…", "", [], []) });
+    blocks.push({
+      html: moduleHTML(
+        "Aircraft Overhead",
+        `<span class="tag warn">RANGE ${esc(CONFIG.aircraftRadiusNm)} NM</span>`,
+        "Loading…",
+        "",
+        [],
+        []
+      )
+    });
   }
 
   // ISS
   if(iss){
     const big = iss.over ? `Over: ${iss.over}` : "Locating…";
     const small = `Updated ${fmtTime(iss.ts)} • lat ${Number.isFinite(iss.lat) ? iss.lat.toFixed(2) : "—"} • lon ${Number.isFinite(iss.lon) ? iss.lon.toFixed(2) : "—"}`;
-    blocks.push({ html: moduleHTML("ISS Position", `<span class="tag good">LIVE</span>`, esc(big), esc(small), [], []) });
+    blocks.push({
+      html: moduleHTML("ISS Position", `<span class="tag good">LIVE</span>`, esc(big), esc(small), [], [])
+    });
   } else {
-    blocks.push({ html: moduleHTML("ISS Position", `<span class="tag warn">LIVE</span>`, "Loading…", "Waiting on data…", [], []) });
+    blocks.push({
+      html: moduleHTML("ISS Position", `<span class="tag warn">LIVE</span>`, "Loading…", "Waiting on data…", [], [])
+    });
   }
 
-  // Earthquakes
+  // Earthquakes (list inside module, wrap2, capped count)
   if(quakes){
     const count = quakes.count ?? 0;
     blocks.push({
@@ -1148,15 +1051,20 @@ function renderRight(){
       )
     });
   } else {
-    blocks.push({ html: moduleHTML("Earthquakes", `<span class="tag warn">USGS 1 HR</span>`, "Loading…", "Waiting on data…", [], []) });
+    blocks.push({
+      html: moduleHTML("Earthquakes", `<span class="tag warn">USGS 1 HR</span>`, "Loading…", "Waiting on data…", [], [])
+    });
   }
 
   // Show 2 at a time, rotate
   const a = blocks[phase % blocks.length];
   const b = blocks[(phase + 1) % blocks.length];
 
-  $("mod1").className = "mini fade"; $("mod1").innerHTML = a.html;
-  $("mod2").className = "mini fade"; $("mod2").innerHTML = b.html;
+  $("mod1").className = "mini fade";
+  $("mod1").innerHTML = a.html;
+
+  $("mod2").className = "mini fade";
+  $("mod2").innerHTML = b.html;
 
   $("rightHd").textContent = ["Live Modules", "Sky + Orbit", "Earth Systems"][phase % 3];
   $("rightTag").textContent = "auto";
@@ -1172,21 +1080,16 @@ refreshAurora();
 refreshAircraft();
 refreshISS();
 refreshQuakes();
-refreshFinance();
-
 renderRight();
-setTimeout(refreshISSOver, 2500);
 
 setInterval(refreshISSOver, CONFIG.refreshMs.geocode);
-
-setInterval(refreshApod,     CONFIG.refreshMs.apod);
-setInterval(refreshAurora,   CONFIG.refreshMs.aurora);
+setInterval(refreshApod, CONFIG.refreshMs.apod);
+setInterval(refreshAurora, CONFIG.refreshMs.aurora);
 setInterval(refreshAircraft, CONFIG.refreshMs.aircraft);
-setInterval(refreshISS,      CONFIG.refreshMs.iss);
-setInterval(refreshQuakes,   CONFIG.refreshMs.quakes);
-setInterval(refreshFinance,  CONFIG.refreshMs.finance);
-
+setInterval(refreshISS, CONFIG.refreshMs.iss);
+setInterval(refreshQuakes, CONFIG.refreshMs.quakes);
 setInterval(renderRight, 22 * 1000);
+setTimeout(refreshISSOver, 2500);
 </script>
 </body>
 </html>
