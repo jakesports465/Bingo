@@ -521,7 +521,7 @@ const CONFIG = {
     aircraft: 30 * 1000,
     iss: 12 * 1000,
     quakes: 60 * 1000,
-    geocode: 60 * 1000
+    geocode: 5 * 60 * 1000
   },
   tickerBase: [
     "Ambient mode • live feeds only • no news",
@@ -617,6 +617,12 @@ let aircraft = null; // { count, closest, list, topAirlines, highestPlane }
 let iss = null;      // { lat, lon, over, ts }
 let quakes = null;   // { count, maxMag, maxMagPlace, closestMi, closestPlace, closestMag, list, ts }
 let apod = null;
+
+/* ===== geocode throttling state ===== */
+let lastGeocodeAt = 0;
+let lastGeocodeLat = null;
+let lastGeocodeLon = null;
+let geocodeBackoffMs = 0;
 
 /* ===== NASA APOD ===== */
 function setApodFallback(msgTop, msgSub){
@@ -847,6 +853,21 @@ async function refreshISS(){
 
 async function refreshISSOver(){
   if(!iss || !Number.isFinite(iss.lat) || !Number.isFinite(iss.lon)) return;
+
+  const now = Date.now();
+
+  // Respect backoff if the endpoint starts denying/rate limiting
+  if(geocodeBackoffMs && (now - lastGeocodeAt) < geocodeBackoffMs) return;
+
+  // Hard throttle: never more often than CONFIG.refreshMs.geocode
+  if((now - lastGeocodeAt) < CONFIG.refreshMs.geocode) return;
+
+  // Only geocode if ISS moved enough since the last successful geocode
+  if(Number.isFinite(lastGeocodeLat) && Number.isFinite(lastGeocodeLon)){
+    const movedMi = haversineMi(lastGeocodeLat, lastGeocodeLon, iss.lat, iss.lon);
+    if(movedMi < 150) return;
+  }
+
   try{
     const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${iss.lat}&longitude=${iss.lon}&localityLanguage=en`;
     const g = await getJson(url);
@@ -864,8 +885,24 @@ async function refreshISSOver(){
     else over = "Open ocean / remote";
 
     iss.over = over;
+
+    // Mark success
+    lastGeocodeAt = now;
+    lastGeocodeLat = iss.lat;
+    lastGeocodeLon = iss.lon;
+
+    // Reset backoff on success
+    geocodeBackoffMs = 0;
   } catch(e){
-    iss.over = "Unknown";
+    // Back off harder every time it fails (up to 60 min)
+    lastGeocodeAt = now;
+    geocodeBackoffMs = Math.min(
+      geocodeBackoffMs ? geocodeBackoffMs * 2 : (15 * 60 * 1000),
+      60 * 60 * 1000
+    );
+
+    // Keep something reasonable on screen
+    iss.over = iss.over || "Unknown";
   }
 }
 
