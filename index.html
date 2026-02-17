@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Ambient Command Center</title>
+
 <style>
   :root{
     --bg:#05060a;
@@ -26,7 +27,7 @@
     --small: 16px;
 
     /* ticker size */
-    --ticker: 24px;
+    --ticker: 26px;
   }
 
   *{box-sizing:border-box}
@@ -47,7 +48,7 @@
     height:100%;
     padding:18px;
     display:grid;
-    grid-template-rows: 92px 1fr 68px; /* slightly taller footer */
+    grid-template-rows: 92px 1fr 74px;
     gap:14px;
   }
 
@@ -92,7 +93,7 @@
     padding: 10px 12px;
     font-weight: 900;
     letter-spacing: .3px;
-    font-size: 16px; /* bigger */
+    font-size: 16px;
     display:flex; align-items:center; gap:8px;
   }
   .dot{
@@ -172,7 +173,7 @@
     display:flex; flex-direction:column; gap:10px;
   }
   .heroTitle{
-    font-size: 40px; /* bigger */
+    font-size: 40px;
     font-weight: 1000;
     letter-spacing: .2px;
     line-height: 1.1;
@@ -194,7 +195,7 @@
     border-radius: 999px;
     border:1px solid rgba(255,255,255,.12);
     background: rgba(255,255,255,.05);
-    font-size: 13px; /* bigger */
+    font-size: 13px;
     font-weight: 950;
     letter-spacing: .8px;
     text-transform: uppercase;
@@ -210,7 +211,7 @@
     border-radius: 20px;
     border:1px solid rgba(255,255,255,.10);
     background: rgba(0,0,0,.18);
-    padding: 16px; /* bigger padding */
+    padding: 16px;
     display:flex;
     flex-direction:column;
     gap:10px;
@@ -239,7 +240,7 @@
     white-space:nowrap;
   }
   .bigLine{
-    font-size: 40px; /* bigger */
+    font-size: 40px;
     font-weight: 1000;
     letter-spacing: .2px;
     line-height: 1.05;
@@ -257,11 +258,11 @@
   }
   .li{
     display:flex; justify-content:space-between; gap:12px;
-    font-size: 18px; /* bigger */
+    font-size: 18px;
     font-weight: 900;
   }
   .li span:last-child{color:var(--muted); font-weight:950}
-  .li span:first-child{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width: 70%}
+  .li span:first-child{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width: 72%}
 
   footer{
     border-radius: var(--r);
@@ -294,12 +295,12 @@
   }
   .track{
     display:flex;
-    gap:44px;
+    gap:48px;
     white-space:nowrap;
     padding-left: 18px;
-    animation: scroll 28s linear infinite;
+    animation: scroll 30s linear infinite;
     font-weight: 950;
-    font-size: var(--ticker); /* bigger ticker */
+    font-size: var(--ticker);
   }
   .track span b{color:var(--muted)}
   @keyframes scroll{
@@ -452,7 +453,7 @@ function moduleHTML(title, status, big, small, listLines){
   `;
 }
 
-/* ===== friendly aircraft type mapping (common) ===== */
+/* ===== aircraft helpers ===== */
 const TYPE_MAP = {
   // Boeing
   B738: "Boeing 737-800",
@@ -472,25 +473,75 @@ const TYPE_MAP = {
   A332: "Airbus A330-200",
   A333: "Airbus A330-300",
   A359: "Airbus A350-900",
+  // Airbus A220 (CSeries)
+  BCS1: "Airbus A220-100",
+  BCS3: "Airbus A220-300",
   // Embraer / regional
   E170: "Embraer E170",
   E175: "Embraer E175",
+  E75L: "Embraer E175 (winglets)",
   E190: "Embraer E190",
   E195: "Embraer E195",
   CRJ9: "CRJ-900",
-  CRJ7: "CRJ-700"
+  CRJ7: "CRJ-700",
+  // GA common
+  P28R: "Piper Arrow",
+  C172: "Cessna 172",
+  SR22: "Cirrus SR22"
 };
+
 function friendlyType(code){
-  if(!code) return "";
+  if(!code) return "Unknown type";
   const c = String(code).toUpperCase().trim();
   return TYPE_MAP[c] || c;
 }
 
+// Very simple airline guess from callsign prefix (not perfect, but cool + fast)
+const AIRLINE_PREFIX = {
+  DAL: "Delta",
+  UAL: "United",
+  AAL: "American",
+  SWA: "Southwest",
+  JBU: "JetBlue",
+  NKS: "Spirit",
+  FFT: "Frontier",
+  ASA: "Alaska",
+  SKW: "SkyWest",
+  RPA: "Republic",
+  ENY: "Envoy",
+  JIA: "PSA",
+  AWI: "Air Wisconsin",
+  UPS: "UPS",
+  FDX: "FedEx"
+};
+function airlineFromCallsign(cs){
+  if(!cs) return "Other";
+  const m = String(cs).toUpperCase().replace(/[^A-Z0-9]/g,"").match(/^([A-Z]{3})/);
+  if(!m) return "Other";
+  return AIRLINE_PREFIX[m[1]] || "Other";
+}
+
+/* ===== Aurora helpers ===== */
+function normLon(lon){
+  let x = Number(lon);
+  if(!Number.isFinite(x)) return null;
+  if(x > 180) x = x - 360;
+  return x;
+}
+function lastRow(arr){
+  if(!Array.isArray(arr)) return null;
+  for(let i=arr.length-1;i>=0;i--){
+    const row = arr[i];
+    if(Array.isArray(row)) return row;
+  }
+  return null;
+}
+
 /* ===== data state ===== */
-let aurora = null;        // { kp, localProb, globalMax, ts }
-let aircraft = null;      // { count, closest, list }
+let aurora = null;        // { kp, localProb, globalMax, ts, bz, speed, kpForecastMax }
+let aircraft = null;      // { count, closest, list, topAirlines, highestAltFt }
 let iss = null;           // { lat, lon, over, ts }
-let spacex = null;        // { name, date, details, statusTag }
+let spacex = null;        // { name, date, details, statusTag, displayTime }
 let apod = null;
 
 /* ===== NASA APOD ===== */
@@ -532,24 +583,24 @@ async function refreshApod(){
   }
 }
 
-/* ===== Aurora (NOAA SWPC OVATION + Kp) =====
-   Fix: OVATION longitudes often come as 0..360. Convert to -180..180 before distance compare. */
-function normLon(lon){
-  let x = Number(lon);
-  if(!Number.isFinite(x)) return null;
-  // Convert 0..360 to -180..180
-  if(x > 180) x = x - 360;
-  return x;
-}
-
+/* ===== Aurora (OVATION + Kp + Solar Wind + Kp Forecast) ===== */
 async function refreshAurora(){
   try{
     const ovationUrl = "https://services.swpc.noaa.gov/json/ovation_aurora_latest.json";
     const kpUrl      = "https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json";
+    const magUrl     = "https://services.swpc.noaa.gov/products/solar-wind/mag-1-day.json";
+    const plasmaUrl  = "https://services.swpc.noaa.gov/products/solar-wind/plasma-1-day.json";
+    const kpFcUrl    = "https://services.swpc.noaa.gov/products/noaa-planetary-k-index-forecast.json";
 
-    const [ov, kp] = await Promise.all([getJson(ovationUrl), getJson(kpUrl)]);
+    const [ov, kp, mag, plasma, kpFc] = await Promise.all([
+      getJson(ovationUrl),
+      getJson(kpUrl),
+      getJson(magUrl),
+      getJson(plasmaUrl),
+      getJson(kpFcUrl)
+    ]);
 
-    // Kp: take the last row with a numeric in column 1 if present
+    // current Kp
     let kpVal = null;
     if(Array.isArray(kp)){
       for(let i=kp.length-1; i>=0; i--){
@@ -561,6 +612,7 @@ async function refreshAurora(){
       }
     }
 
+    // OVATION local + max
     const {lat, lon} = CONFIG.home;
     let bestDist = Infinity;
     let bestVal = null;
@@ -586,18 +638,55 @@ async function refreshAurora(){
       }
     }
 
+    // Solar wind: Bz + speed
+    let bz = null;
+    {
+      const r = lastRow(mag);
+      // ["time_tag","bx_gsm","by_gsm","bz_gsm","bt"]
+      if(r && r.length >= 4){
+        const cand = Number(r[3]);
+        if(Number.isFinite(cand)) bz = cand;
+      }
+    }
+
+    let speed = null;
+    {
+      const r = lastRow(plasma);
+      // ["time_tag","density","speed","temperature"]
+      if(r && r.length >= 3){
+        const cand = Number(r[2]);
+        if(Number.isFinite(cand)) speed = cand;
+      }
+    }
+
+    // Kp forecast max
+    let kpForecastMax = null;
+    if(Array.isArray(kpFc)){
+      let m = null;
+      for(const row of kpFc){
+        if(Array.isArray(row) && row.length >= 2){
+          const v = Number(row[1]);
+          if(Number.isFinite(v)) m = (m==null) ? v : Math.max(m, v);
+        }
+      }
+      kpForecastMax = m;
+    }
+
     aurora = {
       kp: kpVal,
       localProb: bestVal != null ? Math.round(bestVal) : null,
       globalMax: maxVal ? Math.round(maxVal) : null,
-      ts: obsTime
+      ts: obsTime,
+      bz,
+      speed,
+      kpForecastMax
     };
   } catch(e){
     aurora = null;
   }
 }
 
-/* ===== Aircraft overhead (airplanes.live) ===== */
+/* ===== Aircraft overhead (airplanes.live) + airline mix + highest altitude ===== */
 async function refreshAircraft(){
   try{
     const {lat, lon} = CONFIG.home;
@@ -614,25 +703,49 @@ async function refreshAircraft(){
 
         const callsign = (a.flight ?? a.callsign ?? a.cs ?? "").toString().trim() || "UNKNOWN";
         const typeCode = (a.t ?? a.type ?? a.icao_type ?? a.icaoType ?? "").toString().trim();
-        const kind = friendlyType(typeCode);
-        const alt = a.alt_baro ?? a.altitude ?? a.alt ?? null;
+        const alt = a.alt_baro ?? a.altitude ?? a.alt ?? null; // often feet
         const gs  = a.gs ?? a.speed ?? null;
 
-        return {callsign, kind, typeCode, alt, gs, dist};
+        const airline = airlineFromCallsign(callsign);
+
+        return {callsign, typeCode, alt, gs, dist, airline};
       })
       .sort((x,y) => (x.dist ?? 1e9) - (y.dist ?? 1e9));
 
     const closest = cleaned[0] || null;
 
+    // highest altitude (treat as feet; if unknown, ignore)
+    let highestAltFt = null;
+    for(const x of cleaned){
+      const a = Number(x.alt);
+      if(Number.isFinite(a)){
+        highestAltFt = (highestAltFt==null) ? a : Math.max(highestAltFt, a);
+      }
+    }
+
+    // top airlines
+    const counts = {};
+    for(const x of cleaned){
+      const k = x.airline || "Other";
+      counts[k] = (counts[k] || 0) + 1;
+    }
+    const topAirlines = Object.entries(counts)
+      .sort((a,b)=>b[1]-a[1])
+      .slice(0,3)
+      .map(([name,cnt]) => ({name, cnt}));
+
+    // list entries: TYPE (CODE) on left, callsign + distance on right
     const topList = cleaned.slice(0,5).map(x => ({
-      left: `${x.kind ? x.kind : (x.typeCode||"")} • ${x.callsign}`,
-      right: `${x.dist != null ? x.dist.toFixed(1) + "mi" : "—"}`
+      left: `${friendlyType(x.typeCode)} (${(x.typeCode||"").toUpperCase() || "—"})`,
+      right: `${x.callsign} • ${x.dist != null ? x.dist.toFixed(1) + "mi" : "—"}`
     }));
 
     aircraft = {
       count: cleaned.length,
       closest,
-      list: topList
+      list: topList,
+      topAirlines,
+      highestAltFt
     };
   } catch(e){
     aircraft = null;
@@ -661,22 +774,23 @@ async function refreshISSOver(){
     const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${iss.lat}&longitude=${iss.lon}&localityLanguage=en`;
     const g = await getJson(url);
 
-    // Build a clean "Over:" string
-    const locality = g.locality || g.city || g.principalSubdivision || "";
+    const locality = g.locality || g.city || "";
     const region   = g.principalSubdivision || "";
     const country  = g.countryName || "";
-    const ocean    = g.localityInfo?.informative?.find(x => (x.description||"").toLowerCase().includes("ocean"))?.name;
+
+    // Ocean detection (best-effort)
+    const ocean = g.localityInfo?.informative?.find(x => (x.description||"").toLowerCase().includes("ocean"))?.name;
 
     let over = "";
-    if(locality && country) over = `${locality}${region && region !== locality ? ", " + region : ""}, ${country}`;
+    if(ocean) over = ocean;
+    else if(locality && country) over = `${locality}${region && region !== locality ? ", " + region : ""}, ${country}`;
     else if(region && country) over = `${region}, ${country}`;
     else if(country) over = country;
-    else if(ocean) over = ocean;
     else over = "Open ocean / remote";
 
     iss.over = over;
   } catch(e){
-    iss.over = "Over: unknown";
+    iss.over = "Unknown";
   }
 }
 
@@ -686,7 +800,6 @@ async function refreshSpaceX(){
     const d = await getJson("https://api.spacexdata.com/v5/launches/next");
     const date = d.date_utc ? new Date(d.date_utc) : null;
 
-    // If time is in the past by > 60 minutes, treat as stale/scrubbed.
     let statusTag = "NEXT";
     let displayTime = "";
     if(date){
@@ -720,39 +833,41 @@ let phase = 0;
 function buildTicker(){
   const live = [];
 
-  // APOD
   if(apod?.title){
     live.push(`APOD • <b>${esc(apod.title)}</b>`);
   }
 
-  // Aurora
   if(aurora){
     const kp = (aurora.kp != null) ? `Kp <b>${esc(aurora.kp.toFixed ? aurora.kp.toFixed(1) : aurora.kp)}</b>` : `Kp <b>—</b>`;
     const local = (aurora.localProb != null) ? `local <b>${esc(aurora.localProb)}%</b>` : `local <b>—</b>`;
-    const max = (aurora.globalMax != null) ? `global max <b>${esc(aurora.globalMax)}%</b>` : ``;
-    live.push(`Aurora • ${kp} • ${local}${max ? " • " + max : ""}`);
+    const extras = [
+      aurora.speed != null ? `SW <b>${esc(Math.round(aurora.speed))}</b> km/s` : null,
+      aurora.bz != null ? `Bz <b>${esc(aurora.bz.toFixed(1))}</b> nT` : null
+    ].filter(Boolean).join(" • ");
+    live.push(`Aurora • ${kp} • ${local}${extras ? " • " + extras : ""}`);
   } else {
     live.push(`Aurora • <b>loading</b>`);
   }
 
-  // Aircraft
   if(aircraft){
     const n = aircraft.count ?? 0;
     const c = aircraft.closest;
-    const cTxt = c ? `${esc(c.kind || c.typeCode || "Plane")} • ${esc(c.callsign)} • ${c.dist != null ? c.dist.toFixed(1)+"mi" : "—"}` : "—";
+    const kind = c ? friendlyType(c.typeCode) : "—";
+    const cTxt = c ? `${esc(kind)} • ${esc(c.callsign)} • ${c.dist != null ? c.dist.toFixed(1)+"mi" : "—"}` : "—";
     live.push(`Aircraft • <b>${esc(n)}</b> in range • closest <b>${cTxt}</b>`);
+    if(aircraft.highestAltFt != null){
+      live.push(`Sky scan • highest altitude <b>${esc(Math.round(aircraft.highestAltFt).toLocaleString())}</b> ft`);
+    }
   } else {
     live.push(`Aircraft • <b>loading</b>`);
   }
 
-  // ISS
   if(iss){
     live.push(`ISS • <b>${esc(iss.over || "Locating…")}</b>`);
   } else {
     live.push(`ISS • <b>loading</b>`);
   }
 
-  // SpaceX
   if(spacex){
     live.push(`SpaceX • <b>${esc(spacex.name)}</b> • <b>${esc(spacex.displayTime || "—")}</b>`);
   } else {
@@ -767,7 +882,7 @@ function buildTicker(){
 function renderRight(){
   const blocks = [];
 
-  // ISS module (primary)
+  // ISS
   if(iss){
     const big = iss.over ? `Over: ${iss.over}` : "Locating…";
     const small = `Updated ${fmtTime(iss.ts)} • lat ${Number.isFinite(iss.lat) ? iss.lat.toFixed(2) : "—"} • lon ${Number.isFinite(iss.lon) ? iss.lon.toFixed(2) : "—"}`;
@@ -780,7 +895,7 @@ function renderRight(){
     });
   }
 
-  // SpaceX module
+  // SpaceX
   if(spacex){
     const tagClass = spacex.statusTag === "TBD" ? "warn" : "good";
     const big = esc(spacex.name || "Next launch");
@@ -795,14 +910,19 @@ function renderRight(){
     });
   }
 
-  // Aurora module
+  // Aurora (richer)
   if(aurora){
-    const kp = aurora.kp != null ? `Kp ${aurora.kp.toFixed ? aurora.kp.toFixed(1) : aurora.kp}` : "Kp —";
+    const kpTag = aurora.kp != null ? `KP ${aurora.kp.toFixed ? aurora.kp.toFixed(1) : aurora.kp}` : "KP —";
     const local = aurora.localProb != null ? `${aurora.localProb}%` : "—";
-    const max = aurora.globalMax != null ? `global max ${aurora.globalMax}%` : "global max —";
     const stamp = aurora.ts ? `Updated ${fmtTime(aurora.ts)}` : "Updated recently";
+    const extras = [
+      aurora.globalMax != null ? `global max ${aurora.globalMax}%` : null,
+      aurora.speed != null ? `SW ${Math.round(aurora.speed)} km/s` : null,
+      aurora.bz != null ? `Bz ${aurora.bz.toFixed(1)} nT` : null,
+      aurora.kpForecastMax != null ? `Kp fcst max ${aurora.kpForecastMax.toFixed(1)}` : null
+    ].filter(Boolean).join(" • ");
     blocks.push({
-      html: moduleHTML("Aurora Forecast", `<span class="tag good">${esc(kp)}</span>`, esc(local), esc(`${stamp} • ${max}`), [])
+      html: moduleHTML("Aurora Forecast", `<span class="tag good">${esc(kpTag)}</span>`, esc(local), esc(`${stamp}${extras ? " • " + extras : ""}`), [])
     });
   } else {
     blocks.push({
@@ -810,24 +930,43 @@ function renderRight(){
     });
   }
 
-  // Aircraft module
+  // Aircraft (type-first + airline mix + highest altitude)
   if(aircraft){
     const n = aircraft.count ?? 0;
     const c = aircraft.closest;
-    const big = `${n} aircraft`;
-    const small = c
-      ? `Closest: ${c.kind || c.typeCode || "Plane"} • ${c.callsign} • ${c.dist != null ? c.dist.toFixed(1)+"mi" : "—"}`
-      : "Closest: —";
+    const closestType = c ? friendlyType(c.typeCode) : "—";
+    const closestDist = c?.dist != null ? `${c.dist.toFixed(1)}mi` : "—";
+    const closestCs = c?.callsign || "—";
+
+    const highest = aircraft.highestAltFt != null
+      ? `${Math.round(aircraft.highestAltFt).toLocaleString()} ft`
+      : "—";
+
+    const topMix = (aircraft.topAirlines || []).map(x => `${x.name} ${x.cnt}`).join(" • ");
+    const small = `Closest: ${closestType} • ${closestCs} • ${closestDist} • Highest: ${highest}${topMix ? " • Top: " + topMix : ""}`;
+
     blocks.push({
-      html: moduleHTML("Aircraft Overhead", `<span class="tag good">${esc(CONFIG.aircraftRadiusNm)} nm</span>`, esc(big), esc(small), aircraft.list || [])
+      html: moduleHTML(
+        "Aircraft Overhead",
+        `<span class="tag good">RANGE ${esc(CONFIG.aircraftRadiusNm)} nm</span>`,
+        esc(`${n} aircraft`),
+        esc(small),
+        aircraft.list || []
+      )
     });
   } else {
     blocks.push({
-      html: moduleHTML("Aircraft Overhead", `<span class="tag warn">${esc(CONFIG.aircraftRadiusNm)} nm</span>`, "—", "Waiting on data…", [])
+      html: moduleHTML(
+        "Aircraft Overhead",
+        `<span class="tag warn">RANGE ${esc(CONFIG.aircraftRadiusNm)} nm</span>`,
+        "—",
+        "Waiting on data…",
+        []
+      )
     });
   }
 
-  // pick 3 modules per rotation
+  // rotate 3 at a time
   const pick = (arr, start) => [arr[start%arr.length], arr[(start+1)%arr.length], arr[(start+2)%arr.length]];
   const chosen = pick(blocks, phase);
 
@@ -851,7 +990,6 @@ refreshISS();
 refreshSpaceX();
 renderRight();
 
-// Reverse geocode ISS "over" once per minute (fast ISS position still updates separately)
 setInterval(refreshISSOver, CONFIG.refreshMs.geocode);
 
 setInterval(refreshApod,     CONFIG.refreshMs.apod);
@@ -861,8 +999,6 @@ setInterval(refreshISS,      CONFIG.refreshMs.iss);
 setInterval(refreshSpaceX,   CONFIG.refreshMs.spacex);
 
 setInterval(renderRight, 22 * 1000);
-
-// Kick geocode soon after ISS starts
 setTimeout(refreshISSOver, 2500);
 </script>
 </body>
