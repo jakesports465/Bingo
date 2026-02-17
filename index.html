@@ -1,87 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>USA Hockey Goal</title>
-<style>
-  body{
-    margin:0;
-    height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background: linear-gradient(to bottom, #0a1f44 0%, #ffffff 50%, #b22234 100%);
-    font-family: Arial, Helvetica, sans-serif;
-  }
-  button{
-    font-size:5rem;
-    padding:40px 80px;
-    border:none;
-    border-radius:20px;
-    cursor:pointer;
-    background:#b22234;
-    color:#fff;
-    font-weight:900;
-    letter-spacing:6px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.4);
-    transition:transform 0.1s ease, background-color 0.2s ease;
-  }
-  button:hover{ background:#e63946; transform:scale(1.05); }
-  button:active{ transform:scale(0.95); }
-  .note{
-    position:fixed;
-    bottom:14px;
-    left:0; right:0;
-    text-align:center;
-    font-size:14px;
-    color:#0a1f44;
-    opacity:0.8;
-    user-select:none;
-  }
-</style>
-</head>
-<body>
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Jake Baseball Screen</title>
+    <link>https://example.com</link>
+    <description>Auto-updating baseball command center cards</description>
+    <language>en-us</language>
+    <ttl>5</ttl>
 
-<button id="goalBtn">GOAL!</button>
-<div class="note">Plays freedom.mp3 • Volume boost enabled</div>
+    <item>
+      <title>Today’s Games</title>
+      <description><![CDATA[
+        <b>Top games</b><br>
+        1:10 PM — DET vs MIN<br>
+        4:05 PM — LAD vs SF<br>
+        7:10 PM — NYY vs BOS<br>
+        9:40 PM — SEA vs HOU<br>
+      ]]></description>
+      <pubDate>Tue, 17 Feb 2026 08:00:00 -0500</pubDate>
+      <guid>today-games-2026-02-17</guid>
+    </item>
 
-<script>
-  // ====== SETTINGS ======
-  const FILE = "freedom.mp3"; // must be in same folder
-  const BOOST = 2.0;          // 1.0 = normal, 1.5 = louder, 2.0 = much louder (may distort)
-  // ======================
+    <item>
+      <title>Tigers Spotlight</title>
+      <description><![CDATA[
+        <b>Last:</b> W 5-3 (10 inn)<br>
+        <b>Next:</b> 1:10 PM vs MIN<br>
+        <b>Note:</b> Skubal scheduled, bullpen fresh
+      ]]></description>
+      <pubDate>Tue, 17 Feb 2026 08:00:00 -0500</pubDate>
+      <guid>tigers-spotlight-2026-02-17</guid>
+    </item>
 
-  let audio, ctx, src, gain;
+    <item>
+      <title>Standings Snapshot</title>
+      <description><![CDATA[
+        <b>AL Central</b><br>
+        1) CLE 62-48<br>
+        2) MIN 60-50<br>
+        3) DET 58-52<br>
+        4) KC 53-57<br>
+        5) CWS 41-69<br><br>
+        <b>AL Wild Card</b><br>
+        DET: -1.5 GB (WC3)
+      ]]></description>
+      <pubDate>Tue, 17 Feb 2026 08:00:00 -0500</pubDate>
+      <guid>standings-2026-02-17</guid>
+    </item>
 
-  function initAudioOnce(){
-    if (ctx) return;
+    <item>
+      <title>Headlines</title>
+      <description><![CDATA[
+        • Tigers call up top infield prospect<br>
+        • MLB considers automated ball-strike challenge expansion<br>
+        • Deadline rumors: bullpen arms heating up<br>
+        • Injury update: key starter exits early<br>
+        • Power rankings: new #1 after sweep
+      ]]></description>
+      <pubDate>Tue, 17 Feb 2026 08:00:00 -0500</pubDate>
+      <guid>headlines-2026-02-17</guid>
+    </item>
 
-    audio = new Audio(FILE);
-    audio.preload = "auto";
-
-    ctx = new (window.AudioContext || window.webkitAudioContext)();
-    src = ctx.createMediaElementSource(audio);
-    gain = ctx.createGain();
-    gain.gain.value = BOOST;
-
-    src.connect(gain).connect(ctx.destination);
-  }
-
-  function playGoal(){
-    initAudioOnce();
-
-    // Some browsers require user gesture to start/resume audio context
-    if (ctx.state === "suspended") ctx.resume();
-
-    audio.currentTime = 0;
-    audio.play().catch(() => {
-      // If autoplay policy blocks it, user can click again
-    });
-  }
-
-  document.getElementById("goalBtn").addEventListener("click", playGoal);
-</script>
-
-</body>
-</html>
+  </channel>
+</rss>
