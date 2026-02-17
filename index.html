@@ -601,7 +601,8 @@ function setApodFallback(msgTop, msgSub){
 }
 async function refreshApod(){
   try{
-    const d = await getJson("https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY");
+    const d = await getJson("https://api.nasa.gov/planetary/apod?api_key=8hIeIebshtbWaaufqV1oSvuQlNUgN0LUjqqw8XU9");
+
     apod = d;
     $("apodTitle").textContent = d.title || "NASA APOD";
     $("apodTag").textContent = d.date || "today";
@@ -1054,3 +1055,4 @@ setTimeout(refreshISSOver, 2500);
 </script>
 </body>
 </html>
+
