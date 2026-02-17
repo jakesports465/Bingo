@@ -10,8 +10,6 @@
     --text:#eef2ff;
     --muted:#a7b0c2;
     --line: rgba(255,255,255,.10);
-    --panel: rgba(255,255,255,.06);
-    --panel2: rgba(0,0,0,.22);
     --shadow: 0 18px 46px rgba(0,0,0,.60);
     --r: 24px;
 
@@ -20,7 +18,6 @@
     --warn:#ffd37a;
     --bad:#ff6b86;
 
-    /* 32" @ ~10ft readability */
     --h1: 54px;
     --h2: 28px;
     --h3: 16px;
@@ -63,9 +60,7 @@
     gap:16px;
   }
 
-  .brand{
-    display:flex; flex-direction:column; gap:6px; min-width:0;
-  }
+  .brand{display:flex;flex-direction:column;gap:6px;min-width:0}
   .title{
     font-size: var(--h2);
     font-weight: 950;
@@ -145,7 +140,6 @@
     gap:14px;
   }
 
-  /* Left hero module */
   .hero{
     position:relative;
     flex:1;
@@ -166,7 +160,7 @@
   .heroOverlay{
     position:absolute; inset:0;
     background:
-      linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.70)),
+      linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.72)),
       radial-gradient(900px 420px at 20% 20%, rgba(107,181,255,.18), transparent 55%);
   }
   .heroText{
@@ -182,10 +176,11 @@
   }
   .heroMeta{
     display:flex;
-    gap:12px;
+    gap:10px;
     flex-wrap:wrap;
     color: var(--muted);
     font-size: 14px;
+    align-items:center;
   }
   .tag{
     display:inline-flex;
@@ -201,8 +196,10 @@
     text-transform: uppercase;
     color: var(--text);
   }
+  .tag.good{border-color: rgba(37,224,183,.35); background: rgba(37,224,183,.10); color:#cafff0}
+  .tag.warn{border-color: rgba(255,211,122,.35); background: rgba(255,211,122,.10); color:#fff1d1}
+  .tag.bad{border-color: rgba(255,107,134,.35); background: rgba(255,107,134,.10); color:#ffd4dd}
 
-  /* Right stack modules */
   .stack{display:flex; flex-direction:column; gap:12px; min-height:0;}
   .mini{
     border-radius: 20px;
@@ -212,6 +209,7 @@
     display:flex;
     flex-direction:column;
     gap:10px;
+    min-height: 0;
   }
   .miniTop{
     display:flex; align-items:center; justify-content:space-between; gap:10px;
@@ -233,6 +231,7 @@
     border:1px solid rgba(255,255,255,.12);
     background: rgba(255,255,255,.05);
     color: var(--text);
+    white-space:nowrap;
   }
   .bigLine{
     font-size: 30px;
@@ -249,14 +248,15 @@
   .list{
     display:flex; flex-direction:column; gap:8px;
     font-variant-numeric: tabular-nums;
+    overflow:hidden;
   }
   .li{
     display:flex; justify-content:space-between; gap:10px;
-    color: var(--text);
     font-size: 15px;
     font-weight: 900;
   }
   .li span:last-child{color:var(--muted); font-weight:950}
+  .li span:first-child{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width: 65%}
 
   footer{
     border-radius: var(--r);
@@ -291,7 +291,7 @@
     gap:40px;
     white-space:nowrap;
     padding-left: 18px;
-    animation: scroll 28s linear infinite;
+    animation: scroll 26s linear infinite;
     font-weight: 900;
     font-size: 18px;
   }
@@ -300,7 +300,6 @@
     0%{transform:translateX(0)}
     100%{transform:translateX(-50%)}
   }
-
   .fade{ animation: fadein .55s ease-out both; }
   @keyframes fadein{
     from{opacity:.0; transform:translateY(6px)}
@@ -308,12 +307,13 @@
   }
 </style>
 </head>
+
 <body>
 <div class="wrap">
   <header>
     <div class="brand">
       <div class="title" id="hdrTitle">Ambient Command Center</div>
-      <div class="subtitle" id="hdrSub">space • earth • weather • live systems • zero news</div>
+      <div class="subtitle" id="hdrSub">space • earth • weather • aurora • aircraft • zero news</div>
     </div>
     <div class="status">
       <div class="pill"><span class="dot" id="dot"></span><span id="net">Online</span></div>
@@ -327,7 +327,7 @@
     <section class="card">
       <div class="hd"><div class="h">NASA — Astronomy Picture of the Day</div><div class="tag" id="apodTag">loading</div></div>
       <div class="bd">
-        <div class="hero" id="hero">
+        <div class="hero">
           <img id="apodImg" alt="" src="" />
           <div class="heroOverlay"></div>
           <div class="heroText">
@@ -338,7 +338,7 @@
       </div>
     </section>
 
-    <!-- RIGHT: rotating live modules -->
+    <!-- RIGHT: modules -->
     <section class="card">
       <div class="hd"><div class="h" id="rightHd">Live Modules</div><div class="tag" id="rightTag">auto</div></div>
       <div class="bd">
@@ -360,27 +360,29 @@
 <script>
 /* ===== CONFIG ===== */
 const CONFIG = {
-  // Weather location (Grandville-ish). Change anytime.
+  // Grandville-ish. Change whenever.
   weather: { lat: 42.9098, lon: -85.7631, name: "Grandville" },
 
-  // Refresh intervals
+  // aircraft radius (nautical miles). 80–150 is a nice range.
+  aircraftRadiusNm: 120,
+
   refreshMs: {
-    apod: 60 * 60 * 1000,       // hourly
-    quakes: 2 * 60 * 1000,      // 2 min
-    iss: 20 * 1000,             // 20 sec
-    spacex: 5 * 60 * 1000,      // 5 min
-    weather: 10 * 60 * 1000     // 10 min
+    apod:    60 * 60 * 1000,     // hourly
+    weather: 10 * 60 * 1000,     // 10 min
+    aurora:  5 * 60 * 1000,      // 5 min
+    aircraft: 30 * 1000,         // 30 sec
+    iss:     10 * 1000,          // 10 sec
+    spacex:  5 * 60 * 1000       // 5 min
   },
 
-  // bottom ticker (no news, just live facts + status)
+  // base ticker: keep it tight, then we add live facts dynamically
   tickerBase: [
-    "Ambient mode • Space + Earth live feeds",
-    "APIs: NASA APOD • USGS • ISS • SpaceX • Open-Meteo",
-    "If something fails, it falls back cleanly (no ugly errors)"
+    "Ambient mode • live feeds only • no news",
+    "Aurora • Aircraft • ISS • SpaceX • Weather • APOD"
   ]
 };
 
-/* ===== small utils ===== */
+/* ===== utils ===== */
 const $ = (id)=>document.getElementById(id);
 function esc(s){ return String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));}
 function fmtTime(d){ return d.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"}); }
@@ -399,9 +401,7 @@ addEventListener("online", setOnline);
 addEventListener("offline", setOnline);
 setOnline();
 
-function setUpdated(){
-  $("upd").textContent = fmtTime(new Date());
-}
+function setUpdated(){ $("upd").textContent = fmtTime(new Date()); }
 
 async function getJson(url){
   const r = await fetch(url, { cache:"no-store" });
@@ -409,117 +409,28 @@ async function getJson(url){
   return await r.json();
 }
 
-/* ===== NASA APOD (uses DEMO_KEY) ===== */
-async function refreshApod(){
-  try{
-    const url = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY";
-    const apod = await getJson(url);
-
-    $("apodTitle").textContent = apod.title || "NASA APOD";
-    $("apodTag").textContent = apod.date || "today";
-
-    // If APOD is a video, use the thumbnail-ish behavior or just show placeholder
-    if(apod.media_type === "image" && apod.url){
-      $("apodImg").src = apod.url;
-    } else {
-      // fallback: simple gradient image
-      $("apodImg").src = "data:image/svg+xml," + encodeURIComponent(`
-        <svg xmlns='http://www.w3.org/2000/svg' width='1920' height='1080'>
-          <defs>
-            <linearGradient id='g' x1='0' x2='1'>
-              <stop stop-color='#0b1020' offset='0'/>
-              <stop stop-color='#081018' offset='1'/>
-            </linearGradient>
-          </defs>
-          <rect width='100%' height='100%' fill='url(#g)'/>
-          <text x='70' y='170' fill='white' font-size='64' font-family='Arial' font-weight='800'>NASA APOD is a video today</text>
-          <text x='70' y='235' fill='#a7b0c2' font-size='34' font-family='Arial'>Showing placeholder background</text>
-        </svg>
-      `);
-    }
-
-    const credit = apod.copyright ? `© ${apod.copyright}` : "NASA";
-    const expl = (apod.explanation || "").slice(0, 160).trim() + (apod.explanation && apod.explanation.length > 160 ? "…" : "");
-    $("apodMeta").innerHTML = `
-      <span class="tag">SPACE</span>
-      <span class="tag">${esc(credit)}</span>
-      <span class="tag">${esc(new Date().getFullYear())}</span>
-      <span style="margin-left:auto; color: var(--muted); font-weight:900;">${esc(expl)}</span>
-    `;
-
-    setUpdated();
-  } catch(e){
-    $("apodTitle").textContent = "NASA APOD (offline)";
-    $("apodTag").textContent = "retrying";
-  }
+function haversineMi(lat1, lon1, lat2, lon2){
+  const toRad = (x)=> x * Math.PI/180;
+  const R = 3958.8;
+  const dLat = toRad(lat2-lat1);
+  const dLon = toRad(lon2-lon1);
+  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
+  return 2 * R * Math.asin(Math.sqrt(a));
 }
 
-/* ===== USGS Earthquakes (past hour) ===== */
-let lastQuakes = [];
-async function refreshQuakes(){
-  try{
-    const q = await getJson("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson");
-    const feats = (q.features || []).slice(0, 6).map(f => ({
-      mag: f.properties?.mag,
-      place: f.properties?.place || "—",
-      time: f.properties?.time ? new Date(f.properties.time) : null
-    }));
-    lastQuakes = feats;
-  } catch(e){}
+function countdown(toDate){
+  if(!toDate) return "—";
+  const ms = toDate - new Date();
+  if(ms <= 0) return "now";
+  const s = Math.floor(ms/1000);
+  const d = Math.floor(s/86400);
+  const h = Math.floor((s%86400)/3600);
+  const m = Math.floor((s%3600)/60);
+  if(d>0) return `${d}d ${h}h ${m}m`;
+  if(h>0) return `${h}h ${m}m`;
+  return `${m}m`;
 }
 
-/* ===== ISS position ===== */
-let issPos = null;
-async function refreshIss(){
-  try{
-    const d = await getJson("http://api.open-notify.org/iss-now.json");
-    // open-notify is http; some players block mixed content if your page is https.
-    // If that happens, this module will just show "unavailable" cleanly.
-    issPos = {
-      lat: d.iss_position?.latitude,
-      lon: d.iss_position?.longitude,
-      ts: d.timestamp ? new Date(d.timestamp * 1000) : new Date()
-    };
-  } catch(e){
-    issPos = null;
-  }
-}
-
-/* ===== SpaceX next launch ===== */
-let nextLaunch = null;
-async function refreshSpaceX(){
-  try{
-    const d = await getJson("https://api.spacexdata.com/v5/launches/next");
-    nextLaunch = {
-      name: d.name || "Next launch",
-      date: d.date_utc ? new Date(d.date_utc) : null,
-      details: d.details || ""
-    };
-  } catch(e){
-    nextLaunch = null;
-  }
-}
-
-/* ===== Weather (Open-Meteo, no key) ===== */
-let wx = null;
-async function refreshWeather(){
-  try{
-    const {lat, lon} = CONFIG.weather;
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,wind_speed_10m&hourly=temperature_2m&forecast_days=1&timezone=auto`;
-    const d = await getJson(url);
-    const t = d.current?.temperature_2m;
-    const w = d.current?.wind_speed_10m;
-    const unitT = d.current_units?.temperature_2m || "°";
-    const unitW = d.current_units?.wind_speed_10m || "";
-    // simple "next 6 hours" trend
-    const hrs = d.hourly?.temperature_2m?.slice(0, 6) || [];
-    wx = { t, w, unitT, unitW, trend: hrs };
-  } catch(e){
-    wx = null;
-  }
-}
-
-/* ===== Render right-side modules ===== */
 function moduleHTML(title, status, big, small, listLines){
   return `
     <div class="miniTop">
@@ -536,46 +447,269 @@ function moduleHTML(title, status, big, small, listLines){
   `;
 }
 
-function countdown(toDate){
-  if(!toDate) return "—";
-  const ms = toDate - new Date();
-  if(ms <= 0) return "now";
-  const s = Math.floor(ms/1000);
-  const d = Math.floor(s/86400);
-  const h = Math.floor((s%86400)/3600);
-  const m = Math.floor((s%3600)/60);
-  if(d>0) return `${d}d ${h}h ${m}m`;
-  if(h>0) return `${h}h ${m}m`;
-  return `${m}m`;
+/* ===== Data state ===== */
+let apod = null;
+let wx = null;
+let aurora = null;       // { kp: number|null, localProb: number|null, globalMax: number|null, ts: Date|null }
+let aircraft = null;     // { count: number, closest: {...}, list: [...] }
+let iss = null;          // { lat, lon, alt_mi, vel_mph, ts }
+let spacex = null;       // { name, date, details }
+
+/* ===== NASA APOD (DEMO_KEY) ===== */
+async function refreshApod(){
+  try{
+    const d = await getJson("https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY");
+    apod = d;
+    $("apodTitle").textContent = d.title || "NASA APOD";
+    $("apodTag").textContent = d.date || "today";
+
+    if(d.media_type === "image" && d.url){
+      $("apodImg").src = d.url;
+    } else {
+      $("apodImg").src = "data:image/svg+xml," + encodeURIComponent(`
+        <svg xmlns='http://www.w3.org/2000/svg' width='1920' height='1080'>
+          <defs><linearGradient id='g' x1='0' x2='1'>
+            <stop stop-color='#0b1020' offset='0'/><stop stop-color='#081018' offset='1'/>
+          </linearGradient></defs>
+          <rect width='100%' height='100%' fill='url(#g)'/>
+          <text x='70' y='170' fill='white' font-size='64' font-family='Arial' font-weight='800'>NASA APOD is a video today</text>
+          <text x='70' y='235' fill='#a7b0c2' font-size='34' font-family='Arial'>Showing placeholder background</text>
+        </svg>
+      `);
+    }
+
+    const credit = d.copyright ? `© ${d.copyright}` : "NASA";
+    const expl = (d.explanation || "").slice(0, 150).trim() + ((d.explanation||"").length > 150 ? "…" : "");
+    $("apodMeta").innerHTML = `
+      <span class="tag">SPACE</span>
+      <span class="tag">${esc(credit)}</span>
+      <span class="tag">${esc(new Date().getFullYear())}</span>
+      <span style="margin-left:auto; color: var(--muted); font-weight:900;">${esc(expl)}</span>
+    `;
+
+    setUpdated();
+  } catch(e){
+    $("apodTitle").textContent = "NASA APOD (offline)";
+    $("apodTag").textContent = "retrying";
+  }
 }
 
+/* ===== Weather (Open-Meteo, Fahrenheit) ===== */
+async function refreshWeather(){
+  try{
+    const {lat, lon} = CONFIG.weather;
+    const url =
+      `https://api.open-meteo.com/v1/forecast` +
+      `?latitude=${lat}&longitude=${lon}` +
+      `&current=temperature_2m,wind_speed_10m` +
+      `&hourly=temperature_2m` +
+      `&forecast_days=1&timezone=auto` +
+      `&temperature_unit=fahrenheit&windspeed_unit=mph`;
+    const d = await getJson(url);
+
+    const t = d.current?.temperature_2m;
+    const w = d.current?.wind_speed_10m;
+    const unitT = d.current_units?.temperature_2m || "°F";
+    const unitW = d.current_units?.wind_speed_10m || "mph";
+    const hrs = d.hourly?.temperature_2m?.slice(0, 6) || [];
+    wx = { t, w, unitT, unitW, trend: hrs };
+  } catch(e){
+    wx = null;
+  }
+}
+
+/* ===== Aurora (NOAA SWPC OVATION + Kp) =====
+   OVATION grid: [lon, lat, intensity%]. We nearest-match to your location. :contentReference[oaicite:3]{index=3} */
+async function refreshAurora(){
+  try{
+    const ovationUrl = "https://services.swpc.noaa.gov/json/ovation_aurora_latest.json";
+    const kpUrl      = "https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json";
+
+    const [ov, kp] = await Promise.all([getJson(ovationUrl), getJson(kpUrl)]);
+
+    // KP json is typically an array of rows; we take last numeric Kp we can find.
+    let kpVal = null;
+    if(Array.isArray(kp)){
+      for(let i=kp.length-1; i>=0; i--){
+        const row = kp[i];
+        // row sometimes like [time_tag, kp, ...]
+        const cand = Array.isArray(row) ? row.find(x => typeof x === "number") : null;
+        if(typeof cand === "number"){ kpVal = cand; break; }
+      }
+    }
+
+    const {lat, lon} = CONFIG.weather;
+    let best = {dist: 1e9, val: null};
+    let maxVal = 0;
+    let ts = null;
+
+    if(Array.isArray(ov)){
+      // ov[0] has metadata sometimes; safe parse:
+      for(const entry of ov){
+        if(Array.isArray(entry) && entry.length >= 3){
+          const eLon = Number(entry[0]);
+          const eLat = Number(entry[1]);
+          const eVal = Number(entry[2]);
+          if(Number.isFinite(eVal)) maxVal = Math.max(maxVal, eVal);
+          if(Number.isFinite(eLat) && Number.isFinite(eLon) && Number.isFinite(eVal)){
+            const d = (eLat-lat)*(eLat-lat) + (eLon-lon)*(eLon-lon);
+            if(d < best.dist){ best = {dist:d, val:eVal}; }
+          }
+        } else if(entry && typeof entry === "object" && entry.Observation_Time){
+          ts = new Date(entry.Observation_Time);
+        }
+      }
+    }
+
+    aurora = {
+      kp: kpVal,
+      localProb: best.val != null ? Math.round(best.val) : null,
+      globalMax: maxVal ? Math.round(maxVal) : null,
+      ts: ts
+    };
+  } catch(e){
+    aurora = null;
+  }
+}
+
+/* ===== Aircraft overhead (airplanes.live) =====
+   Use HTTPS endpoint /v2/point/lat/lon/radius. :contentReference[oaicite:4]{index=4} */
+async function refreshAircraft(){
+  try{
+    const {lat, lon} = CONFIG.weather;
+    const r = CONFIG.aircraftRadiusNm;
+    const url = `https://api.airplanes.live/v2/point/${lat}/${lon}/${r}`;
+    const d = await getJson(url);
+
+    // The API returns a list of aircraft objects (varies), commonly in d.ac or directly array.
+    const list = Array.isArray(d) ? d : (Array.isArray(d?.ac) ? d.ac : (Array.isArray(d?.aircraft) ? d.aircraft : []));
+    const cleaned = list
+      .map(a => {
+        const alat = Number(a.lat ?? a.latitude);
+        const alon = Number(a.lon ?? a.longitude);
+        const dist = (Number.isFinite(alat) && Number.isFinite(alon)) ? haversineMi(lat, lon, alat, alon) : null;
+
+        // Common-ish fields:
+        const callsign = (a.flight ?? a.callsign ?? a.cs ?? "").toString().trim() || "UNKNOWN";
+        const type = (a.t ?? a.type ?? a.icao_type ?? "").toString().trim();
+        const reg = (a.r ?? a.reg ?? a.registration ?? "").toString().trim();
+        const alt = a.alt_baro ?? a.altitude ?? a.alt ?? null;
+        const gs  = a.gs ?? a.speed ?? null;
+
+        return {callsign, type, reg, alt, gs, dist};
+      })
+      .sort((x,y) => (x.dist ?? 1e9) - (y.dist ?? 1e9));
+
+    const closest = cleaned[0] || null;
+    const topList = cleaned.slice(0,5).map(x => ({
+      left: `${x.callsign}${x.type ? " • " + x.type : ""}`,
+      right: `${x.dist != null ? x.dist.toFixed(1) + "mi" : "—"}`
+    }));
+
+    aircraft = {
+      count: cleaned.length,
+      closest,
+      list: topList
+    };
+  } catch(e){
+    aircraft = null;
+  }
+}
+
+/* ===== ISS (FIXED: HTTPS wheretheiss.at) ===== :contentReference[oaicite:5]{index=5} */
+async function refreshISS(){
+  try{
+    const d = await getJson("https://api.wheretheiss.at/v1/satellites/25544");
+    // d gives latitude, longitude, altitude (km), velocity (km/h)
+    const lat = Number(d.latitude);
+    const lon = Number(d.longitude);
+    const altKm = Number(d.altitude);
+    const velKmh = Number(d.velocity);
+
+    const kmToMi = 0.621371;
+    iss = {
+      lat, lon,
+      alt_mi: Number.isFinite(altKm) ? (altKm * kmToMi) : null,
+      vel_mph: Number.isFinite(velKmh) ? (velKmh * kmToMi) : null,
+      ts: new Date()
+    };
+  } catch(e){
+    iss = null;
+  }
+}
+
+/* ===== SpaceX next launch ===== */
+async function refreshSpaceX(){
+  try{
+    const d = await getJson("https://api.spacexdata.com/v5/launches/next");
+    spacex = {
+      name: d.name || "Next launch",
+      date: d.date_utc ? new Date(d.date_utc) : null,
+      details: d.details || ""
+    };
+  } catch(e){
+    spacex = null;
+  }
+}
+
+/* ===== Render right modules + ticker ===== */
+let phase = 0;
+
 function buildTicker(){
-  const extras = [];
+  const live = [];
 
-  // add a couple live facts
-  if(nextLaunch?.date){
-    extras.push(`Next SpaceX launch in <b>${esc(countdown(nextLaunch.date))}</b>`);
-  }
+  // Weather
   if(wx?.t != null){
-    extras.push(`${esc(CONFIG.weather.name)} <b>${esc(Math.round(wx.t))}${esc(wx.unitT)}</b> wind <b>${esc(Math.round(wx.w||0))}${esc(wx.unitW)}</b>`);
-  }
-  if(lastQuakes?.length){
-    const top = lastQuakes[0];
-    if(top?.mag != null) extras.push(`Latest quake <b>M${esc(top.mag)}</b> • ${esc((top.place||"").slice(0,42))}`);
+    live.push(`${esc(CONFIG.weather.name)} <b>${esc(Math.round(wx.t))}${esc(wx.unitT)}</b> • wind <b>${esc(Math.round(wx.w||0))}${esc(wx.unitW)}</b>`);
+  } else {
+    live.push(`${esc(CONFIG.weather.name)} weather <b>loading</b>`);
   }
 
-  const lines = [...CONFIG.tickerBase, ...extras].filter(Boolean);
+  // Aurora
+  if(aurora){
+    const kp = (aurora.kp != null) ? `Kp <b>${esc(aurora.kp)}</b>` : `Kp <b>—</b>`;
+    const local = (aurora.localProb != null) ? `local <b>${esc(aurora.localProb)}%</b>` : `local <b>—</b>`;
+    const max = (aurora.globalMax != null) ? `global max <b>${esc(aurora.globalMax)}%</b>` : ``;
+    live.push(`Aurora • ${kp} • ${local}${max ? " • " + max : ""}`);
+  } else {
+    live.push(`Aurora • <b>loading</b>`);
+  }
+
+  // Aircraft
+  if(aircraft){
+    const n = aircraft.count ?? 0;
+    const c = aircraft.closest;
+    const cTxt = c ? `${esc(c.callsign)} • ${c.dist != null ? c.dist.toFixed(1)+"mi" : "—"}` : "—";
+    live.push(`Aircraft overhead • <b>${esc(n)}</b> in range • closest <b>${cTxt}</b>`);
+  } else {
+    live.push(`Aircraft overhead • <b>loading</b>`);
+  }
+
+  // ISS
+  if(iss){
+    live.push(`ISS • <b>${iss.alt_mi ? iss.alt_mi.toFixed(0) : "—"} mi</b> altitude • <b>${iss.vel_mph ? iss.vel_mph.toFixed(0) : "—"} mph</b>`);
+  } else {
+    live.push(`ISS • <b>loading</b>`);
+  }
+
+  // SpaceX
+  if(spacex?.date){
+    live.push(`SpaceX • <b>${esc(spacex.name)}</b> • T-minus <b>${esc(countdown(spacex.date))}</b>`);
+  } else if(spacex?.name){
+    live.push(`SpaceX • <b>${esc(spacex.name)}</b> • <b>time TBD</b>`);
+  } else {
+    live.push(`SpaceX • <b>loading</b>`);
+  }
+
+  const lines = [...CONFIG.tickerBase, ...live].filter(Boolean);
   const html = lines.map(x => `<span>${x} <b>•</b></span>`).join("");
   $("track").innerHTML = html + html;
 }
 
-/* ===== Rotate content blocks so you don’t have to pick one thing ===== */
-let phase = 0;
 function renderRight(){
-  // We always show 3 minis, but cycle which data goes where for variety.
   const blocks = [];
 
-  // 1) Weather
+  // WEATHER block
   if(wx){
     const t = `${Math.round(wx.t)}${wx.unitT}`;
     const wind = `${Math.round(wx.w||0)}${wx.unitW}`;
@@ -585,42 +719,52 @@ function renderRight(){
     blocks.push({ html: moduleHTML("Weather", CONFIG.weather.name, "—", "Waiting on data…", []) });
   }
 
-  // 2) Quakes
-  if(lastQuakes?.length){
-    const top = lastQuakes[0];
-    const big = top.mag != null ? `M${top.mag}` : "—";
-    const small = top.place || "—";
-    const list = lastQuakes.slice(1,5).map(q=>({
-      left: q.mag != null ? `M${q.mag}` : "—",
-      right: (q.place||"").slice(0,26)
-    }));
-    blocks.push({ html: moduleHTML("Earthquakes", "USGS • 1 hour", big, small, list) });
+  // AURORA block
+  if(aurora){
+    const kp = aurora.kp != null ? `Kp ${aurora.kp}` : "Kp —";
+    const local = aurora.localProb != null ? `${aurora.localProb}%` : "—";
+    const max = aurora.globalMax != null ? `global max ${aurora.globalMax}%` : "global max —";
+    const stamp = aurora.ts ? `Updated ${fmtTime(aurora.ts)}` : "Updated recently";
+    blocks.push({ html: moduleHTML("Aurora Forecast", kp, local, `${stamp} • ${max}`, []) });
   } else {
-    blocks.push({ html: moduleHTML("Earthquakes", "USGS • 1 hour", "—", "No recent data", []) });
+    blocks.push({ html: moduleHTML("Aurora Forecast", "NOAA", "—", "Waiting on data…", []) });
   }
 
-  // 3) ISS
-  if(issPos){
-    blocks.push({ html: moduleHTML("ISS Position", "Live", `${Number(issPos.lat).toFixed(2)}°, ${Number(issPos.lon).toFixed(2)}°`,
-      `Updated ${fmtTime(issPos.ts)}`, [
-        {left:"Latitude", right:String(issPos.lat)},
-        {left:"Longitude", right:String(issPos.lon)}
-      ]) });
+  // AIRCRAFT block
+  if(aircraft){
+    const n = aircraft.count ?? 0;
+    const c = aircraft.closest;
+    const big = `${n} aircraft`;
+    const small = c ? `Closest: ${c.callsign}${c.type ? " • "+c.type : ""} • ${c.dist != null ? c.dist.toFixed(1)+"mi" : "—"}` : "Closest: —";
+    blocks.push({ html: moduleHTML("Aircraft Overhead", `${CONFIG.aircraftRadiusNm} nm radius`, big, small, aircraft.list || []) });
   } else {
-    blocks.push({ html: moduleHTML("ISS Position", "Live", "—", "Unavailable (some players block http).", []) });
+    blocks.push({ html: moduleHTML("Aircraft Overhead", `${CONFIG.aircraftRadiusNm} nm radius`, "—", "Waiting on data…", []) });
   }
 
-  // 4) SpaceX
-  if(nextLaunch){
-    const big = nextLaunch.name || "Next Launch";
-    const small = nextLaunch.date ? `T-minus ${countdown(nextLaunch.date)}` : "—";
-    const detail = (nextLaunch.details||"").slice(0,72).trim();
-    blocks.push({ html: moduleHTML("SpaceX", "Next", big, detail ? `${small} • ${detail}…` : small, []) });
+  // ISS block
+  if(iss){
+    const big = `${iss.alt_mi ? iss.alt_mi.toFixed(0) : "—"} mi`;
+    const small = `Speed ${iss.vel_mph ? iss.vel_mph.toFixed(0) : "—"} mph • ${fmtTime(iss.ts)}`;
+    const list = [
+      {left:"Lat", right: Number.isFinite(iss.lat) ? iss.lat.toFixed(2) : "—"},
+      {left:"Lon", right: Number.isFinite(iss.lon) ? iss.lon.toFixed(2) : "—"}
+    ];
+    blocks.push({ html: moduleHTML("ISS Position", "LIVE", big, small, list) });
   } else {
-    blocks.push({ html: moduleHTML("SpaceX", "Next", "—", "Waiting on data…", []) });
+    blocks.push({ html: moduleHTML("ISS Position", "LIVE", "—", "Waiting on data…", []) });
   }
 
-  // pick 3 each phase
+  // SpaceX block
+  if(spacex){
+    const big = spacex.name || "Next launch";
+    const small = spacex.date ? `T-minus ${countdown(spacex.date)}` : "Time TBD";
+    const det = (spacex.details||"").slice(0, 90).trim();
+    blocks.push({ html: moduleHTML("SpaceX", "NEXT", big, det ? `${small} • ${det}…` : small, []) });
+  } else {
+    blocks.push({ html: moduleHTML("SpaceX", "NEXT", "—", "Waiting on data…", []) });
+  }
+
+  // Pick 3 modules each rotation for variety
   const pick = (arr, start) => [arr[start%arr.length], arr[(start+1)%arr.length], arr[(start+2)%arr.length]];
   const chosen = pick(blocks, phase);
 
@@ -630,24 +774,23 @@ function renderRight(){
 
   $("rightHd").textContent = ["Live Modules", "Live Systems", "Earth + Space"][phase % 3];
   $("rightTag").textContent = "auto";
-  phase++;
 
+  phase++;
   buildTicker();
   setUpdated();
 }
 
 /* ===== Start loops ===== */
-refreshApod(); refreshQuakes(); refreshIss(); refreshSpaceX(); refreshWeather();
+refreshApod(); refreshWeather(); refreshAurora(); refreshAircraft(); refreshISS(); refreshSpaceX();
 renderRight();
 
-// refresh timers
-setInterval(refreshApod,   CONFIG.refreshMs.apod);
-setInterval(refreshQuakes, CONFIG.refreshMs.quakes);
-setInterval(refreshIss,    CONFIG.refreshMs.iss);
-setInterval(refreshSpaceX, CONFIG.refreshMs.spacex);
-setInterval(refreshWeather,CONFIG.refreshMs.weather);
+setInterval(refreshApod,      CONFIG.refreshMs.apod);
+setInterval(refreshWeather,   CONFIG.refreshMs.weather);
+setInterval(refreshAurora,    CONFIG.refreshMs.aurora);
+setInterval(refreshAircraft,  CONFIG.refreshMs.aircraft);
+setInterval(refreshISS,       CONFIG.refreshMs.iss);
+setInterval(refreshSpaceX,    CONFIG.refreshMs.spacex);
 
-// rotate right panel view
 setInterval(renderRight, 22 * 1000);
 </script>
 </body>
