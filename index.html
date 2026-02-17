@@ -23,20 +23,21 @@
     --h2: 34px;
     --h3: 19px;
 
-    --big: 46px;
+    /* was 46, a hair too big for list-heavy modules */
+    --big: 42px;
 
     --small: 17px;
 
     --ticker: 28px;
 
     --cellTitle: 18px;
-    --cellSmall: 22px;
+    --cellSmall: 21px;
 
     --kvKey: 18px;
     --kvVal: 20px;
 
-    --listFont: 20px;
-    --listRight: 20px;
+    --listFont: 19px;
+    --listRight: 19px;
 
     --pillText: 16px;
     --tagText: 15px;
@@ -251,7 +252,7 @@
     gap:10px;
     min-height: 0;
     min-width:0;
-    overflow:hidden; /* key: keep everything clean inside */
+    overflow:hidden;
   }
 
   .miniTop{
@@ -287,7 +288,7 @@
     font-size: var(--big);
     font-weight: 1000;
     letter-spacing: .2px;
-    line-height: 1.05;
+    line-height: 1.08; /* a little more breathing room */
     font-variant-numeric: tabular-nums;
     white-space:nowrap;
     overflow:hidden;
@@ -296,7 +297,7 @@
   .smallLine{
     color: var(--muted);
     font-size: var(--cellSmall);
-    line-height: 1.2;
+    line-height: 1.22;
     font-variant-numeric: tabular-nums;
     overflow:hidden;
     text-overflow:ellipsis;
@@ -306,10 +307,11 @@
   .kv{
     display:grid;
     grid-template-columns: 1fr auto;
-    gap:8px 12px;
+    gap:10px 14px;
     align-items:center;
     font-variant-numeric: tabular-nums;
     min-width:0;
+    line-height: 1.25;
   }
   .kv .k{
     color: rgba(255,255,255,.70);
@@ -319,6 +321,7 @@
     text-overflow:ellipsis;
     white-space:nowrap;
     min-width:0;
+    padding: 2px 0;
   }
   .kv .v{
     font-weight: 1000;
@@ -326,6 +329,7 @@
     color: rgba(255,255,255,.88);
     white-space:nowrap;
     flex-shrink:0;
+    padding: 2px 0;
   }
 
   .list{
@@ -333,12 +337,14 @@
     font-variant-numeric: tabular-nums;
     overflow:hidden;
     min-width:0;
+    line-height: 1.22;
   }
   .li{
     display:flex; justify-content:space-between; gap:12px;
     font-size: var(--listFont);
     font-weight: 950;
     min-width:0;
+    line-height: 1.22;
   }
   .li span:last-child{
     color:rgba(255,255,255,.72);
@@ -347,12 +353,27 @@
     white-space:nowrap;
     flex-shrink:0;
   }
+
+  /* Default list behavior: clamp to 1 line for aircraft */
   .li span:first-child{
-    white-space:nowrap;
+    min-width:0;
     overflow:hidden;
     text-overflow:ellipsis;
-    min-width:0;
-    max-width: 72%;
+    white-space:nowrap;
+    max-width: 78%;
+  }
+
+  /* Earthquake list: allow up to 2 lines so it doesn't "cover" itself */
+  .li.wrap2 span:first-child{
+    white-space:normal;
+    display:-webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow:hidden;
+    max-width: 100%;
+  }
+  .li.wrap2 span:last-child{
+    display:none;
   }
 
   footer{
@@ -389,7 +410,7 @@
     gap:56px;
     white-space:nowrap;
     padding-left: 18px;
-    animation: scroll 38s linear infinite; /* slower */
+    animation: scroll 34s linear infinite; /* slightly faster than 38s */
     font-weight: 1000;
     font-size: var(--ticker);
   }
@@ -539,7 +560,7 @@ function moduleHTML(title, statusHTML, bigHTML, smallHTML, listLines, kvPairs){
     ` : ``}
     ${listLines && listLines.length ? `
       <div class="list">
-        ${listLines.map(x => `<div class="li"><span>${esc(x.left)}</span><span>${esc(x.right)}</span></div>`).join("")}
+        ${listLines.map(x => `<div class="li ${x.wrap2 ? "wrap2" : ""}"><span>${esc(x.left)}</span><span>${esc(x.right ?? "")}</span></div>`).join("")}
       </div>
     ` : ``}
   `;
@@ -549,7 +570,7 @@ function moduleHTML(title, statusHTML, bigHTML, smallHTML, listLines, kvPairs){
 let aurora = null;        // { kp, ts, bz, speed, kpForecastMax }
 let aircraft = null;      // { count, closest, list, topAirlines, highestPlane }
 let iss = null;           // { lat, lon, over, ts }
-let quakes = null;        // { count, maxMag, closestMi, closestPlace, items, ts }
+let quakes = null;        // { count, maxMag, closestMi, closestPlace, list, ts }
 let apod = null;
 
 /* ===== NASA APOD ===== */
@@ -740,7 +761,6 @@ async function refreshAircraft(){
 
     const closest = cleaned[0] || null;
 
-    // Highest plane record (store full plane info)
     let highestPlane = null;
     for(const x of cleaned){
       if(x.alt == null) continue;
@@ -749,7 +769,6 @@ async function refreshAircraft(){
       }
     }
 
-    // Top airline counts EXCLUDING General Aviation + Other
     const counts = {};
     for(const x of cleaned){
       if(!x.provider) continue;
@@ -762,19 +781,12 @@ async function refreshAircraft(){
       .slice(0,3)
       .map(([name,cnt]) => ({name, cnt}));
 
-    // Cell list still includes GA/Other (as you wanted)
     const topList = cleaned.slice(0,6).map(x => ({
       left: `${x.provider} • ${x.typeName}`,
       right: `${x.flight} • ${x.dist.toFixed(1)}mi`
     }));
 
-    aircraft = {
-      count: cleaned.length,
-      closest,
-      list: topList,
-      topAirlines,
-      highestPlane
-    };
+    aircraft = { count: cleaned.length, closest, list: topList, topAirlines, highestPlane };
   } catch(e){
     aircraft = null;
   }
@@ -818,7 +830,7 @@ async function refreshISSOver(){
   }
 }
 
-/* ===== Earthquakes (USGS last 1 hour) ===== */
+/* ===== Earthquakes ===== */
 async function refreshQuakes(){
   try{
     const d = await getJson("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson");
@@ -827,11 +839,9 @@ async function refreshQuakes(){
 
     let maxMag = null;
     let maxMagPlace = null;
-    let maxMagTime = null;
 
     let closestMi = null;
     let closestPlace = null;
-    let closestTime = null;
     let closestMag = null;
 
     const items = [];
@@ -842,23 +852,15 @@ async function refreshQuakes(){
       const timeMs = Number(f?.properties?.time);
       const when = Number.isFinite(timeMs) ? new Date(timeMs) : null;
 
-      // list items (cell)
       if(Number.isFinite(mag) && when){
-        items.push({
-          when,
-          mag,
-          place
-        });
+        items.push({ when, mag, place });
       }
 
-      // max mag
-      if(Number.isFinite(mag) && (!maxMag || mag > maxMag)){
+      if(Number.isFinite(mag) && (maxMag == null || mag > maxMag)){
         maxMag = mag;
         maxMagPlace = place;
-        maxMagTime = when;
       }
 
-      // closest
       const coords = f?.geometry?.coordinates;
       if(Array.isArray(coords) && coords.length >= 2){
         const qlon = Number(coords[0]);
@@ -868,28 +870,25 @@ async function refreshQuakes(){
           if(closestMi == null || dist < closestMi){
             closestMi = dist;
             closestPlace = place;
-            closestTime = when;
             closestMag = Number.isFinite(mag) ? mag : null;
           }
         }
       }
     }
 
-    // sort newest first for the cell, keep top 6
     items.sort((a,b)=>b.when - a.when);
     const list = items.slice(0,6).map(x => ({
       left: `${fmtTime(x.when)} • M${x.mag.toFixed(1)} • ${x.place}`,
-      right: ""
+      right: "",
+      wrap2: true
     }));
 
     quakes = {
       count: feats.length,
       maxMag,
       maxMagPlace,
-      maxMagTime,
       closestMi,
       closestPlace,
-      closestTime,
       closestMag,
       list,
       ts: new Date()
@@ -913,9 +912,7 @@ function buildTicker(){
     const bz = (aurora.bz != null) ? `Bz <b>${esc(aurora.bz.toFixed(1))}</b> nT` : `Bz <b>—</b>`;
     const fc = (aurora.kpForecastMax != null) ? `Kp fcst max <b>${esc(aurora.kpForecastMax.toFixed(1))}</b>` : `Kp fcst max <b>—</b>`;
     live.push(`Aurora • ${kp} • ${sw} • ${bz} • ${fc}`);
-  } else {
-    live.push(`Aurora • <b>loading</b>`);
-  }
+  } else live.push(`Aurora • <b>loading</b>`);
 
   if(aircraft){
     const n = aircraft.count ?? 0;
@@ -932,15 +929,10 @@ function buildTicker(){
 
     live.push(`Aircraft • <b>${esc(n)}</b> in range • <b>${cTxt}</b>${topMix ? " • Top: <b>"+esc(topMix)+"</b>" : ""}`);
     live.push(`Sky scan • highest plane <b>${esc(highest)}</b>`);
-  } else {
-    live.push(`Aircraft • <b>loading</b>`);
-  }
+  } else live.push(`Aircraft • <b>loading</b>`);
 
-  if(iss){
-    live.push(`ISS • <b>${esc(iss.over || "Locating…")}</b>`);
-  } else {
-    live.push(`ISS • <b>loading</b>`);
-  }
+  if(iss) live.push(`ISS • <b>${esc(iss.over || "Locating…")}</b>`);
+  else live.push(`ISS • <b>loading</b>`);
 
   if(quakes){
     const count = quakes.count ?? 0;
@@ -949,9 +941,7 @@ function buildTicker(){
       ? `${quakes.closestMi.toFixed(0)}mi • ${quakes.closestMag != null ? "M"+quakes.closestMag.toFixed(1) : "M—"} • ${quakes.closestPlace || "—"}`
       : "—";
     live.push(`Quakes • <b>${esc(count)}</b> last hour • largest <b>${esc(largest)}</b> • closest <b>${esc(closest)}</b>`);
-  } else {
-    live.push(`Quakes • <b>loading</b>`);
-  }
+  } else live.push(`Quakes • <b>loading</b>`);
 
   const lines = [...CONFIG.tickerBase, ...live].filter(Boolean);
   const html = lines.map(x => `<span>${x} <b>•</b></span>`).join("");
@@ -961,7 +951,6 @@ function buildTicker(){
 function renderRight(){
   const blocks = [];
 
-  // Aurora
   if(aurora){
     const kpTag = aurora.kp != null ? `KP ${aurora.kp.toFixed(1)}` : "KP —";
     const stamp = aurora.ts ? `Updated ${fmtTime(aurora.ts)}` : "Updated recently";
@@ -971,16 +960,11 @@ function renderRight(){
       {k:"Bz", v: aurora.bz != null ? `${aurora.bz.toFixed(1)} nT` : "—"},
       {k:"Kp forecast max", v: aurora.kpForecastMax != null ? aurora.kpForecastMax.toFixed(1) : "—"}
     ];
-    blocks.push({
-      html: moduleHTML("Aurora Forecast", `<span class="tag good">${esc(kpTag)}</span>`, "", stamp, [], kv)
-    });
+    blocks.push({ html: moduleHTML("Aurora Forecast", `<span class="tag good">${esc(kpTag)}</span>`, "", stamp, [], kv) });
   } else {
-    blocks.push({
-      html: moduleHTML("Aurora Forecast", `<span class="tag warn">NOAA</span>`, "", "Waiting on data…", [], [])
-    });
+    blocks.push({ html: moduleHTML("Aurora Forecast", `<span class="tag warn">NOAA</span>`, "", "Waiting on data…", [], []) });
   }
 
-  // Aircraft (cell list only)
   if(aircraft){
     const n = aircraft.count ?? 0;
     blocks.push({
@@ -994,25 +978,17 @@ function renderRight(){
       )
     });
   } else {
-    blocks.push({
-      html: moduleHTML("Aircraft Overhead", `<span class="tag warn">RANGE ${esc(CONFIG.aircraftRadiusNm)} NM</span>`, "Loading…", "", [], [])
-    });
+    blocks.push({ html: moduleHTML("Aircraft Overhead", `<span class="tag warn">RANGE ${esc(CONFIG.aircraftRadiusNm)} NM</span>`, "Loading…", "", [], []) });
   }
 
-  // ISS
   if(iss){
     const big = iss.over ? `Over: ${iss.over}` : "Locating…";
     const small = `Updated ${fmtTime(iss.ts)} • lat ${Number.isFinite(iss.lat) ? iss.lat.toFixed(2) : "—"} • lon ${Number.isFinite(iss.lon) ? iss.lon.toFixed(2) : "—"}`;
-    blocks.push({
-      html: moduleHTML("ISS Position", `<span class="tag good">LIVE</span>`, esc(big), esc(small), [], [])
-    });
+    blocks.push({ html: moduleHTML("ISS Position", `<span class="tag good">LIVE</span>`, esc(big), esc(small), [], []) });
   } else {
-    blocks.push({
-      html: moduleHTML("ISS Position", `<span class="tag warn">LIVE</span>`, "Loading…", "Waiting on data…", [], [])
-    });
+    blocks.push({ html: moduleHTML("ISS Position", `<span class="tag warn">LIVE</span>`, "Loading…", "Waiting on data…", [], []) });
   }
 
-  // Earthquakes: list of when/how big/where
   if(quakes){
     const count = quakes.count ?? 0;
     blocks.push({
@@ -1026,12 +1002,9 @@ function renderRight(){
       )
     });
   } else {
-    blocks.push({
-      html: moduleHTML("Earthquakes", `<span class="tag warn">USGS 1 HR</span>`, "Loading…", "Waiting on data…", [], [])
-    });
+    blocks.push({ html: moduleHTML("Earthquakes", `<span class="tag warn">USGS 1 HR</span>`, "Loading…", "Waiting on data…", [], []) });
   }
 
-  // rotate 3 modules at a time
   const pick = (arr, start) => [arr[start%arr.length], arr[(start+1)%arr.length], arr[(start+2)%arr.length]];
   const chosen = pick(blocks, phase);
 
