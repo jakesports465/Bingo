@@ -28,12 +28,12 @@
 
     /* Right module typography */
     --cellTitle: 20px;
-    --cellSmall: 22px;
-    --kvKey: 20px;
-    --kvVal: 22px;
+    --cellSmall: 20px;   /* slightly smaller to prevent overlap */
+    --kvKey: 18px;
+    --kvVal: 20px;
 
-    --listFont: 21px;    /* rows in lists */
-    --listLineH: 1.22;
+    --listFont: 19px;
+    --listLineH: 1.18;
 
     /* Bubbles bigger */
     --tagText: 16px;
@@ -45,7 +45,7 @@
 
     /* ticker */
     --ticker: 28px;
-    --tickerSpeed: 42s;  /* slower */
+    --tickerSpeed: 34s;  /* medium speed */
   }
 
   *{box-sizing:border-box}
@@ -174,7 +174,7 @@
     min-width:0;
   }
 
-  /* APOD */
+  /* Left hero (APOD + Nature rotation) */
   .hero{
     position:relative;
     flex:1;
@@ -185,18 +185,23 @@
     overflow:hidden;
   }
   .hero img{
+    position:absolute;
+    inset:0;
     width:100%;
     height:100%;
     object-fit:cover;
     filter: saturate(1.05) contrast(1.05);
-    opacity:.90;
+    opacity:.92;
     transform: scale(1.02);
+    transition: opacity .85s ease;
   }
+  .hero img.hidden{ opacity:0; pointer-events:none; }
   .heroOverlay{
     position:absolute; inset:0;
     background:
       linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.72)),
       radial-gradient(900px 420px at 20% 20%, rgba(107,181,255,.18), transparent 55%);
+    pointer-events:none;
   }
   .heroText{
     position:absolute;
@@ -244,7 +249,7 @@
   .tag.warn{border-color: rgba(255,211,122,.40); background: rgba(255,211,122,.12); color:#fff1d1}
   .tag.bad{border-color: rgba(255,107,134,.40); background: rgba(255,107,134,.12); color:#ffd4dd}
 
-  /* Right column shows ONLY 2 modules (bigger cards so everything fits) */
+  /* Right column: 2 modules only, no scrollbars */
   .stack{
     display:grid;
     grid-template-rows: 1fr 1fr;
@@ -262,7 +267,7 @@
     gap:12px;
     min-height:0;
     min-width:0;
-    overflow:hidden; /* NO scrollbars ever */
+    overflow:hidden;
   }
 
   .miniTop{
@@ -307,7 +312,7 @@
   .smallLine{
     color: var(--muted);
     font-size: var(--cellSmall);
-    line-height: 1.22;
+    line-height: 1.18;
     font-variant-numeric: tabular-nums;
     overflow:hidden;
     text-overflow:ellipsis;
@@ -317,11 +322,11 @@
   .kv{
     display:grid;
     grid-template-columns: 1fr auto;
-    gap:10px 14px;
+    gap:8px 14px;
     align-items:center;
     font-variant-numeric: tabular-nums;
     min-width:0;
-    line-height: 1.25;
+    line-height: 1.18;
   }
   .kv .k{
     color: rgba(255,255,255,.70);
@@ -339,8 +344,9 @@
     white-space:nowrap;
     flex-shrink:0;
   }
+  .kv .v.pos{ color: rgba(37,224,183,.92); }
+  .kv .v.neg{ color: rgba(255,107,134,.92); }
 
-  /* Lists: forced to FIT (no scroll). We clamp lines and limit item count in JS */
   .list{
     display:flex;
     flex-direction:column;
@@ -349,8 +355,8 @@
     min-width:0;
     font-variant-numeric: tabular-nums;
     line-height: var(--listLineH);
+    flex:1;
   }
-
   .li{
     display:flex;
     justify-content:space-between;
@@ -374,10 +380,8 @@
     flex-shrink:0;
   }
 
-  /* Earthquake list rows: allow 2 lines max so nothing overlaps */
-  .li.wrap2{
-    display:block;
-  }
+  /* Quake rows: allow 2 lines */
+  .li.wrap2{ display:block; }
   .li.wrap2 span:first-child{
     display:-webkit-box;
     -webkit-line-clamp: 2;
@@ -426,6 +430,9 @@
     font-size: var(--ticker);
   }
   .track span b{color:rgba(255,255,255,.72)}
+  .track .pos{ color: rgba(37,224,183,.92); }
+  .track .neg{ color: rgba(255,107,134,.92); }
+
   @keyframes scroll{
     0%{transform:translateX(0)}
     100%{transform:translateX(-50%)}
@@ -443,7 +450,7 @@
   <header>
     <div class="brand">
       <div class="title">Ambient Command Center</div>
-      <div class="subtitle">space • earth • aurora • aircraft • iss • earthquakes • zero news</div>
+      <div class="subtitle">space • earth • aurora • aircraft • iss • earthquakes • finance • zero news</div>
     </div>
     <div class="status">
       <div class="pill"><span class="dot" id="dot"></span><span id="net">Online</span></div>
@@ -455,16 +462,17 @@
   <main>
     <section class="card">
       <div class="hd">
-        <div class="h">NASA — Astronomy Picture of the Day</div>
-        <div class="tag" id="apodTag">loading</div>
+        <div class="h" id="leftHd">NASA — Astronomy Picture of the Day</div>
+        <div class="tag" id="leftTag">loading</div>
       </div>
       <div class="bd">
         <div class="hero">
-          <img id="apodImg" alt="" src="" referrerpolicy="no-referrer" />
+          <img id="imgA" alt="" src="" referrerpolicy="no-referrer" />
+          <img id="imgB" alt="" src="" class="hidden" referrerpolicy="no-referrer" />
           <div class="heroOverlay"></div>
           <div class="heroText">
-            <div class="heroTitle" id="apodTitle">Loading…</div>
-            <div class="heroMeta" id="apodMeta"></div>
+            <div class="heroTitle" id="leftTitle">Loading…</div>
+            <div class="heroMeta" id="leftMeta"></div>
           </div>
         </div>
       </div>
@@ -492,35 +500,48 @@
 const CONFIG = {
   home: { lat: 42.9098, lon: -85.7631, name: "Grandville" },
   aircraftRadiusNm: 120,
+  apodKey: "8hIeIebshtbWaaufqV1oSvuQlNUgN0LUjqqw8XU9",
 
   refreshMs: {
     apod:     60 * 60 * 1000,
+    nature:   6  * 60 * 60 * 1000,   // refresh a few times/day, but it's daily content
     aurora:   5  * 60 * 1000,
     aircraft: 30 * 1000,
     iss:      12 * 1000,
+    geocode:  10 * 60 * 1000,        // slower to avoid rate-limit
     quakes:   60 * 1000,
-    geocode:  60 * 1000
+    finance:  90 * 1000
   },
 
   tickerBase: [
     "Ambient mode • live feeds only • no news",
-    "APOD • Aurora • Aircraft • ISS • Quakes"
+    "APOD • Nature • Aurora • Aircraft • ISS • Quakes • Finance"
   ],
 
-  /* hard caps so NOTHING can overflow */
   listCaps: {
-    aircraft: 6,     // list rows shown
-    quakes: 5        // quake rows shown (wrap2, 2-line clamp)
-  }
+    aircraft: 6,
+    quakes: 5
+  },
+
+  finance: {
+    // Stooq symbols (best effort / no key)
+    // If metals don't show, we can swap these quickly.
+    symbols: {
+      VOO: "voo.us",
+      QQQ: "qqq.us",
+      GOLD: ["xauusd", "xauusd.fx", "gc.f"],     // try in order
+      SILVER: ["xagusd", "xagusd.fx", "si.f"]
+    }
+  },
+
+  heroRotateMs: 30 * 1000
 };
 
 /* ===== utils ===== */
 const $ = (id)=>document.getElementById(id);
 function esc(s){ return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));}
 function fmtTime(d){ return d.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"}); }
-function fmtClock(d){
-  return d.toLocaleDateString([], {weekday:"short", month:"short", day:"numeric"}) + " • " + fmtTime(d);
-}
+function fmtClock(d){ return d.toLocaleDateString([], {weekday:"short", month:"short", day:"numeric"}) + " • " + fmtTime(d); }
 function setClock(){ $("clock").textContent = fmtClock(new Date()); }
 setInterval(setClock, 1000); setClock();
 
@@ -535,6 +556,11 @@ setOnline();
 
 function setUpdated(){ $("upd").textContent = fmtTime(new Date()); }
 
+async function getText(url){
+  const r = await fetch(url, { cache:"no-store" });
+  if(!r.ok) throw new Error("fetch failed");
+  return await r.text();
+}
 async function getJson(url){
   const r = await fetch(url, { cache:"no-store" });
   if(!r.ok) throw new Error("fetch failed");
@@ -557,6 +583,7 @@ function lastRow(arr){
   }
   return null;
 }
+function clamp(n, lo, hi){ return Math.max(lo, Math.min(hi, n)); }
 
 function moduleHTML(title, statusHTML, bigHTML, smallHTML, listLines, kvPairs){
   return `
@@ -568,7 +595,7 @@ function moduleHTML(title, statusHTML, bigHTML, smallHTML, listLines, kvPairs){
     ${smallHTML ? `<div class="smallLine">${smallHTML}</div>` : ``}
     ${Array.isArray(kvPairs) && kvPairs.length ? `
       <div class="kv">
-        ${kvPairs.map(p => `<div class="k">${esc(p.k)}</div><div class="v">${esc(p.v)}</div>`).join("")}
+        ${kvPairs.map(p => `<div class="k">${esc(p.k)}</div><div class="v ${p.cls||""}">${esc(p.v)}</div>`).join("")}
       </div>
     ` : ``}
     ${listLines && listLines.length ? `
@@ -579,16 +606,23 @@ function moduleHTML(title, statusHTML, bigHTML, smallHTML, listLines, kvPairs){
   `;
 }
 
-/* ===== data state ===== */
+/* ===== state ===== */
+let apod = null;
+let nature = null;        // { title, url, credit, date }
+let heroMode = 0;         // 0=APOD, 1=Nature
+
 let aurora = null;        // { kp, ts, bz, speed, kpForecastMax }
-let aircraft = null;      // { count, closest, list, topAirlines, highestPlane }
+let aircraft = null;      // { count, list, closest, topAirlines, highestPlane }
 let iss = null;           // { lat, lon, over, ts }
 let quakes = null;        // { count, maxMag, maxMagPlace, closestMi, closestPlace, closestMag, list, ts }
-let apod = null;
+let finance = {
+  VOO: null, QQQ: null, GOLD: null, SILVER: null,
+  ts: null
+};
 
-/* ===== NASA APOD ===== */
-function setApodFallback(msgTop, msgSub){
-  $("apodImg").src = "data:image/svg+xml," + encodeURIComponent(`
+/* ===== Left hero helpers ===== */
+function setHeroFallback(msgTop, msgSub){
+  const svg = "data:image/svg+xml," + encodeURIComponent(`
     <svg xmlns='http://www.w3.org/2000/svg' width='1920' height='1080'>
       <defs><linearGradient id='g' x1='0' x2='1'>
         <stop stop-color='#0b1020' offset='0'/><stop stop-color='#081018' offset='1'/>
@@ -598,38 +632,118 @@ function setApodFallback(msgTop, msgSub){
       <text x='70' y='240' fill='#a7b0c2' font-size='34' font-family='Arial'>${msgSub}</text>
     </svg>
   `);
+  $("imgA").src = svg;
+  $("imgB").src = svg;
 }
+
+/* ===== APOD ===== */
 async function refreshApod(){
   try{
-    const d = await getJson("https://api.nasa.gov/planetary/apod?api_key=8hIeIebshtbWaaufqV1oSvuQlNUgN0LUjqqw8XU9");
-
+    const d = await getJson(`https://api.nasa.gov/planetary/apod?api_key=${CONFIG.apodKey}`);
     apod = d;
-    $("apodTitle").textContent = d.title || "NASA APOD";
-    $("apodTag").textContent = d.date || "today";
 
-    const img = $("apodImg");
-    img.onerror = () => setApodFallback("NASA APOD image blocked", "Using a local fallback background");
-
-    if(d.media_type === "image" && (d.hdurl || d.url)){
-      img.src = d.hdurl || d.url;
-    } else {
-      setApodFallback("NASA APOD is a video today", "Showing placeholder background");
+    // Preload image to avoid flashing "offline"
+    const url = (d.media_type === "image") ? (d.hdurl || d.url) : null;
+    if(url){
+      const img = new Image();
+      img.referrerPolicy = "no-referrer";
+      img.onload = ()=>{ /* nothing */ };
+      img.onerror = ()=>{ /* nothing */ };
+      img.src = url;
     }
 
-    const credit = d.copyright ? `© ${d.copyright}` : "NASA";
-    const explRaw = (d.explanation || "");
+    setUpdated();
+  } catch(e){
+    apod = null;
+  }
+}
+
+/* ===== Nature Picture of the Day (Wikimedia Featured feed) ===== */
+async function refreshNature(){
+  try{
+    const now = new Date();
+    const y = now.getUTCFullYear();
+    const m = String(now.getUTCMonth()+1).padStart(2,"0");
+    const d = String(now.getUTCDate()).padStart(2,"0");
+
+    // Wikimedia Featured feed (no key)
+    const feed = await getJson(`https://commons.wikimedia.org/api/rest_v1/feed/featured/${y}/${m}/${d}`);
+
+    // Prefer "image" section. If missing, try "mostread" thumbnail as fallback.
+    let title = "Wikimedia Featured";
+    let url = null;
+    let credit = "Wikimedia Commons";
+
+    const img = feed?.image?.image;
+    if(img?.source){
+      url = img.source;
+      title = feed?.image?.title || "Nature Picture of the Day";
+      const artist = feed?.image?.artist || "";
+      if(artist) credit = artist.replace(/<[^>]*>/g,"").trim() || credit;
+    } else {
+      const thumb = feed?.mostread?.articles?.[0]?.thumbnail?.source;
+      if(thumb){
+        url = thumb;
+        title = "Nature Highlight";
+      }
+    }
+
+    nature = { title, url, credit, date: `${y}-${m}-${d}` };
+    setUpdated();
+  } catch(e){
+    nature = null;
+  }
+}
+
+/* ===== Render hero (APOD <-> Nature) ===== */
+function renderHero(){
+  const imgA = $("imgA");
+  const imgB = $("imgB");
+
+  const isNature = (heroMode === 1);
+  const src = isNature ? (nature?.url || "") : ((apod?.media_type==="image" ? (apod?.hdurl || apod?.url) : "") || "");
+
+  // choose which actual img element we’re showing
+  const showEl = isNature ? imgB : imgA;
+  const hideEl = isNature ? imgA : imgB;
+
+  if(src){
+    showEl.onerror = ()=> setHeroFallback("Image blocked", "Using a local fallback background");
+    showEl.src = src;
+  } else {
+    setHeroFallback(isNature ? "Nature POTD unavailable" : "NASA APOD unavailable", "Retrying automatically");
+  }
+
+  hideEl.classList.add("hidden");
+  showEl.classList.remove("hidden");
+
+  // Header + meta
+  if(isNature){
+    $("leftHd").textContent = "Nature — Picture of the Day";
+    $("leftTag").textContent = nature?.date || "loading";
+    $("leftTitle").textContent = nature?.title || "Nature Picture of the Day";
+    $("leftMeta").innerHTML = `
+      <span class="tag">NATURE</span>
+      <span class="tag">${esc(nature?.credit || "Wikimedia Commons")}</span>
+      <span class="tag">${esc(new Date().getFullYear())}</span>
+      <span style="margin-left:auto; color: var(--muted); font-weight:950;">Wikimedia featured feed</span>
+    `;
+  } else {
+    $("leftHd").textContent = "NASA — Astronomy Picture of the Day";
+    $("leftTag").textContent = apod?.date || "loading";
+    $("leftTitle").textContent = apod?.title || "NASA APOD";
+
+    const credit = apod?.copyright ? `© ${apod.copyright}` : "NASA";
+    const explRaw = (apod?.explanation || "");
     const expl = explRaw.slice(0, 140).trim() + (explRaw.length > 140 ? "…" : "");
-    $("apodMeta").innerHTML = `
+    const isVideo = apod && apod.media_type !== "image";
+
+    $("leftMeta").innerHTML = `
       <span class="tag">SPACE</span>
       <span class="tag">${esc(credit)}</span>
       <span class="tag">${esc(new Date().getFullYear())}</span>
-      <span style="margin-left:auto; color: var(--muted); font-weight:950;">${esc(expl)}</span>
+      <span style="margin-left:auto; color: var(--muted); font-weight:950;">${isVideo ? "APOD is video today" : esc(expl || "NASA APOD")}</span>
     `;
-    setUpdated();
-  } catch(e){
-    $("apodTitle").textContent = "NASA APOD (offline)";
-    $("apodTag").textContent = "retrying";
-    setApodFallback("NASA APOD offline", "Retrying automatically");
   }
 }
 
@@ -738,7 +852,6 @@ function providerLabel(cs){
   if(/^N[0-9A-Z]+$/i.test(cs)) return "General Aviation";
   return "Other";
 }
-
 async function refreshAircraft(){
   try{
     const {lat, lon} = CONFIG.home;
@@ -801,7 +914,7 @@ async function refreshAircraft(){
   }
 }
 
-/* ===== ISS + reverse geocode ===== */
+/* ===== ISS + safer reverse geocode ===== */
 async function refreshISS(){
   try{
     const d = await getJson("https://api.wheretheiss.at/v1/satellites/25544");
@@ -815,9 +928,23 @@ async function refreshISS(){
     iss = null;
   }
 }
+
+/* We do reverse-geocode less often + only when it moves enough */
+let lastGeo = { lat: null, lon: null, ts: 0, failCount: 0 };
+
 async function refreshISSOver(){
   if(!iss || !Number.isFinite(iss.lat) || !Number.isFinite(iss.lon)) return;
+
+  const now = Date.now();
+  const moved =
+    lastGeo.lat == null ? true :
+    (Math.abs(iss.lat - lastGeo.lat) + Math.abs(iss.lon - lastGeo.lon)) > 3.0; // ~ big move
+
+  const minInterval = CONFIG.refreshMs.geocode * Math.pow(2, clamp(lastGeo.failCount, 0, 4)); // backoff up to 16x
+  if(!moved && (now - lastGeo.ts) < minInterval) return;
+
   try{
+    // Primary: BigDataCloud (simple)
     const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${iss.lat}&longitude=${iss.lon}&localityLanguage=en`;
     const g = await getJson(url);
 
@@ -834,8 +961,12 @@ async function refreshISSOver(){
     else over = "Open ocean / remote";
 
     iss.over = over;
+
+    lastGeo = { lat: iss.lat, lon: iss.lon, ts: now, failCount: 0 };
   } catch(e){
-    iss.over = "Unknown";
+    // Don't hard-fail the UI: keep last known "over"
+    lastGeo = { lat: iss.lat, lon: iss.lon, ts: now, failCount: (lastGeo.failCount||0)+1 };
+    if(!iss.over || iss.over === "Locating…") iss.over = "Open ocean / remote";
   }
 }
 
@@ -854,16 +985,13 @@ async function refreshQuakes(){
     let closestMag = null;
 
     const items = [];
-
     for(const f of feats){
       const mag = Number(f?.properties?.mag);
       const place = String(f?.properties?.place || "").trim() || "Unknown location";
       const timeMs = Number(f?.properties?.time);
       const when = Number.isFinite(timeMs) ? new Date(timeMs) : null;
 
-      if(Number.isFinite(mag) && when){
-        items.push({ when, mag, place });
-      }
+      if(Number.isFinite(mag) && when) items.push({ when, mag, place });
 
       if(Number.isFinite(mag) && (maxMag == null || mag > maxMag)){
         maxMag = mag;
@@ -886,7 +1014,6 @@ async function refreshQuakes(){
     }
 
     items.sort((a,b)=>b.when - a.when);
-
     const list = items.slice(0, CONFIG.listCaps.quakes).map(x => ({
       left: `${fmtTime(x.when)} • M${x.mag.toFixed(1)} • ${x.place}`,
       right: "",
@@ -908,6 +1035,80 @@ async function refreshQuakes(){
   }
 }
 
+/* ===== Finance (no key) via Stooq daily series ===== */
+function parseCSV(csv){
+  // Simple CSV (no quoted commas expected)
+  const lines = csv.trim().split(/\r?\n/).filter(Boolean);
+  if(lines.length < 3) return null;
+  const header = lines[0].split(",");
+  const rows = lines.slice(1).map(l => l.split(","));
+  return { header, rows };
+}
+
+async function fetchStooqLast2(symbol){
+  // Daily history CSV
+  const url = `https://stooq.com/q/d/l/?s=${encodeURIComponent(symbol)}&i=d`;
+  const txt = await getText(url);
+  const parsed = parseCSV(txt);
+  if(!parsed) return null;
+
+  // last 2 rows with valid Close
+  const closeIdx = parsed.header.findIndex(h => h.toLowerCase() === "close");
+  const dateIdx  = parsed.header.findIndex(h => h.toLowerCase() === "date");
+  if(closeIdx < 0) return null;
+
+  const clean = parsed.rows
+    .map(r => ({
+      date: r[dateIdx] || "",
+      close: Number(r[closeIdx])
+    }))
+    .filter(x => Number.isFinite(x.close));
+
+  if(clean.length < 2) return null;
+  const last = clean[clean.length - 1];
+  const prev = clean[clean.length - 2];
+
+  const chg = last.close - prev.close;
+  const pct = (prev.close !== 0) ? (chg / prev.close) * 100 : null;
+
+  return { price: last.close, chg, pct, date: last.date };
+}
+
+async function refreshFinance(){
+  try{
+    const out = { ...finance };
+    const ts = new Date();
+
+    // ETFs
+    const voo = await fetchStooqLast2(CONFIG.finance.symbols.VOO);
+    const qqq = await fetchStooqLast2(CONFIG.finance.symbols.QQQ);
+    if(voo) out.VOO = voo;
+    if(qqq) out.QQQ = qqq;
+
+    // Metals: try symbol list until one works
+    async function tryMany(symList){
+      for(const s of symList){
+        try{
+          const r = await fetchStooqLast2(s);
+          if(r) return r;
+        }catch(e){}
+      }
+      return null;
+    }
+
+    const gold = await tryMany(CONFIG.finance.symbols.GOLD);
+    const silv = await tryMany(CONFIG.finance.symbols.SILVER);
+    if(gold) out.GOLD = gold;
+    if(silv) out.SILVER = silv;
+
+    out.ts = ts;
+    finance = out;
+    setUpdated();
+  } catch(e){
+    // keep last good finance values
+  }
+}
+
 /* ===== Render ===== */
 let phase = 0;
 
@@ -915,6 +1116,7 @@ function buildTicker(){
   const live = [];
 
   if(apod?.title) live.push(`APOD • <b>${esc(apod.title)}</b>`);
+  if(nature?.title) live.push(`Nature • <b>${esc(nature.title)}</b>`);
 
   if(aurora){
     const kp = (aurora.kp != null) ? `Kp <b>${esc(aurora.kp.toFixed(1))}</b>` : `Kp <b>—</b>`;
@@ -952,6 +1154,19 @@ function buildTicker(){
       : "—";
     live.push(`Quakes • <b>${esc(count)}</b> last hour • largest <b>${esc(largest)}</b> • closest <b>${esc(closest)}</b>`);
   } else live.push(`Quakes • <b>loading</b>`);
+
+  // Finance in ticker (green/red %)
+  function fmtQuote(label, q){
+    if(!q || !Number.isFinite(q.price) || !Number.isFinite(q.pct)) return `${label} <b>—</b>`;
+    const cls = q.pct >= 0 ? "pos" : "neg";
+    const pct = Math.abs(q.pct).toFixed(2);
+    const sign = q.pct >= 0 ? "+" : "-";
+    return `${label} <b>${q.price.toFixed(2)}</b> <span class="${cls}">(${sign}${pct}%)</span>`;
+  }
+  live.push(`VOO • ${fmtQuote("VOO", finance.VOO)}`);
+  live.push(`QQQ • ${fmtQuote("QQQ", finance.QQQ)}`);
+  live.push(`Gold • ${fmtQuote("XAU", finance.GOLD)}`);
+  live.push(`Silver • ${fmtQuote("XAG", finance.SILVER)}`);
 
   const lines = [...CONFIG.tickerBase, ...live].filter(Boolean);
   const html = lines.map(x => `<span>${x} <b>•</b></span>`).join("");
@@ -1002,7 +1217,7 @@ function renderRight(){
     blocks.push({ html: moduleHTML("ISS Position", `<span class="tag warn">LIVE</span>`, "Loading…", "Waiting on data…", [], []) });
   }
 
-  // Earthquakes (list inside module, wrap2, capped count)
+  // Earthquakes
   if(quakes){
     const count = quakes.count ?? 0;
     blocks.push({
@@ -1019,6 +1234,34 @@ function renderRight(){
     blocks.push({ html: moduleHTML("Earthquakes", `<span class="tag warn">USGS 1 HR</span>`, "Loading…", "Waiting on data…", [], []) });
   }
 
+  // Finance module
+  const f = finance;
+  const kv = [];
+  function addRow(name, q){
+    if(!q || !Number.isFinite(q.price) || !Number.isFinite(q.pct)){
+      kv.push({k:name, v:"—", cls:""});
+      return;
+    }
+    const cls = q.pct >= 0 ? "pos" : "neg";
+    const sign = q.pct >= 0 ? "+" : "-";
+    kv.push({k:name, v:`${q.price.toFixed(2)} (${sign}${Math.abs(q.pct).toFixed(2)}%)`, cls});
+  }
+  addRow("VOO", f.VOO);
+  addRow("QQQ", f.QQQ);
+  addRow("Gold (XAU)", f.GOLD);
+  addRow("Silver (XAG)", f.SILVER);
+
+  blocks.push({
+    html: moduleHTML(
+      "Finance",
+      `<span class="tag good">LIVE</span>`,
+      "",
+      f.ts ? `Updated ${fmtTime(f.ts)}` : "Updated recently",
+      [],
+      kv
+    )
+  });
+
   // Show 2 at a time, rotate
   const a = blocks[phase % blocks.length];
   const b = blocks[(phase + 1) % blocks.length];
@@ -1026,7 +1269,7 @@ function renderRight(){
   $("mod1").className = "mini fade"; $("mod1").innerHTML = a.html;
   $("mod2").className = "mini fade"; $("mod2").innerHTML = b.html;
 
-  $("rightHd").textContent = ["Live Modules", "Sky + Orbit", "Earth Systems"][phase % 3];
+  $("rightHd").textContent = ["Live Modules", "Sky + Orbit", "Earth + Finance"][phase % 3];
   $("rightTag").textContent = "auto";
 
   phase++;
@@ -1035,24 +1278,45 @@ function renderRight(){
 }
 
 /* ===== Start loops ===== */
-refreshApod();
-refreshAurora();
-refreshAircraft();
-refreshISS();
-refreshQuakes();
-renderRight();
+function start(){
+  // initial
+  refreshApod();
+  refreshNature();
+  refreshAurora();
+  refreshAircraft();
+  refreshISS();
+  refreshQuakes();
+  refreshFinance();
+  renderRight();
 
-setInterval(refreshISSOver, CONFIG.refreshMs.geocode);
+  // hero rotation
+  setInterval(()=>{
+    heroMode = (heroMode + 1) % 2;
+    renderHero();
+  }, CONFIG.heroRotateMs);
 
-setInterval(refreshApod,     CONFIG.refreshMs.apod);
-setInterval(refreshAurora,   CONFIG.refreshMs.aurora);
-setInterval(refreshAircraft, CONFIG.refreshMs.aircraft);
-setInterval(refreshISS,      CONFIG.refreshMs.iss);
-setInterval(refreshQuakes,   CONFIG.refreshMs.quakes);
+  // ensure hero renders as soon as we have anything
+  setTimeout(()=>{ renderHero(); }, 1200);
+  setTimeout(()=>{ heroMode = 1; renderHero(); }, 1200 + 600); // quick first flip to verify
 
-setInterval(renderRight, 22 * 1000);
-setTimeout(refreshISSOver, 2500);
+  // periodic refresh
+  setInterval(refreshApod,     CONFIG.refreshMs.apod);
+  setInterval(refreshNature,   CONFIG.refreshMs.nature);
+  setInterval(refreshAurora,   CONFIG.refreshMs.aurora);
+  setInterval(refreshAircraft, CONFIG.refreshMs.aircraft);
+  setInterval(refreshISS,      CONFIG.refreshMs.iss);
+  setInterval(refreshQuakes,   CONFIG.refreshMs.quakes);
+  setInterval(refreshFinance,  CONFIG.refreshMs.finance);
+
+  // geocode slower + smarter
+  setInterval(refreshISSOver, CONFIG.refreshMs.geocode);
+  setTimeout(refreshISSOver, 3500);
+
+  // right modules rotate
+  setInterval(renderRight, 22 * 1000);
+}
+
+start();
 </script>
 </body>
 </html>
-
