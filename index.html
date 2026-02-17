@@ -1,64 +1,732 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
-  <channel>
-    <title>Jake Baseball Screen</title>
-    <link>https://example.com</link>
-    <description>Auto-updating baseball command center cards</description>
-    <language>en-us</language>
-    <ttl>5</ttl>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Jake Command Center</title>
+  <style>
+    :root{
+      --bg:#07080b;
+      --panel:#0d1017;
+      --panel2:#0a0c12;
+      --text:#e8ecf5;
+      --muted:#9aa3b2;
+      --accent:#4da3ff;
+      --good:#19d3a2;
+      --warn:#ffcc66;
+      --bad:#ff5c7a;
+      --line:#202635;
+      --shadow: 0 12px 30px rgba(0,0,0,.45);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: radial-gradient(1200px 700px at 20% 10%, rgba(77,163,255,.15), transparent 55%),
+                  radial-gradient(900px 600px at 90% 20%, rgba(25,211,162,.12), transparent 50%),
+                  var(--bg);
+      color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      overflow:hidden;
+    }
 
-    <item>
-      <title>Today’s Games</title>
-      <description><![CDATA[
-        <b>Top games</b><br>
-        1:10 PM — DET vs MIN<br>
-        4:05 PM — LAD vs SF<br>
-        7:10 PM — NYY vs BOS<br>
-        9:40 PM — SEA vs HOU<br>
-      ]]></description>
-      <pubDate>Tue, 17 Feb 2026 08:00:00 -0500</pubDate>
-      <guid>today-games-2026-02-17</guid>
-    </item>
+    /* ====== LAYOUT ====== */
+    .wrap{
+      height:100%;
+      display:grid;
+      grid-template-rows: 74px 1fr 60px;
+      gap:14px;
+      padding:14px;
+    }
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.06);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      box-shadow: var(--shadow);
+    }
+    .brand{
+      display:flex; flex-direction:column; gap:2px;
+    }
+    .brand .title{
+      font-size: 20px;
+      letter-spacing:.9px;
+      font-weight: 750;
+      text-transform: uppercase;
+    }
+    .brand .sub{
+      color:var(--muted);
+      font-size: 13px;
+      letter-spacing:.2px;
+    }
+    .statusbar{
+      display:flex; align-items:center; gap:14px;
+      font-variant-numeric: tabular-nums;
+    }
+    .pill{
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: var(--text);
+      font-size: 13px;
+      display:flex; align-items:center; gap:8px;
+    }
+    .dot{width:8px;height:8px;border-radius:99px;background:var(--good); box-shadow:0 0 12px rgba(25,211,162,.6)}
+    .dot.warn{background:var(--warn); box-shadow:0 0 12px rgba(255,204,102,.55)}
+    .dot.bad{background:var(--bad); box-shadow:0 0 12px rgba(255,92,122,.55)}
 
-    <item>
-      <title>Tigers Spotlight</title>
-      <description><![CDATA[
-        <b>Last:</b> W 5-3 (10 inn)<br>
-        <b>Next:</b> 1:10 PM vs MIN<br>
-        <b>Note:</b> Skubal scheduled, bullpen fresh
-      ]]></description>
-      <pubDate>Tue, 17 Feb 2026 08:00:00 -0500</pubDate>
-      <guid>tigers-spotlight-2026-02-17</guid>
-    </item>
+    main{
+      display:grid;
+      grid-template-columns: 1.1fr 1.6fr 1.1fr;
+      gap:14px;
+      min-height:0;
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.06);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+    }
+    .card .hd{
+      padding: 12px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      background: rgba(0,0,0,.15);
+    }
+    .card .hd .h{
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .9px;
+      color: var(--muted);
+      font-weight: 750;
+    }
+    .card .bd{
+      padding: 12px 14px;
+      overflow:auto;
+      min-height:0;
+    }
 
-    <item>
-      <title>Standings Snapshot</title>
-      <description><![CDATA[
-        <b>AL Central</b><br>
-        1) CLE 62-48<br>
-        2) MIN 60-50<br>
-        3) DET 58-52<br>
-        4) KC 53-57<br>
-        5) CWS 41-69<br><br>
-        <b>AL Wild Card</b><br>
-        DET: -1.5 GB (WC3)
-      ]]></description>
-      <pubDate>Tue, 17 Feb 2026 08:00:00 -0500</pubDate>
-      <guid>standings-2026-02-17</guid>
-    </item>
+    /* ====== VIDEO ====== */
+    .videoWrap{
+      padding: 0;
+      background: var(--panel2);
+    }
+    .videoFrame{
+      position:relative;
+      width:100%;
+      height:100%;
+      min-height:0;
+      display:flex;
+      flex-direction:column;
+    }
+    .videoTop{
+      padding: 12px 14px;
+      display:flex; align-items:center; justify-content:space-between;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      background: rgba(0,0,0,.25);
+    }
+    .videoTop .now{
+      display:flex; flex-direction:column; gap:2px;
+    }
+    .videoTop .now .label{color:var(--muted); font-size:12px; letter-spacing:.7px; text-transform:uppercase; font-weight:750}
+    .videoTop .now .name{font-size:16px; font-weight:800}
+    .videoTop .controls{
+      display:flex; gap:10px; align-items:center;
+    }
+    button{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding:8px 10px;
+      border-radius: 10px;
+      font-weight:700;
+      cursor:pointer;
+    }
+    button:hover{background: rgba(255,255,255,.1)}
+    .player{
+      position:relative;
+      flex:1;
+      min-height:0;
+      background:#000;
+    }
+    iframe{
+      border:0;
+      width:100%;
+      height:100%;
+      display:block;
+    }
 
-    <item>
-      <title>Headlines</title>
-      <description><![CDATA[
-        • Tigers call up top infield prospect<br>
-        • MLB considers automated ball-strike challenge expansion<br>
-        • Deadline rumors: bullpen arms heating up<br>
-        • Injury update: key starter exits early<br>
-        • Power rankings: new #1 after sweep
-      ]]></description>
-      <pubDate>Tue, 17 Feb 2026 08:00:00 -0500</pubDate>
-      <guid>headlines-2026-02-17</guid>
-    </item>
+    /* ====== SCORE TILES ====== */
+    .games{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .game{
+      background: rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.07);
+      border-radius: 14px;
+      padding: 10px 12px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .gameTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .leagueTag{
+      font-size:12px;
+      color:var(--muted);
+      font-weight:800;
+      letter-spacing:.8px;
+      text-transform:uppercase;
+    }
+    .state{
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+      padding: 6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+    }
+    .state.live{border-color: rgba(25,211,162,.35); background: rgba(25,211,162,.10); color: #cafff0}
+    .state.final{border-color: rgba(154,163,178,.25); background: rgba(154,163,178,.10); color:#d5dbe8}
+    .state.sched{border-color: rgba(77,163,255,.35); background: rgba(77,163,255,.10); color:#d8ecff}
 
-  </channel>
-</rss>
+    .teams{
+      display:grid;
+      grid-template-columns: 1fr auto;
+      gap:10px;
+      align-items:center;
+      font-variant-numeric: tabular-nums;
+    }
+    .t{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .row{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:baseline;
+    }
+    .name{
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: .1px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 260px;
+    }
+    .score{
+      font-size: 18px;
+      font-weight: 900;
+    }
+    .meta{
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    /* Featured */
+    .featured{
+      display:grid;
+      grid-template-rows: auto 1fr;
+      gap:12px;
+    }
+    .featuredBox{
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.07);
+      background: rgba(0,0,0,.22);
+      padding: 14px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .bigMatch{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      font-variant-numeric: tabular-nums;
+    }
+    .bigNames{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:0;
+    }
+    .bigNames .line{
+      display:flex; justify-content:space-between; gap:10px;
+      font-size: 20px; font-weight: 950;
+      letter-spacing:.2px;
+      min-width:0;
+    }
+    .bigNames .line span:first-child{
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      max-width: 380px;
+    }
+    .bigMeta{
+      color: var(--muted);
+      font-size: 13px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .heat{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .bar{
+      width: 140px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .bar > i{
+      display:block;
+      height:100%;
+      width:40%;
+      background: linear-gradient(90deg, rgba(77,163,255,.9), rgba(25,211,162,.9));
+    }
+    .heat .val{font-weight:900}
+
+    /* ====== TICKER ====== */
+    footer{
+      background: rgba(0,0,0,.25);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+    }
+    .tickerLabel{
+      padding: 0 14px;
+      font-weight: 950;
+      letter-spacing: .9px;
+      text-transform: uppercase;
+      color: var(--accent);
+      border-right:1px solid rgba(255,255,255,.06);
+      height:100%;
+      display:flex;
+      align-items:center;
+      background: rgba(77,163,255,.08);
+    }
+    .ticker{
+      position:relative;
+      flex:1;
+      height:100%;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+    }
+    .tickerTrack{
+      display:flex;
+      gap:40px;
+      white-space:nowrap;
+      will-change:transform;
+      font-weight:800;
+      font-size: 16px;
+      animation: scroll 26s linear infinite;
+      padding-left: 20px;
+    }
+    .tickerTrack span{color:var(--text)}
+    .tickerTrack b{color:var(--muted); font-weight:900}
+    @keyframes scroll{
+      0%{transform:translateX(0)}
+      100%{transform:translateX(-50%)}
+    }
+
+    /* Scrollbar nicer on TV */
+    .bd::-webkit-scrollbar{width:10px}
+    .bd::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08); border-radius:999px}
+    .bd::-webkit-scrollbar-track{background:transparent}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="title" id="brandTitle">Command Center</div>
+        <div class="sub" id="brandSub">Live scores • video rotation • auto refresh</div>
+      </div>
+
+      <div class="statusbar">
+        <div class="pill"><span class="dot" id="netDot"></span><span id="netText">Online</span></div>
+        <div class="pill">Updated <span id="lastUpdate">—</span></div>
+        <div class="pill"><span id="clock">—</span></div>
+      </div>
+    </header>
+
+    <main>
+      <!-- LEFT: Live games list -->
+      <section class="card">
+        <div class="hd">
+          <div class="h">Live Now</div>
+          <div class="meta" id="liveCount">—</div>
+        </div>
+        <div class="bd">
+          <div class="games" id="liveGames"></div>
+        </div>
+      </section>
+
+      <!-- CENTER: Featured -->
+      <section class="card">
+        <div class="hd">
+          <div class="h">Featured Game</div>
+          <div class="meta" id="featuredLeague">—</div>
+        </div>
+        <div class="bd featured">
+          <div class="featuredBox" id="featuredBox">
+            <div class="bigMatch">
+              <div class="bigNames" id="bigNames">
+                <div class="line"><span>—</span><span>—</span></div>
+                <div class="line"><span>—</span><span>—</span></div>
+              </div>
+              <div class="state" id="featuredState">—</div>
+            </div>
+            <div class="bigMeta" id="featuredMeta">Loading…</div>
+            <div class="heat">
+              <span class="meta">Heat Index</span>
+              <div class="bar"><i id="heatBar"></i></div>
+              <span class="val" id="heatVal">—</span>
+            </div>
+          </div>
+
+          <div class="featuredBox">
+            <div class="meta" style="text-transform:uppercase;letter-spacing:.8px;font-weight:850;color:var(--muted);">Upcoming</div>
+            <div class="games" id="upcomingGames"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Video -->
+      <section class="card videoWrap">
+        <div class="videoFrame">
+          <div class="videoTop">
+            <div class="now">
+              <div class="label">Now Playing</div>
+              <div class="name" id="videoName">—</div>
+            </div>
+            <div class="controls">
+              <button id="prevBtn">Prev</button>
+              <button id="nextBtn">Next</button>
+            </div>
+          </div>
+          <div class="player">
+            <iframe id="yt"
+              src=""
+              allow="autoplay; encrypted-media; picture-in-picture"
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="tickerLabel">Live</div>
+      <div class="ticker">
+        <div class="tickerTrack" id="tickerTrack"></div>
+      </div>
+    </footer>
+  </div>
+
+<script>
+/**
+ * ====== CONFIG (edit these) ======
+ */
+
+// What leagues to show (ESPN public scoreboard JSON endpoints)
+const LEAGUES = [
+  { key:"nfl", name:"NFL", url:"https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard" },
+  { key:"nba", name:"NBA", url:"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard" },
+  { key:"nhl", name:"NHL", url:"https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard" },
+  { key:"mlb", name:"MLB", url:"https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/scoreboard" },
+  { key:"ncaaf", name:"CFB", url:"https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard" },
+  { key:"ncaab", name:"CBB", url:"https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard" },
+];
+
+// Optional: pick a favorite team abbreviation to bias “featured” (like DET, LAL, etc.)
+const FAVORITE_TEAM_ABBR = "DET";
+
+// Video playlist (YouTube video IDs)
+const VIDEOS = [
+  { name:"SportsCenter Vibes (loop)", id:"dQw4w9WgXcQ" }, // replace these with your actual IDs
+  { name:"Hype Mix", id:"aqz-KE-bpKQ" },
+  { name:"Chill Highlights", id:"5qap5aO4i9A" }
+];
+
+// Rotate video every X minutes
+const VIDEO_ROTATE_MS = 6 * 60 * 1000;
+
+// Refresh scores every X seconds
+const SCORE_REFRESH_MS = 30 * 1000;
+
+// Ticker lines (you can later replace with an RSS fetch)
+const TICKER_LINES = [
+  "Command Center online • Auto-refresh enabled",
+  "Tip: run this in Look as a Web Page source for best results",
+  "Add your real YouTube playlist IDs for nonstop video",
+  "Favorite team bias enabled: " + FAVORITE_TEAM_ABBR
+];
+
+// ====== End config ======
+
+let videoIndex = 0;
+let lastUpdate = null;
+
+function setClock(){
+  const d = new Date();
+  const time = d.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
+  const day  = d.toLocaleDateString([], {weekday:"short", month:"short", day:"numeric"});
+  document.getElementById("clock").textContent = `${day} • ${time}`;
+}
+setInterval(setClock, 1000);
+setClock();
+
+function setOnlineStatus(){
+  const online = navigator.onLine;
+  const dot = document.getElementById("netDot");
+  const txt = document.getElementById("netText");
+  dot.className = "dot" + (online ? "" : " bad");
+  txt.textContent = online ? "Online" : "Offline";
+}
+window.addEventListener("online", setOnlineStatus);
+window.addEventListener("offline", setOnlineStatus);
+setOnlineStatus();
+
+function updateTicker(){
+  // duplicate content so the CSS scroll loop looks continuous
+  const track = document.getElementById("tickerTrack");
+  const joined = TICKER_LINES.map(t => `<span>${escapeHtml(t)} <b>•</b></span>`).join("");
+  track.innerHTML = joined + joined;
+}
+function escapeHtml(s){
+  return s.replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+}
+updateTicker();
+
+function ytSrc(id){
+  // autoplay + mute works more reliably on signage
+  return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&playsinline=1`;
+}
+function loadVideo(idx){
+  videoIndex = (idx + VIDEOS.length) % VIDEOS.length;
+  const v = VIDEOS[videoIndex];
+  document.getElementById("videoName").textContent = v.name;
+  document.getElementById("yt").src = ytSrc(v.id);
+}
+document.getElementById("prevBtn").onclick = () => loadVideo(videoIndex - 1);
+document.getElementById("nextBtn").onclick = () => loadVideo(videoIndex + 1);
+
+loadVideo(0);
+setInterval(() => loadVideo(videoIndex + 1), VIDEO_ROTATE_MS);
+
+/**
+ * ====== SCORES ======
+ */
+
+function gameState(evt){
+  // ESPN status types vary; keep it simple
+  const s = evt.status?.type?.state; // "pre" "in" "post"
+  const short = evt.status?.type?.shortDetail || "";
+  if(s === "in") return { cls:"live", label: short || "LIVE" };
+  if(s === "post") return { cls:"final", label: short || "FINAL" };
+  return { cls:"sched", label: short || "SCHEDULED" };
+}
+
+function getTeams(evt){
+  const comps = evt.competitions?.[0]?.competitors || [];
+  const home = comps.find(c => c.homeAway === "home") || comps[0];
+  const away = comps.find(c => c.homeAway === "away") || comps[1];
+  const mk = (t) => ({
+    name: t?.team?.displayName || "—",
+    abbr: t?.team?.abbreviation || "",
+    score: t?.score ?? ""
+  });
+  return { home: mk(home), away: mk(away) };
+}
+
+function gameCardHTML(leagueName, evt){
+  const st = gameState(evt);
+  const {home, away} = getTeams(evt);
+  const meta = evt.status?.type?.detail || evt.date || "";
+  return `
+    <div class="game">
+      <div class="gameTop">
+        <div class="leagueTag">${escapeHtml(leagueName)}</div>
+        <div class="state ${st.cls}">${escapeHtml(st.label)}</div>
+      </div>
+      <div class="teams">
+        <div class="t">
+          <div class="row">
+            <div class="name">${escapeHtml(away.abbr ? `${away.abbr} — ${away.name}` : away.name)}</div>
+            <div class="score">${escapeHtml(String(away.score))}</div>
+          </div>
+          <div class="row">
+            <div class="name">${escapeHtml(home.abbr ? `${home.abbr} — ${home.name}` : home.name)}</div>
+            <div class="score">${escapeHtml(String(home.score))}</div>
+          </div>
+        </div>
+        <div class="meta" style="text-align:right; max-width:150px;">
+          ${escapeHtml(meta)}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function isFavorite(evt){
+  const {home, away} = getTeams(evt);
+  return [home.abbr, away.abbr].includes(FAVORITE_TEAM_ABBR);
+}
+
+function closenessScore(evt){
+  // crude “heat” scoring: close games + live state
+  const st = evt.status?.type?.state;
+  const {home, away} = getTeams(evt);
+  const hs = Number(home.score);
+  const as = Number(away.score);
+  const valid = Number.isFinite(hs) && Number.isFinite(as);
+  let diff = valid ? Math.abs(hs - as) : 99;
+
+  let score = 0;
+  if(st === "in"){
+    score += 3;
+    if(diff <= 3) score += 4;
+    else if(diff <= 7) score += 2;
+    else if(diff <= 10) score += 1;
+  } else if(st === "pre"){
+    score += 1;
+  }
+  if(isFavorite(evt)) score += 3;
+  return score;
+}
+
+async function fetchLeague(league){
+  const res = await fetch(league.url, { cache:"no-store" });
+  if(!res.ok) throw new Error(`Fetch failed: ${league.name}`);
+  const data = await res.json();
+  const events = data.events || [];
+  return events.map(evt => ({ league: league.name, evt }));
+}
+
+async function refreshScores(){
+  try{
+    const results = await Promise.allSettled(LEAGUES.map(fetchLeague));
+    const all = [];
+    for(const r of results){
+      if(r.status === "fulfilled") all.push(...r.value);
+    }
+
+    // Split into live + upcoming
+    const live = all.filter(x => x.evt.status?.type?.state === "in");
+    const upcoming = all
+      .filter(x => x.evt.status?.type?.state !== "in")
+      .slice(0, 6);
+
+    // Choose featured: favorite + live + closeness
+    const featured = all
+      .slice()
+      .sort((a,b) => closenessScore(b.evt) - closenessScore(a.evt))[0];
+
+    // Render live list
+    const liveEl = document.getElementById("liveGames");
+    if(live.length === 0){
+      liveEl.innerHTML = `<div class="meta">No live games right now. Upcoming is below.</div>`;
+    } else {
+      liveEl.innerHTML = live
+        .slice(0, 10)
+        .sort((a,b) => closenessScore(b.evt) - closenessScore(a.evt))
+        .map(x => gameCardHTML(x.league, x.evt)).join("");
+    }
+    document.getElementById("liveCount").textContent = live.length ? `${live.length} live` : "none live";
+
+    // Render upcoming
+    const upEl = document.getElementById("upcomingGames");
+    upEl.innerHTML = upcoming.map(x => gameCardHTML(x.league, x.evt)).join("");
+
+    // Featured panel
+    if(featured){
+      const st = gameState(featured.evt);
+      const {home, away} = getTeams(featured.evt);
+
+      document.getElementById("featuredLeague").textContent = featured.league;
+      document.getElementById("featuredState").className = `state ${st.cls}`;
+      document.getElementById("featuredState").textContent = st.label;
+
+      const lines = document.getElementById("bigNames");
+      lines.innerHTML = `
+        <div class="line"><span>${escapeHtml(away.name)}</span><span>${escapeHtml(String(away.score))}</span></div>
+        <div class="line"><span>${escapeHtml(home.name)}</span><span>${escapeHtml(String(home.score))}</span></div>
+      `;
+
+      const detail = featured.evt.status?.type?.detail || "";
+      const short = featured.evt.status?.type?.shortDetail || "";
+      const when = featured.evt.date ? fmtTime(featured.evt.date) : "";
+      const meta = [];
+      if(short) meta.push(short);
+      if(detail && detail !== short) meta.push(detail);
+      if(when) meta.push(when);
+      if(isFavorite(featured.evt)) meta.push("Favorite team involved");
+
+      document.getElementById("featuredMeta").textContent = meta.filter(Boolean).join(" • ") || "—";
+
+      // Heat Index: map total live closeness into 0–100
+      const heatRaw = live.reduce((sum, x) => sum + closenessScore(x.evt), 0);
+      const heat = Math.max(0, Math.min(100, Math.round((heatRaw / 60) * 100))); // tuned for “typical night”
+      document.getElementById("heatVal").textContent = heat + "/100";
+      document.getElementById("heatBar").style.width = heat + "%";
+    }
+
+    lastUpdate = new Date();
+    document.getElementById("lastUpdate").textContent =
+      lastUpdate.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
+
+    // If we’re missing data, show warn dot
+    const ok = results.some(r => r.status === "fulfilled");
+    const dot = document.getElementById("netDot");
+    dot.className = "dot" + (ok ? "" : " warn");
+
+  } catch(e){
+    // keep screen alive even if fetch fails
+    document.getElementById("netDot").className = "dot warn";
+  }
+}
+
+function fmtTime(iso){
+  try{
+    const d = new Date(iso);
+    return d.toLocaleString([], {weekday:"short", month:"short", day:"numeric", hour:"numeric", minute:"2-digit"});
+  } catch { return ""; }
+}
+
+refreshScores();
+setInterval(refreshScores, SCORE_REFRESH_MS);
+</script>
+</body>
+</html>
