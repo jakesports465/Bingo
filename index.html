@@ -22,12 +22,18 @@
     /* ===== BIGGER FOR 32" @ 10ft ===== */
     --h2: 34px;
     --h3: 18px;
-    --big: 42px;
+    --big: 44px;
     --base: 22px;
     --small: 16px;
 
     /* ticker size */
-    --ticker: 26px;
+    --ticker: 28px;
+
+    /* module header + key small text */
+    --cellTitle: 18px;
+    --cellSmall: 24px;   /* "Closest: ..." line etc. */
+    --listFont: 20px;    /* aircraft list rows */
+    --listRight: 20px;   /* miles column */
   }
 
   *{box-sizing:border-box}
@@ -48,7 +54,7 @@
     height:100%;
     padding:18px;
     display:grid;
-    grid-template-rows: 92px 1fr 74px;
+    grid-template-rows: 92px 1fr 78px;
     gap:14px;
   }
 
@@ -90,7 +96,7 @@
     border-radius: 999px;
     border: 1px solid rgba(255,255,255,.14);
     background: rgba(255,255,255,.06);
-    padding: 10px 12px;
+    padding: 11px 14px;
     font-weight: 900;
     letter-spacing: .3px;
     font-size: 16px;
@@ -101,7 +107,6 @@
     background: var(--good);
     box-shadow: 0 0 14px rgba(37,224,183,.55);
   }
-  .dot.warn{background:var(--warn); box-shadow:0 0 14px rgba(255,211,122,.55)}
   .dot.bad{background:var(--bad); box-shadow:0 0 14px rgba(255,107,134,.55)}
 
   main{
@@ -187,24 +192,25 @@
     align-items:center;
   }
 
+  /* BIGGER TAG BUBBLES */
   .tag{
     display:inline-flex;
     align-items:center;
     gap:8px;
-    padding: 8px 12px;
+    padding: 10px 16px;             /* bigger */
     border-radius: 999px;
-    border:1px solid rgba(255,255,255,.12);
-    background: rgba(255,255,255,.05);
-    font-size: 13px;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06);
+    font-size: 15px;                 /* bigger */
     font-weight: 950;
-    letter-spacing: .8px;
+    letter-spacing: .9px;
     text-transform: uppercase;
     color: var(--text);
     white-space:nowrap;
   }
-  .tag.good{border-color: rgba(37,224,183,.35); background: rgba(37,224,183,.10); color:#cafff0}
-  .tag.warn{border-color: rgba(255,211,122,.35); background: rgba(255,211,122,.10); color:#fff1d1}
-  .tag.bad{border-color: rgba(255,107,134,.35); background: rgba(255,107,134,.10); color:#ffd4dd}
+  .tag.good{border-color: rgba(37,224,183,.40); background: rgba(37,224,183,.12); color:#cafff0}
+  .tag.warn{border-color: rgba(255,211,122,.40); background: rgba(255,211,122,.12); color:#fff1d1}
+  .tag.bad{border-color: rgba(255,107,134,.40); background: rgba(255,107,134,.12); color:#ffd4dd}
 
   .stack{display:flex; flex-direction:column; gap:12px; min-height:0;}
   .mini{
@@ -217,40 +223,47 @@
     gap:10px;
     min-height: 0;
   }
+
+  /* BIGGER CELL HEADERS */
   .miniTop{
     display:flex; align-items:center; justify-content:space-between; gap:10px;
   }
   .miniTop .k{
-    color: var(--muted);
-    font-size: 14px;
+    color: rgba(255,255,255,.72);    /* brighter */
+    font-size: var(--cellTitle);     /* bigger */
     text-transform: uppercase;
-    letter-spacing: .9px;
-    font-weight: 950;
+    letter-spacing: 1px;
+    font-weight: 1000;
   }
   .miniTop .s{
-    font-size: 14px;
-    font-weight: 950;
-    letter-spacing: .7px;
+    font-size: 15px;                 /* bigger */
+    font-weight: 1000;
+    letter-spacing: .9px;
     text-transform: uppercase;
-    padding: 8px 12px;
+    padding: 10px 16px;              /* bigger bubble */
     border-radius: 999px;
-    border:1px solid rgba(255,255,255,.12);
-    background: rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06);
     color: var(--text);
     white-space:nowrap;
   }
+
   .bigLine{
-    font-size: 40px;
+    font-size: var(--big);
     font-weight: 1000;
     letter-spacing: .2px;
     line-height: 1.05;
     font-variant-numeric: tabular-nums;
   }
+
+  /* key small text that you said is hard to see */
   .smallLine{
     color: var(--muted);
-    font-size: var(--base);
-    line-height: 1.3;
+    font-size: var(--cellSmall);
+    line-height: 1.25;
+    font-variant-numeric: tabular-nums;
   }
+
   .list{
     display:flex; flex-direction:column; gap:10px;
     font-variant-numeric: tabular-nums;
@@ -258,11 +271,39 @@
   }
   .li{
     display:flex; justify-content:space-between; gap:12px;
-    font-size: 18px;
-    font-weight: 900;
+    font-size: var(--listFont);
+    font-weight: 950;
   }
-  .li span:last-child{color:var(--muted); font-weight:950}
-  .li span:first-child{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width: 72%}
+  .li span:last-child{
+    color:rgba(255,255,255,.72);
+    font-weight:1000;
+    font-size: var(--listRight);
+  }
+  .li span:first-child{
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width: 72%;
+  }
+
+  /* ISS globe */
+  .globeRow{
+    display:flex;
+    gap:14px;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .globeWrap{
+    width: 170px;
+    height: 170px;
+    flex: 0 0 auto;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.14);
+    background: radial-gradient(circle at 30% 30%, rgba(107,181,255,.18), rgba(0,0,0,.22));
+    box-shadow: 0 18px 50px rgba(0,0,0,.55);
+    overflow:hidden;
+  }
+  .globeWrap svg{ width:100%; height:100%; display:block; }
 
   footer{
     border-radius: var(--r);
@@ -295,14 +336,14 @@
   }
   .track{
     display:flex;
-    gap:48px;
+    gap:54px;
     white-space:nowrap;
     padding-left: 18px;
     animation: scroll 30s linear infinite;
-    font-weight: 950;
+    font-weight: 1000;
     font-size: var(--ticker);
   }
-  .track span b{color:var(--muted)}
+  .track span b{color:rgba(255,255,255,.72)}
   @keyframes scroll{
     0%{transform:translateX(0)}
     100%{transform:translateX(-50%)}
@@ -348,7 +389,7 @@
     </section>
 
     <section class="card">
-      <div class="hd"><div class="h" id="rightHd">Earth + Space</div><div class="tag" id="rightTag">auto</div></div>
+      <div class="hd"><div class="h" id="rightHd">Sky + Orbit</div><div class="tag" id="rightTag">auto</div></div>
       <div class="bd">
         <div class="stack">
           <div class="mini" id="mod1"></div>
@@ -368,9 +409,7 @@
 <script>
 /* ===== CONFIG ===== */
 const CONFIG = {
-  // Grandville-ish. Used for aircraft + local aurora "nearest cell"
   home: { lat: 42.9098, lon: -85.7631, name: "Grandville" },
-
   aircraftRadiusNm: 120,
 
   refreshMs: {
@@ -437,14 +476,15 @@ function countdown(toDate){
   return `${m}m`;
 }
 
-function moduleHTML(title, status, big, small, listLines){
+function moduleHTML(title, statusHTML, bigHTML, smallHTML, listLines, extraHTML=""){
   return `
     <div class="miniTop">
       <div class="k">${esc(title)}</div>
-      <div class="s">${status}</div>
+      <div class="s">${statusHTML}</div>
     </div>
-    <div class="bigLine">${big}</div>
-    <div class="smallLine">${small}</div>
+    ${bigHTML ? `<div class="bigLine">${bigHTML}</div>` : ``}
+    ${smallHTML ? `<div class="smallLine">${smallHTML}</div>` : ``}
+    ${extraHTML ? extraHTML : ``}
     ${listLines && listLines.length ? `
       <div class="list">
         ${listLines.map(x => `<div class="li"><span>${esc(x.left)}</span><span>${esc(x.right)}</span></div>`).join("")}
@@ -453,66 +493,28 @@ function moduleHTML(title, status, big, small, listLines){
   `;
 }
 
-/* ===== aircraft helpers ===== */
+/* ===== Aircraft helpers ===== */
 const TYPE_MAP = {
-  // Boeing
-  B738: "Boeing 737-800",
-  B737: "Boeing 737",
-  B739: "Boeing 737-900",
-  B752: "Boeing 757-200",
-  B763: "Boeing 767-300",
-  B77W: "Boeing 777-300ER",
-  B788: "Boeing 787-8",
-  B789: "Boeing 787-9",
-  // Airbus
-  A319: "Airbus A319",
-  A320: "Airbus A320",
-  A321: "Airbus A321",
-  A20N: "Airbus A320neo",
-  A21N: "Airbus A321neo",
-  A332: "Airbus A330-200",
-  A333: "Airbus A330-300",
-  A359: "Airbus A350-900",
-  // Airbus A220 (CSeries)
-  BCS1: "Airbus A220-100",
-  BCS3: "Airbus A220-300",
-  // Embraer / regional
-  E170: "Embraer E170",
-  E175: "Embraer E175",
-  E75L: "Embraer E175 (winglets)",
-  E190: "Embraer E190",
-  E195: "Embraer E195",
-  CRJ9: "CRJ-900",
-  CRJ7: "CRJ-700",
-  // GA common
-  P28R: "Piper Arrow",
-  C172: "Cessna 172",
-  SR22: "Cirrus SR22"
+  B738: "Boeing 737-800", B737: "Boeing 737", B739: "Boeing 737-900", B752: "Boeing 757-200",
+  B763: "Boeing 767-300", B77W: "Boeing 777-300ER", B788: "Boeing 787-8", B789: "Boeing 787-9",
+  A319: "Airbus A319", A320: "Airbus A320", A321: "Airbus A321", A20N: "Airbus A320neo", A21N: "Airbus A321neo",
+  A332: "Airbus A330-200", A333: "Airbus A330-300", A359: "Airbus A350-900",
+  BCS1: "Airbus A220-100", BCS3: "Airbus A220-300",
+  E170: "Embraer E170", E175: "Embraer E175", E75L: "Embraer E175 (winglets)", E190: "Embraer E190", E195: "Embraer E195",
+  CRJ9: "CRJ-900", CRJ7: "CRJ-700",
+  P28R: "Piper Arrow", C172: "Cessna 172", SR22: "Cirrus SR22"
 };
-
 function friendlyType(code){
   if(!code) return "Unknown type";
   const c = String(code).toUpperCase().trim();
   return TYPE_MAP[c] || c;
 }
 
-// Very simple airline guess from callsign prefix (not perfect, but cool + fast)
 const AIRLINE_PREFIX = {
-  DAL: "Delta",
-  UAL: "United",
-  AAL: "American",
-  SWA: "Southwest",
-  JBU: "JetBlue",
-  NKS: "Spirit",
-  FFT: "Frontier",
-  ASA: "Alaska",
-  SKW: "SkyWest",
-  RPA: "Republic",
-  ENY: "Envoy",
-  JIA: "PSA",
-  AWI: "Air Wisconsin",
-  UPS: "UPS",
-  FDX: "FedEx"
+  DAL: "Delta", UAL: "United", AAL: "American", SWA: "Southwest",
+  JBU: "JetBlue", NKS: "Spirit", FFT: "Frontier", ASA: "Alaska",
+  SKW: "SkyWest", RPA: "Republic", ENY: "Envoy", JIA: "PSA", AWI: "Air Wisconsin",
+  UPS: "UPS", FDX: "FedEx"
 };
 function airlineFromCallsign(cs){
   if(!cs) return "Other";
@@ -535,6 +537,77 @@ function lastRow(arr){
     if(Array.isArray(row)) return row;
   }
   return null;
+}
+
+/* ===== ISS globe ===== */
+function issGlobeSVG(lat, lon){
+  const W = 170, H = 170, R = 82;
+  const cx = W/2, cy = H/2;
+
+  const x = (Number.isFinite(lon)) ? ((lon + 180) / 360) * (2*R) + (cx - R) : cx;
+  const y = (Number.isFinite(lat)) ? ((90 - lat) / 180) * (2*R) + (cy - R) : cy;
+
+  // Clamp marker inside circle a bit (simple)
+  const dx = x - cx, dy = y - cy;
+  const dist = Math.sqrt(dx*dx + dy*dy) || 1;
+  const max = R - 6;
+  const mx = dist > max ? cx + dx/dist * max : x;
+  const my = dist > max ? cy + dy/dist * max : y;
+
+  const grid = [];
+  // latitude lines
+  for(let i=-60;i<=60;i+=30){
+    const yy = ((90 - i) / 180) * (2*R) + (cy - R);
+    grid.push(`<line x1="${cx-R}" y1="${yy.toFixed(1)}" x2="${cx+R}" y2="${yy.toFixed(1)}" stroke="rgba(255,255,255,.10)" stroke-width="1"/>`);
+  }
+  // longitude lines
+  for(let i=-120;i<=120;i+=60){
+    const xx = ((i + 180) / 360) * (2*R) + (cx - R);
+    grid.push(`<line x1="${xx.toFixed(1)}" y1="${cy-R}" x2="${xx.toFixed(1)}" y2="${cy+R}" stroke="rgba(255,255,255,.10)" stroke-width="1"/>`);
+  }
+
+  return `
+  <div class="globeRow">
+    <div style="min-width:0">
+      <div style="font-size:22px; font-weight:1000; color:rgba(255,255,255,.92); line-height:1.05">ISS Globe</div>
+      <div style="color:var(--muted); font-size:18px; font-weight:950; margin-top:6px">
+        lat ${Number.isFinite(lat)?lat.toFixed(2):"—"} • lon ${Number.isFinite(lon)?lon.toFixed(2):"—"}
+      </div>
+    </div>
+    <div class="globeWrap" aria-label="ISS globe">
+      <svg viewBox="0 0 ${W} ${H}">
+        <defs>
+          <radialGradient id="ocean" cx="30%" cy="30%" r="80%">
+            <stop offset="0%" stop-color="rgba(107,181,255,.22)"/>
+            <stop offset="55%" stop-color="rgba(20,30,46,.92)"/>
+            <stop offset="100%" stop-color="rgba(0,0,0,.98)"/>
+          </radialGradient>
+          <clipPath id="clip">
+            <circle cx="${cx}" cy="${cy}" r="${R}"/>
+          </clipPath>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="2.2" result="b"/>
+            <feMerge>
+              <feMergeNode in="b"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+
+        <circle cx="${cx}" cy="${cy}" r="${R}" fill="url(#ocean)" stroke="rgba(255,255,255,.18)" stroke-width="2"/>
+        <g clip-path="url(#clip)">
+          ${grid.join("")}
+          <circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="rgba(107,181,255,.14)" stroke-width="10"/>
+          <!-- marker -->
+          <circle cx="${mx.toFixed(1)}" cy="${my.toFixed(1)}" r="5" fill="rgba(37,224,183,.95)" filter="url(#glow)"/>
+          <circle cx="${mx.toFixed(1)}" cy="${my.toFixed(1)}" r="12" fill="none" stroke="rgba(37,224,183,.35)" stroke-width="2"/>
+        </g>
+
+        <!-- subtle rim -->
+        <circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="3"/>
+      </svg>
+    </div>
+  </div>`;
 }
 
 /* ===== data state ===== */
@@ -583,7 +656,7 @@ async function refreshApod(){
   }
 }
 
-/* ===== Aurora (OVATION + Kp + Solar Wind + Kp Forecast) ===== */
+/* ===== Aurora ===== */
 async function refreshAurora(){
   try{
     const ovationUrl = "https://services.swpc.noaa.gov/json/ovation_aurora_latest.json";
@@ -642,7 +715,6 @@ async function refreshAurora(){
     let bz = null;
     {
       const r = lastRow(mag);
-      // ["time_tag","bx_gsm","by_gsm","bz_gsm","bt"]
       if(r && r.length >= 4){
         const cand = Number(r[3]);
         if(Number.isFinite(cand)) bz = cand;
@@ -652,7 +724,6 @@ async function refreshAurora(){
     let speed = null;
     {
       const r = lastRow(plasma);
-      // ["time_tag","density","speed","temperature"]
       if(r && r.length >= 3){
         const cand = Number(r[2]);
         if(Number.isFinite(cand)) speed = cand;
@@ -686,7 +757,7 @@ async function refreshAurora(){
   }
 }
 
-/* ===== Aircraft overhead (airplanes.live) + airline mix + highest altitude ===== */
+/* ===== Aircraft overhead + airline mix + highest altitude ===== */
 async function refreshAircraft(){
   try{
     const {lat, lon} = CONFIG.home;
@@ -703,18 +774,15 @@ async function refreshAircraft(){
 
         const callsign = (a.flight ?? a.callsign ?? a.cs ?? "").toString().trim() || "UNKNOWN";
         const typeCode = (a.t ?? a.type ?? a.icao_type ?? a.icaoType ?? "").toString().trim();
-        const alt = a.alt_baro ?? a.altitude ?? a.alt ?? null; // often feet
-        const gs  = a.gs ?? a.speed ?? null;
-
+        const alt = a.alt_baro ?? a.altitude ?? a.alt ?? null;
         const airline = airlineFromCallsign(callsign);
 
-        return {callsign, typeCode, alt, gs, dist, airline};
+        return {callsign, typeCode, alt, dist, airline};
       })
       .sort((x,y) => (x.dist ?? 1e9) - (y.dist ?? 1e9));
 
     const closest = cleaned[0] || null;
 
-    // highest altitude (treat as feet; if unknown, ignore)
     let highestAltFt = null;
     for(const x of cleaned){
       const a = Number(x.alt);
@@ -723,7 +791,6 @@ async function refreshAircraft(){
       }
     }
 
-    // top airlines
     const counts = {};
     for(const x of cleaned){
       const k = x.airline || "Other";
@@ -734,7 +801,6 @@ async function refreshAircraft(){
       .slice(0,3)
       .map(([name,cnt]) => ({name, cnt}));
 
-    // list entries: TYPE (CODE) on left, callsign + distance on right
     const topList = cleaned.slice(0,5).map(x => ({
       left: `${friendlyType(x.typeCode)} (${(x.typeCode||"").toUpperCase() || "—"})`,
       right: `${x.callsign} • ${x.dist != null ? x.dist.toFixed(1) + "mi" : "—"}`
@@ -752,7 +818,7 @@ async function refreshAircraft(){
   }
 }
 
-/* ===== ISS position (HTTPS) + "Over:" reverse geocode ===== */
+/* ===== ISS + reverse geocode ===== */
 async function refreshISS(){
   try{
     const d = await getJson("https://api.wheretheiss.at/v1/satellites/25544");
@@ -767,7 +833,6 @@ async function refreshISS(){
   }
 }
 
-// Reverse geocode with BigDataCloud (CORS-friendly)
 async function refreshISSOver(){
   if(!iss || !Number.isFinite(iss.lat) || !Number.isFinite(iss.lon)) return;
   try{
@@ -777,8 +842,6 @@ async function refreshISSOver(){
     const locality = g.locality || g.city || "";
     const region   = g.principalSubdivision || "";
     const country  = g.countryName || "";
-
-    // Ocean detection (best-effort)
     const ocean = g.localityInfo?.informative?.find(x => (x.description||"").toLowerCase().includes("ocean"))?.name;
 
     let over = "";
@@ -794,7 +857,7 @@ async function refreshISSOver(){
   }
 }
 
-/* ===== SpaceX next launch (handle stale/past date) ===== */
+/* ===== SpaceX ===== */
 async function refreshSpaceX(){
   try{
     const d = await getJson("https://api.spacexdata.com/v5/launches/next");
@@ -827,15 +890,13 @@ async function refreshSpaceX(){
   }
 }
 
-/* ===== Render modules + ticker ===== */
+/* ===== render ===== */
 let phase = 0;
 
 function buildTicker(){
   const live = [];
 
-  if(apod?.title){
-    live.push(`APOD • <b>${esc(apod.title)}</b>`);
-  }
+  if(apod?.title) live.push(`APOD • <b>${esc(apod.title)}</b>`);
 
   if(aurora){
     const kp = (aurora.kp != null) ? `Kp <b>${esc(aurora.kp.toFixed ? aurora.kp.toFixed(1) : aurora.kp)}</b>` : `Kp <b>—</b>`;
@@ -845,9 +906,7 @@ function buildTicker(){
       aurora.bz != null ? `Bz <b>${esc(aurora.bz.toFixed(1))}</b> nT` : null
     ].filter(Boolean).join(" • ");
     live.push(`Aurora • ${kp} • ${local}${extras ? " • " + extras : ""}`);
-  } else {
-    live.push(`Aurora • <b>loading</b>`);
-  }
+  } else live.push(`Aurora • <b>loading</b>`);
 
   if(aircraft){
     const n = aircraft.count ?? 0;
@@ -858,21 +917,13 @@ function buildTicker(){
     if(aircraft.highestAltFt != null){
       live.push(`Sky scan • highest altitude <b>${esc(Math.round(aircraft.highestAltFt).toLocaleString())}</b> ft`);
     }
-  } else {
-    live.push(`Aircraft • <b>loading</b>`);
-  }
+  } else live.push(`Aircraft • <b>loading</b>`);
 
-  if(iss){
-    live.push(`ISS • <b>${esc(iss.over || "Locating…")}</b>`);
-  } else {
-    live.push(`ISS • <b>loading</b>`);
-  }
+  if(iss) live.push(`ISS • <b>${esc(iss.over || "Locating…")}</b>`);
+  else live.push(`ISS • <b>loading</b>`);
 
-  if(spacex){
-    live.push(`SpaceX • <b>${esc(spacex.name)}</b> • <b>${esc(spacex.displayTime || "—")}</b>`);
-  } else {
-    live.push(`SpaceX • <b>loading</b>`);
-  }
+  if(spacex) live.push(`SpaceX • <b>${esc(spacex.name)}</b> • <b>${esc(spacex.displayTime || "—")}</b>`);
+  else live.push(`SpaceX • <b>loading</b>`);
 
   const lines = [...CONFIG.tickerBase, ...live].filter(Boolean);
   const html = lines.map(x => `<span>${x} <b>•</b></span>`).join("");
@@ -882,73 +933,61 @@ function buildTicker(){
 function renderRight(){
   const blocks = [];
 
-  // ISS
-  if(iss){
-    const big = iss.over ? `Over: ${iss.over}` : "Locating…";
-    const small = `Updated ${fmtTime(iss.ts)} • lat ${Number.isFinite(iss.lat) ? iss.lat.toFixed(2) : "—"} • lon ${Number.isFinite(iss.lon) ? iss.lon.toFixed(2) : "—"}`;
-    blocks.push({
-      html: moduleHTML("ISS Position", `<span class="tag good">LIVE</span>`, esc(big), esc(small), [])
-    });
-  } else {
-    blocks.push({
-      html: moduleHTML("ISS Position", `<span class="tag warn">LIVE</span>`, "—", "Waiting on data…", [])
-    });
-  }
-
-  // SpaceX
-  if(spacex){
-    const tagClass = spacex.statusTag === "TBD" ? "warn" : "good";
-    const big = esc(spacex.name || "Next launch");
-    const small = esc(spacex.displayTime || "—");
-    const det = (spacex.details||"").slice(0, 90).trim();
-    blocks.push({
-      html: moduleHTML("SpaceX", `<span class="tag ${tagClass}">${esc(spacex.statusTag)}</span>`, big, det ? `${small} • ${esc(det)}…` : small, [])
-    });
-  } else {
-    blocks.push({
-      html: moduleHTML("SpaceX", `<span class="tag warn">NEXT</span>`, "—", "Waiting on data…", [])
-    });
-  }
-
-  // Aurora (richer)
+  // Aurora (reformatted: big local %, labeled rows)
   if(aurora){
     const kpTag = aurora.kp != null ? `KP ${aurora.kp.toFixed ? aurora.kp.toFixed(1) : aurora.kp}` : "KP —";
-    const local = aurora.localProb != null ? `${aurora.localProb}%` : "—";
+    const localBig = aurora.localProb != null ? `${aurora.localProb}% local` : "— local";
     const stamp = aurora.ts ? `Updated ${fmtTime(aurora.ts)}` : "Updated recently";
-    const extras = [
-      aurora.globalMax != null ? `global max ${aurora.globalMax}%` : null,
-      aurora.speed != null ? `SW ${Math.round(aurora.speed)} km/s` : null,
-      aurora.bz != null ? `Bz ${aurora.bz.toFixed(1)} nT` : null,
-      aurora.kpForecastMax != null ? `Kp fcst max ${aurora.kpForecastMax.toFixed(1)}` : null
-    ].filter(Boolean).join(" • ");
+
+    const rows = [
+      {left:"Global max", right: aurora.globalMax != null ? `${aurora.globalMax}%` : "—"},
+      {left:"Solar wind", right: aurora.speed != null ? `${Math.round(aurora.speed)} km/s` : "—"},
+      {left:"Bz", right: aurora.bz != null ? `${aurora.bz.toFixed(1)} nT` : "—"},
+      {left:"Kp forecast max", right: aurora.kpForecastMax != null ? `${aurora.kpForecastMax.toFixed(1)}` : "—"}
+    ];
+
     blocks.push({
-      html: moduleHTML("Aurora Forecast", `<span class="tag good">${esc(kpTag)}</span>`, esc(local), esc(`${stamp}${extras ? " • " + extras : ""}`), [])
+      html: moduleHTML(
+        "Aurora Forecast",
+        `<span class="tag good">${esc(kpTag)}</span>`,
+        esc(localBig),
+        esc(stamp),
+        rows
+      )
     });
   } else {
     blocks.push({
-      html: moduleHTML("Aurora Forecast", `<span class="tag warn">NOAA</span>`, "—", "Waiting on data…", [])
+      html: moduleHTML(
+        "Aurora Forecast",
+        `<span class="tag warn">NOAA</span>`,
+        "Loading…",
+        "Waiting on data…",
+        []
+      )
     });
   }
 
-  // Aircraft (type-first + airline mix + highest altitude)
+  // Aircraft (type-first list already, plus mix in smallLine)
   if(aircraft){
     const n = aircraft.count ?? 0;
     const c = aircraft.closest;
+
     const closestType = c ? friendlyType(c.typeCode) : "—";
-    const closestDist = c?.dist != null ? `${c.dist.toFixed(1)}mi` : "—";
     const closestCs = c?.callsign || "—";
+    const closestDist = c?.dist != null ? `${c.dist.toFixed(1)}mi` : "—";
 
     const highest = aircraft.highestAltFt != null
       ? `${Math.round(aircraft.highestAltFt).toLocaleString()} ft`
       : "—";
 
     const topMix = (aircraft.topAirlines || []).map(x => `${x.name} ${x.cnt}`).join(" • ");
+
     const small = `Closest: ${closestType} • ${closestCs} • ${closestDist} • Highest: ${highest}${topMix ? " • Top: " + topMix : ""}`;
 
     blocks.push({
       html: moduleHTML(
         "Aircraft Overhead",
-        `<span class="tag good">RANGE ${esc(CONFIG.aircraftRadiusNm)} nm</span>`,
+        `<span class="tag good">RANGE ${esc(CONFIG.aircraftRadiusNm)} NM</span>`,
         esc(`${n} aircraft`),
         esc(small),
         aircraft.list || []
@@ -958,15 +997,71 @@ function renderRight(){
     blocks.push({
       html: moduleHTML(
         "Aircraft Overhead",
-        `<span class="tag warn">RANGE ${esc(CONFIG.aircraftRadiusNm)} nm</span>`,
-        "—",
+        `<span class="tag warn">RANGE ${esc(CONFIG.aircraftRadiusNm)} NM</span>`,
+        "Loading…",
         "Waiting on data…",
         []
       )
     });
   }
 
-  // rotate 3 at a time
+  // ISS (now includes globe)
+  if(iss){
+    const big = iss.over ? `Over: ${iss.over}` : "Locating…";
+    const small = `Updated ${fmtTime(iss.ts)}`;
+    const extra = issGlobeSVG(iss.lat, iss.lon);
+
+    blocks.push({
+      html: moduleHTML(
+        "ISS Position",
+        `<span class="tag good">LIVE</span>`,
+        esc(big),
+        esc(small),
+        [],
+        extra
+      )
+    });
+  } else {
+    blocks.push({
+      html: moduleHTML(
+        "ISS Position",
+        `<span class="tag warn">LIVE</span>`,
+        "Loading…",
+        "Waiting on data…",
+        [],
+        ""
+      )
+    });
+  }
+
+  // SpaceX (kept; rotates in ticker anyway, but can appear depending on phase)
+  if(spacex){
+    const tagClass = spacex.statusTag === "TBD" ? "warn" : "good";
+    const det = (spacex.details||"").slice(0, 100).trim();
+    const small = det ? `${spacex.displayTime} • ${det}…` : spacex.displayTime;
+
+    blocks.push({
+      html: moduleHTML(
+        "SpaceX",
+        `<span class="tag ${tagClass}">${esc(spacex.statusTag)}</span>`,
+        esc(spacex.name || "Next launch"),
+        esc(small || "—"),
+        []
+      )
+    });
+  } else {
+    blocks.push({
+      html: moduleHTML(
+        "SpaceX",
+        `<span class="tag warn">NEXT</span>`,
+        "Loading…",
+        "Waiting on data…",
+        []
+      )
+    });
+  }
+
+  // rotate 3 modules at a time
   const pick = (arr, start) => [arr[start%arr.length], arr[(start+1)%arr.length], arr[(start+2)%arr.length]];
   const chosen = pick(blocks, phase);
 
@@ -974,7 +1069,7 @@ function renderRight(){
   $("mod2").className = "mini fade"; $("mod2").innerHTML = chosen[1].html;
   $("mod3").className = "mini fade"; $("mod3").innerHTML = chosen[2].html;
 
-  $("rightHd").textContent = ["Earth + Space", "Live Systems", "Sky + Orbit"][phase % 3];
+  $("rightHd").textContent = ["Sky + Orbit", "Live Systems", "Radar Mode"][phase % 3];
   $("rightTag").textContent = "auto";
 
   phase++;
@@ -982,7 +1077,7 @@ function renderRight(){
   setUpdated();
 }
 
-/* ===== Start loops ===== */
+/* ===== start loops ===== */
 refreshApod();
 refreshAurora();
 refreshAircraft();
