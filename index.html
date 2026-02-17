@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Jake OS — War Room</title>
+<title>Ambient Command Center</title>
 <style>
   :root{
     --bg:#05060a;
-    --text:#edf2ff;
-    --muted:#a9b3c6;
+    --text:#eef2ff;
+    --muted:#a7b0c2;
     --line: rgba(255,255,255,.10);
     --panel: rgba(255,255,255,.06);
-    --panel2: rgba(0,0,0,.20);
+    --panel2: rgba(0,0,0,.22);
     --shadow: 0 18px 46px rgba(0,0,0,.60);
     --r: 24px;
 
@@ -20,11 +20,11 @@
     --warn:#ffd37a;
     --bad:#ff6b86;
 
-    /* 32" @ 10ft readability */
+    /* 32" @ ~10ft readability */
     --h1: 54px;
-    --h2: 30px;
-    --h3: 18px;
-    --big: 40px;
+    --h2: 28px;
+    --h3: 16px;
+    --big: 36px;
     --base: 18px;
     --small: 14px;
   }
@@ -33,13 +33,13 @@
   html,body{height:100%}
   body{
     margin:0;
+    color:var(--text);
     font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
     background:
       radial-gradient(1100px 650px at 18% 12%, rgba(107,181,255,.18), transparent 55%),
       radial-gradient(900px 600px at 92% 25%, rgba(37,224,183,.12), transparent 52%),
       radial-gradient(1000px 520px at 50% 110%, rgba(255,211,122,.10), transparent 58%),
       var(--bg);
-    color:var(--text);
     overflow:hidden;
   }
 
@@ -64,10 +64,7 @@
   }
 
   .brand{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-    min-width:0;
+    display:flex; flex-direction:column; gap:6px; min-width:0;
   }
   .title{
     font-size: var(--h2);
@@ -83,13 +80,11 @@
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
-    max-width: 720px;
+    max-width: 760px;
   }
 
   .status{
-    display:flex;
-    gap:12px;
-    align-items:center;
+    display:flex; gap:12px; align-items:center;
     font-variant-numeric: tabular-nums;
   }
   .pill{
@@ -100,9 +95,7 @@
     font-weight: 900;
     letter-spacing: .3px;
     font-size: 14px;
-    display:flex;
-    align-items:center;
-    gap:8px;
+    display:flex; align-items:center; gap:8px;
   }
   .dot{
     width:9px;height:9px;border-radius:99px;
@@ -115,7 +108,7 @@
   main{
     min-height:0;
     display:grid;
-    grid-template-columns: 1.3fr 1fr;
+    grid-template-columns: 1.4fr 1fr;
     gap:14px;
   }
 
@@ -152,109 +145,53 @@
     gap:14px;
   }
 
-  .bigClock{
-    font-size: var(--h1);
-    font-weight: 1000;
-    letter-spacing: 1px;
-    line-height: 1;
-  }
-  .bigLine{
-    font-size: var(--big);
-    font-weight: 1000;
-    letter-spacing: .4px;
-    line-height: 1.15;
-  }
-  .smallLine{
-    font-size: var(--base);
-    color: var(--muted);
-    line-height: 1.35;
-  }
-
-  .grid2{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap:12px;
-  }
-  .mini{
-    border-radius: 18px;
+  /* Left hero module */
+  .hero{
+    position:relative;
+    flex:1;
+    min-height:0;
+    border-radius: 20px;
     border:1px solid rgba(255,255,255,.10);
-    background: rgba(0,0,0,.18);
-    padding: 12px 12px;
-  }
-  .mini .k{
-    color: var(--muted);
-    font-size: var(--small);
-    text-transform: uppercase;
-    letter-spacing: .8px;
-    font-weight: 900;
-  }
-  .mini .v{
-    margin-top:8px;
-    font-variant-numeric: tabular-nums;
-    font-size: 28px;
-    font-weight: 1000;
-  }
-
-  .bar{
-    height: 14px;
-    border-radius: 999px;
-    background: rgba(255,255,255,.08);
-    border:1px solid rgba(255,255,255,.10);
+    background: rgba(0,0,0,.25);
     overflow:hidden;
   }
-  .bar > i{
-    display:block;
+  .hero img{
+    width:100%;
     height:100%;
-    width:50%;
-    background: linear-gradient(90deg, rgba(107,181,255,.95), rgba(37,224,183,.95));
+    object-fit:cover;
+    filter: saturate(1.05) contrast(1.05);
+    opacity:.88;
+    transform: scale(1.02);
   }
-
-  .row{
+  .heroOverlay{
+    position:absolute; inset:0;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.70)),
+      radial-gradient(900px 420px at 20% 20%, rgba(107,181,255,.18), transparent 55%);
+  }
+  .heroText{
+    position:absolute;
+    left:16px; right:16px; bottom:14px;
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .heroTitle{
+    font-size: 34px;
+    font-weight: 1000;
+    letter-spacing: .2px;
+    line-height: 1.1;
+  }
+  .heroMeta{
     display:flex;
-    align-items:center;
-    justify-content:space-between;
     gap:12px;
-  }
-  .label{
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: .9px;
-    font-size: var(--small);
-    font-weight: 900;
-  }
-  .value{
-    font-variant-numeric: tabular-nums;
-    font-size: 20px;
-    font-weight: 950;
-  }
-
-  .cards{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-  }
-  .scenario{
-    border-radius: 18px;
-    border:1px solid rgba(255,255,255,.10);
-    background: rgba(0,0,0,.18);
-    padding: 12px 12px;
-  }
-  .scenario .t{
-    font-weight: 950;
-    letter-spacing: .5px;
-    font-size: 18px;
-  }
-  .scenario .d{
-    margin-top:6px;
+    flex-wrap:wrap;
     color: var(--muted);
     font-size: 14px;
-    line-height: 1.35;
   }
   .tag{
     display:inline-flex;
     align-items:center;
     gap:8px;
-    padding: 6px 10px;
+    padding: 7px 10px;
     border-radius: 999px;
     border:1px solid rgba(255,255,255,.12);
     background: rgba(255,255,255,.05);
@@ -264,9 +201,62 @@
     text-transform: uppercase;
     color: var(--text);
   }
-  .tag.good{border-color: rgba(37,224,183,.35); background: rgba(37,224,183,.10); color:#cafff0}
-  .tag.warn{border-color: rgba(255,211,122,.35); background: rgba(255,211,122,.10); color:#fff1d1}
-  .tag.bad{border-color: rgba(255,107,134,.35); background: rgba(255,107,134,.10); color:#ffd4dd}
+
+  /* Right stack modules */
+  .stack{display:flex; flex-direction:column; gap:12px; min-height:0;}
+  .mini{
+    border-radius: 20px;
+    border:1px solid rgba(255,255,255,.10);
+    background: rgba(0,0,0,.18);
+    padding: 14px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .miniTop{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+  }
+  .miniTop .k{
+    color: var(--muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .9px;
+    font-weight: 950;
+  }
+  .miniTop .s{
+    font-size: 12px;
+    font-weight: 950;
+    letter-spacing: .7px;
+    text-transform: uppercase;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.05);
+    color: var(--text);
+  }
+  .bigLine{
+    font-size: 30px;
+    font-weight: 1000;
+    letter-spacing: .2px;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+  .smallLine{
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.35;
+  }
+  .list{
+    display:flex; flex-direction:column; gap:8px;
+    font-variant-numeric: tabular-nums;
+  }
+  .li{
+    display:flex; justify-content:space-between; gap:10px;
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 900;
+  }
+  .li span:last-child{color:var(--muted); font-weight:950}
 
   footer{
     border-radius: var(--r);
@@ -311,24 +301,19 @@
     100%{transform:translateX(-50%)}
   }
 
-  .fade{
-    animation: fadein .55s ease-out both;
-  }
+  .fade{ animation: fadein .55s ease-out both; }
   @keyframes fadein{
     from{opacity:.0; transform:translateY(6px)}
     to{opacity:1; transform:translateY(0)}
   }
-
-  /* hide selection cursor on signage */
-  ::selection{background:transparent}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <div class="brand">
-      <div class="title" id="hdrTitle">Jake OS — War Room</div>
-      <div class="subtitle" id="hdrSub">Clarity beats chaos • compounding wins • numbers stay honest</div>
+      <div class="title" id="hdrTitle">Ambient Command Center</div>
+      <div class="subtitle" id="hdrSub">space • earth • weather • live systems • zero news</div>
     </div>
     <div class="status">
       <div class="pill"><span class="dot" id="dot"></span><span id="net">Online</span></div>
@@ -338,266 +323,332 @@
   </header>
 
   <main>
-    <section class="card" id="leftCard">
-      <div class="hd"><div class="h" id="leftHd">Now</div><div class="label" id="leftTag">Focus</div></div>
-      <div class="bd" id="leftBd"></div>
+    <!-- LEFT: NASA APOD Hero -->
+    <section class="card">
+      <div class="hd"><div class="h">NASA — Astronomy Picture of the Day</div><div class="tag" id="apodTag">loading</div></div>
+      <div class="bd">
+        <div class="hero" id="hero">
+          <img id="apodImg" alt="" src="" />
+          <div class="heroOverlay"></div>
+          <div class="heroText">
+            <div class="heroTitle" id="apodTitle">Loading…</div>
+            <div class="heroMeta" id="apodMeta"></div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section class="card" id="rightCard">
-      <div class="hd"><div class="h" id="rightHd">Numbers</div><div class="label" id="rightTag">Calm</div></div>
-      <div class="bd" id="rightBd"></div>
+    <!-- RIGHT: rotating live modules -->
+    <section class="card">
+      <div class="hd"><div class="h" id="rightHd">Live Modules</div><div class="tag" id="rightTag">auto</div></div>
+      <div class="bd">
+        <div class="stack">
+          <div class="mini" id="mod1"></div>
+          <div class="mini" id="mod2"></div>
+          <div class="mini" id="mod3"></div>
+        </div>
+      </div>
     </section>
   </main>
 
   <footer>
-    <div class="footerLeft">Signal</div>
+    <div class="footerLeft">Live</div>
     <div class="marquee"><div class="track" id="track"></div></div>
   </footer>
 </div>
 
 <script>
-/**
- * ====== CONFIG: edit THIS only ======
- */
+/* ===== CONFIG ===== */
 const CONFIG = {
-  headerTitle: "Jake OS — War Room",
-  headerSub: "Clarity beats chaos • compounding wins • numbers stay honest",
+  // Weather location (Grandville-ish). Change anytime.
+  weather: { lat: 42.9098, lon: -85.7631, name: "Grandville" },
 
-  // One next action. Keep it real. Keep it small.
-  nextAction: "Ship one measurable thing today (even small).",
+  // Refresh intervals
+  refreshMs: {
+    apod: 60 * 60 * 1000,       // hourly
+    quakes: 2 * 60 * 1000,      // 2 min
+    iss: 20 * 1000,             // 20 sec
+    spacex: 5 * 60 * 1000,      // 5 min
+    weather: 10 * 60 * 1000     // 10 min
+  },
 
-  // “Visible wins” list (rotate)
-  wins: [
-    "Did the thing even if it was small.",
-    "Kept it structured when it got loud.",
-    "Improved a system instead of chasing a vibe.",
-    "Protected integrity and momentum."
-  ],
-
-  // Progress bars (0–100)
-  progress: [
-    { name: "Financial Independence Build", value: 22, note: "compounding phase" },
-    { name: "Skill Stack Growth", value: 41, note: "tools + reps" },
-    { name: "Public Authority", value: 18, note: "ship, publish, repeat" }
-  ],
-
-  // Streaks / counters
-  counters: [
-    { name: "Days of momentum", value: 6 },
-    { name: "Systems shipped", value: 3 },
-    { name: "Distractions ignored", value: 14 }
-  ],
-
-  // Probability/risk cards (make these fun)
-  scenarios: [
-    { tag: "good", title: "If I ship 1 thing per week", desc: "Confidence compounds. Authority becomes inevitable." },
-    { tag: "warn", title: "If I chase 5 ideas at once", desc: "Output drops. Stress rises. Nothing gets finished." },
-    { tag: "good", title: "If I track progress visibly", desc: "Brain stays calm. Momentum stays real." }
-  ],
-
-  // Bottom “signal” ticker lines (no news, just your rules)
-  signal: [
-    "Make it measurable. <b>Then</b> make it repeatable.",
-    "One clear next action beats 20 vague plans.",
-    "You don’t need motivation. You need a system.",
-    "Integrity is the only cheat code that lasts.",
-    "Visible wins keep the mind calm."
-  ],
-
-  // Auto-rotate screens
-  rotateSeconds: 20
+  // bottom ticker (no news, just live facts + status)
+  tickerBase: [
+    "Ambient mode • Space + Earth live feeds",
+    "APIs: NASA APOD • USGS • ISS • SpaceX • Open-Meteo",
+    "If something fails, it falls back cleanly (no ugly errors)"
+  ]
 };
 
-// ====== Utilities ======
+/* ===== small utils ===== */
+const $ = (id)=>document.getElementById(id);
 function esc(s){ return String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));}
-function nowClock(){
+function fmtTime(d){ return d.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"}); }
+function setClock(){
   const d = new Date();
-  const time = d.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
-  const day  = d.toLocaleDateString([], {weekday:"short", month:"short", day:"numeric"});
-  document.getElementById("clock").textContent = `${day} • ${time}`;
+  $("clock").textContent = `${d.toLocaleDateString([], {weekday:"short", month:"short", day:"numeric"})} • ${fmtTime(d)}`;
 }
-setInterval(nowClock, 1000); nowClock();
+setInterval(setClock, 1000); setClock();
 
 function setOnline(){
   const online = navigator.onLine;
-  document.getElementById("net").textContent = online ? "Online" : "Offline";
-  document.getElementById("dot").className = "dot" + (online ? "" : " bad");
+  $("net").textContent = online ? "Online" : "Offline";
+  $("dot").className = "dot" + (online ? "" : " bad");
 }
 addEventListener("online", setOnline);
 addEventListener("offline", setOnline);
 setOnline();
 
-function updateHeader(){
-  document.getElementById("hdrTitle").textContent = CONFIG.headerTitle;
-  document.getElementById("hdrSub").textContent = CONFIG.headerSub;
-}
-updateHeader();
-
 function setUpdated(){
-  const d = new Date();
-  document.getElementById("upd").textContent = d.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
-}
-setUpdated();
-
-// ====== Build ticker ======
-function buildTicker(){
-  const t = document.getElementById("track");
-  const chunks = CONFIG.signal.map(x => `<span>${x} <b>•</b></span>`).join("");
-  t.innerHTML = chunks + chunks;
-}
-buildTicker();
-
-// ====== Panels ======
-let winIdx = 0;
-function panelNow(){
-  document.getElementById("leftHd").textContent = "Now";
-  document.getElementById("leftTag").textContent = "Focus";
-  document.getElementById("rightHd").textContent = "Today";
-  document.getElementById("rightTag").textContent = "Win";
-
-  const left = document.getElementById("leftBd");
-  left.className = "bd fade";
-  left.innerHTML = `
-    <div class="bigClock" id="bigClock">${esc(new Date().toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"}))}</div>
-    <div class="smallLine">Next action</div>
-    <div class="bigLine">${esc(CONFIG.nextAction)}</div>
-    <div class="smallLine">Rule: if it’s not measurable, it’s not real.</div>
-  `;
-
-  const right = document.getElementById("rightBd");
-  right.className = "bd fade";
-  const win = CONFIG.wins[winIdx++ % CONFIG.wins.length];
-  right.innerHTML = `
-    <div class="mini">
-      <div class="k">Win to log</div>
-      <div class="v">${esc(win)}</div>
-    </div>
-    <div class="grid2">
-      ${CONFIG.counters.slice(0,2).map(c => `
-        <div class="mini">
-          <div class="k">${esc(c.name)}</div>
-          <div class="v">${esc(c.value)}</div>
-        </div>
-      `).join("")}
-    </div>
-    <div class="mini">
-      <div class="k">${esc(CONFIG.counters[2]?.name || "Counter")}</div>
-      <div class="v">${esc(CONFIG.counters[2]?.value ?? "—")}</div>
-    </div>
-  `;
+  $("upd").textContent = fmtTime(new Date());
 }
 
-function panelCompounding(){
-  document.getElementById("leftHd").textContent = "Compounding";
-  document.getElementById("leftTag").textContent = "Progress";
-  document.getElementById("rightHd").textContent = "Stability";
-  document.getElementById("rightTag").textContent = "Numbers";
+async function getJson(url){
+  const r = await fetch(url, { cache:"no-store" });
+  if(!r.ok) throw new Error("fetch failed");
+  return await r.json();
+}
 
-  const left = document.getElementById("leftBd");
-  left.className = "bd fade";
+/* ===== NASA APOD (uses DEMO_KEY) ===== */
+async function refreshApod(){
+  try{
+    const url = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY";
+    const apod = await getJson(url);
 
-  left.innerHTML = CONFIG.progress.map(p => `
-    <div class="mini">
-      <div class="row">
-        <div class="label">${esc(p.name)}</div>
-        <div class="value">${esc(p.value)}%</div>
+    $("apodTitle").textContent = apod.title || "NASA APOD";
+    $("apodTag").textContent = apod.date || "today";
+
+    // If APOD is a video, use the thumbnail-ish behavior or just show placeholder
+    if(apod.media_type === "image" && apod.url){
+      $("apodImg").src = apod.url;
+    } else {
+      // fallback: simple gradient image
+      $("apodImg").src = "data:image/svg+xml," + encodeURIComponent(`
+        <svg xmlns='http://www.w3.org/2000/svg' width='1920' height='1080'>
+          <defs>
+            <linearGradient id='g' x1='0' x2='1'>
+              <stop stop-color='#0b1020' offset='0'/>
+              <stop stop-color='#081018' offset='1'/>
+            </linearGradient>
+          </defs>
+          <rect width='100%' height='100%' fill='url(#g)'/>
+          <text x='70' y='170' fill='white' font-size='64' font-family='Arial' font-weight='800'>NASA APOD is a video today</text>
+          <text x='70' y='235' fill='#a7b0c2' font-size='34' font-family='Arial'>Showing placeholder background</text>
+        </svg>
+      `);
+    }
+
+    const credit = apod.copyright ? `© ${apod.copyright}` : "NASA";
+    const expl = (apod.explanation || "").slice(0, 160).trim() + (apod.explanation && apod.explanation.length > 160 ? "…" : "");
+    $("apodMeta").innerHTML = `
+      <span class="tag">SPACE</span>
+      <span class="tag">${esc(credit)}</span>
+      <span class="tag">${esc(new Date().getFullYear())}</span>
+      <span style="margin-left:auto; color: var(--muted); font-weight:900;">${esc(expl)}</span>
+    `;
+
+    setUpdated();
+  } catch(e){
+    $("apodTitle").textContent = "NASA APOD (offline)";
+    $("apodTag").textContent = "retrying";
+  }
+}
+
+/* ===== USGS Earthquakes (past hour) ===== */
+let lastQuakes = [];
+async function refreshQuakes(){
+  try{
+    const q = await getJson("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson");
+    const feats = (q.features || []).slice(0, 6).map(f => ({
+      mag: f.properties?.mag,
+      place: f.properties?.place || "—",
+      time: f.properties?.time ? new Date(f.properties.time) : null
+    }));
+    lastQuakes = feats;
+  } catch(e){}
+}
+
+/* ===== ISS position ===== */
+let issPos = null;
+async function refreshIss(){
+  try{
+    const d = await getJson("http://api.open-notify.org/iss-now.json");
+    // open-notify is http; some players block mixed content if your page is https.
+    // If that happens, this module will just show "unavailable" cleanly.
+    issPos = {
+      lat: d.iss_position?.latitude,
+      lon: d.iss_position?.longitude,
+      ts: d.timestamp ? new Date(d.timestamp * 1000) : new Date()
+    };
+  } catch(e){
+    issPos = null;
+  }
+}
+
+/* ===== SpaceX next launch ===== */
+let nextLaunch = null;
+async function refreshSpaceX(){
+  try{
+    const d = await getJson("https://api.spacexdata.com/v5/launches/next");
+    nextLaunch = {
+      name: d.name || "Next launch",
+      date: d.date_utc ? new Date(d.date_utc) : null,
+      details: d.details || ""
+    };
+  } catch(e){
+    nextLaunch = null;
+  }
+}
+
+/* ===== Weather (Open-Meteo, no key) ===== */
+let wx = null;
+async function refreshWeather(){
+  try{
+    const {lat, lon} = CONFIG.weather;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,wind_speed_10m&hourly=temperature_2m&forecast_days=1&timezone=auto`;
+    const d = await getJson(url);
+    const t = d.current?.temperature_2m;
+    const w = d.current?.wind_speed_10m;
+    const unitT = d.current_units?.temperature_2m || "°";
+    const unitW = d.current_units?.wind_speed_10m || "";
+    // simple "next 6 hours" trend
+    const hrs = d.hourly?.temperature_2m?.slice(0, 6) || [];
+    wx = { t, w, unitT, unitW, trend: hrs };
+  } catch(e){
+    wx = null;
+  }
+}
+
+/* ===== Render right-side modules ===== */
+function moduleHTML(title, status, big, small, listLines){
+  return `
+    <div class="miniTop">
+      <div class="k">${esc(title)}</div>
+      <div class="s">${esc(status)}</div>
+    </div>
+    <div class="bigLine">${esc(big)}</div>
+    <div class="smallLine">${esc(small)}</div>
+    ${listLines && listLines.length ? `
+      <div class="list">
+        ${listLines.map(x => `<div class="li"><span>${esc(x.left)}</span><span>${esc(x.right)}</span></div>`).join("")}
       </div>
-      <div class="bar" style="margin-top:10px;"><i style="width:${Math.max(0,Math.min(100,p.value))}%"></i></div>
-      <div class="smallLine" style="margin-top:10px;">${esc(p.note || "")}</div>
-    </div>
-  `).join("");
-
-  const right = document.getElementById("rightBd");
-  right.className = "bd fade";
-  right.innerHTML = `
-    <div class="mini">
-      <div class="k">Compounding Rule</div>
-      <div class="v">Small wins + consistency = unfair advantage.</div>
-    </div>
-    <div class="mini">
-      <div class="k">Today’s target</div>
-      <div class="v">1 measurable output.</div>
-    </div>
-    <div class="mini">
-      <div class="k">What matters</div>
-      <div class="v">Structure, integrity, momentum.</div>
-    </div>
+    ` : ``}
   `;
 }
 
-function panelProbability(){
-  document.getElementById("leftHd").textContent = "Probability";
-  document.getElementById("leftTag").textContent = "Scenarios";
-  document.getElementById("rightHd").textContent = "Risk";
-  document.getElementById("rightTag").textContent = "Control";
-
-  const left = document.getElementById("leftBd");
-  left.className = "bd fade";
-  left.innerHTML = `
-    <div class="cards">
-      ${CONFIG.scenarios.map(s => `
-        <div class="scenario">
-          <div class="row" style="align-items:flex-start;">
-            <div>
-              <div class="t">${esc(s.title)}</div>
-              <div class="d">${esc(s.desc)}</div>
-            </div>
-            <div class="tag ${esc(s.tag)}">${esc(s.tag)}</div>
-          </div>
-        </div>
-      `).join("")}
-    </div>
-  `;
-
-  // Simple risk meter based on how many "warn/bad" scenarios exist
-  const flags = CONFIG.scenarios.reduce((acc,s)=>{
-    if(s.tag==="bad") acc.bad++;
-    else if(s.tag==="warn") acc.warn++;
-    else acc.good++;
-    return acc;
-  },{good:0,warn:0,bad:0});
-
-  const risk = Math.min(100, Math.round((flags.bad*35 + flags.warn*18)));
-  const confidence = Math.max(0, Math.min(100, 100 - risk));
-
-  const right = document.getElementById("rightBd");
-  right.className = "bd fade";
-  right.innerHTML = `
-    <div class="mini">
-      <div class="row"><div class="label">Confidence</div><div class="value">${confidence}%</div></div>
-      <div class="bar" style="margin-top:10px;"><i style="width:${confidence}%; background: linear-gradient(90deg, rgba(37,224,183,.95), rgba(107,181,255,.95));"></i></div>
-      <div class="smallLine" style="margin-top:10px;">Confidence rises when the plan is simple and repeatable.</div>
-    </div>
-    <div class="mini">
-      <div class="row"><div class="label">Risk</div><div class="value">${risk}%</div></div>
-      <div class="bar" style="margin-top:10px;"><i style="width:${risk}%; background: linear-gradient(90deg, rgba(255,211,122,.95), rgba(255,107,134,.95));"></i></div>
-      <div class="smallLine" style="margin-top:10px;">Risk rises when you add complexity, not when you add work.</div>
-    </div>
-    <div class="mini">
-      <div class="k">Control lever</div>
-      <div class="v">Reduce scope. Increase repeatability.</div>
-    </div>
-  `;
+function countdown(toDate){
+  if(!toDate) return "—";
+  const ms = toDate - new Date();
+  if(ms <= 0) return "now";
+  const s = Math.floor(ms/1000);
+  const d = Math.floor(s/86400);
+  const h = Math.floor((s%86400)/3600);
+  const m = Math.floor((s%3600)/60);
+  if(d>0) return `${d}d ${h}h ${m}m`;
+  if(h>0) return `${h}h ${m}m`;
+  return `${m}m`;
 }
 
-// ====== Rotation ======
-const PANELS = [panelNow, panelCompounding, panelProbability];
-let idx = 0;
-function render(){
-  PANELS[idx % PANELS.length]();
-  idx++;
+function buildTicker(){
+  const extras = [];
+
+  // add a couple live facts
+  if(nextLaunch?.date){
+    extras.push(`Next SpaceX launch in <b>${esc(countdown(nextLaunch.date))}</b>`);
+  }
+  if(wx?.t != null){
+    extras.push(`${esc(CONFIG.weather.name)} <b>${esc(Math.round(wx.t))}${esc(wx.unitT)}</b> wind <b>${esc(Math.round(wx.w||0))}${esc(wx.unitW)}</b>`);
+  }
+  if(lastQuakes?.length){
+    const top = lastQuakes[0];
+    if(top?.mag != null) extras.push(`Latest quake <b>M${esc(top.mag)}</b> • ${esc((top.place||"").slice(0,42))}`);
+  }
+
+  const lines = [...CONFIG.tickerBase, ...extras].filter(Boolean);
+  const html = lines.map(x => `<span>${x} <b>•</b></span>`).join("");
+  $("track").innerHTML = html + html;
+}
+
+/* ===== Rotate content blocks so you don’t have to pick one thing ===== */
+let phase = 0;
+function renderRight(){
+  // We always show 3 minis, but cycle which data goes where for variety.
+  const blocks = [];
+
+  // 1) Weather
+  if(wx){
+    const t = `${Math.round(wx.t)}${wx.unitT}`;
+    const wind = `${Math.round(wx.w||0)}${wx.unitW}`;
+    const trend = (wx.trend||[]).slice(0,6).map((v,i)=>({left:`+${i}h`, right:`${Math.round(v)}${wx.unitT}`}));
+    blocks.push({ html: moduleHTML("Weather", CONFIG.weather.name, t, `Wind ${wind} • next hours`, trend) });
+  } else {
+    blocks.push({ html: moduleHTML("Weather", CONFIG.weather.name, "—", "Waiting on data…", []) });
+  }
+
+  // 2) Quakes
+  if(lastQuakes?.length){
+    const top = lastQuakes[0];
+    const big = top.mag != null ? `M${top.mag}` : "—";
+    const small = top.place || "—";
+    const list = lastQuakes.slice(1,5).map(q=>({
+      left: q.mag != null ? `M${q.mag}` : "—",
+      right: (q.place||"").slice(0,26)
+    }));
+    blocks.push({ html: moduleHTML("Earthquakes", "USGS • 1 hour", big, small, list) });
+  } else {
+    blocks.push({ html: moduleHTML("Earthquakes", "USGS • 1 hour", "—", "No recent data", []) });
+  }
+
+  // 3) ISS
+  if(issPos){
+    blocks.push({ html: moduleHTML("ISS Position", "Live", `${Number(issPos.lat).toFixed(2)}°, ${Number(issPos.lon).toFixed(2)}°`,
+      `Updated ${fmtTime(issPos.ts)}`, [
+        {left:"Latitude", right:String(issPos.lat)},
+        {left:"Longitude", right:String(issPos.lon)}
+      ]) });
+  } else {
+    blocks.push({ html: moduleHTML("ISS Position", "Live", "—", "Unavailable (some players block http).", []) });
+  }
+
+  // 4) SpaceX
+  if(nextLaunch){
+    const big = nextLaunch.name || "Next Launch";
+    const small = nextLaunch.date ? `T-minus ${countdown(nextLaunch.date)}` : "—";
+    const detail = (nextLaunch.details||"").slice(0,72).trim();
+    blocks.push({ html: moduleHTML("SpaceX", "Next", big, detail ? `${small} • ${detail}…` : small, []) });
+  } else {
+    blocks.push({ html: moduleHTML("SpaceX", "Next", "—", "Waiting on data…", []) });
+  }
+
+  // pick 3 each phase
+  const pick = (arr, start) => [arr[start%arr.length], arr[(start+1)%arr.length], arr[(start+2)%arr.length]];
+  const chosen = pick(blocks, phase);
+
+  $("mod1").className = "mini fade"; $("mod1").innerHTML = chosen[0].html;
+  $("mod2").className = "mini fade"; $("mod2").innerHTML = chosen[1].html;
+  $("mod3").className = "mini fade"; $("mod3").innerHTML = chosen[2].html;
+
+  $("rightHd").textContent = ["Live Modules", "Live Systems", "Earth + Space"][phase % 3];
+  $("rightTag").textContent = "auto";
+  phase++;
+
+  buildTicker();
   setUpdated();
 }
-render();
-setInterval(render, CONFIG.rotateSeconds * 1000);
 
-// keep big clock fresh on the Now panel
-setInterval(()=>{
-  const el = document.getElementById("bigClock");
-  if(el){
-    el.textContent = new Date().toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
-  }
-}, 1000);
+/* ===== Start loops ===== */
+refreshApod(); refreshQuakes(); refreshIss(); refreshSpaceX(); refreshWeather();
+renderRight();
+
+// refresh timers
+setInterval(refreshApod,   CONFIG.refreshMs.apod);
+setInterval(refreshQuakes, CONFIG.refreshMs.quakes);
+setInterval(refreshIss,    CONFIG.refreshMs.iss);
+setInterval(refreshSpaceX, CONFIG.refreshMs.spacex);
+setInterval(refreshWeather,CONFIG.refreshMs.weather);
+
+// rotate right panel view
+setInterval(renderRight, 22 * 1000);
 </script>
 </body>
 </html>
