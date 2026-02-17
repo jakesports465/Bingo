@@ -20,20 +20,32 @@
     --bad:#ff6b86;
 
     /* ===== BIGGER FOR 32" @ 10ft ===== */
-    --h2: 34px;
-    --h3: 18px;
-    --big: 46px;
-    --base: 22px;
-    --small: 16px;
+    --h2: 36px;
+    --h3: 20px;
 
-    /* ticker size */
-    --ticker: 28px;
+    /* big number line */
+    --big: 52px;
+
+    /* base text */
+    --base: 24px;
+    --small: 18px;
+
+    /* ticker */
+    --ticker: 30px;
 
     /* module header + key small text */
-    --cellTitle: 18px;
-    --cellSmall: 24px;   /* "Closest: ..." line etc. */
-    --listFont: 20px;    /* aircraft list rows */
-    --listRight: 20px;   /* miles column */
+    --cellTitle: 20px;
+    --cellSmall: 26px;
+
+    /* lists */
+    --listFont: 22px;
+    --listRight: 22px;
+
+    /* bubbles/pills */
+    --pillText: 17px;
+    --tagText: 16px;
+    --bubblePadY: 12px;
+    --bubblePadX: 18px;
   }
 
   *{box-sizing:border-box}
@@ -54,7 +66,7 @@
     height:100%;
     padding:18px;
     display:grid;
-    grid-template-rows: 92px 1fr 78px;
+    grid-template-rows: 96px 1fr 82px;
     gap:14px;
   }
 
@@ -85,7 +97,7 @@
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
-    max-width: 760px;
+    max-width: 780px;
   }
 
   .status{
@@ -96,14 +108,14 @@
     border-radius: 999px;
     border: 1px solid rgba(255,255,255,.14);
     background: rgba(255,255,255,.06);
-    padding: 11px 14px;
+    padding: 12px 16px;
     font-weight: 900;
     letter-spacing: .3px;
-    font-size: 16px;
-    display:flex; align-items:center; gap:8px;
+    font-size: var(--pillText);
+    display:flex; align-items:center; gap:10px;
   }
   .dot{
-    width:10px;height:10px;border-radius:99px;
+    width:12px;height:12px;border-radius:99px;
     background: var(--good);
     box-shadow: 0 0 14px rgba(37,224,183,.55);
   }
@@ -163,13 +175,13 @@
     height:100%;
     object-fit:cover;
     filter: saturate(1.05) contrast(1.05);
-    opacity:.88;
+    opacity:.90;
     transform: scale(1.02);
   }
   .heroOverlay{
     position:absolute; inset:0;
     background:
-      linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.72)),
+      linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.72)),
       radial-gradient(900px 420px at 20% 20%, rgba(107,181,255,.18), transparent 55%);
   }
   .heroText{
@@ -178,10 +190,11 @@
     display:flex; flex-direction:column; gap:10px;
   }
   .heroTitle{
-    font-size: 40px;
+    font-size: 42px;
     font-weight: 1000;
     letter-spacing: .2px;
     line-height: 1.1;
+    text-shadow: 0 10px 24px rgba(0,0,0,.55);
   }
   .heroMeta{
     display:flex;
@@ -195,12 +208,12 @@
   .tag{
     display:inline-flex;
     align-items:center;
-    gap:8px;
-    padding: 10px 16px;
+    gap:10px;
+    padding: var(--bubblePadY) var(--bubblePadX);
     border-radius: 999px;
     border:1px solid rgba(255,255,255,.14);
     background: rgba(255,255,255,.06);
-    font-size: 15px;
+    font-size: var(--tagText);
     font-weight: 950;
     letter-spacing: .9px;
     text-transform: uppercase;
@@ -216,10 +229,10 @@
     border-radius: 20px;
     border:1px solid rgba(255,255,255,.10);
     background: rgba(0,0,0,.18);
-    padding: 16px;
+    padding: 18px;
     display:flex;
     flex-direction:column;
-    gap:10px;
+    gap:12px;
     min-height: 0;
   }
 
@@ -234,11 +247,11 @@
     font-weight: 1000;
   }
   .miniTop .s{
-    font-size: 15px;
+    font-size: var(--tagText);
     font-weight: 1000;
     letter-spacing: .9px;
     text-transform: uppercase;
-    padding: 10px 16px;
+    padding: var(--bubblePadY) var(--bubblePadX);
     border-radius: 999px;
     border:1px solid rgba(255,255,255,.14);
     background: rgba(255,255,255,.06);
@@ -260,8 +273,28 @@
     font-variant-numeric: tabular-nums;
   }
 
+  .kv{
+    display:grid;
+    grid-template-columns: 1fr auto;
+    gap:10px 14px;
+    align-items:center;
+    font-variant-numeric: tabular-nums;
+  }
+  .kv .k{
+    color: rgba(255,255,255,.70);
+    font-weight: 950;
+    font-size: 20px;
+    letter-spacing:.2px;
+  }
+  .kv .v{
+    font-weight: 1000;
+    font-size: 22px;
+    color: rgba(255,255,255,.88);
+    white-space:nowrap;
+  }
+
   .list{
-    display:flex; flex-direction:column; gap:10px;
+    display:flex; flex-direction:column; gap:12px;
     font-variant-numeric: tabular-nums;
     overflow:hidden;
   }
@@ -303,7 +336,7 @@
     color: var(--accent);
     border-right: 1px solid rgba(255,255,255,.08);
     background: rgba(107,181,255,.08);
-    font-size: 18px;
+    font-size: 19px;
   }
   .marquee{
     flex:1;
@@ -314,7 +347,7 @@
   }
   .track{
     display:flex;
-    gap:54px;
+    gap:56px;
     white-space:nowrap;
     padding-left: 18px;
     animation: scroll 30s linear infinite;
@@ -356,7 +389,7 @@
       </div>
       <div class="bd">
         <div class="hero">
-          <img id="apodImg" alt="" src="" />
+          <img id="apodImg" alt="" src="" referrerpolicy="no-referrer" />
           <div class="heroOverlay"></div>
           <div class="heroText">
             <div class="heroTitle" id="apodTitle">Loading…</div>
@@ -455,7 +488,7 @@ function countdown(toDate){
   return `${m}m`;
 }
 
-function moduleHTML(title, statusHTML, bigHTML, smallHTML, listLines){
+function moduleHTML(title, statusHTML, bigHTML, smallHTML, listLines, kvPairs){
   return `
     <div class="miniTop">
       <div class="k">${esc(title)}</div>
@@ -463,6 +496,11 @@ function moduleHTML(title, statusHTML, bigHTML, smallHTML, listLines){
     </div>
     ${bigHTML ? `<div class="bigLine">${bigHTML}</div>` : ``}
     ${smallHTML ? `<div class="smallLine">${smallHTML}</div>` : ``}
+    ${Array.isArray(kvPairs) && kvPairs.length ? `
+      <div class="kv">
+        ${kvPairs.map(p => `<div class="k">${esc(p.k)}</div><div class="v">${esc(p.v)}</div>`).join("")}
+      </div>
+    ` : ``}
     ${listLines && listLines.length ? `
       <div class="list">
         ${listLines.map(x => `<div class="li"><span>${esc(x.left)}</span><span>${esc(x.right)}</span></div>`).join("")}
@@ -489,14 +527,13 @@ function friendlyType(code){
   return TYPE_MAP[c] || c;
 }
 
-/* airline + “provider” mapping */
+/* airline mapping (best effort) */
 const AIRLINE_PREFIX = {
   DAL: "Delta", UAL: "United", AAL: "American", SWA: "Southwest",
   JBU: "JetBlue", NKS: "Spirit", FFT: "Frontier", ASA: "Alaska",
   SKW: "SkyWest", RPA: "Republic", ENY: "Envoy", JIA: "PSA", AWI: "Air Wisconsin",
   UPS: "UPS", FDX: "FedEx"
 };
-/* who they are flying for (best-effort; not perfect but readable) */
 const PROVIDER_HINT = {
   SKW: "United/Delta/American Express",
   RPA: "United/Delta/American Express",
@@ -509,6 +546,9 @@ function cleanCallsign(raw){
   const s = String(raw || "").trim();
   return s || "UNKNOWN";
 }
+function flightPretty(cs){
+  return String(cs).toUpperCase().replace(/\s+/g,"").replace(/[^A-Z0-9]/g,"");
+}
 function callsignPrefix(cs){
   const t = String(cs).toUpperCase().replace(/[^A-Z0-9]/g,"");
   const m = t.match(/^([A-Z]{3})/);
@@ -520,15 +560,10 @@ function providerLabel(cs){
   if(AIRLINE_PREFIX[prefix]){
     const base = AIRLINE_PREFIX[prefix];
     const hint = PROVIDER_HINT[prefix];
-    return hint ? `${base} (${hint})` : base;
+    return hint ? `${base}` : base;
   }
-  // registrations:
   if(/^N[0-9A-Z]+$/i.test(cs)) return "General Aviation";
   return "Other";
-}
-function flightPretty(cs){
-  // For airlines: DL1234 etc. For GA: N12345 etc.
-  return String(cs).toUpperCase().replace(/\s+/g,"");
 }
 
 /* ===== Aurora helpers ===== */
@@ -548,14 +583,27 @@ function lastRow(arr){
 }
 
 /* ===== data state ===== */
-let aurora = null;        // { kp, localProb, globalMax, ts, bz, speed, kpForecastMax }
-let aircraft = null;      // { count, closest, list, topAirlines, highestAltFt }
+let aurora = null;        // { kp, ts, bz, speed, kpForecastMax }
+let aircraft = null;      // { count, closest, list, topProviders, highestAltFt }
 let iss = null;           // { lat, lon, over, ts }
 let quakes = null;        // { count, maxMag, closestMi, closestPlace, ts }
-let spacex = null;        // { name, date, details, statusTag, displayTime }
+let spacex = null;        // { name, date, statusTag, displayTime, precision, windowNote }
 let apod = null;
 
 /* ===== NASA APOD ===== */
+function setApodFallback(msgTop, msgSub){
+  $("apodImg").src = "data:image/svg+xml," + encodeURIComponent(`
+    <svg xmlns='http://www.w3.org/2000/svg' width='1920' height='1080'>
+      <defs><linearGradient id='g' x1='0' x2='1'>
+        <stop stop-color='#0b1020' offset='0'/><stop stop-color='#081018' offset='1'/>
+      </linearGradient></defs>
+      <rect width='100%' height='100%' fill='url(#g)'/>
+      <text x='70' y='170' fill='white' font-size='64' font-family='Arial' font-weight='800'>${msgTop}</text>
+      <text x='70' y='240' fill='#a7b0c2' font-size='34' font-family='Arial'>${msgSub}</text>
+    </svg>
+  `);
+}
+
 async function refreshApod(){
   try{
     const d = await getJson("https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY");
@@ -563,23 +611,17 @@ async function refreshApod(){
     $("apodTitle").textContent = d.title || "NASA APOD";
     $("apodTag").textContent = d.date || "today";
 
-    if(d.media_type === "image" && d.url){
-      $("apodImg").src = d.url;
+    const img = $("apodImg");
+    img.onerror = () => setApodFallback("NASA APOD image blocked", "Using a local fallback background");
+    if(d.media_type === "image" && (d.hdurl || d.url)){
+      img.src = d.hdurl || d.url;
     } else {
-      $("apodImg").src = "data:image/svg+xml," + encodeURIComponent(`
-        <svg xmlns='http://www.w3.org/2000/svg' width='1920' height='1080'>
-          <defs><linearGradient id='g' x1='0' x2='1'>
-            <stop stop-color='#0b1020' offset='0'/><stop stop-color='#081018' offset='1'/>
-          </linearGradient></defs>
-          <rect width='100%' height='100%' fill='url(#g)'/>
-          <text x='70' y='170' fill='white' font-size='64' font-family='Arial' font-weight='800'>NASA APOD is a video today</text>
-          <text x='70' y='235' fill='#a7b0c2' font-size='34' font-family='Arial'>Showing placeholder background</text>
-        </svg>
-      `);
+      setApodFallback("NASA APOD is a video today", "Showing placeholder background");
     }
 
     const credit = d.copyright ? `© ${d.copyright}` : "NASA";
-    const expl = (d.explanation || "").slice(0, 140).trim() + ((d.explanation||"").length > 140 ? "…" : "");
+    const explRaw = (d.explanation || "");
+    const expl = explRaw.slice(0, 140).trim() + (explRaw.length > 140 ? "…" : "");
     $("apodMeta").innerHTML = `
       <span class="tag">SPACE</span>
       <span class="tag">${esc(credit)}</span>
@@ -590,65 +632,41 @@ async function refreshApod(){
   } catch(e){
     $("apodTitle").textContent = "NASA APOD (offline)";
     $("apodTag").textContent = "retrying";
+    setApodFallback("NASA APOD offline", "Retrying automatically");
   }
 }
 
-/* ===== Aurora (more robust rendering) ===== */
+/* ===== Aurora (remove local/global; keep only “meaningful” values) ===== */
 async function refreshAurora(){
   try{
-    const ovationUrl = "https://services.swpc.noaa.gov/json/ovation_aurora_latest.json";
     const kpUrl      = "https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json";
     const magUrl     = "https://services.swpc.noaa.gov/products/solar-wind/mag-1-day.json";
     const plasmaUrl  = "https://services.swpc.noaa.gov/products/solar-wind/plasma-1-day.json";
     const kpFcUrl    = "https://services.swpc.noaa.gov/products/noaa-planetary-k-index-forecast.json";
 
-    const [ov, kp, mag, plasma, kpFc] = await Promise.all([
-      getJson(ovationUrl),
+    const [kp, mag, plasma, kpFc] = await Promise.all([
       getJson(kpUrl),
       getJson(magUrl),
       getJson(plasmaUrl),
       getJson(kpFcUrl)
     ]);
 
-    // current Kp
     let kpVal = null;
+    let kpTs = null;
     if(Array.isArray(kp)){
       for(let i=kp.length-1; i>=0; i--){
         const row = kp[i];
         if(Array.isArray(row) && row.length >= 2){
           const cand = Number(row[1]);
-          if(Number.isFinite(cand)){ kpVal = cand; break; }
-        }
-      }
-    }
-
-    // OVATION local + max
-    const {lat, lon} = CONFIG.home;
-    let bestDist = Infinity;
-    let bestVal = null;
-    let maxVal = 0;
-    let obsTime = null;
-
-    if(Array.isArray(ov)){
-      for(const entry of ov){
-        if(entry && typeof entry === "object" && entry.Observation_Time){
-          obsTime = new Date(entry.Observation_Time);
-          continue;
-        }
-        if(Array.isArray(entry) && entry.length >= 3){
-          const eLon = normLon(entry[0]);
-          const eLat = Number(entry[1]);
-          const eVal = Number(entry[2]);
-          if(Number.isFinite(eVal)) maxVal = Math.max(maxVal, eVal);
-          if(Number.isFinite(eLat) && Number.isFinite(eLon) && Number.isFinite(eVal)){
-            const d = (eLat-lat)*(eLat-lat) + (eLon-lon)*(eLon-lon);
-            if(d < bestDist){ bestDist = d; bestVal = eVal; }
+          if(Number.isFinite(cand)){
+            kpVal = cand;
+            kpTs = row[0] ? new Date(row[0]) : null;
+            break;
           }
         }
       }
     }
 
-    // Solar wind: Bz + speed
     let bz = null;
     {
       const r = lastRow(mag);
@@ -666,7 +684,6 @@ async function refreshAurora(){
       }
     }
 
-    // Kp forecast max
     let kpForecastMax = null;
     if(Array.isArray(kpFc)){
       let m = null;
@@ -681,9 +698,7 @@ async function refreshAurora(){
 
     aurora = {
       kp: kpVal,
-      localProb: (bestVal != null && Number.isFinite(bestVal)) ? Math.round(bestVal) : null,
-      globalMax: (Number.isFinite(maxVal) && maxVal > 0) ? Math.round(maxVal) : null,
-      ts: obsTime,
+      ts: kpTs || new Date(),
       bz,
       speed,
       kpForecastMax
@@ -693,7 +708,7 @@ async function refreshAurora(){
   }
 }
 
-/* ===== Aircraft overhead (show provider/brand) ===== */
+/* ===== Aircraft (cell shows only list; summary goes to ticker) ===== */
 async function refreshAircraft(){
   try{
     const {lat, lon} = CONFIG.home;
@@ -716,17 +731,15 @@ async function refreshAircraft(){
         const typeName = friendlyType(typeCode);
 
         const alt = a.alt_baro ?? a.altitude ?? a.alt ?? null;
-
         const provider = providerLabel(flight);
 
-        return {provider, flight, typeCode, typeName, alt, dist};
+        return {provider, flight, typeName, alt, dist};
       })
       .filter(x => x.dist != null)
-      .sort((x,y) => (x.dist ?? 1e9) - (y.dist ?? 1e9));
+      .sort((x,y) => x.dist - y.dist);
 
     const closest = cleaned[0] || null;
 
-    // highest altitude
     let highestAltFt = null;
     for(const x of cleaned){
       const a = Number(x.alt);
@@ -735,7 +748,6 @@ async function refreshAircraft(){
       }
     }
 
-    // provider counts
     const counts = {};
     for(const x of cleaned){
       const k = x.provider || "Other";
@@ -746,7 +758,7 @@ async function refreshAircraft(){
       .slice(0,3)
       .map(([name,cnt]) => ({name, cnt}));
 
-    // list (top 5)
+    // Cell list: provider + aircraft model on left; flight + miles on right
     const topList = cleaned.slice(0,5).map(x => ({
       left: `${x.provider} • ${x.typeName}`,
       right: `${x.flight} • ${x.dist.toFixed(1)}mi`
@@ -845,33 +857,69 @@ async function refreshQuakes(){
   }
 }
 
-/* ===== SpaceX ===== */
+/* ===== SpaceX (fix: /next can go stale; use /upcoming + pick first FUTURE launch) ===== */
+function formatLocal(date){
+  if(!date) return "—";
+  return date.toLocaleString([], {weekday:"short", month:"short", day:"numeric", hour:"2-digit", minute:"2-digit"});
+}
 async function refreshSpaceX(){
   try{
-    const d = await getJson("https://api.spacexdata.com/v5/launches/next");
-    const date = d.date_utc ? new Date(d.date_utc) : null;
+    // Pull upcoming list, pick nearest future by date_utc
+    const list = await getJson("https://api.spacexdata.com/v5/launches/upcoming");
+    const now = Date.now();
+    const upcoming = Array.isArray(list) ? list
+      .map(x => ({
+        name: x?.name || "Upcoming launch",
+        date: x?.date_utc ? new Date(x.date_utc) : null,
+        precision: x?.date_precision || "",
+        tbd: !!x?.tbd,
+        net: !!x?.net
+      }))
+      .filter(x => x.date && Number.isFinite(x.date.getTime()))
+      .filter(x => x.date.getTime() > now + 5*60*1000) // must be > 5 minutes in the future
+      .sort((a,b)=>a.date-b.date)
+      : [];
 
+    const pick = upcoming[0] || null;
+
+    if(!pick){
+      // fallback: keep last known but mark TBD
+      spacex = spacex ? {...spacex, statusTag:"TBD", displayTime:"Awaiting updated time"} : {
+        name: "SpaceX",
+        date: null,
+        precision: "",
+        statusTag: "TBD",
+        displayTime: "Awaiting updated time",
+        windowNote: ""
+      };
+      return;
+    }
+
+    // Determine if time is precise enough to countdown
+    const precision = String(pick.precision || "").toLowerCase();
+    const precise = (precision === "hour") || (precision === "day"); // hour is ideal; day we'll show date (no countdown)
     let statusTag = "NEXT";
     let displayTime = "";
-    if(date){
-      const ms = date - new Date();
-      if(ms < -60*60*1000){
-        statusTag = "TBD";
-        displayTime = "Awaiting updated time";
-      } else {
-        displayTime = `T-minus ${countdown(date)}`;
-      }
-    } else {
+
+    if(pick.tbd || precision === "month" || precision === "year"){
       statusTag = "TBD";
-      displayTime = "Time TBD";
+      displayTime = "Awaiting updated time";
+    } else if(precision === "day"){
+      statusTag = "NEXT";
+      displayTime = `NET ${formatLocal(pick.date)}`;
+    } else {
+      // hour-ish: show countdown + local time
+      statusTag = "NEXT";
+      displayTime = `T-minus ${countdown(pick.date)} • ${formatLocal(pick.date)}`;
     }
 
     spacex = {
-      name: d.name || "Next launch",
-      date,
-      details: d.details || "",
+      name: pick.name,
+      date: pick.date,
+      precision: pick.precision,
       statusTag,
-      displayTime
+      displayTime,
+      windowNote: pick.net ? "NET" : ""
     };
   } catch(e){
     spacex = null;
@@ -887,37 +935,49 @@ function buildTicker(){
   if(apod?.title) live.push(`APOD • <b>${esc(apod.title)}</b>`);
 
   if(aurora){
-    const kp = (aurora.kp != null) ? `Kp <b>${esc(aurora.kp.toFixed ? aurora.kp.toFixed(1) : aurora.kp)}</b>` : `Kp <b>—</b>`;
-    const local = (aurora.localProb != null) ? `local <b>${esc(aurora.localProb)}%</b>` : `local <b>—</b>`;
-    const global = (aurora.globalMax != null) ? `global <b>${esc(aurora.globalMax)}%</b>` : ``;
-    live.push(`Aurora • ${kp} • ${local}${global ? " • " + global : ""}`);
-  } else live.push(`Aurora • <b>loading</b>`);
+    const kp = (aurora.kp != null) ? `Kp <b>${esc(aurora.kp.toFixed(1))}</b>` : `Kp <b>—</b>`;
+    const sw = (aurora.speed != null) ? `SW <b>${esc(Math.round(aurora.speed))}</b> km/s` : `SW <b>—</b>`;
+    const bz = (aurora.bz != null) ? `Bz <b>${esc(aurora.bz.toFixed(1))}</b> nT` : `Bz <b>—</b>`;
+    const fc = (aurora.kpForecastMax != null) ? `Kp fcst max <b>${esc(aurora.kpForecastMax.toFixed(1))}</b>` : `Kp fcst max <b>—</b>`;
+    live.push(`Aurora • ${kp} • ${sw} • ${bz} • ${fc}`);
+  } else {
+    live.push(`Aurora • <b>loading</b>`);
+  }
 
   if(aircraft){
     const n = aircraft.count ?? 0;
     const c = aircraft.closest;
+    const highest = aircraft.highestAltFt != null ? `${Math.round(aircraft.highestAltFt).toLocaleString()} ft` : "—";
+    const topMix = (aircraft.topProviders || []).map(x => `${x.name} ${x.cnt}`).join(" • ");
+
     const cTxt = c
-      ? `${esc(c.provider)} • ${esc(c.typeName)} • ${esc(c.flight)} • ${c.dist.toFixed(1)}mi`
-      : "—";
-    live.push(`Aircraft • <b>${esc(n)}</b> in range • closest <b>${cTxt}</b>`);
-    if(aircraft.highestAltFt != null){
-      live.push(`Sky scan • highest altitude <b>${esc(Math.round(aircraft.highestAltFt).toLocaleString())}</b> ft`);
-    }
-  } else live.push(`Aircraft • <b>loading</b>`);
+      ? `Closest: ${esc(c.provider)} • ${esc(c.typeName)} • ${esc(c.flight)} • ${c.dist.toFixed(1)}mi`
+      : `Closest: —`;
+
+    live.push(`Aircraft • <b>${esc(n)}</b> in range • <b>${cTxt}</b> • Highest: <b>${esc(highest)}</b>${topMix ? " • Top: <b>"+esc(topMix)+"</b>" : ""}`);
+  } else {
+    live.push(`Aircraft • <b>loading</b>`);
+  }
 
   if(iss){
     live.push(`ISS • <b>${esc(iss.over || "Locating…")}</b>`);
-  } else live.push(`ISS • <b>loading</b>`);
+  } else {
+    live.push(`ISS • <b>loading</b>`);
+  }
 
   if(quakes){
     const mm = (quakes.maxMag != null) ? quakes.maxMag.toFixed(1) : "—";
     const cd = (quakes.closestMi != null) ? quakes.closestMi.toFixed(0) + "mi" : "—";
     live.push(`Quakes • <b>${esc(quakes.count)}</b> last hour • max M<b>${esc(mm)}</b> • closest <b>${esc(cd)}</b>`);
-  } else live.push(`Quakes • <b>loading</b>`);
+  } else {
+    live.push(`Quakes • <b>loading</b>`);
+  }
 
   if(spacex){
     live.push(`SpaceX • <b>${esc(spacex.name)}</b> • <b>${esc(spacex.displayTime || "—")}</b>`);
-  } else live.push(`SpaceX • <b>loading</b>`);
+  } else {
+    live.push(`SpaceX • <b>loading</b>`);
+  }
 
   const lines = [...CONFIG.tickerBase, ...live].filter(Boolean);
   const html = lines.map(x => `<span>${x} <b>•</b></span>`).join("");
@@ -927,81 +987,63 @@ function buildTicker(){
 function renderRight(){
   const blocks = [];
 
-  // AURORA (fixed meaning + always shows something)
+  // AURORA (no local/global; clearer meaning)
   if(aurora){
-    const kpTag = aurora.kp != null ? `KP ${aurora.kp.toFixed ? aurora.kp.toFixed(1) : aurora.kp}` : "KP —";
-
-    const big =
-      (aurora.localProb != null) ? `${aurora.localProb}% local` :
-      (aurora.globalMax != null) ? `${aurora.globalMax}% global max` :
-      "Loading…";
-
+    const kpTag = aurora.kp != null ? `KP ${aurora.kp.toFixed(1)}` : "KP —";
     const stamp = aurora.ts ? `Updated ${fmtTime(aurora.ts)}` : "Updated recently";
 
-    const rows = [
-      {left:"Local chance", right: aurora.localProb != null ? `${aurora.localProb}%` : "—"},
-      {left:"Global max", right: aurora.globalMax != null ? `${aurora.globalMax}%` : "—"},
-      {left:"Solar wind", right: aurora.speed != null ? `${Math.round(aurora.speed)} km/s` : "—"},
-      {left:"Bz", right: aurora.bz != null ? `${aurora.bz.toFixed(1)} nT` : "—"},
-      {left:"Kp now", right: aurora.kp != null ? `${aurora.kp.toFixed ? aurora.kp.toFixed(1) : aurora.kp}` : "—"},
-      {left:"Kp fcst max", right: aurora.kpForecastMax != null ? `${aurora.kpForecastMax.toFixed(1)}` : "—"}
+    const kv = [
+      {k:"Kp now", v: aurora.kp != null ? aurora.kp.toFixed(1) : "—"},
+      {k:"Solar wind", v: aurora.speed != null ? `${Math.round(aurora.speed)} km/s` : "—"},
+      {k:"Bz", v: aurora.bz != null ? `${aurora.bz.toFixed(1)} nT` : "—"},
+      {k:"Kp forecast max", v: aurora.kpForecastMax != null ? aurora.kpForecastMax.toFixed(1) : "—"}
     ];
 
     blocks.push({
       html: moduleHTML(
         "Aurora Forecast",
         `<span class="tag good">${esc(kpTag)}</span>`,
-        esc(big),
-        esc(stamp),
-        rows
+        "",
+        stamp,
+        [],
+        kv
       )
     });
   } else {
     blocks.push({
-      html: moduleHTML("Aurora Forecast", `<span class="tag warn">NOAA</span>`, "Loading…", "Waiting on data…", [])
+      html: moduleHTML("Aurora Forecast", `<span class="tag warn">NOAA</span>`, "", "Waiting on data…", [], [])
     });
   }
 
-  // AIRCRAFT (provider/brand + readable list)
+  // AIRCRAFT (cell: list only)
   if(aircraft){
     const n = aircraft.count ?? 0;
-    const c = aircraft.closest;
-
-    const highest = aircraft.highestAltFt != null
-      ? `${Math.round(aircraft.highestAltFt).toLocaleString()} ft`
-      : "—";
-
-    const topMix = (aircraft.topProviders || []).map(x => `${x.name} ${x.cnt}`).join(" • ");
-
-    const small = c
-      ? `Closest: ${c.provider} • ${c.typeName} • ${c.flight} • ${c.dist.toFixed(1)}mi • Highest: ${highest}${topMix ? " • Top: " + topMix : ""}`
-      : `Closest: — • Highest: ${highest}${topMix ? " • Top: " + topMix : ""}`;
-
     blocks.push({
       html: moduleHTML(
         "Aircraft Overhead",
         `<span class="tag good">RANGE ${esc(CONFIG.aircraftRadiusNm)} NM</span>`,
-        esc(`${n} aircraft`),
-        esc(small),
-        aircraft.list || []
+        `${esc(n)} aircraft`,
+        "",                 // no summary line in the cell
+        aircraft.list || [],
+        []
       )
     });
   } else {
     blocks.push({
-      html: moduleHTML("Aircraft Overhead", `<span class="tag warn">RANGE ${esc(CONFIG.aircraftRadiusNm)} NM</span>`, "Loading…", "Waiting on data…", [])
+      html: moduleHTML("Aircraft Overhead", `<span class="tag warn">RANGE ${esc(CONFIG.aircraftRadiusNm)} NM</span>`, "Loading…", "", [], [])
     });
   }
 
-  // ISS (no globe)
+  // ISS
   if(iss){
     const big = iss.over ? `Over: ${iss.over}` : "Locating…";
     const small = `Updated ${fmtTime(iss.ts)} • lat ${Number.isFinite(iss.lat) ? iss.lat.toFixed(2) : "—"} • lon ${Number.isFinite(iss.lon) ? iss.lon.toFixed(2) : "—"}`;
     blocks.push({
-      html: moduleHTML("ISS Position", `<span class="tag good">LIVE</span>`, esc(big), esc(small), [])
+      html: moduleHTML("ISS Position", `<span class="tag good">LIVE</span>`, esc(big), esc(small), [], [])
     });
   } else {
     blocks.push({
-      html: moduleHTML("ISS Position", `<span class="tag warn">LIVE</span>`, "Loading…", "Waiting on data…", [])
+      html: moduleHTML("ISS Position", `<span class="tag warn">LIVE</span>`, "Loading…", "Waiting on data…", [], [])
     });
   }
 
@@ -1012,46 +1054,45 @@ function renderRight(){
     const closest = (quakes.closestMi != null) ? `${quakes.closestMi.toFixed(0)}mi` : "—";
     const place = quakes.closestPlace ? quakes.closestPlace : "—";
 
-    const rows = [
-      {left:"Last hour", right: `${count} total`},
-      {left:"Largest", right: `M${maxMag}`},
-      {left:"Closest", right: `${closest}`},
-      {left:"Closest area", right: place}
+    const kv = [
+      {k:"Last hour", v:`${count} total`},
+      {k:"Largest", v:`M${maxMag}`},
+      {k:"Closest", v:`${closest}`},
+      {k:"Closest area", v: place}
     ];
 
     blocks.push({
       html: moduleHTML(
         "Earthquakes",
         `<span class="tag good">USGS 1 HR</span>`,
-        esc(`${count} quakes`),
-        esc(`Updated ${fmtTime(quakes.ts)}`),
-        rows
+        `${esc(count)} quakes`,
+        `Updated ${fmtTime(quakes.ts)}`,
+        [],
+        kv
       )
     });
   } else {
     blocks.push({
-      html: moduleHTML("Earthquakes", `<span class="tag warn">USGS 1 HR</span>`, "Loading…", "Waiting on data…", [])
+      html: moduleHTML("Earthquakes", `<span class="tag warn">USGS 1 HR</span>`, "Loading…", "Waiting on data…", [], [])
     });
   }
 
-  // SpaceX (kept as a module option)
+  // SpaceX
   if(spacex){
     const tagClass = spacex.statusTag === "TBD" ? "warn" : "good";
-    const det = (spacex.details||"").slice(0, 100).trim();
-    const small = det ? `${spacex.displayTime} • ${det}…` : spacex.displayTime;
-
     blocks.push({
       html: moduleHTML(
         "SpaceX",
         `<span class="tag ${tagClass}">${esc(spacex.statusTag)}</span>`,
-        esc(spacex.name || "Next launch"),
-        esc(small || "—"),
+        esc(spacex.name || "Upcoming launch"),
+        esc(spacex.displayTime || "—"),
+        [],
         []
       )
     });
   } else {
     blocks.push({
-      html: moduleHTML("SpaceX", `<span class="tag warn">NEXT</span>`, "Loading…", "Waiting on data…", [])
+      html: moduleHTML("SpaceX", `<span class="tag warn">TBD</span>`, "Loading…", "Waiting on data…", [], [])
     });
   }
 
