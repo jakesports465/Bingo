@@ -44,15 +44,16 @@
 <body>
 
 <button id="goalBtn">GOAL!</button>
-<div class="note">Plays freedom.mp3 • Volume boost enabled</div>
+<div class="note">Plays freedom.mp3 • Click again to stop</div>
 
 <script>
   // ====== SETTINGS ======
-  const FILE = "freedom.mp3"; // must be in same folder
-  const BOOST = 2.0;          // 1.0 = normal, 1.5 = louder, 2.0 = much louder (may distort)
+  const FILE = "freedom.mp3"; 
+  const BOOST = 2.0;          
   // ======================
 
   let audio, ctx, src, gain;
+  let isPlaying = false;
 
   function initAudioOnce(){
     if (ctx) return;
@@ -68,19 +69,23 @@
     src.connect(gain).connect(ctx.destination);
   }
 
-  function playGoal(){
+  function toggleGoal(){
     initAudioOnce();
 
-    // Some browsers require user gesture to start/resume audio context
     if (ctx.state === "suspended") ctx.resume();
 
-    audio.currentTime = 0;
-    audio.play().catch(() => {
-      // If autoplay policy blocks it, user can click again
-    });
+    if (!isPlaying) {
+      audio.currentTime = 0;
+      audio.play();
+      isPlaying = true;
+    } else {
+      audio.pause();
+      audio.currentTime = 0;
+      isPlaying = false;
+    }
   }
 
-  document.getElementById("goalBtn").addEventListener("click", playGoal);
+  document.getElementById("goalBtn").addEventListener("click", toggleGoal);
 </script>
 
 </body>
