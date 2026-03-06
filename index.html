@@ -1416,6 +1416,16 @@ function load(){try{const s=localStorage.getItem('mw2_save');if(s){Object.assign
 let selClass='Fearless', selBG='Streets';
 
 function safeInitNewFields(){
+  if(!G.raceCar)G.raceCar='rc01';
+  if(!G.raceWins)G.raceWins=0;
+  if(!G.raceCooldowns)G.raceCooldowns={};
+  if(!G.racePurchased)G.racePurchased={};
+  if(!G.dwPurchased)G.dwPurchased={};
+  if(!G.dwHackCooldowns)G.dwHackCooldowns={};
+  if(!G.underworldRep)G.underworldRep=0;
+  if(!G.streetBounties)G.streetBounties={};
+  if(!G.ownedTerritories)G.ownedTerritories={};
+  if(!G.heatDecayBonus)G.heatDecayBonus=0;
   // Ensure all new fields exist after loading old save
   if(!G.bossHP)G.bossHP={};
   if(!G.bossDefeated)G.bossDefeated={};
@@ -1541,6 +1551,7 @@ function showPanel(p){
     jobs:buildJobs, fight:buildFight, hitlist:buildHitlist, rob:buildRob,
     gangwar:buildGangWar, bosses:buildBosses, savemgr:buildSaveMgr, crew:buildCrew, hitman:buildHitman, events:buildEvents, notoriety:buildNotoriety, drugtrade:buildDrugTrade, achievements:buildAchievements, properties:buildProperties, store:buildStore, luxury:buildLuxury,
     blackmarket:buildBlackMarket, crafting:buildCrafting, inventory:buildInventory,
+    racing:buildRacing, darkweb:buildDarkWeb, underworld:buildUnderworld,
     skilltree:buildSkillTree, casino:buildCasino, prestige:buildPrestige,
     missions:buildMissions, operations:buildOperations, contracts:buildContracts,
   };
@@ -4236,6 +4247,389 @@ function startLoops(){
   setInterval(()=>{applyCrewPassives();},60000);
   // Init heat bar
   updateHeatBar();
+}
+
+// ══════════════════════════════════════════════════════════
+// STREET RACING
+// ══════════════════════════════════════════════════════════
+const RACE_CARS = [
+  {id:'rc01',n:'Stolen Honda',   e:'🚗',speed:10, cost:0,       ml:1,  d:'Hot-wired from a parking lot. Gets you there.'},
+  {id:'rc02',n:'Tuned Civic',    e:'🏎️',speed:22, cost:15000,   ml:5,  d:'200hp of pure street cred.'},
+  {id:'rc03',n:'WRX STI',        e:'🚙',speed:38, cost:80000,   ml:15, d:'All-wheel grip. Corners like rails.'},
+  {id:'rc04',n:'Mustang GT',     e:'🐎',speed:55, cost:250000,  ml:30, d:'American muscle. Straight line king.'},
+  {id:'rc05',n:'Nissan GT-R',    e:'⚡',speed:75, cost:800000,  ml:60, d:'The Godzilla. Street legal racecar.'},
+  {id:'rc06',n:'Lamborghini',    e:'🐂',speed:95, cost:3000000, ml:120,d:'Carbon fiber and madness.'},
+  {id:'rc07',n:'Bugatti Chiron', e:'👑',speed:118,cost:12000000,ml:300,d:'1500hp. 0-60 in 2.4 seconds. Obscene.'},
+  {id:'rc08',n:'Custom One-Off', e:'🔱',speed:145,cost:50000000,ml:600,d:'Built by your engineers. No VIN. No limits.'},
+];
+const RACE_TIERS = [
+  {id:'rt01',n:'Backstreet Sprint',   e:'🛣️',diff:12, cash:800,    xp:15,  ml:1,  heat:3,  stamina:2,d:'Quarter-mile on the industrial strip.'},
+  {id:'rt02',n:'Harbor Run',          e:'🌉',diff:28, cash:5000,   xp:40,  ml:15, heat:5,  stamina:2,d:'Waterfront to the bridge at midnight.'},
+  {id:'rt03',n:'Downtown Circuit',    e:'🏙️',diff:50, cash:20000,  xp:100, ml:40, heat:8,  stamina:3,d:'Three laps through downtown. One wrong turn ends it.'},
+  {id:'rt04',n:'Highway Gauntlet',    e:'🛤️',diff:75, cash:80000,  xp:250, ml:100,heat:12, stamina:3,d:'Closing the freeway for 30 miles.'},
+  {id:'rt05',n:'Mountain Pass',       e:'⛰️',diff:100,cash:300000, xp:600, ml:250,heat:15, stamina:4,d:'Blind corners at 150mph. Only legends survive.'},
+  {id:'rt06',n:'The Death Race',      e:'💀',diff:135,cash:1500000,xp:2000,ml:500,heat:25, stamina:5,d:'No rules. No mercy. Winner takes everything.'},
+];
+function buildRacing(c){
+  if(!G.raceCar)G.raceCar='rc01';
+  if(!G.raceWins)G.raceWins=0;
+  if(!G.raceCooldowns)G.raceCooldowns={};
+  if(!G.racePurchased)G.racePurchased={};
+  const now=Date.now();
+  const ownedCar=RACE_CARS.find(r=>r.id===G.raceCar)||RACE_CARS[0];
+  let html=`<div class="panel"><div class="ph"><h2>🏎️ STREET RACING</h2><span class="psub">Illegal races. Real money. Uses Stamina. Better car = better odds.</span></div><div class="pb">`;
+  html+=`<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">
+    <div style="background:var(--surface2);border:1px solid var(--border);padding:8px;text-align:center">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--bright-gold)">${G.raceWins}</div>
+      <div style="font-size:9px;color:var(--text-dim);font-family:'Cutive Mono',monospace">RACE WINS</div>
+    </div>
+    <div style="background:var(--surface2);border:1px solid var(--border);padding:8px;text-align:center">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--bright-green)">${ownedCar.e} ${ownedCar.n}</div>
+      <div style="font-size:9px;color:var(--text-dim);font-family:'Cutive Mono',monospace">CURRENT · SPD ${ownedCar.speed}</div>
+    </div>
+    <div style="background:var(--surface2);border:1px solid var(--border);padding:8px;text-align:center">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--crimson)">${G.stamina}/${G.maxStamina}</div>
+      <div style="font-size:9px;color:var(--text-dim);font-family:'Cutive Mono',monospace">STAMINA</div>
+    </div>
+  </div>`;
+  html+=`<div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.1em;color:var(--text-dim);border-bottom:1px solid var(--border);margin-bottom:8px;padding-bottom:4px">🚗 GARAGE</div>`;
+  html+=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:16px">`;
+  for(const car of RACE_CARS){
+    const owned=G.raceCar===car.id;
+    const canAfford=G.cash>=car.cost;
+    const locked=G.level<car.ml;
+    const purchased=G.racePurchased[car.id]||car.cost===0;
+    html+=`<div style="background:${owned?'linear-gradient(135deg,rgba(139,0,0,.25),var(--surface2))':'var(--surface2)'};border:1px solid ${owned?'var(--crimson)':'var(--border)'};padding:9px;display:flex;align-items:center;gap:8px;opacity:${locked&&!owned?'.4':'1'}">
+      <div style="font-size:22px">${car.e}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${car.n}</div>
+        <div style="font-size:8px;color:var(--text-dim);font-family:'Cutive Mono',monospace">SPD ${car.speed}${car.cost>0?' · $'+fmtCash(car.cost):' · FREE'}</div>
+      </div>
+      ${owned?'<div style="font-size:9px;color:var(--bright-gold);font-family:\'Bebas Neue\',sans-serif;white-space:nowrap">ON</div>':
+        locked?`<div style="font-size:9px;color:var(--text-dim)">L${car.ml}</div>`:
+        purchased?`<button onclick="selectCar('${car.id}')" style="background:var(--green);border:1px solid var(--bright-green);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:10px;padding:3px 7px;cursor:pointer">USE</button>`:
+        `<button onclick="buyCar('${car.id}')" ${canAfford?'':'disabled'} style="background:${canAfford?'var(--gold)':'var(--surface3)'};border:none;color:#000;font-family:'Bebas Neue',sans-serif;font-size:10px;padding:3px 7px;cursor:${canAfford?'pointer':'not-allowed'};opacity:${canAfford?1:.5}">BUY</button>`
+      }
+    </div>`;
+  }
+  html+=`</div>`;
+  html+=`<div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.1em;color:var(--text-dim);border-bottom:1px solid var(--border);margin-bottom:8px;padding-bottom:4px">🏁 RACE EVENTS</div>`;
+  for(const race of RACE_TIERS){
+    const locked=G.level<race.ml;
+    const cd=G.raceCooldowns[race.id]||0;
+    const cdLeft=Math.max(0,Math.ceil((cd-now)/1000));
+    const onCd=cdLeft>0;
+    const winChance=Math.min(0.92,Math.max(0.08,(ownedCar.speed/race.diff)*0.7+0.15));
+    const canRace=!locked&&!onCd&&G.stamina>=race.stamina;
+    html+=`<div style="background:var(--surface2);border:1px solid var(--border);padding:10px;margin-bottom:6px;display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;opacity:${locked?.4:1}">
+      <div style="font-size:26px">${race.e}</div>
+      <div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:14px">${race.n}</div>
+        <div style="font-size:9px;color:var(--text-dim);font-family:'Special Elite',serif">${race.d}</div>
+        <div style="font-size:9px;color:var(--text-dim);font-family:'Cutive Mono',monospace;margin-top:3px">Win: $${fmtCash(race.cash)} +${race.xp}XP · ${race.stamina}stam · ${Math.round(winChance*100)}% win${locked?' · Lv'+race.ml:''}</div>
+      </div>
+      <div style="text-align:center;min-width:65px">
+        ${locked?`<div style="font-size:10px;color:var(--text-dim)">LV ${race.ml}</div>`:
+          onCd?`<div style="font-family:'Cutive Mono',monospace;font-size:10px;color:var(--text-dim)">${cdLeft}s</div>`:
+          `<button onclick="doRace('${race.id}')" ${canRace?'':'disabled'} style="background:${canRace?'var(--crimson)':'var(--surface3)'};border:1px solid ${canRace?'rgba(255,80,80,.5)':'var(--border)'};color:#fff;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:.08em;padding:6px 11px;cursor:${canRace?'pointer':'not-allowed'};opacity:${canRace?1:.5}">RACE</button>`
+        }
+      </div>
+    </div>`;
+  }
+  html+=`</div></div>`;
+  c.innerHTML=html;
+}
+function buyCar(id){
+  const car=RACE_CARS.find(c=>c.id===id);if(!car)return;
+  if(G.cash<car.cost){toast('Not enough cash!','r');return;}
+  if(G.level<car.ml){toast('Level too low!','r');return;}
+  G.cash-=car.cost;
+  if(!G.racePurchased)G.racePurchased={};
+  G.racePurchased[id]=true;G.raceCar=id;
+  addLog(`🚗 Bought ${car.n}!`,'gold');toast(`${car.n} acquired!`,'gold');
+  updateAll();save();buildRacing(document.getElementById('center'));
+}
+function selectCar(id){
+  G.raceCar=id;const car=RACE_CARS.find(c=>c.id===id);
+  toast(`${car?car.n:id} equipped!`,'gold');save();
+  buildRacing(document.getElementById('center'));
+}
+function doRace(rid){
+  const race=RACE_TIERS.find(r=>r.id===rid);if(!race)return;
+  if(G.stamina<race.stamina){toast(`Need ${race.stamina} stamina!`,'r');return;}
+  if(G.level<race.ml){toast('Level too low!','r');return;}
+  const now=Date.now();
+  if(G.raceCooldowns&&G.raceCooldowns[rid]>now){toast('Race on cooldown!','r');return;}
+  const car=RACE_CARS.find(c=>c.id===G.raceCar)||RACE_CARS[0];
+  G.stamina-=race.stamina;addHeat(race.heat);
+  const winChance=Math.min(0.92,Math.max(0.08,(car.speed/race.diff)*0.7+0.15));
+  const won=Math.random()<winChance;
+  if(!G.raceCooldowns)G.raceCooldowns={};
+  G.raceCooldowns[rid]=now+60000;
+  if(won){
+    G.raceWins=(G.raceWins||0)+1;
+    const earn=Math.floor(race.cash*(G.cashMult||1));
+    G.cash+=earn;G.totalEarned+=earn;gainXP(race.xp);
+    addLog(`🏁 WON: ${race.n}! +$${fmtCash(earn)} +${race.xp}XP`,'gold');
+    toast(`Race Won! +$${fmtCash(earn)}!`,'gold');
+  }else{
+    const fine=Math.floor(race.cash*0.15);
+    G.cash=Math.max(0,G.cash-fine);
+    addLog(`💥 LOST: ${race.n}. Crashed. -$${fmtCash(fine)}.`,'bad');
+    toast(`Race Lost! -$${fmtCash(fine)} repair.`,'r');
+  }
+  checkAchievements();updateAll();save();buildRacing(document.getElementById('center'));
+}
+
+// ══════════════════════════════════════════════════════════
+// DARK WEB
+// ══════════════════════════════════════════════════════════
+const DARK_WEB_LISTINGS = [
+  {id:'dw01',n:'Leaked FBI Database',       e:'🗄️',cost:50000,   ml:10, bonus:'lootBonus',val:5,   d:'Every target\'s file. Who they know. Where they live.'},
+  {id:'dw02',n:'Untraceable Crypto Wallet', e:'₿',  cost:200000,  ml:25, bonus:'cashMult', val:0.05,d:'Move money without a trace. Ever.'},
+  {id:'dw03',n:'Police Scanner Network',   e:'📡', cost:150000,  ml:20, bonus:'heatDec',  val:1,   d:'Real-time feed from every precinct.'},
+  {id:'dw04',n:'Darknet Arms Broker',       e:'🔫', cost:500000,  ml:50, bonus:'atk',      val:25,  d:'Military surplus. No serial numbers. 48-hour delivery.'},
+  {id:'dw05',n:'Corporate Espionage Kit',   e:'💻', cost:800000,  ml:75, bonus:'cashMult', val:0.08,d:'Zero-days. Insider access. Corporate secrets are money.'},
+  {id:'dw06',n:'Shadow Identity Package',   e:'🪪', cost:1500000, ml:100,bonus:'heatDec',  val:2,   d:'Three clean IDs, passports, new face if needed.'},
+  {id:'dw07',n:'Mercenary Network',         e:'⚔️', cost:3000000, ml:150,bonus:'atk',      val:60,  d:'500 contractors on standby. Deniability included.'},
+  {id:'dw08',n:'SWIFT Banking Exploit',     e:'💸', cost:8000000, ml:250,bonus:'cashMult', val:0.12,d:'Route money through 40 banks in 3 seconds.'},
+  {id:'dw09',n:'Global Surveillance Feed',  e:'🛰️', cost:20000000,ml:400,bonus:'xpMult',   val:0.15,d:'Every camera. Every phone. You see everything.'},
+  {id:'dw10',n:'AI Crime Network',          e:'🤖', cost:50000000,ml:600,bonus:'cashMult', val:0.20,d:'Self-learning criminal network. Operates while you sleep.'},
+];
+const DW_HACKS = [
+  {id:'hk01',n:'Skim ATM Network',      e:'🏧',cost:500,    reward:3000,   xp:8,   risk:0.15,ml:1,  energy:5, d:'Plant skimmers on 20 ATMs. Quick in, quick out.'},
+  {id:'hk02',n:'Phishing Campaign',     e:'📧',cost:2000,   reward:12000,  xp:20,  risk:0.18,ml:10, energy:8, d:'Blast 50K emails. Even 0.1% hit rate pays.'},
+  {id:'hk03',n:'Ransomware Deploy',     e:'🔒',cost:10000,  reward:60000,  xp:60,  risk:0.22,ml:25, energy:12,d:'Lock a small business\'s servers. They always pay.'},
+  {id:'hk04',n:'Crypto Exchange Heist', e:'💰',cost:50000,  reward:350000, xp:180, risk:0.28,ml:60, energy:18,d:'Exploit the deposit contract. Millions in minutes.'},
+  {id:'hk05',n:'Bank Wire Intercept',   e:'🏦',cost:200000, reward:1500000,xp:600, risk:0.32,ml:150,energy:25,d:'Man-in-the-middle on a corporate transfer.'},
+  {id:'hk06',n:'State Treasury Breach', e:'🏛️',cost:1000000,reward:8000000,xp:2000,risk:0.38,ml:400,energy:40,d:'National reserve hack. Hardest job on the web.'},
+];
+function buildDarkWeb(c){
+  if(!G.dwPurchased)G.dwPurchased={};
+  if(!G.dwHackCooldowns)G.dwHackCooldowns={};
+  const now=Date.now();
+  let html=`<div class="panel"><div class="ph"><h2>🕸️ DARK WEB</h2><span class="psub">Anonymous marketplace. Permanent upgrades. Hacking operations. No trace.</span></div><div class="pb">`;
+  html+=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+    <div style="background:var(--surface2);border:1px solid var(--border);padding:8px;text-align:center">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--bright-gold)">${Object.keys(G.dwPurchased).length}/${DARK_WEB_LISTINGS.length}</div>
+      <div style="font-size:9px;color:var(--text-dim);font-family:'Cutive Mono',monospace">UPGRADES OWNED</div>
+    </div>
+    <div style="background:var(--surface2);border:1px solid var(--border);padding:8px;text-align:center">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--bright-green)">$${fmtCash(G.cash)}</div>
+      <div style="font-size:9px;color:var(--text-dim);font-family:'Cutive Mono',monospace">AVAILABLE CASH</div>
+    </div>
+  </div>`;
+  html+=`<div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.1em;color:var(--text-dim);border-bottom:1px solid var(--border);margin-bottom:8px;padding-bottom:4px">🛒 ANONYMOUS MARKETPLACE</div>`;
+  for(const item of DARK_WEB_LISTINGS){
+    const owned=G.dwPurchased[item.id];
+    const canAfford=G.cash>=item.cost;
+    const locked=G.level<item.ml;
+    const bonusLabel={cashMult:'Cash +'+Math.round(item.val*100)+'%',xpMult:'XP +'+Math.round(item.val*100)+'%',lootBonus:'Loot +'+item.val+'%',atk:'ATK +'+item.val,heatDec:'Heat decay +'+item.val}[item.bonus]||item.bonus;
+    html+=`<div style="background:${owned?'linear-gradient(135deg,rgba(0,30,0,.4),var(--surface2))':'var(--surface2)'};border:1px solid ${owned?'rgba(120,255,120,.3)':'var(--border)'};padding:10px;margin-bottom:5px;display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;opacity:${locked&&!owned?.4:1}">
+      <div style="font-size:22px">${item.e}</div>
+      <div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:13px">${item.n}</div>
+        <div style="font-size:9px;color:var(--text-dim);font-family:'Special Elite',serif">${item.d}</div>
+        <div style="font-size:9px;color:#a0ff80;font-family:'Cutive Mono',monospace;margin-top:2px">${bonusLabel}${locked&&!owned?' · Lv'+item.ml:''}</div>
+      </div>
+      ${owned?'<div style="font-size:9px;color:#a0ff80;font-family:\'Bebas Neue\',sans-serif">OWNED</div>':
+        locked?`<div style="font-size:9px;color:var(--text-dim)">LV ${item.ml}</div>`:
+        `<button onclick="buyDarkWeb('${item.id}')" ${canAfford?'':'disabled'} style="background:${canAfford?'#110820':'var(--surface3)'};border:1px solid ${canAfford?'#7b2fff':'var(--border)'};color:${canAfford?'#c9a0ff':'var(--text-dim)'};font-family:'Bebas Neue',sans-serif;font-size:11px;padding:5px 9px;cursor:${canAfford?'pointer':'not-allowed'};opacity:${canAfford?1:.5}">$${fmtCash(item.cost)}</button>`
+      }
+    </div>`;
+  }
+  html+=`<div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.1em;color:var(--text-dim);border-bottom:1px solid var(--border);margin:14px 0 8px;padding-bottom:4px">💻 HACKING OPERATIONS</div>`;
+  for(const hack of DW_HACKS){
+    const locked=G.level<hack.ml;
+    const cd=G.dwHackCooldowns[hack.id]||0;
+    const cdLeft=Math.max(0,Math.ceil((cd-now)/1000));
+    const onCd=cdLeft>0;
+    const canHack=!locked&&!onCd&&G.energy>=hack.energy&&G.cash>=hack.cost;
+    html+=`<div style="background:var(--surface2);border:1px solid var(--border);padding:10px;margin-bottom:5px;display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;opacity:${locked?.4:1}">
+      <div style="font-size:24px">${hack.e}</div>
+      <div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:13px">${hack.n}</div>
+        <div style="font-size:9px;color:var(--text-dim);font-family:'Special Elite',serif">${hack.d}</div>
+        <div style="font-size:9px;font-family:'Cutive Mono',monospace;margin-top:3px"><span style="color:var(--bright-gold)">Cost $${fmtCash(hack.cost)}</span> · <span style="color:#a0ff80">Win $${fmtCash(hack.reward)}</span> · <span style="color:var(--text-dim)">Risk ${Math.round(hack.risk*100)}% · ${hack.energy}⚡${locked?' · Lv'+hack.ml:''}</span></div>
+      </div>
+      <div style="text-align:center;min-width:70px">
+        ${locked?`<div style="font-size:10px;color:var(--text-dim)">LV ${hack.ml}</div>`:
+          onCd?`<div style="font-family:'Cutive Mono',monospace;font-size:10px;color:var(--text-dim)">${cdLeft}s</div>`:
+          `<button onclick="doHack('${hack.id}')" ${canHack?'':'disabled'} style="background:${canHack?'#110820':'var(--surface3)'};border:1px solid ${canHack?'#7b2fff':'var(--border)'};color:${canHack?'#c9a0ff':'var(--text-dim)'};font-family:'Bebas Neue',sans-serif;font-size:12px;padding:6px 10px;cursor:${canHack?'pointer':'not-allowed'};opacity:${canHack?1:.5}">EXECUTE</button>`
+        }
+      </div>
+    </div>`;
+  }
+  html+=`</div></div>`;
+  c.innerHTML=html;
+}
+function buyDarkWeb(id){
+  const item=DARK_WEB_LISTINGS.find(i=>i.id===id);if(!item||G.dwPurchased[id])return;
+  if(G.cash<item.cost){toast('Not enough cash!','r');return;}
+  if(G.level<item.ml){toast('Level too low!','r');return;}
+  G.cash-=item.cost;
+  if(!G.dwPurchased)G.dwPurchased={};
+  G.dwPurchased[id]=true;
+  if(item.bonus==='cashMult')G.cashMult=(G.cashMult||1)+item.val;
+  else if(item.bonus==='xpMult')G.xpMult=(G.xpMult||1)+item.val;
+  else if(item.bonus==='lootBonus')G.lootBonus=(G.lootBonus||0)+item.val;
+  else if(item.bonus==='atk'){G.baseAttack=(G.baseAttack||10)+item.val;G.attack=(G.attack||10)+item.val;}
+  else if(item.bonus==='heatDec')G.heatDecayBonus=(G.heatDecayBonus||0)+item.val;
+  addLog(`🕸️ Dark Web: ${item.n} acquired`,'sp');
+  toast(`${item.n} acquired!`,'gold');
+  updateAll();save();buildDarkWeb(document.getElementById('center'));
+}
+function doHack(hid){
+  const hack=DW_HACKS.find(h=>h.id===hid);if(!hack)return;
+  if(G.energy<hack.energy){toast(`Need ${hack.energy} energy!`,'r');return;}
+  if(G.cash<hack.cost){toast('Not enough cash!','r');return;}
+  if(G.level<hack.ml){toast('Level too low!','r');return;}
+  const now=Date.now();
+  G.energy-=hack.energy;G.cash-=hack.cost;
+  if(!G.dwHackCooldowns)G.dwHackCooldowns={};
+  G.dwHackCooldowns[hid]=now+90000;
+  addHeat(8);
+  if(Math.random()>hack.risk){
+    const earn=Math.floor(hack.reward*(G.cashMult||1));
+    G.cash+=earn;G.totalEarned+=earn;gainXP(hack.xp);
+    addLog(`💻 HACK SUCCESS: ${hack.n} +$${fmtCash(earn)}`,'gold');
+    toast(`Hack Succeeded! +$${fmtCash(earn)}!`,'gold');
+  }else{
+    addLog(`🚨 HACK FAILED: ${hack.n} — traced.`,'bad');
+    toast(`Hack Failed! Traced!`,'r');addHeat(15);
+  }
+  checkAchievements();updateAll();save();buildDarkWeb(document.getElementById('center'));
+}
+
+// ══════════════════════════════════════════════════════════
+// UNDERWORLD HUB
+// ══════════════════════════════════════════════════════════
+const UW_BOUNTIES=[
+  {id:'sb01',n:'Rival Pusher',            e:'🚬',cash:8000,   rep:50,  ml:1,  energy:4, heat:5,  cd:120},
+  {id:'sb02',n:'Corner Snitch',           e:'🐀',cash:15000,  rep:100, ml:5,  energy:6, heat:8,  cd:180},
+  {id:'sb03',n:'Territory Tax',           e:'💰',cash:35000,  rep:200, ml:15, energy:8, heat:10, cd:240},
+  {id:'sb04',n:"Rival Boss's Runner",     e:'🏃',cash:80000,  rep:400, ml:40, energy:12,heat:15, cd:360},
+  {id:'sb05',n:'Cartel Liaison',          e:'🌮',cash:250000, rep:1000,ml:100,energy:20,heat:20, cd:600},
+  {id:'sb06',n:'Shadow Network Agent',    e:'🕵️',cash:1000000,rep:5000,ml:300,energy:35,heat:30, cd:1200},
+];
+const UW_TERRITORIES=[
+  {id:'tc01',n:'The Corners',        pct:5,  cost:50000,   ml:1,  rep:200},
+  {id:'tc02',n:'The Docks',          pct:8,  cost:200000,  ml:20, rep:500},
+  {id:'tc03',n:'Warehouse District', pct:10, cost:600000,  ml:50, rep:1000},
+  {id:'tc04',n:'The Projects',       pct:12, cost:2000000, ml:100,rep:2000},
+  {id:'tc05',n:'Financial District', pct:15, cost:8000000, ml:250,rep:5000},
+  {id:'tc06',n:'The Whole City',     pct:50, cost:50000000,ml:500,rep:15000},
+];
+const UW_REP_TIERS=[
+  {rep:0,    title:'Nobody',            color:'var(--text-dim)'},
+  {rep:500,  title:'Known Face',        color:'#888'},
+  {rep:2000, title:'Street Name',       color:'var(--gold)'},
+  {rep:5000, title:'Underground Legend',color:'var(--bright-gold)'},
+  {rep:15000,title:'The Shadow',        color:'var(--crimson)'},
+  {rep:50000,title:'The Network',       color:'#ff4444'},
+];
+function buildUnderworld(c){
+  if(!G.underworldRep)G.underworldRep=0;
+  if(!G.streetBounties)G.streetBounties={};
+  if(!G.ownedTerritories)G.ownedTerritories={};
+  initDrugPrices();
+  const now=Date.now();
+  const repTier=UW_REP_TIERS.slice().reverse().find(t=>G.underworldRep>=t.rep)||UW_REP_TIERS[0];
+  const totalTerr=UW_TERRITORIES.reduce((s,t)=>s+(G.ownedTerritories[t.id]?t.pct:0),0);
+  let html=`<div class="panel"><div class="ph"><h2>🌆 UNDERWORLD</h2><span class="psub">The economy beneath the economy. Drugs. Territory. Bounties. Shadow deals.</span></div><div class="pb">`;
+  // Rep banner
+  html+=`<div style="background:linear-gradient(135deg,#0a0005,var(--surface2));border:1px solid var(--crimson);padding:12px;margin-bottom:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center">
+    <div><div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:${repTier.color}">${repTier.title}</div><div style="font-size:9px;color:var(--text-dim);font-family:'Cutive Mono',monospace">REP: ${(G.underworldRep||0).toLocaleString()}</div></div>
+    <div><div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--bright-gold)">${totalTerr}%</div><div style="font-size:9px;color:var(--text-dim);font-family:'Cutive Mono',monospace">TERRITORY</div></div>
+    <div><div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--bright-green)">$${fmtCash(G.cash)}</div><div style="font-size:9px;color:var(--text-dim);font-family:'Cutive Mono',monospace">STREET CASH</div></div>
+  </div>`;
+  // Drug Trade
+  html+=`<div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.1em;color:var(--text-dim);border-bottom:1px solid var(--border);margin-bottom:8px;padding-bottom:4px">💊 DRUG TRADE — Prices fluctuate every 30s</div>`;
+  for(const d of DRUGS){
+    const price=Math.floor(G.drugPrices[d.id]||d.buyBase);
+    const sellPrice=Math.floor(price*(1.3+Math.random()*.2)*(G.drugMult||1));
+    const inv=G.drugInv[d.id]||0;
+    const canBuy=G.cash>=price;
+    const trend=(G.drugPrices[d.id]||d.buyBase)>d.buyBase;
+    html+=`<div style="background:var(--surface2);border:1px solid var(--border);padding:9px;margin-bottom:5px;display:grid;grid-template-columns:auto 1fr auto auto auto;gap:8px;align-items:center">
+      <div style="font-size:20px">${d.e}</div>
+      <div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:12px">${d.n} <span style="color:${trend?'var(--bright-green)':'var(--crimson)'};font-size:10px">${trend?'↑':'↓'}</span></div>
+        <div style="font-size:8px;color:var(--text-dim);font-family:'Cutive Mono',monospace">Held: ${inv} · Risk: ${Math.round(d.risk*100)}%</div>
+      </div>
+      <div style="font-size:11px;color:var(--bright-gold);font-family:'Cutive Mono',monospace">$${fmtCash(price)}</div>
+      <button onclick="buyDrug('${d.id}',${price})" ${canBuy?'':'disabled'} style="background:rgba(0,60,0,.5);border:1px solid ${canBuy?'var(--bright-green)':'var(--border)'};color:${canBuy?'var(--bright-green)':'var(--text-dim)'};font-family:'Bebas Neue',sans-serif;font-size:10px;padding:3px 7px;cursor:${canBuy?'pointer':'not-allowed'};opacity:${canBuy?1:.5}">BUY</button>
+      <button onclick="sellDrugUpgraded('${d.id}',${sellPrice})" ${inv>0?'':'disabled'} style="background:rgba(80,0,0,.5);border:1px solid ${inv>0?'var(--crimson)':'var(--border)'};color:${inv>0?'var(--crimson)':'var(--text-dim)'};font-family:'Bebas Neue',sans-serif;font-size:10px;padding:3px 7px;cursor:${inv>0?'pointer':'not-allowed'};opacity:${inv>0?1:.5}">SELL</button>
+    </div>`;
+  }
+  // Street Bounties
+  html+=`<div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.1em;color:var(--text-dim);border-bottom:1px solid var(--border);margin:14px 0 8px;padding-bottom:4px">🎯 STREET BOUNTIES — earn Underworld Rep</div>`;
+  for(const b of UW_BOUNTIES){
+    const locked=G.level<b.ml;
+    const cd=G.streetBounties[b.id]||0;
+    const cdLeft=Math.max(0,Math.ceil((cd-now)/1000));
+    const onCd=cdLeft>0;
+    const canDo=!locked&&!onCd&&G.energy>=b.energy;
+    html+=`<div style="background:var(--surface2);border:1px solid var(--border);padding:9px;margin-bottom:5px;display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;opacity:${locked?.4:1}">
+      <div style="font-size:22px">${b.e}</div>
+      <div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:13px">${b.n}</div>
+        <div style="font-size:9px;color:var(--text-dim);font-family:'Cutive Mono',monospace">$${fmtCash(b.cash)} · +${b.rep} rep · ${b.energy}⚡ · +${b.heat} heat${locked?' · Lv'+b.ml:''}</div>
+      </div>
+      ${locked?`<div style="font-size:10px;color:var(--text-dim)">LV ${b.ml}</div>`:
+        onCd?`<div style="font-family:'Cutive Mono',monospace;font-size:10px;color:var(--text-dim);min-width:48px;text-align:center">${cdLeft}s</div>`:
+        `<button onclick="doStreetBounty('${b.id}')" ${canDo?'':'disabled'} style="background:${canDo?'rgba(80,0,0,.6)':'var(--surface3)'};border:1px solid ${canDo?'var(--crimson)':'var(--border)'};color:${canDo?'var(--crimson)':'var(--text-dim)'};font-family:'Bebas Neue',sans-serif;font-size:11px;padding:5px 10px;cursor:${canDo?'pointer':'not-allowed'};opacity:${canDo?1:.5}">COLLECT</button>`
+      }
+    </div>`;
+  }
+  // Territory
+  html+=`<div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.1em;color:var(--text-dim);border-bottom:1px solid var(--border);margin:14px 0 8px;padding-bottom:4px">🗺️ TERRITORY — each boosts passive income +5%</div>`;
+  for(const t of UW_TERRITORIES){
+    const owned=G.ownedTerritories[t.id];
+    const canAfford=G.cash>=t.cost;
+    const locked=G.level<t.ml||(G.underworldRep||0)<t.rep;
+    html+=`<div style="background:${owned?'linear-gradient(135deg,rgba(80,0,0,.2),var(--surface2))':'var(--surface2)'};border:1px solid ${owned?'var(--crimson)':'var(--border)'};padding:9px;margin-bottom:5px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;opacity:${locked&&!owned?.5:1}">
+      <div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:13px">${t.n} <span style="color:var(--text-dim);font-size:10px">+${t.pct}% territory</span></div>
+        <div style="font-size:9px;color:var(--text-dim);font-family:'Cutive Mono',monospace">${owned?'OWNED — passive income +5%':locked?'Lv'+t.ml+' + '+t.rep.toLocaleString()+' rep required':'$'+fmtCash(t.cost)+' · Lv'+t.ml+' · '+t.rep.toLocaleString()+' rep'}</div>
+      </div>
+      ${owned?'<div style="font-size:10px;color:var(--crimson);font-family:\'Bebas Neue\',sans-serif">OWNED</div>':
+        locked?`<div style="font-size:9px;color:var(--text-dim)">LOCKED</div>`:
+        `<button onclick="buyTerritory('${t.id}')" ${canAfford?'':'disabled'} style="background:${canAfford?'rgba(80,0,0,.6)':'var(--surface3)'};border:1px solid ${canAfford?'var(--crimson)':'var(--border)'};color:${canAfford?'var(--crimson)':'var(--text-dim)'};font-family:'Bebas Neue',sans-serif;font-size:11px;padding:5px 10px;cursor:${canAfford?'pointer':'not-allowed'};opacity:${canAfford?1:.5}">CLAIM</button>`
+      }
+    </div>`;
+  }
+  html+=`</div></div>`;
+  c.innerHTML=html;
+}
+function doStreetBounty(bid){
+  const b=UW_BOUNTIES.find(x=>x.id===bid);if(!b)return;
+  if(G.energy<b.energy){toast(`Need ${b.energy} energy!`,'r');return;}
+  G.energy-=b.energy;addHeat(b.heat);
+  const earn=Math.floor(b.cash*(G.cashMult||1));
+  G.cash+=earn;G.totalEarned+=earn;
+  G.underworldRep=(G.underworldRep||0)+b.rep;
+  if(!G.streetBounties)G.streetBounties={};
+  G.streetBounties[bid]=Date.now()+b.cd*1000;
+  gainXP(Math.floor(b.rep/5));
+  addLog(`🌆 ${b.n}: +$${fmtCash(earn)} +${b.rep} rep`,'gold');
+  toast(`+$${fmtCash(earn)} +${b.rep} UW Rep!`,'gold');
+  checkAchievements();updateAll();save();
+  buildUnderworld(document.getElementById('center'));
+}
+function buyTerritory(tid){
+  const t=UW_TERRITORIES.find(x=>x.id===tid);if(!t)return;
+  if(G.cash<t.cost){toast('Not enough cash!','r');return;}
+  if(G.level<t.ml){toast('Level too low!','r');return;}
+  if((G.underworldRep||0)<t.rep){toast('Need more Underworld Rep!','r');return;}
+  G.cash-=t.cost;
+  if(!G.ownedTerritories)G.ownedTerritories={};
+  G.ownedTerritories[tid]=true;
+  G.incomeMult=(G.incomeMult||1)+0.05;
+  addLog(`🗺️ Territory: ${t.n} claimed! Income +5%`,'gold');
+  toast(`${t.n} claimed! Income +5%!`,'gold');
+  checkAchievements();updateAll();save();
+  buildUnderworld(document.getElementById('center'));
 }
 </script>
 </body>
