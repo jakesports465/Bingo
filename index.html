@@ -358,6 +358,13 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .craft-name{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--bright-orange);}
 .craft-recipe{font-size:10px;color:var(--text-dim);font-family:'Cutive Mono',monospace;margin-top:4px;}
 .craft-result{font-size:11px;color:var(--bright-gold);margin-top:4px;}
+
+.save-btn{background:linear-gradient(135deg,#1a3a1a,#2d5a2d);border:2px solid var(--bright-green);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:.12em;padding:11px 0;cursor:pointer;transition:all .2s;width:100%;display:block;margin-bottom:8px;}
+.save-btn:hover{box-shadow:0 0 20px rgba(76,175,80,.5);background:linear-gradient(135deg,#2d5a2d,#4a8a4a);}
+.load-btn{background:linear-gradient(135deg,#1a1a3a,#2d2d5a);border:2px solid #7986CB;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:.12em;padding:11px 0;cursor:pointer;transition:all .2s;width:100%;display:block;margin-bottom:8px;}
+.load-btn:hover{box-shadow:0 0 20px rgba(121,134,203,.5);}
+.danger-btn{background:linear-gradient(135deg,#3a1a1a,#5a2d2d);border:2px solid var(--crimson);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.12em;padding:9px 0;cursor:pointer;transition:all .2s;width:100%;display:block;}
+.danger-btn:hover{box-shadow:0 0 20px rgba(196,30,58,.5);}
 </style>
 </head>
 <body>
@@ -510,6 +517,7 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
         <div class="nb" id="nav-achievements" onclick="showPanel('achievements')"><span class="ni">🏆</span> Achievements</div>
         <div class="nb" id="nav-casino" onclick="showPanel('casino')"><span class="ni">🎲</span> Casino</div>
         <div class="nb" id="nav-prestige" onclick="showPanel('prestige')"><span class="ni">⭐</span> Prestige</div>
+        <div class="nb" id="nav-savemgr" onclick="showPanel('savemgr')"><span class="ni">💾</span> Save / Load</div>
       </div>
       <div class="ns">
         <div class="nst">Cities</div>
@@ -1371,7 +1379,7 @@ function showPanel(p){
   c.innerHTML='';
   const map={
     jobs:buildJobs, fight:buildFight, hitlist:buildHitlist, rob:buildRob,
-    gangwar:buildGangWar, bosses:buildBosses, drugtrade:buildDrugTrade, achievements:buildAchievements, properties:buildProperties, store:buildStore,
+    gangwar:buildGangWar, bosses:buildBosses, savemgr:buildSaveMgr, drugtrade:buildDrugTrade, achievements:buildAchievements, properties:buildProperties, store:buildStore,
     blackmarket:buildBlackMarket, crafting:buildCrafting, inventory:buildInventory,
     skilltree:buildSkillTree, casino:buildCasino, prestige:buildPrestige,
     missions:buildMissions, operations:buildOperations, contracts:buildContracts,
@@ -2315,6 +2323,94 @@ function checkAchievements(){
       }catch(e){}
     }
   }
+}
+
+
+// ══════════════════════════════════════════
+// SAVE MANAGER PANEL
+// ══════════════════════════════════════════
+function buildSaveMgr(c){
+  const hasSave=!!localStorage.getItem('mw2_save');
+  const saveSize=hasSave?Math.round(localStorage.getItem('mw2_save').length/1024)+'KB':'—';
+  c.innerHTML=`<div class="panel"><div class="ph"><h2>💾 SAVE MANAGER</h2><span class="psub">Export your save to move it between devices. Import to restore.</span></div><div class="pb">
+
+    <div style="background:var(--surface2);border:1px solid var(--border);padding:14px;margin-bottom:16px;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.15em;color:var(--text-dim);margin-bottom:8px;">CURRENT SAVE</div>
+      <div style="font-family:'Cutive Mono',monospace;font-size:11px;line-height:2;color:var(--text-dim);">
+        Player: <span style="color:var(--bright-gold)">${G.name}</span><br>
+        Level: <span style="color:var(--bright-gold)">${G.level}</span> &nbsp;|&nbsp;
+        Prestige: <span style="color:var(--bright-gold)">${G.prestige}</span> &nbsp;|&nbsp;
+        Cash: <span style="color:var(--bright-green)">$${G.cash.toLocaleString()}</span><br>
+        Save size: <span style="color:var(--text)">${saveSize}</span> &nbsp;|&nbsp;
+        Status: <span style="color:${hasSave?'var(--bright-green)':'var(--crimson)'}">${hasSave?'SAVED':'NO SAVE FOUND'}</span>
+      </div>
+    </div>
+
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.15em;color:var(--text-dim);margin-bottom:8px;">EXPORT SAVE</div>
+    <p style="font-family:'Special Elite',serif;font-size:11px;color:var(--text-dim);margin-bottom:10px;">Downloads your save as a .json file. Copy it to your other device and import it there.</p>
+    <button class="save-btn" onclick="exportSave()">📤 DOWNLOAD SAVE FILE</button>
+
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.15em;color:var(--text-dim);margin:16px 0 8px;">IMPORT SAVE</div>
+    <p style="font-family:'Special Elite',serif;font-size:11px;color:var(--text-dim);margin-bottom:10px;">Select a save file exported from another device. This will overwrite your current save.</p>
+    <input type="file" id="import-file-input" accept=".json" style="display:none" onchange="importSave(this)">
+    <button class="load-btn" onclick="document.getElementById('import-file-input').click()">📥 IMPORT SAVE FILE</button>
+
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.15em;color:var(--text-dim);margin:16px 0 8px;">DANGER ZONE</div>
+    <p style="font-family:'Special Elite',serif;font-size:11px;color:var(--text-dim);margin-bottom:10px;">Wipes your save completely and resets to a new game. Cannot be undone.</p>
+    <button class="danger-btn" onclick="resetSave()">🗑️ WIPE SAVE &amp; START OVER</button>
+
+  </div></div>`;
+}
+
+function exportSave(){
+  const data=localStorage.getItem('mw2_save');
+  if(!data){toast('No save to export!','r');return;}
+  const blob=new Blob([data],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  const ts=new Date().toISOString().slice(0,10);
+  a.href=url;
+  a.download=`mafia-wars-save-${G.name.replace(/[^a-z0-9]/gi,'-')}-lv${G.level}-${ts}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('Save exported!','g');
+  addLog('💾 Save exported to file.','gold');
+}
+
+function importSave(input){
+  const file=input.files[0];
+  if(!file){return;}
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const data=JSON.parse(e.target.result);
+      // Validate it looks like a real save
+      if(!data.name||data.level===undefined){
+        toast('Invalid save file!','r');return;
+      }
+      localStorage.setItem('mw2_save',e.target.result);
+      Object.assign(G,data);
+      safeInitNewFields();
+      buildCityList();showPanel('jobs');updateAll();
+      toast('Save imported! Welcome back, '+G.name+'!','g');
+      addLog('💾 Save imported successfully.','sp');
+    }catch(err){
+      toast('Failed to read save file.','r');
+      console.error('Import error:',err);
+    }
+    // Reset input so same file can be re-imported if needed
+    input.value='';
+  };
+  reader.readAsText(file);
+}
+
+function resetSave(){
+  if(!confirm('This will WIPE your save and restart from scratch. Are you absolutely sure?')){return;}
+  try{localStorage.removeItem('mw2_save');}catch(e){}
+  toast('Save wiped. Reloading...','r');
+  setTimeout(()=>location.reload(),1200);
 }
 
 function buildPrestige(c){
