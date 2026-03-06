@@ -624,6 +624,12 @@ const G = {
   contractRefreshTimer:0,
   // Prestige bonuses
   pBonuses:{ cashMult:1, xpMult:1, energyMult:1, lootMult:1, attackBonus:0, defBonus:0 },
+  // New systems
+  bossHP:{}, bossDefeated:{}, bossKills:0,
+  drugPrices:{}, drugInv:{}, drugTradeCount:0,
+  achUnlocked:{},
+  currentPanel:'jobs',
+  cashMult:1, incomeMult:1, robBonus:0, bountyMult:1, drugMult:1, bossDmgMult:1, warDmgMult:1,
 };
 
 // ══════════════════════════════════════════
@@ -1256,13 +1262,38 @@ function load(){try{const s=localStorage.getItem('mw2_save');if(s){Object.assign
 // ══════════════════════════════════════════
 let selClass='Fearless', selBG='Streets';
 
+function safeInitNewFields(){
+  // Ensure all new fields exist after loading old save
+  if(!G.bossHP)G.bossHP={};
+  if(!G.bossDefeated)G.bossDefeated={};
+  if(G.bossKills===undefined)G.bossKills=0;
+  if(!G.drugPrices)G.drugPrices={};
+  if(!G.drugInv)G.drugInv={};
+  if(G.drugTradeCount===undefined)G.drugTradeCount=0;
+  if(!G.achUnlocked)G.achUnlocked={};
+  if(G.cashMult===undefined)G.cashMult=1;
+  if(G.incomeMult===undefined)G.incomeMult=1;
+  if(G.robBonus===undefined)G.robBonus=0;
+  if(G.bountyMult===undefined)G.bountyMult=1;
+  if(G.drugMult===undefined)G.drugMult=1;
+  if(G.bossDmgMult===undefined)G.bossDmgMult=1;
+  if(G.warDmgMult===undefined)G.warDmgMult=1;
+  if(G.currentPanel===undefined)G.currentPanel='jobs';
+}
 function showCharScreen(){
-  if(load()){
-    document.getElementById('splash').style.display='none';
-    document.getElementById('game').style.display='flex';
-    buildCityList();showPanel('jobs');updateAll();startLoops();
-    addLog('Welcome back, '+G.name+'. Your empire awaits.','sp');
-    return;
+  try{
+    if(load()){
+      safeInitNewFields();
+      document.getElementById('splash').style.display='none';
+      document.getElementById('game').style.display='flex';
+      buildCityList();showPanel('jobs');updateAll();startLoops();
+      addLog('Welcome back, '+G.name+'. Your empire awaits.','sp');
+      return;
+    }
+  }catch(e){
+    console.error('Load error:',e);
+    // Clear broken save and start fresh
+    try{localStorage.removeItem('mw2_save');}catch(e2){}
   }
   document.getElementById('splash').style.display='none';
   document.getElementById('char-screen').style.display='flex';
@@ -1284,6 +1315,7 @@ function startGame(){
   G.background=selBG;
   applyClassBonuses();
   applyBGBonuses();
+  safeInitNewFields();
   refreshContracts();
   document.getElementById('char-screen').style.display='none';
   document.getElementById('game').style.display='flex';
@@ -2096,10 +2128,10 @@ const ACHIEVEMENTS = [
   {id:'ach04',n:'Kingpin',e:'👑',d:'Earn $1,000,000 total',check:()=>G.totalEarned>=1000000,bonus:'+15% Income',apply:()=>{G.incomeMult=(G.incomeMult||1)+.15;}},
   {id:'ach05',n:'Warlord',e:'⚔️',d:'Win 100 fights',check:()=>G.fightsWon>=100,bonus:'+15 ATK',apply:()=>{G.attack+=15;}},
   {id:'ach06',n:'Ghost',e:'👻',d:'Complete 20 robberies',check:()=>G.robberies>=20,bonus:'+25% Rob success',apply:()=>{G.robBonus=(G.robBonus||0)+25;}},
-  {id:'ach07',n:'Landlord',e:'🏢',d:'Own 5 properties',check:()=>Object.values(G.props||{}).reduce((a,b)=>a+b,0)>=5,bonus:'+20% Property Income',apply:()=>{G.incomeMult=(G.incomeMult||1)+.20;}},
+  {id:'ach07',n:'Landlord',e:'🏢',d:'Own 5 properties',check:()=>Object.values(G.properties||{}).reduce((a,b)=>a+b,0)>=5,bonus:'+20% Property Income',apply:()=>{G.incomeMult=(G.incomeMult||1)+.20;}},
   {id:'ach08',n:'Hitman',e:'🎯',d:'Collect 10 bounties',check:()=>G.hitlistKills>=10,bonus:'+25% Bounties',apply:()=>{G.bountyMult=(G.bountyMult||1)+.25;}},
   {id:'ach09',n:'Don',e:'🌹',d:'Reach Level 100',check:()=>G.level>=100,bonus:'All stats +5%',apply:()=>{G.attack=Math.floor(G.attack*1.05);G.defense=Math.floor(G.defense*1.05);}},
-  {id:'ach10',n:'Property Mogul',e:'🏙️',d:'Own 15 properties',check:()=>Object.values(G.props||{}).reduce((a,b)=>a+b,0)>=15,bonus:'+50% Property Income',apply:()=>{G.incomeMult=(G.incomeMult||1)+.50;}},
+  {id:'ach10',n:'Property Mogul',e:'🏙️',d:'Own 15 properties',check:()=>Object.values(G.properties||{}).reduce((a,b)=>a+b,0)>=15,bonus:'+50% Property Income',apply:()=>{G.incomeMult=(G.incomeMult||1)+.50;}},
   {id:'ach11',n:'Boss Slayer',e:'💀',d:'Kill your first boss',check:()=>G.bossKills>=1,bonus:'Boss DMG ×2',apply:()=>{G.bossDmgMult=(G.bossDmgMult||1)*2;}},
   {id:'ach12',n:'War General',e:'💣',d:'Win 3 gang wars',check:()=>Object.values(G.gangWarProgress||{}).filter(v=>typeof v==='number'&&v>=100).length>=3,bonus:'War DMG +50%',apply:()=>{G.warDmgMult=(G.warDmgMult||1)+.50;}},
   {id:'ach13',n:'Drug Lord',e:'💊',d:'Complete 50 drug trades',check:()=>(G.drugTradeCount||0)>=50,bonus:'Drug profit +25%',apply:()=>{G.drugMult=(G.drugMult||1)+.25;}},
@@ -2122,22 +2154,21 @@ function buildBosses(c){
     const defeated=G.bossDefeated&&G.bossDefeated[b.id];
     const hp=G.bossHP&&G.bossHP[b.id]!==undefined?G.bossHP[b.id]:b.maxHP;
     const hpPct=Math.max(0,(hp/b.maxHP)*100);
-    html+=`<div style="background:linear-gradient(135deg,#1a0000,var(--surface2));border:2px solid ${defeated?'var(--bright-gold)':locked?'var(--border)':'var(--crimson)'};padding:14px;margin-bottom:9px;position:relative;opacity:${locked?'.4':'1'}">
-      ${defeated?'<div style="font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:.2em;color:var(--bright-gold);margin-bottom:4px">✓ DEFEATED</div>':''}
-      ${locked?`<div style="font-family:'Bebas Neue',sans-serif;font-size:11px;color:var(--crimson);margin-bottom:4px">🔒 Requires Level ${b.ml}</div>`:''}
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--bright-gold)">${b.n}</div>
-      <div style="font-size:10px;color:var(--crimson);font-family:'Special Elite',serif;margin-bottom:7px">${b.city} — ${b.d}</div>
-      <div style="background:var(--surface3);height:10px;border-radius:2px;overflow:hidden;margin:6px 0">
-        <div style="background:linear-gradient(90deg,var(--blood),var(--crimson));height:100%;width:${hpPct}%;transition:width .4s"></div>
-      </div>
-      <div style="font-family:'Cutive Mono',monospace;font-size:10px;color:var(--text-dim)">HP: ${fmtCash(hp)} / ${fmtCash(b.maxHP)} | ATK: ${fmtCash(b.atk)} | Reward: $${fmtCash(b.reward)}</div>
-      ${!locked&&!defeated?`<button onclick="doBossFight('${b.id}')" style="margin-top:9px;background:linear-gradient(90deg,var(--blood),#5d0000);border:2px solid var(--crimson);color:var(--bright-gold);font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.12em;padding:8px 0;cursor:pointer;display:block;width:100%;transition:all .2s" onmouseover="this.style.boxShadow='0 0 25px rgba(196,30,58,.6)'" onmouseout="this.style.boxShadow=''">⚔️ ATTACK (3 Stamina)</button>`:''}
-    </div>`;
+    const borderColor=defeated?'var(--bright-gold)':locked?'var(--border)':'var(--crimson)';
+    const opacity=locked?'0.4':'1';
+    let inner='';
+    if(defeated) inner+='<div style="font-family:Bebas Neue,sans-serif;font-size:11px;letter-spacing:.2em;color:var(--bright-gold);margin-bottom:4px">DEFEATED</div>';
+    if(locked) inner+=`<div style="font-size:11px;color:var(--crimson);margin-bottom:4px">LOCKED — Requires Level ${b.ml}</div>`;
+    inner+=`<div style="font-family:Bebas Neue,sans-serif;font-size:20px;color:var(--bright-gold)">${b.n}</div>`;
+    inner+=`<div style="font-size:10px;color:var(--crimson);margin-bottom:7px">${b.city} — ${b.d}</div>`;
+    inner+=`<div style="background:var(--surface3);height:10px;border-radius:2px;overflow:hidden;margin:6px 0"><div style="background:linear-gradient(90deg,var(--blood),var(--crimson));height:100%;width:${hpPct}%;transition:width .4s"></div></div>`;
+    inner+=`<div style="font-size:10px;color:var(--text-dim)">HP: ${fmtCash(hp)} / ${fmtCash(b.maxHP)} | ATK: ${fmtCash(b.atk)} | Reward: $${fmtCash(b.reward)}</div>`;
+    if(!locked&&!defeated) inner+=`<button onclick="doBossFight('${b.id}')" style="margin-top:9px;background:linear-gradient(90deg,var(--blood),#5d0000);border:2px solid var(--crimson);color:var(--bright-gold);font-size:16px;letter-spacing:.12em;padding:8px 0;cursor:pointer;display:block;width:100%">ATTACK (3 Stamina)</button>`;
+    html+=`<div style="background:linear-gradient(135deg,#1a0000,var(--surface2));border:2px solid ${borderColor};padding:14px;margin-bottom:9px;opacity:${opacity}">${inner}</div>`;
   }
   html+=`</div></div>`;
   c.innerHTML=html;
 }
-
 function doBossFight(bid){
   const b=BOSSES.find(x=>x.id===bid);if(!b)return;
   if(G.stamina<3){toast('Need 3 stamina!','r');return;}
