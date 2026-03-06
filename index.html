@@ -371,6 +371,76 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .load-btn:hover{box-shadow:0 0 20px rgba(121,134,203,.5);}
 .danger-btn{background:linear-gradient(135deg,#3a1a1a,#5a2d2d);border:2px solid var(--crimson);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.12em;padding:9px 0;cursor:pointer;transition:all .2s;width:100%;display:block;}
 .danger-btn:hover{box-shadow:0 0 20px rgba(196,30,58,.5);}
+
+/* ── HEAT BAR ── */
+#heat-bar-wrap{background:var(--surface);border-bottom:1px solid var(--border);padding:3px 20px;display:flex;align-items:center;gap:10px;}
+#heat-bar-bg{flex:1;background:var(--surface3);height:8px;border-radius:4px;overflow:hidden;}
+#heat-bar-fill{height:100%;transition:width .5s;border-radius:4px;}
+.heat-label{font-size:9px;letter-spacing:.15em;color:var(--text-dim);white-space:nowrap;}
+#heat-level-txt{font-family:'Bebas Neue',sans-serif;font-size:13px;min-width:80px;text-align:right;}
+/* ── EVENT BANNER ── */
+#event-banner{display:none;background:linear-gradient(90deg,#1a0030,#0a001a,#1a0030);border-bottom:2px solid #AB47BC;padding:6px 20px;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.12em;color:#E040FB;text-align:center;}
+/* ── JAIL SCREEN ── */
+#jail-overlay{display:none;position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.92);flex-direction:column;align-items:center;justify-content:center;gap:14px;}
+.jail-title{font-family:'Bebas Neue',sans-serif;font-size:60px;color:var(--crimson);text-shadow:0 0 40px rgba(196,30,58,.8);}
+.jail-sub{font-family:'Special Elite',serif;color:var(--text-dim);font-size:15px;text-align:center;max-width:400px;line-height:1.8;}
+#jail-timer{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--bright-gold);}
+.bail-btn{background:var(--blood);border:2px solid var(--crimson);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.15em;padding:12px 40px;cursor:pointer;transition:all .2s;}
+.bail-btn:hover{background:var(--crimson);box-shadow:0 0 30px rgba(196,30,58,.6);}
+/* ── CREW CARD ── */
+.crew-card{background:var(--surface2);border:1px solid var(--border);padding:12px;display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;margin-bottom:7px;transition:all .15s;}
+.crew-card:hover{border-color:var(--gold);}
+.crew-icon{font-size:26px;}
+.crew-name{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--text);}
+.crew-role{font-size:10px;color:var(--text-dim);font-family:'Special Elite',serif;}
+.crew-bonus{font-size:10px;color:var(--bright-green);font-family:'Cutive Mono',monospace;margin-top:2px;}
+.hire-btn{background:var(--green);border:1px solid var(--bright-green);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.1em;padding:6px 14px;cursor:pointer;transition:all .15s;}
+.hire-btn:hover{background:#2E7D32;}
+.hire-btn:disabled{opacity:.4;cursor:not-allowed;}
+/* ── HITMAN PANEL ── */
+.hm-card{background:linear-gradient(135deg,#0d0000,var(--surface2));border:1px solid var(--border);padding:12px;margin-bottom:7px;display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;}
+.hm-card:hover{border-color:var(--crimson);}
+/* ── GLOBAL EVENT ── */
+.event-card{background:linear-gradient(135deg,#0a0015,var(--surface2));border:2px solid #AB47BC;padding:14px;margin-bottom:10px;text-align:center;}
+.event-title{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#E040FB;}
+.event-desc{font-family:'Special Elite',serif;font-size:12px;color:var(--text-dim);margin:6px 0;}
+.event-btn{background:linear-gradient(90deg,#4A148C,#7B1FA2);border:1px solid #AB47BC;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.12em;padding:8px 24px;cursor:pointer;transition:all .2s;margin-top:8px;}
+.event-btn:hover{box-shadow:0 0 20px rgba(171,71,188,.5);}
+/* ── NOTORIETY ── */
+.not-tier{background:var(--surface2);border:1px solid var(--border);padding:10px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;}
+.not-tier.active{border-color:var(--crimson);background:linear-gradient(90deg,#1a0000,var(--surface2));}
+
+
+#heat-bar-wrap{background:var(--surface);border-bottom:1px solid var(--border);padding:4px 20px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+#heat-bar-bg{flex:1;background:var(--surface3);height:7px;border-radius:4px;overflow:hidden;}
+#heat-bar-fill{height:100%;transition:width .6s;border-radius:4px;}
+.heat-label{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:.15em;color:var(--text-dim);white-space:nowrap;}
+#heat-level-txt{font-family:'Bebas Neue',sans-serif;font-size:13px;min-width:100px;text-align:right;transition:color .5s;}
+.not-tier{background:var(--surface2);border:1px solid var(--border);padding:10px 14px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;transition:all .15s;}
+.not-tier.active{border-color:var(--crimson);background:linear-gradient(90deg,#1a0000,var(--surface2));}
+.hm-card{background:linear-gradient(135deg,#0d0000,var(--surface2));border:1px solid var(--border);padding:12px;margin-bottom:7px;display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;transition:all .15s;}
+.hm-card:hover{border-color:var(--crimson);}
+.crew-card{background:var(--surface2);border:1px solid var(--border);padding:12px;display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;margin-bottom:7px;transition:all .15s;}
+.crew-card:hover{border-color:var(--gold);}
+.hire-btn{background:var(--blood);border:1px solid var(--crimson);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.1em;padding:6px 14px;cursor:pointer;transition:all .15s;}
+.hire-btn:hover{background:var(--crimson);}
+.hire-btn:disabled{opacity:.4;cursor:not-allowed;}
+
+
+/* ── LUXURY SHOP ── */
+.lux-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;}
+.lux-item{background:linear-gradient(135deg,#0a0a00,var(--surface2));border:1px solid var(--border);padding:11px;display:flex;flex-direction:column;gap:5px;position:relative;transition:border-color .2s;}
+.lux-item:hover{border-color:var(--gold);}
+.lux-item.owned{border-color:var(--bright-green)!important;background:linear-gradient(135deg,#001a00,var(--surface2));}
+.lux-item.rare{border-color:#7B1FA2!important;}
+.lux-badge{position:absolute;top:6px;right:6px;font-family:'Bebas Neue',sans-serif;font-size:9px;letter-spacing:.12em;padding:2px 7px;}
+.lux-name{font-family:'Bebas Neue',sans-serif;font-size:13px;line-height:1.3;}
+.lux-brand{font-size:9px;color:var(--crimson);font-family:'Cutive Mono',monospace;letter-spacing:.1em;}
+.lux-desc{font-size:10px;color:var(--text-dim);font-family:'Special Elite',serif;line-height:1.4;}
+.lux-flex{font-size:9px;color:var(--bright-gold);font-family:'Cutive Mono',monospace;}
+.lux-price{font-family:'Bebas Neue',sans-serif;font-size:16px;margin-top:2px;}
+.lux-buy{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.1em;padding:6px;margin-top:4px;cursor:pointer;border:none;width:100%;}
+
 </style>
 </head>
 <body>
@@ -489,6 +559,42 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
     </div>
   </div>
 
+  <!-- HEAT BAR -->
+  <div id="heat-bar-wrap">
+    <span class="heat-label">🌡️ HEAT</span>
+    <div id="heat-bar-bg"><div id="heat-bar-fill" style="width:0%"></div></div>
+    <span id="heat-level-txt" style="color:var(--text-dim)">CLEAN</span>
+  </div>
+  <!-- GLOBAL EVENT BANNER -->
+  <div id="event-banner">⚡ GLOBAL EVENT ACTIVE ⚡</div>
+
+  <!-- JAIL OVERLAY -->
+  <div id="jail-overlay">
+    <div class="jail-title">🚔 YOU'RE IN JAIL</div>
+    <div class="jail-sub">The feds got you. Sit tight or pay bail to get out early.</div>
+    <div id="jail-timer">0:00</div>
+    <div id="bail-cost-txt" style="font-family:'Special Elite',serif;color:var(--text-dim);font-size:13px;margin-top:6px;"></div>
+    <button class="bail-btn" onclick="payBail()">💰 PAY BAIL</button>
+    <div style="font-family:'Special Elite',serif;color:var(--text-dim);font-size:11px;margin-top:10px;">Properties keep earning while you're locked up.</div>
+  </div>
+
+  <!-- HEAT BAR -->
+  <div id="heat-bar-wrap">
+    <span class="heat-label">🌡️ HEAT</span>
+    <div id="heat-bar-bg"><div id="heat-bar-fill" style="width:0%;background:linear-gradient(90deg,#ff6f00,#d32f2f)"></div></div>
+    <span id="heat-level-txt" style="color:var(--text-dim)">CLEAN</span>
+  </div>
+  <!-- EVENT BANNER -->
+  <div id="event-banner" style="display:none;background:linear-gradient(90deg,#1a0030,#0a001a);border-bottom:2px solid #AB47BC;padding:5px 20px;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:.1em;color:#E040FB;text-align:center;"></div>
+  <!-- JAIL OVERLAY -->
+  <div id="jail-overlay" style="display:none;position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.93);flex-direction:column;align-items:center;justify-content:center;gap:14px;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:64px;color:var(--crimson);text-shadow:0 0 40px rgba(196,30,58,.7)">🚔 BUSTED</div>
+    <div style="font-family:'Special Elite',serif;color:var(--text-dim);font-size:15px;text-align:center;max-width:420px;line-height:1.8">The cops have you. Sit tight or pay bail to walk. Your properties keep earning while you're inside.</div>
+    <div id="jail-timer" style="font-family:'Bebas Neue',sans-serif;font-size:56px;color:var(--bright-gold)">0:00</div>
+    <div id="bail-cost-txt" style="font-family:'Special Elite',serif;color:var(--text-dim);font-size:13px;"></div>
+    <button id="bail-btn" onclick="payBail()" style="background:var(--blood);border:2px solid var(--crimson);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.15em;padding:13px 44px;cursor:pointer;transition:all .2s" onmouseover="this.style.background='var(--crimson)'" onmouseout="this.style.background='var(--blood)'">💰 PAY BAIL</button>
+    <div style="font-family:'Special Elite',serif;color:var(--text-dim);font-size:11px">Properties still collecting. Hang tight, boss.</div>
+  </div>
   <!-- CONTENT -->
   <div id="content-area">
     <!-- LEFT SIDEBAR -->
@@ -513,6 +619,8 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
         <div class="nb" id="nav-properties" onclick="showPanel('properties')"><span class="ni">🏢</span> Properties</div>
         <div class="nb" id="nav-store" onclick="showPanel('store')"><span class="ni">🔧</span> Armory</div>
         <div class="nb" id="nav-blackmarket" onclick="showPanel('blackmarket')"><span class="ni">🕶️</span> Black Market</div>
+        <div class="nb" id="nav-luxury" onclick="showPanel('luxury')"><span class="ni">💎</span> Luxury Shop</div>
+        <div class="nb" id="nav-darkweb" onclick="showPanel('darkweb')"><span class="ni">🕸️</span> Dark Web</div>
         <div class="nb" id="nav-crafting" onclick="showPanel('crafting')"><span class="ni">⚗️</span> Crafting</div>
         <div class="nb" id="nav-inventory" onclick="showPanel('inventory')"><span class="ni">🎒</span> Inventory</div>
       </div>
@@ -523,6 +631,12 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
         <div class="nb" id="nav-achievements" onclick="showPanel('achievements')"><span class="ni">🏆</span> Achievements</div>
         <div class="nb" id="nav-casino" onclick="showPanel('casino')"><span class="ni">🎲</span> Casino</div>
         <div class="nb" id="nav-prestige" onclick="showPanel('prestige')"><span class="ni">⭐</span> Prestige</div>
+        <div class="nb" id="nav-crew" onclick="showPanel('crew')"><span class="ni">👥</span> Crew</div>
+        <div class="nb" id="nav-hitman" onclick="showPanel('hitman')"><span class="ni">🎯</span> Hitman</div>
+        <div class="nb" id="nav-racing" onclick="showPanel('racing')"><span class="ni">🏎️</span> Street Racing</div>
+        <div class="nb" id="nav-underworld" onclick="showPanel('underworld')"><span class="ni">🌆</span> Underworld</div>
+        <div class="nb" id="nav-events" onclick="showPanel('events')"><span class="ni">⚡</span> Events</div>
+        <div class="nb" id="nav-notoriety" onclick="showPanel('notoriety')"><span class="ni">☠️</span> Notoriety</div>
         <div class="nb" id="nav-savemgr" onclick="showPanel('savemgr')"><span class="ni">💾</span> Save / Load</div>
       </div>
       <div class="ns">
@@ -571,6 +685,16 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
         <div class="sr"><span class="srl">Jobs Done</span><span class="srv" id="rp-jd">0</span></div>
         <div class="sr"><span class="srl">Robberies</span><span class="srv" id="rp-rob">0</span></div>
         <div class="sr"><span class="srl">Contracts Done</span><span class="srv gold" id="rp-cd">0</span></div>
+        <div class="sr"><span class="srl">Heat</span><span class="srv r" id="rp-heat">0</span></div>
+        <div class="sr"><span class="srl">Notoriety</span><span class="srv p" id="rp-not">0</span></div>
+      </div>
+      <div class="rps">
+        <div class="rph">🌆 STREET STATUS</div>
+        <div class="sr"><span class="srl">Notoriety</span><span class="srv gold" id="rp-notoriety">0</span></div>
+        <div class="sr"><span class="srl">Rep Tier</span><span class="srv" id="rp-rep-tier">Nobody</span></div>
+        <div class="sr"><span class="srl">Heat</span><span class="srv r" id="rp-heat">0%</span></div>
+        <div class="sr"><span class="srl">Crew Hired</span><span class="srv" id="rp-crew">0</span></div>
+        <div class="sr"><span class="srl">Contracts Killed</span><span class="srv r" id="rp-hm-done">0</span></div>
       </div>
 
       <div class="rps">
@@ -644,6 +768,21 @@ const G = {
   achUnlocked:{},
   currentPanel:'jobs',
   cashMult:1, incomeMult:1, robBonus:0, bountyMult:1, drugMult:1, bossDmgMult:1, warDmgMult:1,
+  // Heat / Wanted system
+  heat:0, jailTimer:0, stingRisk:0,
+  // Hitman-for-hire
+  hitmanMissions:{}, hitmanAvail:[],
+  // Street Rep / Notoriety
+  notoriety:0,
+  // Global events
+  activeEvent:null, eventTimer:0,
+  // Casino stats
+  casinoWins:0, casinoLosses:0,
+  // Crew members (named)
+  crew:{},
+  // Black market sting tracking
+  bmStingRisk:0,
+  luxuryOwned:{}, luxuryTab:'Collectibles',
 };
 
 // ══════════════════════════════════════════
@@ -733,9 +872,9 @@ new_york:[
     {id:'NY24',n:'Launder Money Through Restaurants',e:12,c:7000,x:30,lc:.09,d:'The books are immaculate'},
     {id:'NY25',n:'Run a Chop Shop Network',e:12,c:7500,x:32,lc:.10,d:'Parts worth more than whole vehicles'},
     {id:'NY26',n:'Bribe the DA',e:14,c:10000,x:38,lc:.11,d:'Entire case gets dismissed'},
-    {id:'NY27',n:'Takeover a Casino',e:15,c:13000,x:45,lc:.12,li:'ak47',d:'The gamblers barely notice the new owner'},
-    {id:'NY28',n:'Control the Financial District',e:16,c:16000,x:50,lc:.13,li:'gold_watch',d:'Banks. Brokerages. Yours.'},
-    {id:'NY29',n:'Execute a Rival Don',e:20,c:25000,x:70,lc:.16,li:'don_ring',d:'The Five Families have spoken'},
+    {id:'NY27',n:'Takeover a Casino',e:15,c:7500,x:45,lc:.12,li:'ak47',d:'The gamblers barely notice the new owner'},
+    {id:'NY28',n:'Control the Financial District',e:16,c:9000,x:50,lc:.13,li:'gold_watch',d:'Banks. Brokerages. Yours.'},
+    {id:'NY29',n:'Execute a Rival Don',e:20,c:14000,x:70,lc:.16,li:'don_ring',d:'The Five Families have spoken'},
   ]},
 ],
 chicago:[
@@ -758,7 +897,7 @@ chicago:[
     {id:'CH12',n:'Control the Entire Outfit',e:14,c:12000,x:45,lc:.13,d:'Chicago bows to your name'},
     {id:'CH13',n:'Bribe the Mayor',e:16,c:18000,x:55,lc:.14,d:'Entire city government is yours'},
     {id:'CH14',n:'Eliminate the Competition',e:18,c:22000,x:60,lc:.15,li:'tommy_gun',d:'Seven rival crews. One night.'},
-    {id:'CH15',n:'Hijack a Federal Shipment',e:20,c:30000,x:75,lc:.16,li:'fbi_badge',d:'The feds won\'t know what hit them'},
+    {id:'CH15',n:'Hijack a Federal Shipment',e:20,c:16000,x:75,lc:.16,li:'fbi_badge',d:'The feds won\'t know what hit them'},
   ]},
 ],
 miami:[
@@ -866,8 +1005,8 @@ moscow:[
   ]},
   {tier:'II. Vor',jobs:[
     {id:'MO07',n:'Control All of Russia\'s Organized Crime',e:20,c:60000,x:110,lc:.16,li:'vor_crown',d:'The Bratva bows to you alone'},
-    {id:'MO08',n:'Hack the SWIFT Banking Network',e:18,c:50000,x:95,lc:.15,li:'hacking_rig',d:'Move nine figures with a keystroke'},
-    {id:'MO09',n:'Run the Siberian Diamond Mines',e:16,c:38000,x:85,lc:.15,d:'The earth gives up its secrets for you'},
+    {id:'MO08',n:'Hack the SWIFT Banking Network',e:18,c:28000,x:95,lc:.15,li:'hacking_rig',d:'Move nine figures with a keystroke'},
+    {id:'MO09',n:'Run the Siberian Diamond Mines',e:16,c:22000,x:85,lc:.15,d:'The earth gives up its secrets for you'},
   ]},
 ],
 berlin:[
@@ -911,8 +1050,8 @@ hong_kong:[
     {id:'HK01',n:'Control the Wanchai District',e:10,c:14000,x:50,lc:.11,d:'Neon-lit and entirely yours'},
     {id:'HK02',n:'Run Counterfeit Luxury Goods',e:8,c:9500,x:38,lc:.10,li:'fake_rolex',d:'Kowloon factories, Tsim Sha Tsui prices'},
     {id:'HK03',n:'Financial Fraud Through the Exchange',e:12,c:20000,x:63,lc:.13,li:'hacking_rig',d:'Insider trading with triad enforcement'},
-    {id:'HK04',n:'Control the South China Sea Routes',e:15,c:33000,x:82,lc:.14,d:'Ancient trade routes, modern volumes'},
-    {id:'HK05',n:'Run the 14K Triad',e:20,c:55000,x:105,lc:.16,li:'dragon_seal',d:'The oldest and most powerful triad bows to you'},
+    {id:'HK04',n:'Control the South China Sea Routes',e:15,c:18000,x:82,lc:.14,d:'Ancient trade routes, modern volumes'},
+    {id:'HK05',n:'Run the 14K Triad',e:20,c:30000,x:105,lc:.16,li:'dragon_seal',d:'The oldest and most powerful triad bows to you'},
   ]},
 ],
 tokyo:[
@@ -921,8 +1060,8 @@ tokyo:[
     {id:'TO02',n:'Control the Pachinko Parlors',e:10,c:15000,x:52,lc:.12,d:'The gray zone between legal and your pocket'},
     {id:'TO03',n:'Extort the Keiretsu',e:14,c:28000,x:76,lc:.13,li:'katana',d:'Mitsubishi, Toyota — they all pay up'},
     {id:'TO04',n:'Bribe the LDP',e:13,c:25000,x:70,lc:.13,d:'Japan\'s ruling party has skeletons'},
-    {id:'TO05',n:'Run the Yakuza Financial Empire',e:18,c:50000,x:100,lc:.15,li:'yakuza_tattoo_scroll',d:'The five families of Japan serve you'},
-    {id:'TO06',n:'Infiltrate the Bank of Japan',e:20,c:70000,x:120,lc:.16,li:'samurai_sword',d:'The country\'s reserves, at your fingertips'},
+    {id:'TO05',n:'Run the Yakuza Financial Empire',e:18,c:28000,x:100,lc:.15,li:'yakuza_tattoo_scroll',d:'The five families of Japan serve you'},
+    {id:'TO06',n:'Infiltrate the Bank of Japan',e:20,c:40000,x:120,lc:.16,li:'samurai_sword',d:'The country\'s reserves, at your fingertips'},
   ]},
 ],
 brazil:[
@@ -931,8 +1070,8 @@ brazil:[
     {id:'BR02',n:'Run Port Operations',e:11,c:16000,x:55,lc:.12,d:'Everything that enters or leaves, you tax'},
     {id:'BR03',n:'Smuggle Through the Amazon',e:13,c:22000,x:66,lc:.13,li:'jungle_machete',d:'The river is a highway if you know the bends'},
     {id:'BR04',n:'Bribe Government Ministers',e:14,c:28000,x:75,lc:.14,li:'diamonds',d:'Democracy is very expensive down here'},
-    {id:'BR05',n:'Control the Coffee and Cocaine Export',e:15,c:35000,x:85,lc:.15,d:'One legitimate, one not. Same profit.'},
-    {id:'BR06',n:'Run the PCC Criminal Organization',e:20,c:65000,x:115,lc:.16,li:'pcc_crown',d:'Brazil\'s most powerful criminal empire is yours'},
+    {id:'BR05',n:'Control the Coffee and Cocaine Export',e:15,c:20000,x:85,lc:.15,d:'One legitimate, one not. Same profit.'},
+    {id:'BR06',n:'Run the PCC Criminal Organization',e:20,c:36000,x:115,lc:.16,li:'pcc_crown',d:'Brazil\'s most powerful criminal empire is yours'},
   ]},
 ],
 nairobi:[
@@ -941,7 +1080,7 @@ nairobi:[
     {id:'NA02',n:'Run the Conflict Mineral Pipeline',e:14,c:30000,x:78,lc:.13,d:'Coltan from Congo to tech companies'},
     {id:'NA03',n:'Bribe Pan-African Officials',e:13,c:25000,x:70,lc:.13,d:'The African Union has an informal fee schedule'},
     {id:'NA04',n:'Operate Offshore Banking in Mauritius',e:15,c:38000,x:86,lc:.14,li:'offshore_account',d:'Zero tax, maximum opacity'},
-    {id:'NA05',n:'Control the Horn of Africa Shipping Lanes',e:18,c:55000,x:105,lc:.15,d:'Ancient maritime routes, modern piracy margins'},
+    {id:'NA05',n:'Control the Horn of Africa Shipping Lanes',e:18,c:28000,x:105,lc:.15,d:'Ancient maritime routes, modern piracy margins'},
   ]},
 ],
 singapore:[
@@ -949,8 +1088,8 @@ singapore:[
     {id:'SI01',n:'Run the Clean Money Corridor',e:14,c:35000,x:82,lc:.13,li:'crypto_wallet',d:'Singapore\'s banks ask no questions'},
     {id:'SI02',n:'Control Shipping Through Malacca Strait',e:16,c:48000,x:98,lc:.14,d:'A third of world trade passes through here'},
     {id:'SI03',n:'Tech Company Front Network',e:15,c:42000,x:90,lc:.14,li:'hacking_rig',d:'Silicon Valley of crime'},
-    {id:'SI04',n:'Run the ASEAN Dark Finance Network',e:18,c:65000,x:112,lc:.15,d:'Ten nations\' financial systems under your control'},
-    {id:'SI05',n:'Infiltrate the World Bank',e:22,c:100000,x:150,lc:.17,li:'world_bank_key',d:'The global financial architecture, yours'},
+    {id:'SI04',n:'Run the ASEAN Dark Finance Network',e:18,c:35000,x:112,lc:.15,d:'Ten nations\' financial systems under your control'},
+    {id:'SI05',n:'Infiltrate the World Bank',e:22,c:55000,x:150,lc:.17,li:'world_bank_key',d:'The global financial architecture, yours'},
   ]},
 ],
 italy:[
@@ -959,9 +1098,9 @@ italy:[
     {id:'IT02',n:'Vatican Bank Infiltration',e:14,c:35000,x:82,lc:.14,li:'papal_signet',d:'The oldest money laundry in the world'},
     {id:'IT03',n:'Run Counterfeit Renaissance Art',e:12,c:25000,x:70,lc:.13,li:'renaissance_dagger',d:'The museums are full of your product'},
     {id:'IT04',n:'Control the Mediterranean Smuggling Route',e:15,c:40000,x:88,lc:.14,d:'Ancient sea lanes under modern management'},
-    {id:'IT05',n:'Bribe Entire Italian Parliament',e:18,c:60000,x:110,lc:.15,d:'Berlusconi had nothing on you'},
-    {id:'IT06',n:'Control All of Sicily',e:22,c:90000,x:140,lc:.17,li:'don_ring',d:'The island kneels. Italy is next.'},
-    {id:'IT07',n:'Become the World Don',e:30,c:250000,x:250,lc:.20,li:'world_don_crown',d:'Every crime organization in the world answers to you. You have arrived.'},
+    {id:'IT05',n:'Bribe Entire Italian Parliament',e:18,c:32000,x:110,lc:.15,d:'Berlusconi had nothing on you'},
+    {id:'IT06',n:'Control All of Sicily',e:22,c:45000,x:140,lc:.17,li:'don_ring',d:'The island kneels. Italy is next.'},
+    {id:'IT07',n:'Become the World Don',e:30,c:80000,x:250,lc:.20,li:'world_don_crown',d:'Every crime organization in the world answers to you. You have arrived.'},
   ]},
 ],
 };
@@ -1022,26 +1161,26 @@ const HITLIST = [
 // PROPERTIES (expanded, 20 types)
 // ══════════════════════════════════════════
 const PROPS = [
-  {id:'bodega',n:'Bodega',e:'🏪',c:5000,i:200,max:5,d:'Corner store front'},
-  {id:'numbers_parlor',n:'Numbers Parlor',e:'🎲',c:15000,i:700,max:4,d:'Illegal betting den'},
-  {id:'chop_shop',n:'Chop Shop',e:'🔧',c:25000,i:1400,max:3,d:'Vehicle processing'},
-  {id:'nightclub',n:'Nightclub',e:'🎵',c:50000,i:3000,max:3,d:'Cash flow machine'},
-  {id:'casino',n:'Underground Casino',e:'🎰',c:100000,i:7000,max:2,d:'High-stakes gambling'},
-  {id:'warehouse',n:'Warehouse',e:'🏭',c:40000,i:2200,max:4,d:'Distribution hub'},
-  {id:'restaurant',n:'Restaurant Chain',e:'🍝',c:75000,i:4000,max:3,d:'Laundering front'},
-  {id:'port',n:'Port Terminal',e:'⚓',c:200000,i:14000,max:1,d:'Shipping control'},
-  {id:'hotel',n:'Luxury Hotel',e:'🏨',c:300000,i:20000,max:2,d:'Five-star money mover'},
-  {id:'bankfront',n:'Bank Front',e:'🏦',c:500000,i:35000,max:1,d:'Cleaning machine'},
-  {id:'offshore',n:'Offshore Account',e:'🏝️',c:1000000,i:70000,max:1,d:'Zero tax, full control'},
-  {id:'arms_depot',n:'Arms Depot',e:'💣',c:800000,i:55000,max:1,d:'Weapons stockpile and sales'},
-  {id:'tech_company',n:'Tech Company',e:'💻',c:2000000,i:120000,max:1,d:'Silicon cover for dark ops'},
-  {id:'media_empire',n:'Media Empire',e:'📺',c:5000000,i:300000,max:1,d:'Control the narrative'},
-  {id:'private_island',n:'Private Island',e:'🌴',c:10000000,i:650000,max:1,d:'Untouchable HQ'},
-  {id:'crypto_exchange',n:'Crypto Exchange',e:'₿',c:3000000,i:200000,max:1,d:'Digital money river'},
-  {id:'pharmaceutical',n:'Pharmaceutical Company',e:'💊',c:4000000,i:250000,max:1,d:'Legal front, illegal margins'},
-  {id:'oil_refinery',n:'Oil Refinery',e:'🛢️',c:8000000,i:500000,max:1,d:'Black gold for the Don'},
-  {id:'shipping_line',n:'Global Shipping Line',e:'🚢',c:15000000,i:900000,max:1,d:'The ocean works for you'},
-  {id:'sovereign_fund',n:'Sovereign Wealth Fund',e:'👑',c:50000000,i:3000000,max:1,d:'You are the government'},
+  {id:'bodega',n:'Bodega',e:'🏪',c:5000,i:150,max:5,d:'Corner store front'},
+  {id:'numbers_parlor',n:'Numbers Parlor',e:'🎲',c:15000,i:500,max:4,d:'Illegal betting den'},
+  {id:'chop_shop',n:'Chop Shop',e:'🔧',c:25000,i:1000,max:3,d:'Vehicle processing'},
+  {id:'nightclub',n:'Nightclub',e:'🎵',c:50000,i:2000,max:3,d:'Cash flow machine'},
+  {id:'casino',n:'Underground Casino',e:'🎰',c:100000,i:4500,max:2,d:'High-stakes gambling'},
+  {id:'warehouse',n:'Warehouse',e:'🏭',c:40000,i:1500,max:4,d:'Distribution hub'},
+  {id:'restaurant',n:'Restaurant Chain',e:'🍝',c:75000,i:2800,max:3,d:'Laundering front'},
+  {id:'port',n:'Port Terminal',e:'⚓',c:200000,i:9000,max:1,d:'Shipping control'},
+  {id:'hotel',n:'Luxury Hotel',e:'🏨',c:300000,i:13000,max:2,d:'Five-star money mover'},
+  {id:'bankfront',n:'Bank Front',e:'🏦',c:500000,i:22000,max:1,d:'Cleaning machine'},
+  {id:'offshore',n:'Offshore Account',e:'🏝️',c:1000000,i:42000,max:1,d:'Zero tax, full control'},
+  {id:'arms_depot',n:'Arms Depot',e:'💣',c:800000,i:33000,max:1,d:'Weapons stockpile and sales'},
+  {id:'tech_company',n:'Tech Company',e:'💻',c:2000000,i:70000,max:1,d:'Silicon cover for dark ops'},
+  {id:'media_empire',n:'Media Empire',e:'📺',c:5000000,i:160000,max:1,d:'Control the narrative'},
+  {id:'private_island',n:'Private Island',e:'🌴',c:10000000,i:350000,max:1,d:'Untouchable HQ'},
+  {id:'crypto_exchange',n:'Crypto Exchange',e:'₿',c:3000000,i:110000,max:1,d:'Digital money river'},
+  {id:'pharmaceutical',n:'Pharmaceutical Company',e:'💊',c:4000000,i:140000,max:1,d:'Legal front, illegal margins'},
+  {id:'oil_refinery',n:'Oil Refinery',e:'🛢️',c:8000000,i:270000,max:1,d:'Black gold for the Don'},
+  {id:'shipping_line',n:'Global Shipping Line',e:'🚢',c:15000000,i:480000,max:1,d:'The ocean works for you'},
+  {id:'sovereign_fund',n:'Sovereign Wealth Fund',e:'👑',c:50000000,i:1200000,max:1,d:'You are the government'},
 ];
 
 // ══════════════════════════════════════════
@@ -1138,16 +1277,16 @@ const LOOT = {
 // GANGS FOR GANG WAR
 // ══════════════════════════════════════════
 const GANGS = [
-  {id:'g1',n:'The Westies',strength:50,territory:30,ml:1,reward:5000,xpr:20},
-  {id:'g2',n:'Chinatown Dragons',strength:120,territory:45,ml:8,reward:15000,xpr:45},
-  {id:'g3',n:'The Outfit',strength:250,territory:60,ml:18,reward:40000,xpr:90},
-  {id:'g4',n:'Ghost Street Crew',strength:500,territory:50,ml:30,reward:100000,xpr:170},
-  {id:'g5',n:'Latin Kings Alliance',strength:1000,territory:65,ml:45,reward:250000,xpr:300},
-  {id:'g6',n:'Russian Bratva West',strength:2000,territory:70,ml:60,reward:600000,xpr:500},
-  {id:'g7',n:'International Syndicate',strength:5000,territory:80,ml:80,reward:2000000,xpr:900},
-  {id:'g8',n:'Shadow Network Cells',strength:15000,territory:85,ml:120,reward:8000000,xpr:2000},
-  {id:'g9',n:'World Order Cartel',strength:50000,territory:90,ml:200,reward:30000000,xpr:5000},
-  {id:'g10',n:'The Final Regime',strength:200000,territory:95,ml:400,reward:200000000,xpr:15000},
+  {id:'g1',n:'The Westies',strength:50,territory:30,ml:1,reward:1500,xpr:20},
+  {id:'g2',n:'Chinatown Dragons',strength:120,territory:45,ml:8,reward:4000,xpr:45},
+  {id:'g3',n:'The Outfit',strength:250,territory:60,ml:18,reward:10000,xpr:90},
+  {id:'g4',n:'Ghost Street Crew',strength:500,territory:50,ml:30,reward:20000,xpr:170},
+  {id:'g5',n:'Latin Kings Alliance',strength:1000,territory:65,ml:45,reward:40000,xpr:300},
+  {id:'g6',n:'Russian Bratva West',strength:2000,territory:70,ml:60,reward:80000,xpr:500},
+  {id:'g7',n:'International Syndicate',strength:5000,territory:80,ml:80,reward:150000,xpr:900},
+  {id:'g8',n:'Shadow Network Cells',strength:15000,territory:85,ml:120,reward:500000,xpr:2000},
+  {id:'g9',n:'World Order Cartel',strength:50000,territory:90,ml:200,reward:1500000,xpr:5000},
+  {id:'g10',n:'The Final Regime',strength:200000,territory:95,ml:400,reward:5000000,xpr:15000},
 ];
 
 // ══════════════════════════════════════════
@@ -1293,6 +1432,21 @@ function safeInitNewFields(){
   if(G.bossDmgMult===undefined)G.bossDmgMult=1;
   if(G.warDmgMult===undefined)G.warDmgMult=1;
   if(G.currentPanel===undefined)G.currentPanel='jobs';
+  if(G.heat===undefined)G.heat=0;
+  if(G.jailTimer===undefined)G.jailTimer=0;
+  if(G.notoriety===undefined)G.notoriety=0;
+  if(G.activeEvent===undefined)G.activeEvent=null;
+  if(G.casinoWins===undefined)G.casinoWins=0;
+  if(G.casinoLosses===undefined)G.casinoLosses=0;
+  if(!G.crew)G.crew={};
+  if(G.bmStingRisk===undefined)G.bmStingRisk=0;
+  if(!G.hitmanMissions)G.hitmanMissions={};
+  if(G.raceWins===undefined)G.raceWins=0;
+  if(G.notoriety===undefined)G.notoriety=0;
+  if(G.heat===undefined)G.heat=0;
+  if(!G.crew)G.crew={};
+  if(!G.luxuryOwned)G.luxuryOwned={};
+  if(!G.luxuryTab)G.luxuryTab='Collectibles';
 }
 function showCharScreen(){
   try{
@@ -1385,7 +1539,7 @@ function showPanel(p){
   c.innerHTML='';
   const map={
     jobs:buildJobs, fight:buildFight, hitlist:buildHitlist, rob:buildRob,
-    gangwar:buildGangWar, bosses:buildBosses, savemgr:buildSaveMgr, drugtrade:buildDrugTrade, achievements:buildAchievements, properties:buildProperties, store:buildStore,
+    gangwar:buildGangWar, bosses:buildBosses, savemgr:buildSaveMgr, crew:buildCrew, hitman:buildHitman, events:buildEvents, notoriety:buildNotoriety, drugtrade:buildDrugTrade, achievements:buildAchievements, properties:buildProperties, store:buildStore, luxury:buildLuxury,
     blackmarket:buildBlackMarket, crafting:buildCrafting, inventory:buildInventory,
     skilltree:buildSkillTree, casino:buildCasino, prestige:buildPrestige,
     missions:buildMissions, operations:buildOperations, contracts:buildContracts,
@@ -1495,6 +1649,8 @@ function doJob(id){
     const bonus=Math.floor(cash*.5);G.cash+=bonus;G.totalEarned+=bonus;
     addLog(`💥 CRITICAL JOB! Bonus $${bonus.toLocaleString()}`,'gold');
   }
+  addHeat(1);
+  addNotoriety(2);
   updateAll();checkMissions();save();
   const el=document.getElementById('jc-'+id);
   if(el)el.classList.add('flash-win');
@@ -1546,6 +1702,8 @@ function doFight(ename){
     if(fra)fra.innerHTML=`<div class="fr lose">✗ DEFEATED by ${e.n}<br>You: ${myR.toFixed(0)} vs Enemy: ${eR.toFixed(0)}<br>❤️ -${dmg} HP</div>`;
     addLog(`✗ Lost to ${e.n} — took ${dmg} dmg`,'bad');
   }
+  addHeat(getEventMult?getEventMult('heatMult',3):3);
+  addNotoriety(5);
   updateAll();checkMissions();save();
 }
 
@@ -1629,6 +1787,8 @@ function robTarget(def,cash){
     G.health=Math.max(1,G.health-d);
     addLog('✗ Rob failed. Got shot.','bad');toast('They were ready. Took damage.','r');
   }
+  if(typeof addHeat==='function'){addHeat(typeof getEventMult==='function'?getEventMult('heatMult',5):5);}
+  if(typeof addNotoriety==='function') addNotoriety(8);
   updateAll();checkMissions();save();
   buildRob(document.getElementById('center'));
 }
@@ -1799,29 +1959,14 @@ function buildBlackMarket(c){
       <div class="bm-desc">${it.d}</div>
       <div class="bm-tags">${it.tag.map(t=>`<span class="bm-tag">${t}</span>`).join('')}</div>
       <div class="bm-price">${own?'✓ OWNED':'$'+it.p.toLocaleString()}</div>
-      ${!own?`<button class="bbtn" onclick="buyBM('${it.id}')" ${G.cash>=it.p?'':'disabled'} style="width:100%;margin-top:8px;">ACQUIRE</button>`:'<div style="color:var(--bright-green);font-family:\'Bebas Neue\',sans-serif;font-size:12px;margin-top:6px;letter-spacing:.1em;">ACTIVE</div>'}
+      ${!own?`<button class="bbtn" onclick="buyBMUpgraded('${it.id}')" ${G.cash>=it.p?'':'disabled'} style="width:100%;margin-top:8px;">ACQUIRE</button>`:'<div style="color:var(--bright-green);font-family:\'Bebas Neue\',sans-serif;font-size:12px;margin-top:6px;letter-spacing:.1em;">ACTIVE</div>'}
     </div>`;
   }
   html+=`</div></div></div>`;
   c.innerHTML=html;
 }
 
-function buyBM(id){
-  const it=BLACK_MARKET.find(x=>x.id===id);if(!it)return;
-  if(G.cash<it.p){toast('Not enough cash!','r');return;}
-  if(G.blackMarketBuys[id]){toast('Already owned!','r');return;}
-  G.cash-=it.p;G.blackMarketBuys[id]=true;
-  // Apply effects
-  if(it.special==='cashbonus'){/* handled in calcCash */}
-  else if(it.special==='energybonus'){G.maxEnergy=Math.floor(G.maxEnergy*1.25);}
-  else if(it.special==='lootbonus'){G.lootBonus+=20;}
-  else if(it.special==='xpbonus'){G.xpMult*=2;}
-  else if(it.special==='mafia50'){G.mafiaSize+=50;}
-  else if(it.special==='propbonus'){/* in calcIncome */}
-  else if(it.atk>0||it.def>0){G.attack+=it.atk;G.defense+=it.def;}
-  addLog(`🕶️ BLACK MARKET: ${it.n} acquired!`,'sp');toast(`${it.e} ${it.n} acquired!`,'gold');
-  updateAll();save();buildBlackMarket(document.getElementById('center'));
-}
+function buyBM(id){ buyBMUpgraded(id); }
 
 // ══════════════════════════════════════════
 // CRAFTING
@@ -2144,14 +2289,14 @@ function fmtCash(n){
 // BOSSES DATA
 // ══════════════════════════════════════════
 const BOSSES = [
-  {id:'boss01',n:'Fat Tony Marchetti',city:'New York',ml:8,maxHP:2000,atk:45,def:20,reward:50000,xpr:200,d:'The neighbourhood boss. Old school, well connected.'},
+  {id:'boss01',n:'Fat Tony Marchetti',city:'New York',ml:8,maxHP:2000,atk:45,def:20,reward:25000,xpr:200,d:'The neighbourhood boss. Old school, well connected.'},
   {id:'boss02',n:'Al "Ironside" Capelli',city:'Chicago',ml:20,maxHP:8000,atk:100,def:55,reward:300000,xpr:600,d:'Runs the whole Chicago outfit with an iron fist.'},
   {id:'boss03',n:'Carlos El Tiburón',city:'Miami',ml:40,maxHP:25000,atk:250,def:130,reward:2000000,xpr:2000,d:'The shark of Miami — half the cocaine in Florida.'},
-  {id:'boss04',n:'Viktor Krasnov',city:'Moscow',ml:80,maxHP:100000,atk:600,def:350,reward:15000000,xpr:8000,d:'Ex-KGB, current Bratva overlord. Thought he was untouchable.'},
-  {id:'boss05',n:'The Dragon',city:'Hong Kong',ml:150,maxHP:500000,atk:1800,def:1000,reward:100000000,xpr:30000,d:'Last surviving founder of the original Triad network.'},
-  {id:'boss06',n:'Sheikh Al-Ghaib',city:'Dubai',ml:250,maxHP:3000000,atk:5000,def:3000,reward:1000000000,xpr:100000,d:'Oil money, weapons, connections to every government on earth.'},
-  {id:'boss07',n:'Il Padrino Eterno',city:'Palermo',ml:500,maxHP:20000000,atk:15000,def:10000,reward:10000000000,xpr:400000,d:'Eight hundred years of Sicilian crime bloodline ends here.'},
-  {id:'boss08',n:'THE FINAL BOSS',city:'The Void',ml:1200,maxHP:500000000,atk:100000,def:80000,reward:999999999999,xpr:2000000,d:'The shadow that has always controlled everything. Until now.'},
+  {id:'boss04',n:'Viktor Krasnov',city:'Moscow',ml:80,maxHP:100000,atk:600,def:350,reward:4000000,xpr:8000,d:'Ex-KGB, current Bratva overlord. Thought he was untouchable.'},
+  {id:'boss05',n:'The Dragon',city:'Hong Kong',ml:150,maxHP:500000,atk:1800,def:1000,reward:3000000,xpr:30000,d:'Last surviving founder of the original Triad network.'},
+  {id:'boss06',n:'Sheikh Al-Ghaib',city:'Dubai',ml:250,maxHP:3000000,atk:5000,def:3000,reward:8000000,xpr:100000,d:'Oil money, weapons, connections to every government on earth.'},
+  {id:'boss07',n:'Il Padrino Eterno',city:'Palermo',ml:500,maxHP:20000000,atk:15000,def:10000,reward:15000000,xpr:400000,d:'Eight hundred years of Sicilian crime bloodline ends here.'},
+  {id:'boss08',n:'THE FINAL BOSS',city:'The Void',ml:1200,maxHP:500000000,atk:100000,def:80000,reward:50000000,xpr:2000000,d:'The shadow that has always controlled everything. Until now.'},
 ];
 
 // ══════════════════════════════════════════
@@ -2289,7 +2434,7 @@ function buildDrugTrade(c){
       <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--bright-gold);text-align:right">$${fmtCash(price)}</div>
       <div style="display:flex;flex-direction:column;gap:4px">
         <button onclick="buyDrug('${d.id}',${price})" ${canBuy?'':'disabled'} style="background:var(--green);border:1px solid var(--bright-green);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:.08em;padding:5px 10px;cursor:pointer;opacity:${canBuy?1:.4}">BUY</button>
-        <button onclick="sellDrug('${d.id}',${sellPrice})" ${inv>0?'':'disabled'} style="background:var(--blood);border:1px solid var(--crimson);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:.08em;padding:5px 10px;cursor:pointer;opacity:${inv>0?1:.4}">SELL $${fmtCash(sellPrice)}</button>
+        <button onclick="sellDrugUpgraded('${d.id}',${sellPrice})" ${inv>0?'':'disabled'} style="background:var(--blood);border:1px solid var(--crimson);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:.08em;padding:5px 10px;cursor:pointer;opacity:${inv>0?1:.4}">SELL $${fmtCash(sellPrice)}</button>
       </div>
     </div>`;
   }
@@ -2307,25 +2452,7 @@ function buyDrug(id,price){
   buildDrugTrade(document.getElementById('center'));
 }
 
-function sellDrug(id,price){
-  const d=DRUGS.find(x=>x.id===id);if(!d)return;
-  if((G.drugInv[id]||0)<=0){toast('Nothing to sell!','r');return;}
-  G.drugInv[id]--;
-  G.drugTradeCount=(G.drugTradeCount||0)+1;
-  if(Math.random()<d.risk){
-    const fine=price*3;
-    G.cash=Math.max(0,G.cash-fine);
-    addLog(`🚔 BUSTED selling ${d.n}! Fined $${fmtCash(fine)}`,'bad');
-    toast(`Busted! Fined $${fmtCash(fine)}`,'r');
-  }else{
-    G.cash+=price;G.totalEarned+=price;
-    gainXP(Math.floor(price/500));
-    addLog(`💊 Sold ${d.n} for $${fmtCash(price)}`,'gold');
-    toast(`+$${fmtCash(price)}!`,'gold');
-  }
-  checkAchievements();updateAll();save();
-  buildDrugTrade(document.getElementById('center'));
-}
+function sellDrug(id,price){ sellDrugUpgraded(id,price); }
 
 // ══════════════════════════════════════════
 // ACHIEVEMENTS PANEL + LOGIC
@@ -2365,6 +2492,23 @@ function checkAchievements(){
   }
 }
 
+
+// New achievements wired into checkAchievements
+const NEW_ACHIEVEMENTS = [
+  {id:'ach_jailbreak',  n:'Jailbird',      desc:'Get arrested for the first time',        req:()=>(G.jailTimer||0)>0||((G.heat||0)>=40),             bonus:{type:'cash',val:0.05}},
+  {id:'ach_crew5',      n:'Family Business',desc:'Hire 5 crew members',                    req:()=>G.crew&&Object.keys(G.crew).length>=5,             bonus:{type:'atk',val:10}},
+  {id:'ach_notoriety1', n:'Street Name',    desc:'Reach 5,000 notoriety',                  req:()=>(G.notoriety||0)>=5000,                            bonus:{type:'xp',val:0.1}},
+  {id:'ach_hitman3',    n:'Ghost Protocol', desc:'Complete 3 hitman contracts',             req:()=>G.hitmanMissions&&Object.values(G.hitmanMissions).filter(x=>x.done).length>=3, bonus:{type:'crit',val:5}},
+  {id:'ach_race10',     n:'Street King',    desc:'Win 10 street races',                    req:()=>(G.raceWins||0)>=10,                               bonus:{type:'cash',val:0.1}},
+  {id:'ach_darkweb',    n:'Ghost in the Machine',desc:'Purchase any Dark Web item',        req:()=>Object.keys(G.blackMarketBuys||{}).some(k=>k.startsWith('dw_')), bonus:{type:'heat',val:-5}},
+  {id:'ach_heatzero',   n:'Untouchable',    desc:'Clear heat to 0 from 80+',               req:()=>(G.heat||0)===0&&(G.notoriety||0)>10000,           bonus:{type:'def',val:10}},
+];
+// Merge new achievements into ACHIEVEMENTS array if not already present  
+if(typeof ACHIEVEMENTS !== 'undefined'){
+  for(const a of NEW_ACHIEVEMENTS){
+    if(!ACHIEVEMENTS.find(x=>x.id===a.id)) ACHIEVEMENTS.push(a);
+  }
+}
 
 // ══════════════════════════════════════════
 // SAVE MANAGER PANEL
@@ -2452,6 +2596,1259 @@ function resetSave(){
   toast('Save wiped. Reloading...','r');
   setTimeout(()=>location.reload(),1200);
 }
+
+
+// ══════════════════════════════════════════
+// HEAT / WANTED SYSTEM
+// ══════════════════════════════════════════
+const HEAT_LEVELS = [
+  {min:0,  max:20,  label:'CLEAN',      color:'#4CAF50', desc:'No heat. Moving freely.'},
+  {min:20, max:40,  label:'NOTICED',    color:'#FF9800', desc:'Local cops watching you.'},
+  {min:40, max:60,  label:'WANTED',     color:'#FF5722', desc:'Detectives on your trail.'},
+  {min:60, max:80,  label:'HOT',        color:'#F44336', desc:'FBI has a file on you.'},
+  {min:80, max:95,  label:'SCORCHING',  color:'#D32F2F', desc:'Task force deployed.'},
+  {min:95, max:101, label:'MOST WANTED',color:'#B71C1C', desc:'National manhunt. You are the target.'},
+];
+
+function getHeatLevel(){
+  const h=Math.min(100,G.heat||0);
+  return HEAT_LEVELS.find(l=>h>=l.min&&h<l.max)||HEAT_LEVELS[0];
+}
+
+function addHeat(amount){
+  G.heat=Math.min(100,(G.heat||0)+amount);
+  updateHeatBar();
+  // Trigger jail check at high heat
+  if(G.heat>=100&&!G.jailTimer){
+    triggerJail(60);
+  }
+}
+
+function coolHeat(amount){
+  G.heat=Math.max(0,(G.heat||0)-amount);
+  updateHeatBar();
+}
+
+function updateHeatBar(){
+  const h=Math.min(100,G.heat||0);
+  const lvl=getHeatLevel();
+  const fill=document.getElementById('heat-bar-fill');
+  const txt=document.getElementById('heat-level-txt');
+  if(fill){fill.style.width=h+'%';fill.style.background='linear-gradient(90deg,'+lvl.color+'aa,'+lvl.color+')';}
+  if(txt){txt.textContent=lvl.label;txt.style.color=lvl.color;}
+}
+
+function triggerJail(seconds){
+  G.jailTimer=seconds;
+  G.health=Math.floor(G.health*.6); // took a beating getting arrested
+  toast('🚔 BUSTED! You\'re going to jail!','r');
+  addLog('🚔 ARRESTED! Jailed for '+seconds+' seconds.','bad');
+  addHeat(-30); // heat drops after arrest
+  showJail();
+}
+
+function showJail(){
+  const o=document.getElementById('jail-overlay');
+  if(o)o.style.display='flex';
+  updateJailTimer();
+}
+
+function updateJailTimer(){
+  if(!G.jailTimer||G.jailTimer<=0){
+    G.jailTimer=0;
+    const o=document.getElementById('jail-overlay');
+    if(o)o.style.display='none';
+    toast('🔓 Released from jail!','g');
+    addLog('🔓 Released. Back on the streets.','gold');
+    return;
+  }
+  const mins=Math.floor(G.jailTimer/60);
+  const secs=G.jailTimer%60;
+  const t=document.getElementById('jail-timer');
+  const bc=document.getElementById('bail-cost-txt');
+  const bailCost=G.jailTimer*500*Math.max(1,Math.floor(G.level/10));
+  if(t)t.textContent=mins+':'+(secs<10?'0':'')+secs;
+  if(bc)bc.textContent='Bail: $'+bailCost.toLocaleString();
+}
+
+function payBail(){
+  const bailCost=(G.jailTimer||60)*500*Math.max(1,Math.floor(G.level/10));
+  if(G.cash<bailCost){toast('Can\'t afford bail!','r');return;}
+  G.cash-=bailCost;
+  G.jailTimer=0;
+  const o=document.getElementById('jail-overlay');
+  if(o)o.style.display='none';
+  toast('🔓 Bailed out for $'+bailCost.toLocaleString(),'g');
+  addLog('💰 Paid $'+bailCost.toLocaleString()+' bail.','gold');
+  updateAll();save();
+}
+
+// ══════════════════════════════════════════
+// UPGRADED DRUG TRADE CONSEQUENCES
+// ══════════════════════════════════════════
+function sellDrugUpgraded(id,price){
+  const d=DRUGS.find(x=>x.id===id);if(!d)return;
+  if((G.drugInv[id]||0)<=0){toast('Nothing to sell!','r');return;}
+
+  // Heat penalty on every drug sale
+  addHeat(d.risk*20);
+
+  if(Math.random()<d.risk*(1+(G.heat||0)/200)){
+    // BUSTED logic based on heat level
+    const heatMult=1+(G.heat||0)/100;
+    const fine=Math.floor(price*3*heatMult);
+
+    if(G.heat>70&&Math.random()<.4){
+      // Major bust - lose entire stash of this drug + jail
+      const seized=G.drugInv[id];
+      G.drugInv[id]=0;
+      G.cash=Math.max(0,G.cash-fine);
+      addLog('🚔 MAJOR BUST! Lost '+seized+'x '+d.n+' + fined $'+fmtCash(fine),'bad');
+      toast('MAJOR BUST! Stash seized!','r');
+      triggerJail(30+Math.floor(G.level/5));
+    } else {
+      // Minor bust - lose the unit + fine
+      G.drugInv[id]--;
+      G.cash=Math.max(0,G.cash-fine);
+      addLog('🚔 BUSTED selling '+d.n+'! Fined $'+fmtCash(fine),'bad');
+      toast('Busted! Fined $'+fmtCash(fine),'r');
+    }
+  }else{
+    G.drugInv[id]--;
+    G.drugTradeCount=(G.drugTradeCount||0)+1;
+    G.cash+=price;G.totalEarned+=price;
+    gainXP(Math.floor(price/500));
+    addLog('💊 Sold '+d.n+' for $'+fmtCash(price),'gold');
+    toast('+$'+fmtCash(price)+'!','gold');
+    // notoriety for drug dealing
+    G.notoriety=(G.notoriety||0)+2;
+  }
+  checkAchievements();updateAll();save();
+  buildDrugTrade(document.getElementById('center'));
+}
+
+// ══════════════════════════════════════════
+// BLACK MARKET - STING OPERATIONS
+// ══════════════════════════════════════════
+function buyBMUpgraded(id){
+  const it=BLACK_MARKET.find(x=>x.id===id);if(!it)return;
+  if(G.cash<it.p){toast('Not enough cash!','r');return;}
+  if(G.blackMarketBuys[id]){toast('Already owned!','r');return;}
+
+  // Expensive items (>500k) have sting risk, scales with heat
+  const stingChance=(it.p>500000?0.08:it.p>200000?0.04:0.01)*Math.max(1,(G.heat||0)/40);
+
+  if(Math.random()<stingChance){
+    // STING - lose the cash, get jailed
+    G.cash-=it.p;
+    const heatAdd=15+Math.floor(it.p/100000);
+    addHeat(heatAdd);
+    toast('🚔 IT\'S A STING! The feds were watching!','r');
+    addLog('🚔 BLACK MARKET STING! Lost $'+fmtCash(it.p),'bad');
+    triggerJail(20+Math.floor(G.level/8));
+    updateAll();save();
+    buildBlackMarket(document.getElementById('center'));
+    return;
+  }
+
+  // Success
+  G.cash-=it.p;G.blackMarketBuys[id]=true;
+  addHeat(5); // black market always adds some heat
+  G.notoriety=(G.notoriety||0)+5;
+  if(it.special==='energybonus'){G.maxEnergy=Math.floor(G.maxEnergy*1.25);}
+  else if(it.special==='lootbonus'){G.lootBonus+=20;}
+  else if(it.special==='xpbonus'){G.xpMult*=2;}
+  else if(it.special==='mafia50'){G.mafiaSize+=50;}
+  else if(it.special==='reduceheat'){coolHeat(40);toast('Heat reduced by 40!','g');}
+  else if(it.atk>0||it.def>0){G.attack+=it.atk;G.defense+=it.def;}
+  addLog('🕶️ BLACK MARKET: '+it.n+' acquired!','sp');
+  toast(it.e+' '+it.n+' acquired!','gold');
+  updateAll();save();buildBlackMarket(document.getElementById('center'));
+}
+
+// ══════════════════════════════════════════
+// CREW SYSTEM
+// ══════════════════════════════════════════
+const CREW_ROSTER = [
+  {id:'cr01',n:'Frankie the Wheel',role:'Driver',e:'🚗',desc:'Veteran wheelman. Never missed a getaway.',cost:50000,lv:5,bonus:'Rob success +15%, getaway cash +20%',apply:()=>{G.robBonus=(G.robBonus||0)+15;}},
+  {id:'cr02',n:'Doc Moretti',role:'Surgeon',e:'🩺',desc:'Keeps the crew breathing. No questions asked.',cost:80000,lv:8,bonus:'Heal fully free once per hour',apply:()=>{}},
+  {id:'cr03',n:'The Accountant',role:'Laundryman',e:'💼',desc:'Makes dirty money clean. Skims nothing.',cost:120000,lv:12,bonus:'All cash income +10%',apply:()=>{G.cashMult=(G.cashMult||1)*1.10;}},
+  {id:'cr04',n:'Knife Viktor',role:'Enforcer',e:'🔪',desc:'Sends a message without saying a word.',cost:100000,lv:15,bonus:'ATK +25, crit chance +5%',apply:()=>{G.attack+=25;G.critChance+=5;}},
+  {id:'cr05',n:'Roxanne Cruz',role:'Intelligence',e:'🕵️',desc:'Ex-CIA. Knows what the feds know before they do.',cost:200000,lv:20,bonus:'Heat generation -30%',apply:()=>{}},
+  {id:'cr06',n:'Big Sal',role:'Muscle',e:'💪',desc:'Six foot five of pure intimidation.',cost:150000,lv:18,bonus:'DEF +30, max health +50',apply:()=>{G.defense+=30;G.maxHealth+=50;G.health=Math.min(G.health+50,G.maxHealth);}},
+  {id:'cr07',n:'Chen Li',role:'Hacker',e:'💻',desc:'Can erase your record from any database.',cost:300000,lv:30,bonus:'Heat -25 every 5 mins',apply:()=>{}},
+  {id:'cr08',n:'Father Miguel',role:'Priest',e:'⛪',desc:'Washes sins. Also money.',cost:175000,lv:25,bonus:'Property income +20%',apply:()=>{G.incomeMult=(G.incomeMult||1)*1.20;}},
+  {id:'cr09',n:'The Ghost',role:'Assassin',e:'👻',desc:'No name. No record. Just results.',cost:500000,lv:40,bonus:'Boss damage +30%, kill chance +10%',apply:()=>{G.bossDmgMult=(G.bossDmgMult||1)*1.30;}},
+  {id:'cr10',n:'Maria Vega',role:'Consigliere',e:'👑',desc:'Has advised three Dons. All three died of old age.',cost:750000,lv:50,bonus:'All XP +25%, skill pts on level +1',apply:()=>{G.xpMult*=1.25;}},
+];
+
+function buildCrew(c){
+  if(!G.crew)G.crew={};
+  let html='<div class="panel"><div class="ph"><h2>👥 YOUR CREW</h2><span class="psub">Hire specialists. Each gives permanent bonuses. One hire per slot.</span></div><div class="pb">';
+  html+='<div style="font-family:\'Cutive Mono\',monospace;font-size:10px;color:var(--text-dim);margin-bottom:12px;">HIRED: '+Object.keys(G.crew).length+'/'+CREW_ROSTER.length+'</div>';
+  for(const m of CREW_ROSTER){
+    const hired=G.crew[m.id];
+    const locked=G.level<m.lv;
+    html+='<div class="crew-card" style="opacity:'+(locked?'.45':'1')+';border-color:'+(hired?'var(--bright-green)':locked?'var(--border)':'var(--border)')+';">';
+    html+='<div class="crew-icon">'+m.e+'</div>';
+    html+='<div><div class="crew-name">'+m.n+'</div>';
+    html+='<div class="crew-role">'+m.role+(locked?' — Requires Level '+m.lv:'')+'</div>';
+    html+='<div style="font-size:10px;color:var(--text-dim);font-family:\'Special Elite\',serif;margin:2px 0;">'+m.desc+'</div>';
+    html+='<div class="crew-bonus">'+m.bonus+'</div></div>';
+    if(hired){
+      html+='<div style="color:var(--bright-green);font-family:\'Bebas Neue\',sans-serif;font-size:13px;letter-spacing:.1em;">✓ HIRED</div>';
+    } else {
+      html+='<button class="hire-btn" onclick="hireCrew(\''+m.id+'\')" '+(locked||G.cash<m.cost?'disabled':'')+'>HIRE<br><span style="font-size:10px;color:var(--bright-gold);">$'+m.cost.toLocaleString()+'</span></button>';
+    }
+    html+='</div>';
+  }
+  html+='</div></div>';
+  c.innerHTML=html;
+}
+
+function hireCrew(id){
+  const m=CREW_ROSTER.find(x=>x.id===id);if(!m)return;
+  if(G.cash<m.cost){toast('Not enough cash!','r');return;}
+  if(G.level<m.lv){toast('Need Level '+m.lv+'!','r');return;}
+  if(!G.crew)G.crew={};
+  if(G.crew[id]){toast('Already hired!','r');return;}
+  G.cash-=m.cost;
+  G.crew[id]=true;
+  m.apply();
+  toast('👥 '+m.n+' joins your crew!','g');
+  addLog('👥 Hired '+m.n+' ('+m.role+')','gold');
+  G.notoriety=(G.notoriety||0)+3;
+  updateAll();save();
+  buildCrew(document.getElementById('center'));
+}
+
+// Passive crew effects in loops
+function applyCrewPassives(){
+  if(!G.crew)return;
+  if(G.crew['cr07']){coolHeat(3);}  // Hacker - cools heat
+  if(G.crew['cr02']&&Math.random()<.02){  // Doc - small heal
+    if(G.health<G.maxHealth){G.health=Math.min(G.maxHealth,G.health+5);}
+  }
+}
+
+// ══════════════════════════════════════════
+// HITMAN PANEL
+// ══════════════════════════════════════════
+const HITMAN_TARGETS = [
+  {id:'hm01',n:'Petty Informant',e:'🐀',desc:'A rat feeding the local precinct. Needs to disappear.',cost:10000,reward:25000,xp:200,lv:1,heatCost:8,successRate:.85},
+  {id:'hm02',n:'Rival Bookie',e:'🃏',desc:'Running numbers in your territory. Unacceptable.',cost:25000,reward:65000,xp:500,lv:5,heatCost:12,successRate:.80},
+  {id:'hm03',n:'Crooked Lawyer',e:'⚖️',desc:'Was supposed to be YOUR lawyer. Now he works for them.',cost:50000,reward:130000,xp:1000,lv:10,heatCost:15,successRate:.75},
+  {id:'hm04',n:'Undercover Detective',e:'🕵️',desc:'Has been inside your operation for 6 months.',cost:100000,reward:275000,xp:2000,lv:20,heatCost:20,successRate:.70},
+  {id:'hm05',n:'DA\'s Star Witness',e:'📝',desc:'Their testimony puts your underboss away for life.',cost:200000,reward:600000,xp:4000,lv:30,heatCost:25,successRate:.65},
+  {id:'hm06',n:'Rival Cartel Leader',e:'👺',desc:'Been encroaching on your supply lines for months.',cost:400000,reward:1200000,xp:8000,lv:45,heatCost:30,successRate:.60},
+  {id:'hm07',n:'Federal Judge',e:'🏛️',desc:'The one judge who won\'t be bought. Remove the problem.',cost:750000,reward:3000000,xp:15000,lv:60,heatCost:40,successRate:.55},
+  {id:'hm08',n:'FBI Director',e:'🦅',desc:'The architect of the task force hunting you.',cost:2000000,reward:10000000,xp:50000,lv:100,heatCost:60,successRate:.45},
+];
+
+function buildHitman(c){
+  if(!G.hitmanMissions)G.hitmanMissions={};
+  let html='<div class="panel"><div class="ph"><h2>🎯 HITMAN FOR HIRE</h2><span class="psub">Contract eliminations. High risk. Very high reward. Failed hits increase heat massively.</span></div><div class="pb">';
+  html+='<div style="background:var(--surface2);border:1px solid var(--border);padding:10px;margin-bottom:14px;font-family:\'Special Elite\',serif;font-size:11px;color:var(--text-dim);">Every hit adds heat. Failed hits add double. Success rate improves with Notoriety and Crew.</div>';
+  for(const t of HITMAN_TARGETS){
+    const done=G.hitmanMissions[t.id];
+    const locked=G.level<t.lv;
+    const notBonus=Math.min(.15,(G.notoriety||0)/2000);
+    const crewBonus=(G.crew&&G.crew['cr09'])?0.08:0;
+    const realRate=Math.min(.95,t.successRate+notBonus+crewBonus);
+    html+='<div class="hm-card" style="opacity:'+(locked?'.4':'1')+';border-color:'+(done?'var(--bright-gold)':locked?'var(--border)':'var(--border)')+';">';
+    html+='<div style="font-size:30px;">'+t.e+'</div>';
+    html+='<div>';
+    html+='<div style="font-family:\'Bebas Neue\',sans-serif;font-size:17px;color:'+(done?'var(--bright-gold)':'var(--text)')+';">'+t.n+(done?' — ELIMINATED':'')+'</div>';
+    html+='<div style="font-size:10px;color:var(--text-dim);font-family:\'Special Elite\',serif;margin:2px 0;">'+t.desc+'</div>';
+    html+='<div style="font-family:\'Cutive Mono\',monospace;font-size:9px;color:var(--text-dim);">Fee: $'+t.cost.toLocaleString()+' | Reward: $'+t.reward.toLocaleString()+' | Success: '+(realRate*100).toFixed(0)+'% | Heat: +'+t.heatCost+'</div>';
+    html+='</div>';
+    if(done){
+      html+='<div style="color:var(--bright-gold);font-family:\'Bebas Neue\',sans-serif;font-size:12px;text-align:center;">✓<br>DONE</div>';
+    } else if(!locked){
+      html+='<button onclick="doHit(\''+t.id+'\')" style="background:linear-gradient(135deg,#1a0000,#3a0000);border:2px solid var(--crimson);color:var(--bright-gold);font-family:\'Bebas Neue\',sans-serif;font-size:13px;letter-spacing:.1em;padding:8px 12px;cursor:pointer;white-space:nowrap;" '+(G.cash<t.cost||G.stamina<3?'disabled':'')+'>CONTRACT<br><span style="font-size:9px;color:var(--text-dim);">3 Stamina</span></button>';
+    } else {
+      html+='<div style="color:var(--text-dim);font-family:\'Bebas Neue\',sans-serif;font-size:11px;text-align:center;">LV<br>'+t.lv+'</div>';
+    }
+    html+='</div>';
+  }
+  html+='</div></div>';
+  c.innerHTML=html;
+}
+
+function doHit(id){
+  const t=HITMAN_TARGETS.find(x=>x.id===id);if(!t)return;
+  if(G.cash<t.cost){toast('Not enough cash!','r');return;}
+  if(G.stamina<3){toast('Need 3 Stamina!','r');return;}
+  if(G.hitmanMissions[t.id]){toast('Already done!','r');return;}
+  G.cash-=t.cost;G.stamina-=3;
+  const notBonus=Math.min(.15,(G.notoriety||0)/2000);
+  const crewBonus=G.crew&&G.crew['cr09']?0.08:0;
+  const realRate=Math.min(.95,t.successRate+notBonus+crewBonus);
+  if(Math.random()<realRate){
+    G.hitmanMissions[t.id]=true;
+    G.cash+=t.reward;G.totalEarned+=t.reward;
+    gainXP(t.xp);
+    addHeat(t.heatCost);
+    G.notoriety=(G.notoriety||0)+10;
+    G.kills=(G.kills||0)+1;
+    toast('🎯 CONTRACT COMPLETE! +$'+fmtCash(t.reward),'gold');
+    addLog('🎯 Eliminated: '+t.n+' +$'+fmtCash(t.reward),'sp');
+  } else {
+    addHeat(t.heatCost*2);
+    G.notoriety=(G.notoriety||0)+3;
+    toast('❌ Hit failed. Target escaped. Heat rising!','r');
+    addLog('❌ Failed hit on '+t.n+'. Heat +'+t.heatCost*2,'bad');
+    if(G.heat>80)triggerJail(15+Math.floor(G.level/10));
+  }
+  updateAll();save();
+  buildHitman(document.getElementById('center'));
+}
+
+// ══════════════════════════════════════════
+// GLOBAL EVENTS SYSTEM
+// ══════════════════════════════════════════
+const GLOBAL_EVENTS = [
+  {id:'ev01',n:'POLICE CRACKDOWN',e:'🚔',desc:'Law enforcement is flooding the streets. All heat gain doubled for 3 minutes. Complete jobs for double XP.',color:'#F44336',duration:180,effect:'heatDouble',reward:'2x XP for duration',actionLabel:'SURVIVE & EARN',action:()=>{gainXP(500);toast('Survived the crackdown! +500 XP','g');}},
+  {id:'ev02',n:'CARTEL WAR',e:'💣',desc:'Rival cartels are fighting. Slip in and profit while they\'re distracted.',color:'#FF9800',duration:120,effect:'cashBonus',reward:'+50% all cash for duration',actionLabel:'EXPLOIT THE CHAOS',action:()=>{G.cash+=50000;G.totalEarned+=50000;toast('Exploited the chaos! +$50K','gold');}},
+  {id:'ev03',n:'FEDERAL INVESTIGATION',e:'🏛️',desc:'The feds are building a case. High heat players risk immediate arrest.',color:'#9C27B0',duration:150,effect:'heatDanger',reward:'Clear heat for $500K',actionLabel:'BUY IMMUNITY ($500K)',action:()=>{if(G.cash>=500000){G.cash-=500000;coolHeat(60);toast('Bought immunity! Heat -60','g');addLog('💰 Paid $500K to feds. Heat cleared.','gold');}else{toast('Need $500K!','r');}}},
+  {id:'ev04',n:'STREET FESTIVAL',e:'🎉',desc:'The whole city is partying. Perfect cover. Rob targets have triple loot.',color:'#4CAF50',duration:120,effect:'lootTriple',reward:'Triple loot on all robberies',actionLabel:'HIT THE STREETS',action:()=>{G.cash+=30000;G.totalEarned+=30000;toast('Street festival score! +$30K','gold');}},
+  {id:'ev05',n:'DRUG DROUGHT',e:'💊',desc:'Supply is cut. Drug prices tripled across the board. Sell everything you have.',color:'#00BCD4',duration:90,effect:'drugPriceX3',reward:'3x drug prices while active',actionLabel:'FLOOD THE MARKET',action:()=>{Object.keys(G.drugInv).forEach(k=>{if((G.drugInv[k]||0)>0){G.cash+=G.drugPrices[k]*2;G.totalEarned+=G.drugPrices[k]*2;}});toast('Flooded the drought market!','gold');}},
+  {id:'ev06',n:'DIRTY MONEY NIGHT',e:'💸',desc:'An anonymous buyer wants large cash purchases. All property income x5 for 2 minutes.',color:'#FFD700',duration:120,effect:'incomeX5',reward:'5x property income',actionLabel:'COLLECT EVERYTHING',action:()=>{const base=calcIncome();const bonus=base*4;G.cash+=bonus;G.totalEarned+=bonus;toast('Dirty money collected! +$'+fmtCash(bonus),'gold');}},
+  {id:'ev07',n:'GANG SUMMIT',e:'🤝',desc:'Rare peace. All gang war costs halved. Territory earnings doubled.',color:'#607D8B',duration:180,effect:'gangBonus',reward:'Cheaper wars, double territory',actionLabel:'SEIZE TERRITORY',action:()=>{G.respect=(G.respect||0)+2000;toast('+2000 Respect at the summit!','gold');}},
+  {id:'ev08',n:'BLACKOUT',e:'⚡',desc:'City power grid down. Security systems offline. Rob with zero chance of being caught.',color:'#212121',duration:90,effect:'noRobHeat',reward:'Zero heat on all robberies',actionLabel:'ROB EVERYTHING',action:()=>{G.cash+=100000;G.totalEarned+=100000;toast('Blackout score! +$100K','gold');}},
+];
+
+let activeEventObj=null;
+let eventCountdown=0;
+
+function buildEvents(c){
+  const active=activeEventObj;
+  let html='<div class="panel"><div class="ph"><h2>⚡ GLOBAL EVENTS</h2><span class="psub">Random city-wide events. React fast — they don\'t last long.</span></div><div class="pb">';
+  if(active){
+    html+='<div class="event-card" style="border-color:'+active.color+';">';
+    html+='<div class="event-title" style="color:'+active.color+';">'+active.e+' '+active.n+'</div>';
+    html+='<div class="event-desc">'+active.desc+'</div>';
+    html+='<div style="font-family:\'Cutive Mono\',monospace;font-size:11px;color:'+active.color+';margin:6px 0;">⏱ '+eventCountdown+'s remaining | '+active.reward+'</div>';
+    html+='<button class="event-btn" style="border-color:'+active.color+';background:linear-gradient(90deg,'+active.color+'33,'+active.color+'55);" onclick="doEventAction()">'+active.actionLabel+'</button>';
+    html+='</div>';
+  } else {
+    html+='<div style="background:var(--surface2);border:1px solid var(--border);padding:20px;text-align:center;margin-bottom:14px;">';
+    html+='<div style="font-family:\'Bebas Neue\',sans-serif;font-size:20px;color:var(--text-dim);letter-spacing:.15em;">NO ACTIVE EVENT</div>';
+    html+='<div style="font-family:\'Special Elite\',serif;font-size:12px;color:var(--text-dim);margin-top:8px;">Events trigger randomly. Stay ready.</div>';
+    html+='</div>';
+  }
+  html+='<div style="font-family:\'Bebas Neue\',sans-serif;font-size:13px;letter-spacing:.12em;color:var(--text-dim);margin-bottom:10px;">ALL EVENTS</div>';
+  for(const ev of GLOBAL_EVENTS){
+    html+='<div style="background:var(--surface2);border:1px solid var(--border);padding:10px;margin-bottom:6px;display:flex;align-items:center;gap:10px;">';
+    html+='<div style="font-size:22px;">'+ev.e+'</div>';
+    html+='<div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:14px;color:'+ev.color+';">'+ev.n+'</div>';
+    html+='<div style="font-size:10px;color:var(--text-dim);font-family:\'Special Elite\',serif;">'+ev.desc+'</div>';
+    html+='<div style="font-size:9px;color:'+ev.color+';font-family:\'Cutive Mono\',monospace;margin-top:2px;">'+ev.reward+' | '+ev.duration+'s duration</div>';
+    html+='</div></div>';
+  }
+  html+='</div></div>';
+  c.innerHTML=html;
+}
+
+function triggerRandomEvent(){
+  if(activeEventObj)return;
+  const ev=GLOBAL_EVENTS[Math.floor(Math.random()*GLOBAL_EVENTS.length)];
+  activeEventObj=ev;
+  eventCountdown=ev.duration;
+  G.activeEvent=ev.id;
+  // Apply ongoing effects
+  if(ev.effect==='drugPriceX3'){Object.keys(G.drugPrices).forEach(k=>G.drugPrices[k]*=3);}
+  if(ev.effect==='incomeX5'){G.incomeMult=(G.incomeMult||1)*5;}
+  // Show event banner
+  const banner=document.getElementById('event-banner');
+  if(banner){banner.textContent='⚡ '+ev.e+' '+ev.n+' — '+ev.reward+' ⚡';banner.style.display='block';}
+  toast('⚡ EVENT: '+ev.n,'gold');
+  addLog('⚡ GLOBAL EVENT: '+ev.n,'sp');
+  if(G.currentPanel==='events')buildEvents(document.getElementById('center'));
+}
+
+function endEvent(){
+  if(!activeEventObj)return;
+  const ev=activeEventObj;
+  // Undo ongoing effects
+  if(ev.effect==='drugPriceX3'){Object.keys(G.drugPrices).forEach(k=>G.drugPrices[k]=Math.floor(G.drugPrices[k]/3));}
+  if(ev.effect==='incomeX5'){G.incomeMult=Math.max(1,(G.incomeMult||5)/5);}
+  activeEventObj=null;eventCountdown=0;G.activeEvent=null;
+  const banner=document.getElementById('event-banner');
+  if(banner)banner.style.display='none';
+  toast('Event ended: '+ev.n,'r');
+  if(G.currentPanel==='events')buildEvents(document.getElementById('center'));
+}
+
+function doEventAction(){
+  if(!activeEventObj)return;
+  activeEventObj.action();
+  updateAll();save();
+  if(G.currentPanel==='events')buildEvents(document.getElementById('center'));
+}
+
+// ══════════════════════════════════════════
+// NOTORIETY SYSTEM
+// ══════════════════════════════════════════
+const NOTORIETY_TIERS = [
+  {min:0,   n:'Unknown',      e:'👤', bonus:'No bonus yet.',         color:'var(--text-dim)'},
+  {min:100, n:'Street Name',  e:'🔥', bonus:'+5% cash from all sources', color:'#FF9800'},
+  {min:300, n:'Local Legend', e:'⚔️', bonus:'+10% ATK, unlock Tier 2 hitman targets', color:'#F44336'},
+  {min:600, n:'City Fear',    e:'💀', bonus:'+10 crit chance, enemies drop 25% more', color:'#9C27B0'},
+  {min:1000,n:'Crime Lord',   e:'👑', bonus:'+20% XP, gang war territory +15%', color:'#FFD700'},
+  {min:1500,n:'Myth',         e:'🌑', bonus:'Heat reduces 2x faster, +30% all income', color:'#E040FB'},
+  {min:2500,n:'The Untouchable',e:'☠️',bonus:'Jail time halved, bail costs halved, +50 DEF', color:'#FF1744'},
+  {min:5000,n:'Il Leggenda',  e:'🏆', bonus:'All systems +25%, final form.', color:'var(--bright-gold)'},
+];
+
+function getNotorietyTier(){
+  const n=G.notoriety||0;
+  let tier=NOTORIETY_TIERS[0];
+  for(const t of NOTORIETY_TIERS)if(n>=t.min)tier=t;
+  return tier;
+}
+
+function buildNotoriety(c){
+  const n=G.notoriety||0;
+  const cur=getNotorietyTier();
+  const nextIdx=NOTORIETY_TIERS.indexOf(cur)+1;
+  const next=NOTORIETY_TIERS[nextIdx];
+  const pct=next?Math.min(100,((n-cur.min)/(next.min-cur.min))*100):100;
+  let html='<div class="panel"><div class="ph"><h2>☠️ NOTORIETY</h2><span class="psub">Fear. Respect. Infamy. Earned by doing dirty work.</span></div><div class="pb">';
+  html+='<div style="background:linear-gradient(135deg,#0a000a,var(--surface2));border:2px solid '+cur.color+';padding:18px;margin-bottom:16px;text-align:center;">';
+  html+='<div style="font-size:40px;">'+cur.e+'</div>';
+  html+='<div style="font-family:\'Bebas Neue\',sans-serif;font-size:28px;color:'+cur.color+';letter-spacing:.15em;">'+cur.n+'</div>';
+  html+='<div style="font-family:\'Special Elite\',serif;font-size:12px;color:var(--text-dim);margin:6px 0;">'+cur.bonus+'</div>';
+  html+='<div style="font-family:\'Cutive Mono\',monospace;font-size:12px;color:'+cur.color+';">Notoriety: '+n.toLocaleString()+'</div>';
+  if(next){
+    html+='<div style="background:var(--surface3);height:8px;border-radius:4px;overflow:hidden;margin:10px 0;">';
+    html+='<div style="background:'+cur.color+';height:100%;width:'+pct+'%;transition:width .4s;border-radius:4px;"></div></div>';
+    html+='<div style="font-size:10px;color:var(--text-dim);font-family:\'Cutive Mono\',monospace;">Next tier at '+next.min.toLocaleString()+' — '+(next.min-n).toLocaleString()+' to go</div>';
+  }
+  html+='</div>';
+  html+='<div style="font-family:\'Bebas Neue\',sans-serif;font-size:13px;letter-spacing:.12em;color:var(--text-dim);margin-bottom:10px;">ALL TIERS</div>';
+  for(const t of NOTORIETY_TIERS){
+    const active=n>=t.min;
+    const isCur=t.n===cur.n;
+    html+='<div class="not-tier'+(isCur?' active':'')+'" style="border-color:'+(active?t.color:'var(--border)')+';">';
+    html+='<div style="display:flex;align-items:center;gap:10px;"><div style="font-size:20px;">'+t.e+'</div>';
+    html+='<div><div style="font-family:\'Bebas Neue\',sans-serif;color:'+(active?t.color:'var(--text-dim)')+';">'+t.n+'</div>';
+    html+='<div style="font-size:10px;color:var(--text-dim);font-family:\'Special Elite\',serif;">'+t.bonus+'</div></div></div>';
+    html+='<div style="font-family:\'Cutive Mono\',monospace;font-size:10px;color:'+(active?'var(--bright-green)':'var(--text-dim)')+';">'+(active?'✓ ACTIVE':t.min.toLocaleString())+'</div>';
+    html+='</div>';
+  }
+  html+='<div style="font-family:\'Special Elite\',serif;font-size:11px;color:var(--text-dim);margin-top:14px;padding:10px;background:var(--surface2);border:1px solid var(--border);">Notoriety earned by: Drug trades, Hitman contracts, Black Market buys, Boss kills, winning Gang Wars, high-level jobs.</div>';
+  html+='</div></div>';
+  c.innerHTML=html;
+}
+
+// Apply notoriety bonuses passively
+function applyNotorietyBonuses(){
+  const tier=getNotorietyTier();
+  const n=G.notoriety||0;
+  if(n>=100)G.cashMult=Math.max(G.cashMult||1,1.05);
+  if(n>=300){G.attack=Math.max(G.attack,G.baseAttack+Math.floor(G.attack*.10));}
+  if(n>=1000)G.xpMult=Math.max(G.xpMult,G.xpMult*1.20);
+}
+
+
+
+// ══════════════════════════════════════════
+// ══════════════════════════════════════════
+// LUXURY SHOP - FLEX YOUR EMPIRE
+// ══════════════════════════════════════════
+const LUXURY_ITEMS = [
+
+  // ── COLLECTIBLES ─────────────────────────
+  {id:'lx_c01', cat:'Collectibles', n:'1952 Topps Mickey Mantle Rookie Card', e:'⚾', brand:'Topps',
+   desc:'PSA 9. The Holy Grail of baseball cards. One of fewer than 10 known in this grade.',
+   price:5750000, notReq:0, bonus:null, flex:'The card that started it all.'},
+  {id:'lx_c02', cat:'Collectibles', n:'1986 Fleer Michael Jordan Rookie Card', e:'🏀', brand:'Fleer',
+   desc:'BGS 9.5. The most iconic basketball card ever printed. Unquestionable.',
+   price:750000, notReq:0, bonus:null, flex:'Chicago. Bulls. Legend.'},
+  {id:'lx_c03', cat:'Collectibles', n:'Tom Brady 2000 Bowman Chrome RC Auto', e:'🏈', brand:'Bowman',
+   desc:'PSA 10. Greatest of all time. The card proves it.',
+   price:2100000, notReq:0, bonus:null, flex:'7 rings on cardboard.'},
+  {id:'lx_c04', cat:'Collectibles', n:'1966 Batman #1 CGC 9.6', e:'🦇', brand:'DC Comics',
+   desc:'Near mint. The rarest Batman first issue in existence. Museum quality.',
+   price:480000, notReq:0, bonus:null, flex:'Dark Knight on your wall.'},
+  {id:'lx_c05', cat:'Collectibles', n:'Action Comics #1 Facsimile CGC 9.8', e:'🦸', brand:'DC Comics',
+   desc:'The debut of Superman. Facsimile but certified perfect grade.',
+   price:320000, notReq:0, bonus:null, flex:'Where it all began.'},
+  {id:'lx_c06', cat:'Collectibles', n:'Pokémon Shadowless Charizard PSA 10', e:'🔥', brand:'Pokémon TCG',
+   desc:'1999 Base Set. Only 121 copies exist at PSA 10. The white whale of modern cards.',
+   price:420000, notReq:0, bonus:null, flex:'Gotta catch \'em all? Already did.'},
+  {id:'lx_c07', cat:'Collectibles', n:'LeBron James 2003 Topps Chrome RC Auto', e:'👑', brand:'Topps',
+   desc:'PSA 10. The King\'s rookie auto. First year, maximum grade.',
+   price:1800000, notReq:0, bonus:null, flex:'Witness.'},
+  {id:'lx_c08', cat:'Collectibles', n:'1963 Topps Pete Rose Rookie PSA 9', e:'⚾', brand:'Topps',
+   desc:'The Hit King. Controversial, expensive, irreplaceable.',
+   price:180000, notReq:0, bonus:null, flex:'4256 hits and this card.'},
+  {id:'lx_c09', cat:'Collectibles', n:'Wayne Gretzky 1979 O-Pee-Chee RC PSA 10', e:'🏒', brand:'O-Pee-Chee',
+   desc:'The Great One. Only one PSA 10 exists. This is it.',
+   price:3750000, notReq:0, bonus:null, flex:'99 problems, this ain\'t one.'},
+  {id:'lx_c10', cat:'Collectibles', n:'2009 Bowman Chrome Stephen Curry RC Auto', e:'🏀', brand:'Bowman',
+   desc:'BGS 9.5/10 Auto. Before the rings. Before the records.',
+   price:900000, notReq:0, bonus:null, flex:'Night night.'},
+  {id:'lx_c11', cat:'Collectibles', n:'Babe Ruth 1916 M101 Sporting News Card', e:'⚾', brand:'Sporting News',
+   desc:'Over 100 years old. The Babe. Original ink on original cardboard.',
+   price:8500000, notReq:0, bonus:null, flex:'The Sultan of Swat on your desk.'},
+  {id:'lx_c12', cat:'Collectibles', n:'Derek Jeter 1993 SP Foil Rookie RC PSA 10', e:'⚾', brand:'Upper Deck',
+   desc:'The rarest modern Jeter. Only 5 PSA 10s exist. Captain forever.',
+   price:370000, notReq:0, bonus:null, flex:'5 rings, 1 card.'},
+  {id:'lx_c13', cat:'Collectibles', n:'2000 Bowman Chrome Tom Brady Auto /100', e:'🏈', brand:'Bowman',
+   desc:'Numbered /100. Certified autograph. One of the rarest Brady autos in existence.',
+   price:2800000, notReq:0, bonus:null, flex:'The GOAT signed this.'},
+  {id:'lx_c14', cat:'Collectibles', n:'Mike Trout 2009 Bowman Chrome RC Auto PSA 10', e:'⚾', brand:'Bowman',
+   desc:'The best player of his generation. PSA 10. Industry apex.',
+   price:700000, notReq:0, bonus:null, flex:'Best player on the planet.'},
+  {id:'lx_c15', cat:'Collectibles', n:'Wilt Chamberlain 1961 Fleer Rookie PSA 8', e:'🏀', brand:'Fleer',
+   desc:'100 points in a game. This is the card from that era.',
+   price:280000, notReq:0, bonus:null, flex:'100 points. One card.'},
+
+  // ── WATCHES ─────────────────────────────
+  {id:'lx_w01', cat:'Watches', n:'Rolex Daytona "Paul Newman" Ref. 6239', e:'⌚', brand:'Rolex',
+   desc:'The rarest Daytona dial configuration. Only a few thousand made. The watch that defines watch collecting.',
+   price:850000, notReq:0, bonus:{type:'cashMult',val:.02}, flex:'+2% cash income'},
+  {id:'lx_w02', cat:'Watches', n:'Patek Philippe Nautilus 5711/1A-010', e:'⌚', brand:'Patek Philippe',
+   desc:'Discontinued in 2021. Steel sports watch with a 5-year waitlist before they killed it. Museum piece.',
+   price:175000, notReq:0, bonus:null, flex:'The watch that broke the internet.'},
+  {id:'lx_w03', cat:'Watches', n:'Audemars Piguet Royal Oak Offshore Tourbillon', e:'⌚', brand:'Audemars Piguet',
+   desc:'18k rose gold case. Flying tourbillon movement visible through sapphire crystal.',
+   price:320000, notReq:0, bonus:{type:'critChance',val:2}, flex:'+2% crit chance'},
+  {id:'lx_w04', cat:'Watches', n:'Richard Mille RM 011 Felipe Massa', e:'⌚', brand:'Richard Mille',
+   desc:'Carbon TPT case. Flyback chronograph. F1 pedigree. The watch that changed everything.',
+   price:500000, notReq:0, bonus:{type:'stamina',val:5}, flex:'+5 max stamina'},
+  {id:'lx_w05', cat:'Watches', n:'F.P. Journe Chronomètre Bleu', e:'⌚', brand:'F.P. Journe',
+   desc:'Tantalum and blue dial. The connoisseur\'s watch. No one outside the world knows this brand. Everyone inside does.',
+   price:280000, notReq:0, bonus:null, flex:'The watch for people who know watches.'},
+  {id:'lx_w06', cat:'Watches', n:'Rolex Submariner Date "Kermit" 116610LV', e:'⌚', brand:'Rolex',
+   desc:'Green bezel. Black dial. The watch of kings and divers. Discontinued.',
+   price:22000, notReq:0, bonus:null, flex:'Classic. Period.'},
+  {id:'lx_w07', cat:'Watches', n:'Rolex GMT-Master II "Pepsi" 126710BLRO', e:'⌚', brand:'Rolex',
+   desc:'Jubilee bracelet. Red/blue ceramic bezel. 3-timezone functionality.',
+   price:20000, notReq:0, bonus:null, flex:'Pilot\'s watch for the underworld.'},
+  {id:'lx_w08', cat:'Watches', n:'Omega Speedmaster "Moonwatch" 311.30.42.30.01.005', e:'⌚', brand:'Omega',
+   desc:'The watch that went to the moon. Still hand-wound. Still perfect.',
+   price:7500, notReq:0, bonus:null, flex:'Moon certified.'},
+  {id:'lx_w09', cat:'Watches', n:'Hublot Big Bang Unico King Gold 45mm', e:'⌚', brand:'Hublot',
+   desc:'18k King Gold case. UNICO manufacture movement. 72-hour power reserve.',
+   price:45000, notReq:0, bonus:null, flex:'The watch rappers actually know.'},
+  {id:'lx_w10', cat:'Watches', n:'Patek Philippe Grand Complications 5270P', e:'⌚', brand:'Patek Philippe',
+   desc:'Perpetual calendar, chronograph, moonphase. Platinum case. 20-year waitlist.',
+   price:450000, notReq:0, bonus:{type:'xpMult',val:.05}, flex:'+5% XP gain'},
+  {id:'lx_w11', cat:'Watches', n:'Lange & Söhne Datograph Perpetual Tourbillon', e:'⌚', brand:'A. Lange & Söhne',
+   desc:'German horology at its absolute peak. Hand-engraved movement, 585-part perpetual calendar.',
+   price:520000, notReq:0, bonus:{type:'cashMult',val:.03}, flex:'+3% cash income'},
+  {id:'lx_w12', cat:'Watches', n:'Jacob & Co. Astronomia Solar Planetary Watch', e:'⌚', brand:'Jacob & Co.',
+   desc:'The solar system on your wrist. Earth rotates. Sun orbits. Diamond cuts light.',
+   price:780000, notReq:0, bonus:null, flex:'The universe, miniaturized.'},
+
+  // ── JEWELRY ─────────────────────────────
+  {id:'lx_j01', cat:'Jewelry', n:'Harry Winston "Flame" Diamond Necklace', e:'💎', brand:'Harry Winston',
+   desc:'30-carat D-Flawless center stone surrounded by 200 carats of pavé diamonds. One of a kind.',
+   price:18000000, notReq:0, bonus:{type:'notoriety',val:200}, flex:'+200 Notoriety instantly'},
+  {id:'lx_j02', cat:'Jewelry', n:'Cartier Panthère de Cartier Full Pavé Bracelet', e:'💍', brand:'Cartier',
+   desc:'Onyx spots, emerald eyes. Fully set in brilliant-cut diamonds. The panther watches.',
+   price:380000, notReq:0, bonus:null, flex:'The panther judges you.'},
+  {id:'lx_j03', cat:'Jewelry', n:'Tiffany & Co. Yellow Diamond Ring — 128.54 ct', e:'💛', brand:'Tiffany & Co.',
+   desc:'The Tiffany Diamond. One of the largest and finest yellow diamonds in the world.',
+   price:32000000, notReq:0, bonus:{type:'cashMult',val:.05}, flex:'+5% all cash income forever'},
+  {id:'lx_j04', cat:'Jewelry', n:'Van Cleef & Arpels Alhambra Diamond Necklace', e:'🍀', brand:'Van Cleef & Arpels',
+   desc:'Vintage. 20-motif. D-Flawless stones. The original. Not a reproduction.',
+   price:225000, notReq:0, bonus:null, flex:'Luck follows money.'},
+  {id:'lx_j05', cat:'Jewelry', n:'Bvlgari Serpenti Diamond Bracelet Watch', e:'🐍', brand:'Bvlgari',
+   desc:'18k white gold. The snake wraps the wrist. 1500 diamonds. The time is irrelevant.',
+   price:175000, notReq:0, bonus:null, flex:'The snake never sleeps.'},
+  {id:'lx_j06', cat:'Jewelry', n:'Chopard Happy Diamonds Floating 3-Stone Ring', e:'💠', brand:'Chopard',
+   desc:'Three D-Flawless diamonds float freely inside the sapphire crystal case.',
+   price:95000, notReq:0, bonus:null, flex:'Diamonds that dance.'},
+  {id:'lx_j07', cat:'Jewelry', n:'10-Carat VVS1 Cuban Link Chain — 14k Gold', e:'⛓️', brand:'Custom',
+   desc:'Custom fabricated. 150 links. 14k solid gold. No hollow. The chain that speaks before you do.',
+   price:420000, notReq:0, bonus:{type:'attack',val:20}, flex:'+20 ATK (intimidation factor)'},
+  {id:'lx_j08', cat:'Jewelry', n:'Graff Pink Diamond Ring — 24.78 ct', e:'🩷', brand:'Graff',
+   desc:'Fancy Intense Pink. Internally Flawless. The Graff Pink ring. One of the rarest diamonds alive.',
+   price:46000000, notReq:0, bonus:{type:'notoriety',val:500}, flex:'+500 Notoriety. Everyone knows.'},
+  {id:'lx_j09', cat:'Jewelry', n:'Presidential Rolex — Fully Iced Baguette', e:'⌚', brand:'Rolex / Custom',
+   desc:'Day-Date 40. Custom set with 200 baguette diamonds by a Beverly Hills jeweler. Blinding.',
+   price:650000, notReq:0, bonus:{type:'critChance',val:5}, flex:'+5% crit chance'},
+  {id:'lx_j10', cat:'Jewelry', n:'Mikimoto Black South Sea Pearl Strand', e:'🦪', brand:'Mikimoto',
+   desc:'18 perfectly matched 18mm south sea pearls. Platinum clasp. 70 years to assemble.',
+   price:280000, notReq:0, bonus:null, flex:'Patience incarnate.'},
+
+  // ── CARS ────────────────────────────────
+  {id:'lx_car01', cat:'Cars', n:'Bugatti Chiron Super Sport 300+', e:'🚗', brand:'Bugatti',
+   desc:'1,578 hp. 304 mph top speed. Only 30 built. The fastest production car ever made at time of release.',
+   price:4500000, notReq:0, bonus:{type:'stamina',val:15}, flex:'+15 max stamina'},
+  {id:'lx_car02', cat:'Cars', n:'Ferrari LaFerrari Aperta', e:'🏎️', brand:'Ferrari',
+   desc:'950 hp hybrid V12. Open top. 210 produced. A letter from Ferrari was required just to buy one.',
+   price:7800000, notReq:0, bonus:{type:'cashMult',val:.04}, flex:'+4% cash income'},
+  {id:'lx_car03', cat:'Cars', n:'Lamborghini Sián FKP 37', e:'🚗', brand:'Lamborghini',
+   desc:'819 hp hybrid V12. Supercapacitor tech. 63 built for 2020. Named after Feruccio Lamborghini.',
+   price:3600000, notReq:0, bonus:{type:'attack',val:35}, flex:'+35 ATK'},
+  {id:'lx_car04', cat:'Cars', n:'Koenigsegg Jesko Absolut', e:'🚗', brand:'Koenigsegg',
+   desc:'1,600 hp. Predicted 330 mph top speed. Twin-turbo V8. 125 units total. Swedish engineering singularity.',
+   price:3000000, notReq:0, bonus:{type:'energy',val:20}, flex:'+20 max energy'},
+  {id:'lx_car05', cat:'Cars', n:'McLaren Speedtail', e:'🚗', brand:'McLaren',
+   desc:'1,035 hp. 250 mph. Three-seat central-drive configuration. 106 built.',
+   price:2300000, notReq:0, bonus:null, flex:'Three seats. One driver. No equal.'},
+  {id:'lx_car06', cat:'Cars', n:'Pagani Huayra Roadster BC', e:'🚗', brand:'Pagani',
+   desc:'829 hp. AMG V12 twin-turbo. Carbon fiber from F1 tech. 40 units.',
+   price:3500000, notReq:0, bonus:{type:'defense',val:30}, flex:'+30 DEF'},
+  {id:'lx_car07', cat:'Cars', n:'Rolls-Royce Boat Tail Bespoke Commission', e:'🚙', brand:'Rolls-Royce',
+   desc:'The most expensive new car ever sold. Bespoke commission. Interior includes a champagne chiller, parasol storage, and custom clock.',
+   price:28000000, notReq:0, bonus:{type:'incomeMult',val:.10}, flex:'+10% property income'},
+  {id:'lx_car08', cat:'Cars', n:'Bentley Mulliner Bacalar', e:'🚗', brand:'Bentley',
+   desc:'650 hp W12. 12 cars built. Each unique. Convertible. Named after the Caribbean lake.',
+   price:1800000, notReq:0, bonus:null, flex:'12 in the world. You have 1.'},
+  {id:'lx_car09', cat:'Cars', n:'Mercedes-AMG One Hypercar', e:'🚗', brand:'Mercedes-AMG',
+   desc:'F1 engine in a road car. 1,063 hp. 275 mph. Hybrid. 275 cars. Lewis Hamilton helped design it.',
+   price:2700000, notReq:0, bonus:{type:'stamina',val:10}, flex:'+10 max stamina'},
+  {id:'lx_car10', cat:'Cars', n:'Aston Martin Valkyrie AMR Pro', e:'🏎️', brand:'Aston Martin',
+   desc:'1,000+ hp. F1 aerodynamics on public roads. 25 track-only versions built.',
+   price:3200000, notReq:0, bonus:{type:'attack',val:25}, flex:'+25 ATK'},
+  {id:'lx_car11', cat:'Cars', n:'Porsche 918 Spyder Weissach Package', e:'🚗', brand:'Porsche',
+   desc:'887 hp hybrid. Weissach adds carbon fiber everywhere. 918 units. Sub-7 minute Nürburgring.',
+   price:1650000, notReq:0, bonus:null, flex:'The ring record holder.'},
+  {id:'lx_car12', cat:'Cars', n:'Ferrari F40 — 1 of 1,315', e:'🏎️', brand:'Ferrari',
+   desc:'478 hp. No driver aids. No radio. No cup holders. The last car Enzo Ferrari approved.',
+   price:2200000, notReq:0, bonus:{type:'critChance',val:8}, flex:'+8% crit chance. Enzo would approve.'},
+  {id:'lx_car13', cat:'Cars', n:'Ford GT Heritage Edition — 2023', e:'🚗', brand:'Ford',
+   desc:'660 hp EcoBoost V6. Le Mans heritage livery. Application-only. 1,350 total.',
+   price:620000, notReq:0, bonus:null, flex:'Le Mans. Five times.'},
+  {id:'lx_car14', cat:'Cars', n:'Chevrolet Corvette Z06 70th Anniversary Edition', e:'🚗', brand:'Chevrolet',
+   desc:'670 hp flat-plane crank V8. The American answer to everything Europe makes.',
+   price:145000, notReq:0, bonus:null, flex:'All-American muscle. No apologies.'},
+  {id:'lx_car15', cat:'Cars', n:'Rimac Nevera Electric Hypercar', e:'⚡', brand:'Rimac',
+   desc:'1,914 hp. 0-60 in 1.85s. 412 km/h. 150 units. The future arrived early.',
+   price:2400000, notReq:0, bonus:{type:'energy',val:15}, flex:'+15 max energy'},
+  {id:'lx_car16', cat:'Cars', n:'Rolls-Royce Phantom EWB "Tempus" Collection', e:'🚙', brand:'Rolls-Royce',
+   desc:'Extended wheelbase. Star Ceiling with constellation depicting the moment of your birth.',
+   price:750000, notReq:0, bonus:{type:'cashMult',val:.02}, flex:'+2% cash income'},
+  {id:'lx_car17', cat:'Cars', n:'Bugatti Mistral Roadster', e:'🚗', brand:'Bugatti',
+   desc:'The last Bugatti with the W16 engine. Open-top. 99 units. Goodbye W16. We loved you.',
+   price:5000000, notReq:0, bonus:{type:'stamina',val:20}, flex:'+20 max stamina'},
+  {id:'lx_car18', cat:'Cars', n:'1962 Ferrari 250 GTO — Original', e:'🏎️', brand:'Ferrari',
+   desc:'The most valuable car in the world. 36 built. Racing pedigree. Every one is documented.',
+   price:70000000, notReq:0, bonus:{type:'cashMult',val:.15}, flex:'+15% all cash income. The crown jewel.'},
+
+  // ── JETS & YACHTS ────────────────────────
+  {id:'lx_jy01', cat:'Jets & Yachts', n:'Gulfstream G700 Private Jet', e:'✈️', brand:'Gulfstream',
+   desc:'7,500 nm range. 19 passengers. Bose Panaray sound system. Circadian lighting. Your own sky.',
+   price:78000000, notReq:300, bonus:{type:'energy',val:50}, flex:'+50 max energy. The world is your runway.'},
+  {id:'lx_jy02', cat:'Jets & Yachts', n:'Bombardier Global 7500 Private Jet', e:'✈️', brand:'Bombardier',
+   desc:'7,700 nm range. The longest range business jet ever. Four living spaces. Full kitchen. Actual bedroom.',
+   price:75000000, notReq:300, bonus:{type:'cashMult',val:.06}, flex:'+6% cash income'},
+  {id:'lx_jy03', cat:'Jets & Yachts', n:'Airbus ACJ TwoTwenty Corporate Jet', e:'✈️', brand:'Airbus',
+   desc:'A220 airframe customized for private use. Double beds. Full stand-up height. 6,750 nm range.',
+   price:92000000, notReq:400, bonus:{type:'incomeMult',val:.15}, flex:'+15% property income'},
+  {id:'lx_jy04', cat:'Jets & Yachts', n:'Lurssen 88m Superyacht "Phantom"', e:'⛵', brand:'Lürssen',
+   desc:'88 meters of German engineering. 12 guests, 26 crew. Pool, helipad, submarine bay. Your sea palace.',
+   price:180000000, notReq:500, bonus:{type:'cashMult',val:.12}, flex:'+12% cash income'},
+  {id:'lx_jy05', cat:'Jets & Yachts', n:'Feadship 65m Explorer Yacht', e:'⛵', brand:'Feadship',
+   desc:'Dutch craftsmanship. 14,000-mile range. Submersible. Beach club. Trophy room for your cards.',
+   price:95000000, notReq:400, bonus:{type:'energy',val:30}, flex:'+30 max energy'},
+  {id:'lx_jy06', cat:'Jets & Yachts', n:'Benetti Motopanfilo 37M', e:'⛵', brand:'Benetti',
+   desc:'37 meters. Italian soul. Teak deck. Master suite with panoramic ocean view. Entry level superyacht.',
+   price:22000000, notReq:200, bonus:null, flex:'The starting point for serious collectors.'},
+  {id:'lx_jy07', cat:'Jets & Yachts', n:'Cessna Citation Longitude Business Jet', e:'✈️', brand:'Cessna',
+   desc:'3,500 nm range. 12 passengers. The entry-level private jet with full-standing cabin.',
+   price:26000000, notReq:100, bonus:{type:'stamina',val:25}, flex:'+25 max stamina'},
+  {id:'lx_jy08', cat:'Jets & Yachts', n:'Perini Navi 56m Sailing Yacht', e:'⛵', brand:'Perini Navi',
+   desc:'Aluminum hull. Carbon mast. Five cabins. Ghost-quiet under sail. 6,000 nm range.',
+   price:42000000, notReq:250, bonus:{type:'defense',val:50}, flex:'+50 DEF'},
+  {id:'lx_jy09', cat:'Jets & Yachts', n:'Sikorsky S-92 VIP Helicopter', e:'🚁', brand:'Sikorsky',
+   desc:'VIP configured. Range 800 nm. The helicopter of presidents, moguls, and Dons.',
+   price:18000000, notReq:150, bonus:{type:'attack',val:40}, flex:'+40 ATK. Fast arrival = power.'},
+  {id:'lx_jy10', cat:'Jets & Yachts', n:'AgustaWestland AW101 VVIP "VIP Nighthawk"', e:'🚁', brand:'Leonardo',
+   desc:'Presidential spec helicopter. Armor-plated. ECM equipped. Range 1,000 nm.',
+   price:32000000, notReq:300, bonus:{type:'defense',val:75}, flex:'+75 DEF. Presidential protection.'},
+
+  // ── MANSIONS & REAL ESTATE ───────────────
+  {id:'lx_re01', cat:'Real Estate', n:'Bel-Air Compound — 35,000 sq ft', e:'🏛️', brand:'Los Angeles',
+   desc:'12 beds, 18 baths. 4 pools. Tennis court. IMAX theater. Guard house. 10-car underground garage. 6 acres.',
+   price:95000000, notReq:0, bonus:{type:'incomeMult',val:.20}, flex:'+20% all property income'},
+  {id:'lx_re02', cat:'Real Estate', n:'Palm Beach Oceanfront Estate — 22,000 sq ft', e:'🏠', brand:'Palm Beach',
+   desc:'580 ft of private Atlantic Ocean frontage. Boat dock. 8 bedrooms. Infinity pool. Art storage vault.',
+   price:84000000, notReq:0, bonus:{type:'cashMult',val:.08}, flex:'+8% cash income'},
+  {id:'lx_re03', cat:'Real Estate', n:'Manhattan Penthouse — 432 Park Ave 96th Floor', e:'🏙️', brand:'New York',
+   desc:'6,000 sq ft in the sky. Wraparound terrace. Entire city below you. Concierge. Private elevator.',
+   price:68000000, notReq:0, bonus:{type:'notoriety',val:300}, flex:'+300 Notoriety. NYC royalty.'},
+  {id:'lx_re04', cat:'Real Estate', n:'Monaco Waterfront Villa — Cap Ferrat', e:'🌊', brand:'French Riviera',
+   desc:'Private peninsula. 15,000 sq ft. Views of Monte Carlo. 300 days of sun. Zero local tax.',
+   price:120000000, notReq:0, bonus:{type:'cashMult',val:.10}, flex:'+10% cash income. Tax haven bonus.'},
+  {id:'lx_re05', cat:'Real Estate', n:'Dubai Palm Jumeirah Signature Villa', e:'🌴', brand:'Dubai',
+   desc:'6 beds, private beach, 180° gulf views. Penthouses above, water below. Palm frond address.',
+   price:28000000, notReq:0, bonus:{type:'energy',val:25}, flex:'+25 max energy'},
+  {id:'lx_re06', cat:'Real Estate', n:'Malibu Carbon Beach Compound', e:'🏄', brand:'Malibu',
+   desc:'Billionaire\'s Beach. 80 ft frontage. Where Spielberg, Geffen, and Cher live. Now you.',
+   price:52000000, notReq:0, bonus:{type:'lootBonus',val:10}, flex:'+10% loot drop rate'},
+  {id:'lx_re07', cat:'Real Estate', n:'Hamptons Southampton Estate — 12 acres', e:'🌾', brand:'Southampton',
+   desc:'12 acres. 28,000 sq ft main house. Pool house bigger than most mansions. Horse stable. Helicopter pad.',
+   price:45000000, notReq:0, bonus:{type:'incomeMult',val:.12}, flex:'+12% property income'},
+  {id:'lx_re08', cat:'Real Estate', n:'London Mayfair Georgian Townhouse — 10,000 sq ft', e:'🏛️', brand:'London',
+   desc:'5 floors. Staff quarters. Wine cellar. Roof terrace. The most expensive postcode on earth.',
+   price:38000000, notReq:0, bonus:{type:'defense',val:60}, flex:'+60 DEF. British establishment.'},
+  {id:'lx_re09', cat:'Real Estate', n:'Private Island — Bahamas, 72 Acres', e:'🏝️', brand:'Bahamas',
+   desc:'Your own island. 3 villas. Deepwater port. Airstrip. The only address where no one can find you.',
+   price:145000000, notReq:600, bonus:{type:'heat',val:-50}, flex:'Heat -50 permanently. You don\'t exist.'},
+  {id:'lx_re10', cat:'Real Estate', n:'Tokyo Roppongi Hills Penthouse — Mori Tower', e:'🗼', brand:'Tokyo',
+   desc:'53rd floor. Mt. Fuji view on clear days. 4,500 sq ft. Restaurant access. Museum below.',
+   price:32000000, notReq:0, bonus:{type:'xpMult',val:.10}, flex:'+10% XP gain'},
+  {id:'lx_re11', cat:'Real Estate', n:'Swiss Alps Chalet — Gstaad, 18,000 sq ft', e:'⛷️', brand:'Gstaad',
+   desc:'6 ensuite bedrooms. Ski-in ski-out. Heated outdoor pool. Spa. Views across three countries.',
+   price:42000000, notReq:0, bonus:{type:'stamina',val:30}, flex:'+30 max stamina'},
+  {id:'lx_re12', cat:'Real Estate', n:'Napa Valley Wine Estate — 400 Acres', e:'🍷', brand:'Napa Valley',
+   desc:'400 acres. 200 planted in Cabernet. 20,000 sq ft main house. Cave cellar. 10,000 bottle library.',
+   price:78000000, notReq:0, bonus:{type:'incomeMult',val:.25}, flex:'+25% property income. Legit front.'},
+
+  // ── ART & COLLECTIBLE OBJECTS ────────────
+  {id:'lx_a01', cat:'Art & Objects', n:'Basquiat "Untitled (Devil)" 1984 — Original', e:'🎨', brand:'Basquiat',
+   desc:'Purchased at Sotheby\'s. 48x48 inches. Skull motif. Authenticated. One of only three in private hands.',
+   price:68000000, notReq:0, bonus:{type:'notoriety',val:400}, flex:'+400 Notoriety. Culture.'},
+  {id:'lx_a02', cat:'Art & Objects', n:'Banksy "Girl with Balloon" (Pre-Shred Original)', e:'🎨', brand:'Banksy',
+   desc:'THE original, before the shredder. Authenticated by Pest Control. The most famous living artist.',
+   price:25000000, notReq:0, bonus:null, flex:'Worth more than you know.'},
+  {id:'lx_a03', cat:'Art & Objects', n:'Andy Warhol "Marilyn Diptych" Print Series', e:'🎨', brand:'Warhol',
+   desc:'Complete silk-screen series from the 1962 edition. 100 prints on cotton-rag paper. Estate certified.',
+   price:18000000, notReq:0, bonus:{type:'cashMult',val:.03}, flex:'+3% cash income'},
+  {id:'lx_a04', cat:'Art & Objects', n:'1969 Moon Landing Mission Control Console — NASA', e:'🚀', brand:'NASA',
+   desc:'An actual Mission Control console used during Apollo 11. Deaccessioned. History on a desk.',
+   price:2800000, notReq:0, bonus:{type:'energy',val:30}, flex:'+30 max energy'},
+  {id:'lx_a05', cat:'Art & Objects', n:'T-Rex Skull — Museum Grade, 65M Years Old', e:'🦴', brand:'Palaeontology',
+   desc:'Complete at 87%. Professionally excavated and restored. Rivals the Smithsonian\'s Stan specimen.',
+   price:8000000, notReq:0, bonus:{type:'attack',val:50}, flex:'+50 ATK. The apex predator.'},
+  {id:'lx_a06', cat:'Art & Objects', n:'Medieval Suit of Armor — 15th Century Milan', e:'⚔️', brand:'Milanese',
+   desc:'Complete Milanese full-plate armor, dated 1470s. Engravings on chest. Functional. Museum certified.',
+   price:4200000, notReq:0, bonus:{type:'defense',val:80}, flex:'+80 DEF. Literally armored.'},
+  {id:'lx_a07', cat:'Art & Objects', n:'Koons "Rabbit" Silver Stainless Steel Sculpture', e:'🐰', brand:'Jeff Koons',
+   desc:'The 1986 sculpture that sold for $91M in 2019. A reproduction of the edition of 3. Certified.',
+   price:22000000, notReq:0, bonus:null, flex:'$91 million rabbit. Don\'t explain it.'},
+  {id:'lx_a08', cat:'Art & Objects', n:'Fabergé Imperial Easter Egg — Kremlin Collection', e:'🥚', brand:'Fabergé',
+   desc:'One of the 52 Imperial eggs. Russian imperial family provenance. Museum refused to sell. You didn\'t ask.',
+   price:45000000, notReq:0, bonus:{type:'notoriety',val:600}, flex:'+600 Notoriety. The Romanovs had this.'},
+  {id:'lx_a09', cat:'Art & Objects', n:'Stradivarius Violin — "The Kreutzer" 1731', e:'🎻', brand:'Stradivari',
+   desc:'One of approximately 244 surviving Stradivarius instruments. Italian tone. 300-year-old maple.',
+   price:14000000, notReq:0, bonus:{type:'cashMult',val:.04}, flex:'+4% cash income'},
+  {id:'lx_a10', cat:'Art & Objects', n:'Gutenberg Bible — Perfect Vellum Copy', e:'📖', brand:'Gutenberg',
+   desc:'One of 49 surviving copies. Vellum (not paper). Two columns of 42 lines. 1455. The first printed book.',
+   price:35000000, notReq:0, bonus:{type:'xpMult',val:.15}, flex:'+15% XP gain. Knowledge is power.'},
+
+  // ── FASHION & LIFESTYLE ──────────────────
+  {id:'lx_f01', cat:'Fashion', n:'Hermès Birkin 40 — Himalayan Niloticus Crocodile', e:'👜', brand:'Hermès',
+   desc:'The rarest Birkin configuration. Himalayan skin. Palladium hardware. Diamond clasp. 10-year waitlist bypassed.',
+   price:500000, notReq:0, bonus:null, flex:'The only bag with a 10-year waitlist.'},
+  {id:'lx_f02', cat:'Fashion', n:'Bespoke Brioni Suit Collection — 50 Pieces', e:'🤵', brand:'Brioni',
+   desc:'Full hand-stitched Brioni wardrobe. Cashmere, silk, vicuña. Fitted in Rome. Delivered worldwide.',
+   price:350000, notReq:0, bonus:{type:'notoriety',val:75}, flex:'+75 Notoriety. Dress the part.'},
+  {id:'lx_f03', cat:'Fashion', n:'Louis Vuitton Millionaire Speedy Monogram — Custom', e:'👜', brand:'Louis Vuitton',
+   desc:'Special Order. Monogram with custom initials woven into canvas. Alligator trim. One made.',
+   price:180000, notReq:0, bonus:null, flex:'Monogrammed for exactly you.'},
+  {id:'lx_f04', cat:'Fashion', n:'Berluti Alessandro Dress Shoe Collection', e:'👞', brand:'Berluti',
+   desc:'28 pairs. Venezia leather. Hand-patinated by the Berluti workshop. Includes a pair for each occasion.',
+   price:120000, notReq:0, bonus:null, flex:'28 pairs. One for every mood.'},
+  {id:'lx_f05', cat:'Fashion', n:'Loro Piana Vicuña Coat — Full Length', e:'🧥', brand:'Loro Piana',
+   desc:'Vicuña is the rarest fiber in the world. Softer than cashmere. The coat costs more than most cars.',
+   price:75000, notReq:0, bonus:null, flex:'The world\'s rarest fiber.'},
+  {id:'lx_f06', cat:'Fashion', n:'Tom Ford Bespoke Eyewear Collection — Platinum', e:'🕶️', brand:'Tom Ford',
+   desc:'Platinum frames. Hand-ground optical lenses. 12 pairs, personalized prescription.',
+   price:85000, notReq:0, bonus:null, flex:'See the world through platinum.'},
+  {id:'lx_f07', cat:'Fashion', n:'Stefano Ricci Crocodile Leather Belt — 24k Gold Buckle', e:'🥋', brand:'Stefano Ricci',
+   desc:'Niloticus crocodile. 24k gold buckle with the Stefano Ricci eagle. The belt of emperors.',
+   price:42000, notReq:0, bonus:null, flex:'The most expensive thing you\'re wearing.'},
+  {id:'lx_f08', cat:'Fashion', n:'Patek Philippe Nautilus Tiffany Blue — Limited 170', e:'⌚', brand:'Patek × Tiffany',
+   desc:'The Patek x Tiffany collaboration. 170 pieces for the NY Tiffany store. Retail $52K. Market $6.5M.',
+   price:6500000, notReq:0, bonus:{type:'cashMult',val:.05}, flex:'+5% cash income. The collaboration heard round the world.'},
+  {id:'lx_f09', cat:'Fashion', n:'Louis Vuitton x Supreme Wardrobe Trunk', e:'🧳', brand:'LV x Supreme',
+   desc:'The collaboration trunk. Monogram canvas, Supreme box logo. One-week drop. Never reprinted.',
+   price:120000, notReq:0, bonus:null, flex:'The collab that stopped the internet.'},
+  {id:'lx_f10', cat:'Fashion', n:'Dior Oblique Saddle Bag — Special Edition Gold', e:'👝', brand:'Christian Dior',
+   desc:'24k gold-plated hardware, Oblique embroidery, natural python leather body. 1 produced.',
+   price:95000, notReq:0, bonus:null, flex:'Couture on your arm.'},
+
+  // ── EXPERIENCES ─────────────────────────
+  {id:'lx_ex01', cat:'Experiences', n:'Formula 1 Private Testing Day — Ferrari', e:'🏎️', brand:'Ferrari',
+   desc:'Full day at Fiorano. Your hands on the wheel of a current-spec F1 car. Ferrari engineer co-pilot.',
+   price:1200000, notReq:0, bonus:{type:'stamina',val:20}, flex:'+20 max stamina. F1 reflexes.'},
+  {id:'lx_ex02', cat:'Experiences', n:'Private Everest Base Camp Trek — Elite Team', e:'🏔️', brand:'Alpenglow',
+   desc:'Dedicated Sherpa team, 30-person support crew, helicopter evac on standby. The mountain, privately.',
+   price:450000, notReq:0, bonus:{type:'health',val:100}, flex:'+100 max health'},
+  {id:'lx_ex03', cat:'Experiences', n:'Suborbital Space Flight — Virgin Galactic', e:'🚀', brand:'Virgin Galactic',
+   desc:'2.5 hours. Mach 3. 55 miles altitude. 4 minutes of weightlessness. You are an astronaut.',
+   price:750000, notReq:0, bonus:{type:'energy',val:40}, flex:'+40 max energy. Space-level perspective.'},
+  {id:'lx_ex04', cat:'Experiences', n:'Super Bowl Suite — Owner\'s Box, 50 Guests', e:'🏈', brand:'NFL',
+   desc:'50-person owner\'s suite. All-inclusive. On-field access. Owner introductions. Halftime backstage.',
+   price:3500000, notReq:0, bonus:{type:'notoriety',val:150}, flex:'+150 Notoriety. Everyone saw you there.'},
+  {id:'lx_ex05', cat:'Experiences', n:'Kentucky Derby — Churchill Downs Owner Access', e:'🐎', brand:'Churchill Downs',
+   desc:'Twin Spires Suite. Paddock access. Winners Circle photo. Horse ownership paper included.',
+   price:850000, notReq:0, bonus:{type:'cashMult',val:.02}, flex:'+2% cash income. Own a piece of the race.'},
+  {id:'lx_ex06', cat:'Experiences', n:'Full Buyout of Nobu Malibu — Private Dinner', e:'🍣', brand:'Nobu',
+   desc:'The entire restaurant, one night. Chef Matsuhisa present. 12-course omakase. Your rules.',
+   price:750000, notReq:0, bonus:null, flex:'Nobu cooked for only you.'},
+  {id:'lx_ex07', cat:'Experiences', n:'Monaco Grand Prix — Paddock Club, Yacht Berth', e:'🏎️', brand:'Formula 1',
+   desc:'Three-day paddock pass. Yacht berth in the harbor. Driver meet and greet. Prince\'s Tribune access.',
+   price:2200000, notReq:0, bonus:{type:'notoriety',val:200}, flex:'+200 Notoriety. Monaco knows your face.'},
+  {id:'lx_ex08', cat:'Experiences', n:'Deep Ocean Dive — Titanic Wreck, OceanGate Class', e:'🌊', brand:'Custom',
+   desc:'A privately organized dive to the Titanic wreck site in a new submersible. 12,500 feet down.',
+   price:1800000, notReq:0, bonus:{type:'health',val:50}, flex:'+50 max health. You faced the deep.'},
+
+  // ── MORE COLLECTIBLES ─────────────────────────────────────────────────────
+  {id:'lx_col01', cat:'Collectibles', n:'1969 Topps Mickey Mantle Final Card PSA 9', e:'⚾', brand:'Topps',
+   desc:'Last Mantle card ever printed. Near mint. Pulled from a Collector\'s estate.',
+   price:620000, notReq:0, bonus:null, flex:'The end of an era. In your safe.'},
+  {id:'lx_col02', cat:'Collectibles', n:'2000 Bowman Chrome Tom Brady Rookie Auto PSA 10', e:'🏈', brand:'Bowman',
+   desc:'One of the rarest auto rookies in football. Brady signed this before he was Brady.',
+   price:3800000, notReq:0, bonus:{type:'attack',val:15}, flex:'+15 ATK — GOAT energy'},
+  {id:'lx_col03', cat:'Collectibles', n:'LeBron James Topps Chrome Refractor Rookie BGS 9.5', e:'🏀', brand:'Topps',
+   desc:'The chrome refractor. The king\'s first card in mint condition.',
+   price:5600000, notReq:0, bonus:{type:'xpMult',val:0.10}, flex:'+10% XP permanently'},
+  {id:'lx_col04', cat:'Collectibles', n:'Wayne Gretzky 1979 O-Pee-Chee Rookie PSA 10', e:'🏒', brand:'O-Pee-Chee',
+   desc:'The Great One\'s rookie. Only one PSA 10 known to exist.',
+   price:3750000, notReq:0, bonus:null, flex:'The rarest hockey card in existence.'},
+  {id:'lx_col05', cat:'Collectibles', n:'Lionel Messi 2004 Panini Rookie 1/1 Auto', e:'⚽', brand:'Panini',
+   desc:'Original rookie patch auto. 1-of-1. Authenticated by Panini direct.',
+   price:2900000, notReq:0, bonus:{type:'cashMult',val:0.08}, flex:'+8% all cash income'},
+  {id:'lx_col06', cat:'Collectibles', n:'Tiger Woods 2001 Upper Deck Signed Masters Flag', e:'⛳', brand:'Upper Deck',
+   desc:'Signed hole-18 flag from his historic 2001 Masters win. COA.',
+   price:425000, notReq:0, bonus:null, flex:'The flag from the greatest win ever.'},
+  {id:'lx_col07', cat:'Collectibles', n:'Muhammad Ali\'s Fight-Worn Gloves — Foreman, Kinshasa 1974', e:'🥊', brand:'Everlast',
+   desc:'Worn during the Rumble in the Jungle. Dried blood still visible. Authenticated.',
+   price:6500000, notReq:0, bonus:{type:'critChance',val:8}, flex:'+8% crit chance'},
+  {id:'lx_col08', cat:'Collectibles', n:'Original Apple-1 Computer (Signed by Wozniak)', e:'💻', brand:'Apple',
+   desc:'One of 200 made in 1976. Signed by Woz on the board. Fully functional.',
+   price:905000, notReq:0, bonus:{type:'energy',val:20}, flex:'+20 max energy'},
+  {id:'lx_col09', cat:'Collectibles', n:'Neil Armstrong\'s Apollo 11 Mission-Worn Spacesuit Glove', e:'🚀', brand:'NASA',
+   desc:'One of the gloves worn during the first Moon landing. Certificate of authenticity.',
+   price:19000000, notReq:500, bonus:{type:'notoriety',val:3000}, flex:'+3000 Notoriety. You own the Moon.'},
+  {id:'lx_col10', cat:'Collectibles', n:'Pablo Picasso\'s Personal Palette', e:'🎨', brand:'Picasso Estate',
+   desc:'Paint-covered. Provenance from his Mougins studio. Last used 1972.',
+   price:3200000, notReq:0, bonus:null, flex:'The actual palette. Still has paint from the masterworks.'},
+  {id:'lx_col11', cat:'Collectibles', n:'Babe Ruth\'s 714th Home Run Bat', e:'⚾', brand:'Hillerich & Bradsby',
+   desc:'The bat from the record-breaking 714th home run. Certified by MLB.',
+   price:1800000, notReq:0, bonus:{type:'attack',val:30}, flex:'+30 ATK — swing for the fences'},
+  {id:'lx_col12', cat:'Collectibles', n:'Original Star Wars Episode IV Production Script (Lucas Annotated)', e:'🎬', brand:'Lucasfilm',
+   desc:'George Lucas\'s personal annotated shooting script. Margin notes throughout.',
+   price:4500000, notReq:0, bonus:null, flex:'May the Force be with your collection.'},
+  {id:'lx_col13', cat:'Collectibles', n:'2003 Exquisite LeBron James Rookie Patch Auto 1/1', e:'🏀', brand:'Upper Deck Exquisite',
+   desc:'The card that defined modern collecting. Triple prime patch. One of one.',
+   price:9500000, notReq:0, bonus:{type:'xpMult',val:0.25}, flex:'+25% XP permanently'},
+  {id:'lx_col14', cat:'Collectibles', n:'Michael Jordan\'s 1992 Dream Team Game-Worn Jersey', e:'🏀', brand:'Champion',
+   desc:'Worn at the Barcelona Olympics. Gold medal game. COA from MJ\'s personal collection.',
+   price:10800000, notReq:300, bonus:{type:'attack',val:50}, flex:'+50 ATK. Dream Team energy.'},
+  {id:'lx_col15', cat:'Collectibles', n:'Rare Earth Element Collection — Full Periodic Set', e:'⚗️', brand:'Custom — Scientific',
+   desc:'Every stable element. Museum display case. 118 samples. Talking piece.',
+   price:890000, notReq:0, bonus:{type:'defense',val:20}, flex:'+20 DEF'},
+
+  // ── MORE WATCHES ───────────────────────────────────────────────────────────
+  {id:'lx_w01', cat:'Watches', n:'Patek Philippe Nautilus 5726A Annual Calendar', e:'⌚', brand:'Patek Philippe',
+   desc:'Stainless steel. Midnight blue dial. Annual calendar. Made for people who hate complications.',
+   price:180000, notReq:0, bonus:null, flex:'Understated flex. Steel sports watch at six figures.'},
+  {id:'lx_w02', cat:'Watches', n:'Rolex Daytona 116500LN "Panda" Ceramic', e:'⌚', brand:'Rolex',
+   desc:'2016 release. Ceramic bezel. White panda dial. Years of waitlist. You skipped it.',
+   price:45000, notReq:0, bonus:null, flex:'The grail on everyone\'s wrist but yours first.'},
+  {id:'lx_w03', cat:'Watches', n:'AP Royal Oak "Jumbo" 15202ST 39mm', e:'⌚', brand:'Audemars Piguet',
+   desc:'The original 1972 design. Extra thin. Petite tapisserie. Steel. Perfection.',
+   price:95000, notReq:0, bonus:null, flex:'Gérald Genta\'s masterpiece on your wrist.'},
+  {id:'lx_w04', cat:'Watches', n:'Richard Mille RM 11-03 McLaren Flyback', e:'⌚', brand:'Richard Mille',
+   desc:'Triple axis tourbillon. GMT flyback. Carbon TPT. 150 pieces.',
+   price:480000, notReq:0, bonus:{type:'critChance',val:3}, flex:'+3% crit chance'},
+  {id:'lx_w05', cat:'Watches', n:'A. Lange & Söhne Lange 1 "Luna Mundi"', e:'⌚', brand:'A. Lange & Söhne',
+   desc:'Southern hemisphere moon phase. 150th anniversary. Platinum. 150 pieces.',
+   price:320000, notReq:0, bonus:null, flex:'German precision. Lunar poetry.'},
+  {id:'lx_w06', cat:'Watches', n:'Girard-Perregaux Tourbillon with Three Gold Bridges', e:'⌚', brand:'Girard-Perregaux',
+   desc:'Three parallel gold bridges. Flying tourbillon. Skeleton case. 1860 design still made today.',
+   price:200000, notReq:0, bonus:null, flex:'The bridge between art and horology.'},
+  {id:'lx_w07', cat:'Watches', n:'Jaeger-LeCoultre Master Ultra Thin Minute Repeater Flying Tourbillon', e:'⌚', brand:'Jaeger-LeCoultre',
+   desc:'Chimes the time. Flying tourbillon. Thinnest minute repeater with tourbillon ever made.',
+   price:820000, notReq:0, bonus:{type:'energy',val:10}, flex:'+10 max energy'},
+  {id:'lx_w08', cat:'Watches', n:'Vacheron Constantin Traditionnelle Twin Beat Perpetual Calendar', e:'⌚', brand:'Vacheron Constantin',
+   desc:'Dual oscillation frequency. Saves power when stored. Never needs setting.',
+   price:190000, notReq:0, bonus:null, flex:'Zero maintenance. Maximum complexity.'},
+  {id:'lx_w09', cat:'Watches', n:'Breguet Tourbillon Extra-Plat Automatique 5367', e:'⌚', brand:'Breguet',
+   desc:'Thinnest automatic tourbillon in the world. Titanium. Silvered gold dial.',
+   price:240000, notReq:0, bonus:null, flex:'The inventor of the tourbillon\'s finest modern work.'},
+  {id:'lx_w10', cat:'Watches', n:'FP Journe Chronomètre Bleu Tantalum', e:'⌚', brand:'F.P. Journe',
+   desc:'Tantalum case. Blue brass movement. Limited edition. Boutique only.',
+   price:280000, notReq:0, bonus:{type:'cashMult',val:0.05}, flex:'+5% cash income'},
+  {id:'lx_w11', cat:'Watches', n:'Philippe Dufour Simplicity 37mm (White Gold)', e:'⌚', brand:'Philippe Dufour',
+   desc:'Entirely hand-made by one man. Fewer than 200 in existence. The pinnacle of watchmaking.',
+   price:750000, notReq:0, bonus:{type:'xpMult',val:0.05}, flex:'+5% XP — the purist\'s choice'},
+  {id:'lx_w12', cat:'Watches', n:'H. Moser & Cie Endeavour Perpetual Moon "Concept"', e:'⌚', brand:'H. Moser & Cie',
+   desc:'No logo on the dial. Fumé blue. Perpetual moon. The anti-logo statement.',
+   price:48000, notReq:0, bonus:null, flex:'Confidence so high you don\'t need a logo.'},
+
+  // ── MORE CARS ──────────────────────────────────────────────────────────────
+  {id:'lx_car21', cat:'Cars', n:'Ferrari 250 GTO (1962, Serial 3413GT)', e:'🚗', brand:'Ferrari',
+   desc:'The most valuable car ever made. $70M+ at recent auction. Racing pedigree. You have it.',
+   price:70000000, notReq:1000, bonus:{type:'cashMult',val:0.20}, flex:'+20% cash income. The crown jewel.'},
+  {id:'lx_car22', cat:'Cars', n:'Bugatti Bolide Hypercar', e:'🏎️', brand:'Bugatti',
+   desc:'1,825 hp. 0-60 in 2.17 seconds. Track-only. 40 units. W16 engine at full scream.',
+   price:4200000, notReq:0, bonus:{type:'stamina',val:15}, flex:'+15 max stamina'},
+  {id:'lx_car23', cat:'Cars', n:'Koenigsegg One:1 (1-of-7)', e:'🏎️', brand:'Koenigsegg',
+   desc:'1,360hp. 1360kg. 1:1 power-to-weight. 7 made. You found one.',
+   price:6000000, notReq:0, bonus:{type:'attack',val:40}, flex:'+40 ATK — total power ratio'},
+  {id:'lx_car24', cat:'Cars', n:'McLaren F1 (1994, Low Mileage)', e:'🏎️', brand:'McLaren',
+   desc:'627hp. Central driving position. Gold-lined engine bay. 240mph. The original hypercar.',
+   price:20000000, notReq:300, bonus:{type:'critChance',val:5}, flex:'+5% crit chance'},
+  {id:'lx_car25', cat:'Cars', n:'Porsche 917K Le Mans Racer (Gulf Livery)', e:'🏎️', brand:'Porsche',
+   desc:'The most iconic racing car in history. Steve McQueen\'s favorite. Gulf orange and blue.',
+   price:14000000, notReq:200, bonus:{type:'defense',val:25}, flex:'+25 DEF — Le Mans tested'},
+  {id:'lx_car26', cat:'Cars', n:'Mercedes-Benz CLK GTR (Street Version)', e:'🏎️', brand:'Mercedes-AMG',
+   desc:'Racing homologation special. 612hp. 26 built. Born on the track. Barely street-legal.',
+   price:11000000, notReq:0, bonus:{type:'attack',val:35}, flex:'+35 ATK'},
+  {id:'lx_car27', cat:'Cars', n:'Lamborghini Miura SV (Restored)', e:'🚗', brand:'Lamborghini',
+   desc:'1972. The car that defined supercar design. Concours-grade restoration. Mid-engine V12.',
+   price:3900000, notReq:0, bonus:null, flex:'The car that started it all.'},
+  {id:'lx_car28', cat:'Cars', n:'Bugatti Chiron Super Sport 300+', e:'🏎️', brand:'Bugatti',
+   desc:'First car to break 300mph. Special edition. 1578hp. 30 units.',
+   price:3900000, notReq:0, bonus:{type:'stamina',val:10}, flex:'+10 max stamina'},
+  {id:'lx_car29', cat:'Cars', n:'Zenvo Aurora Tur Hypercar', e:'🏎️', brand:'Zenvo',
+   desc:'V12 bi-turbo. Dual-axis tilting rear wing. Danish insanity. Hand-built.',
+   price:5200000, notReq:0, bonus:{type:'attack',val:30}, flex:'+30 ATK'},
+  {id:'lx_car30', cat:'Cars', n:'Cadillac Eldorado Biarritz (1959, Fully Restored)', e:'🚗', brand:'Cadillac',
+   desc:'Tail fins. Chrome. Baby blue. The American dream made metal. Show quality.',
+   price:350000, notReq:0, bonus:null, flex:'The most American car ever made.'},
+  {id:'lx_car31', cat:'Cars', n:'Land Rover Defender 130 "Dark Hunter" Custom', e:'🚙', brand:'Land Rover x Overfinch',
+   desc:'V8 supercharged. Matte black. Night-vision dash. Custom interior. Your field command car.',
+   price:420000, notReq:0, bonus:{type:'defense',val:15}, flex:'+15 DEF — ready for anything'},
+  {id:'lx_car32', cat:'Cars', n:'Ferrari Enzo (Last Known Unsold Example)', e:'🏎️', brand:'Ferrari',
+   desc:'660hp. Ceramic brakes. F1-derived gearbox. 400 built. One had never been sold.',
+   price:4400000, notReq:0, bonus:{type:'critChance',val:4}, flex:'+4% crit chance'},
+
+  // ── MORE REAL ESTATE ───────────────────────────────────────────────────────
+  {id:'lx_re01', cat:'Real Estate', n:'Gianni Versace\'s Casa Casuarina, Miami Beach', e:'🏠', brand:'Versace Estate',
+   desc:'The original Versace mansion. 10 bedrooms. Mosaic pool. Full South Beach block.',
+   price:38000000, notReq:0, bonus:{type:'incomeMult',val:0.15}, flex:'+15% property income'},
+  {id:'lx_re02', cat:'Real Estate', n:'Hearst Castle — San Simeon, California', e:'🏰', brand:'Hearst Corporation Heritage',
+   desc:'165 rooms. 4 pools. 3 guesthouses. Private airstrip. 82,000 acres. The real Citizen Kane.',
+   price:190000000, notReq:2000, bonus:{type:'incomeMult',val:0.30}, flex:'+30% property income'},
+  {id:'lx_re03', cat:'Real Estate', n:'Skyfall Lodge — Glencoe, Scotland', e:'🏔️', brand:'Private',
+   desc:'The actual filming location for Skyfall. Remote. Fully operational. Helicopter access only.',
+   price:8500000, notReq:0, bonus:{type:'defense',val:40}, flex:'+40 DEF — harder to find than 007'},
+  {id:'lx_re04', cat:'Real Estate', n:'Antilia — Mumbai (Full 27 Floors)', e:'🏢', brand:'Reliance Architecture',
+   desc:'The world\'s second most expensive private home. 27 stories. 600 staff. Air traffic room.',
+   price:2000000000, notReq:5000, bonus:{type:'cashMult',val:0.50}, flex:'+50% CASH INCOME. The ultimate flex.'},
+  {id:'lx_re05', cat:'Real Estate', n:'Finca Cortesin Estate, Marbella', e:'🌴', brand:'Custom — Andalusia',
+   desc:'15 acres. Golf course. Full hotel staff. 40 bedrooms. Private beach.',
+   price:92000000, notReq:0, bonus:{type:'incomeMult',val:0.12}, flex:'+12% property income'},
+  {id:'lx_re06', cat:'Real Estate', n:'Woolworth Mansion, East 80s, Manhattan', e:'🏙️', brand:'Woolworth Estate',
+   desc:'Triplex penthouse. 34 rooms. Gilded Age detail. Your Manhattan fortress.',
+   price:79000000, notReq:0, bonus:{type:'cashMult',val:0.10}, flex:'+10% cash income'},
+  {id:'lx_re07', cat:'Real Estate', n:'Billionaire\'s Row Sky Penthouse — 111 W 57th, NYC', e:'🏙️', brand:'JDS Development',
+   desc:'Entire top floor. 8,000sqft. 1,428ft above Manhattan. See five states.',
+   price:66000000, notReq:0, bonus:{type:'notoriety',val:5000}, flex:'+5000 Notoriety'},
+  {id:'lx_re08', cat:'Real Estate', n:'Private Sovereign Island, Fiji (4,000 acres)', e:'🌊', brand:'Private Listing',
+   desc:'Titled sovereign territory. Your own laws. 4,000 tropical acres. Two private lagoons.',
+   price:450000000, notReq:3000, bonus:{type:'cashMult',val:0.25}, flex:'+25% cash income. Your own country.'},
+  {id:'lx_re09', cat:'Real Estate', n:'The Crown Estate, Buckinghamshire', e:'🏡', brand:'English Heritage',
+   desc:'Tudor mansion. 60 rooms. Moat. 400 acres. Churchill used it during WWII.',
+   price:55000000, notReq:0, bonus:{type:'defense',val:50}, flex:'+50 DEF — Churchill-grade security'},
+  {id:'lx_re10', cat:'Real Estate', n:'Dubai Marina Sky Villa (Full Building)', e:'🌆', brand:'Emaar Properties',
+   desc:'You bought the entire 72-story tower. 400 units. Rental income. Your name on the lobby.',
+   price:800000000, notReq:4000, bonus:{type:'incomeMult',val:0.40}, flex:'+40% property income. You own the tower.'},
+  {id:'lx_re11', cat:'Real Estate', n:'Sun Valley Ranch, Idaho (10,000 acres)', e:'🏔️', brand:'Private — Wood River Valley',
+   desc:'10,000 acres. Private ski mountain. Three rivers. Hunting. Six guesthouses.',
+   price:95000000, notReq:0, bonus:{type:'health',val:100}, flex:'+100 max health'},
+  {id:'lx_re12', cat:'Real Estate', n:'Greystone Mansion, Beverly Hills', e:'🏡', brand:'Beverly Hills City Heritage',
+   desc:'1928. 46 rooms. 18.3 acres. The most filmed mansion in Hollywood history.',
+   price:72000000, notReq:0, bonus:{type:'cashMult',val:0.08}, flex:'+8% cash income'},
+
+  // ── MORE JETS & YACHTS ─────────────────────────────────────────────────────
+  {id:'lx_jy01', cat:'Jets & Yachts', n:'Boeing 747-8 VIP (Full Interior)', e:'✈️', brand:'Boeing Business Jets',
+   desc:'Full 747. Staterooms. Conference room. Infirmary. Cinema. 500 sqft master suite.',
+   price:403000000, notReq:2000, bonus:{type:'incomeMult',val:0.20}, flex:'+20% income. You travel like a nation.'},
+  {id:'lx_jy02', cat:'Jets & Yachts', n:'F-18 Hornet (Demilitarized, Airworthy)', e:'🛩️', brand:'Boeing / USMC Surplus',
+   desc:'Fully demilitarized but airworthy. Registered civil aircraft. You can fly it.',
+   price:35000000, notReq:500, bonus:{type:'attack',val:80}, flex:'+80 ATK — actual military jet'},
+  {id:'lx_jy03', cat:'Jets & Yachts', n:'Dassault Falcon 10X', e:'✈️', brand:'Dassault Aviation',
+   desc:'9,200nm range. Widest cabin in class. London to Singapore direct. 2024 newest flagship.',
+   price:80000000, notReq:0, bonus:{type:'cashMult',val:0.07}, flex:'+7% cash income'},
+  {id:'lx_jy04', cat:'Jets & Yachts', n:'Project Cayman 160m Superyacht (Custom)', e:'🛥️', brand:'Oceanco',
+   desc:'Custom commission. Submarine bay. IMAX cinema. Two swimming pools. 40 guests.',
+   price:350000000, notReq:3000, bonus:{type:'incomeMult',val:0.25}, flex:'+25% property income'},
+  {id:'lx_jy05', cat:'Jets & Yachts', n:'Lurssen 77m "Solandge" Class', e:'⛵', brand:'Lürssen',
+   desc:'77m. 5 decks. Helipad. Beach club. Toys garage. Cinema. The perfect 250ft yacht.',
+   price:95000000, notReq:0, bonus:{type:'cashMult',val:0.10}, flex:'+10% cash income'},
+  {id:'lx_jy06', cat:'Jets & Yachts', n:'Hinckley Picnic Boat Mk2 Custom', e:'🚤', brand:'Hinckley',
+   desc:'Electric drive. Teak deck. Custom hull. Classic New England style. Quietest boat ever.',
+   price:425000, notReq:0, bonus:null, flex:'The quietest, most beautiful runabout ever made.'},
+  {id:'lx_jy07', cat:'Jets & Yachts', n:'Bell 429 GlobalRanger (VIP, Medical Config)', e:'🚁', brand:'Bell',
+   desc:'VIP interior. Medical suite. Your personal air ambulance and commuter in one.',
+   price:8000000, notReq:0, bonus:{type:'health',val:50}, flex:'+50 max health'},
+  {id:'lx_jy08', cat:'Jets & Yachts', n:'Cessna Citation Longitude (Fleet of 3)', e:'✈️', brand:'Cessna',
+   desc:'Three identical Citations. One per coast. Plus Europe. Always a jet waiting.',
+   price:22000000, notReq:0, bonus:{type:'energy',val:30}, flex:'+30 max energy — always moving'},
+  {id:'lx_jy09', cat:'Jets & Yachts', n:'Triton 36000/2 Submersible (Full Ocean Depth)', e:'🌊', brand:'Triton Submarines',
+   desc:'Certified to 36,000ft — full ocean depth. One of three in private hands.',
+   price:48000000, notReq:500, bonus:{type:'lootBonus',val:30}, flex:'+30% loot chance — go where no one has been'},
+  {id:'lx_jy10', cat:'Jets & Yachts', n:'Aeroscraft ML866 Private Airship', e:'🎈', brand:'Worldwide Aeros Corp',
+   desc:'Rigid airship. Cruise at 2,000ft. Private staterooms. The ultimate slow travel.',
+   price:65000000, notReq:0, bonus:{type:'cashMult',val:0.06}, flex:'+6% cash income'},
+
+  // ── MORE FASHION ──────────────────────────────────────────────────────────
+  {id:'lx_fa01', cat:'Fashion', n:'Hermès Birkin 40 Noir (Togo, GHW)', e:'👜', brand:'Hermès',
+   desc:'The entry point to the Birkin world. Still $80K+ on secondary. 10 month wait.',
+   price:82000, notReq:0, bonus:null, flex:'The wait was worth it.'},
+  {id:'lx_fa02', cat:'Fashion', n:'Chanel 2.55 Reissue 227 (Black Lambskin, 24K Gold)', e:'👜', brand:'Chanel',
+   desc:'Redesigned with 24K hardware. Original Mademoiselle lock. Bordeaux lining.',
+   price:12000, notReq:0, bonus:null, flex:'Coco\'s original design. Never out of style.'},
+  {id:'lx_fa03', cat:'Fashion', n:'Dior Haute Couture 7-Piece Wardrobe (Custom)', e:'👗', brand:'Dior Haute Couture',
+   desc:'Seven one-of-a-kind pieces. 3,000+ hours of stitching. Paris atelier made.',
+   price:500000, notReq:0, bonus:null, flex:'Nobody owns this. Except you.'},
+  {id:'lx_fa04', cat:'Fashion', n:'Nike x Off-White "The Ten" Complete Set (DS)', e:'👟', brand:'Nike x Virgil Abloh',
+   desc:'All 10 pairs. Deadstock. Still in OG bags with zip-ties. Never worn.',
+   price:180000, notReq:0, bonus:{type:'energy',val:5}, flex:'+5 energy — fresh kicks, fast feet'},
+  {id:'lx_fa05', cat:'Fashion', n:'Air Jordan 1 "Shattered Backboard" Player Exclusive', e:'👟', brand:'Nike',
+   desc:'Jordan wore these in Italy in 1985. Player exclusive colorway. Only 3 pairs known.',
+   price:620000, notReq:0, bonus:{type:'attack',val:10}, flex:'+10 ATK — MJ energy'},
+  {id:'lx_fa06', cat:'Fashion', n:'Gucci x Balenciaga "Hacker Project" Full Look', e:'🧥', brand:'Gucci x Balenciaga',
+   desc:'The collab of the decade. GG logo inside Balenciaga typeface. Full runway look.',
+   price:45000, notReq:0, bonus:null, flex:'Two houses. One look. All you.'},
+  {id:'lx_fa07', cat:'Fashion', n:'Bottega Veneta Intrecciato Crocodile Maxi Bag', e:'👜', brand:'Bottega Veneta',
+   desc:'Crocodile skin. Woven by hand. No logo. The label for people who don\'t need one.',
+   price:75000, notReq:0, bonus:null, flex:'The anti-logo flex. Harder to spot. Harder to ignore.'},
+  {id:'lx_fa08', cat:'Fashion', n:'Louis Vuitton x Yayoi Kusama Dot Trunk', e:'🧳', brand:'Louis Vuitton x Yayoi Kusama',
+   desc:'Full polka-dot LV monogram trunk. Hand-painted by Kusama herself. One commissioned.',
+   price:2200000, notReq:0, bonus:{type:'notoriety',val:500}, flex:'+500 Notoriety'},
+  {id:'lx_fa09', cat:'Fashion', n:'Berluti Scritto Leather Briefcase (Bespoke)', e:'💼', brand:'Berluti',
+   desc:'Hand-patinated leather. Your initials carved into the grain. 6-month wait.',
+   price:22000, notReq:0, bonus:null, flex:'The briefcase that closes every deal.'},
+  {id:'lx_fa10', cat:'Fashion', n:'Stefano Bemer MTM Oxford Shoes (Bespoke)', e:'👞', brand:'Stefano Bemer',
+   desc:'Hand-lasted to your foot. 40 hours of cobbling. Finest calf leather. Florence.',
+   price:8500, notReq:0, bonus:null, flex:'The best shoes money can buy. Period.'},
+  {id:'lx_fa11', cat:'Fashion', n:'Canada Goose x OVO Drake Edition Parka (1/1)', e:'🧥', brand:'Canada Goose x OVO',
+   desc:'Custom Drake collaboration. Gold OVO owl embroidered. Signed interior tag.',
+   price:95000, notReq:0, bonus:{type:'defense',val:8}, flex:'+8 DEF — proper cold weather armor'},
+  {id:'lx_fa12', cat:'Fashion', n:'Rolex Explorer II "Steve McQueen" Ref.1655 (Original)', e:'⌚', brand:'Rolex',
+   desc:'Steve McQueen\'s personal Explorer II. Proven provenance. Orange hand.',
+   price:280000, notReq:0, bonus:{type:'critChance',val:2}, flex:'+2% crit chance — McQueen cool'},
+
+  // ── MORE ART & OBJECTS ────────────────────────────────────────────────────
+  {id:'lx_ao01', cat:'Art & Objects', n:'Jeff Koons "Balloon Dog" (Orange, Stainless)', e:'🎨', brand:'Jeff Koons Studio',
+   desc:'The most expensive work by a living American artist sold at auction. $58.4M. Yours now.',
+   price:58400000, notReq:0, bonus:{type:'notoriety',val:8000}, flex:'+8000 Notoriety'},
+  {id:'lx_ao02', cat:'Art & Objects', n:'Damien Hirst "For the Love of God" Diamond Skull', e:'💀', brand:'Damien Hirst',
+   desc:'8,601 diamonds. Platinum cast of a human skull. $100M. The most expensive artwork at launch.',
+   price:100000000, notReq:1000, bonus:{type:'notoriety',val:15000}, flex:'+15000 Notoriety. The flex of flexes.'},
+  {id:'lx_ao03', cat:'Art & Objects', n:'Jean-Michel Basquiat "Untitled" (1982, Crown)', e:'🎨', brand:'Basquiat Estate',
+   desc:'Acquired at Sotheby\'s for $110.5M. The King Alphonso piece. Street to auction house.',
+   price:110500000, notReq:0, bonus:{type:'cashMult',val:0.15}, flex:'+15% cash income'},
+  {id:'lx_ao04', cat:'Art & Objects', n:'Warhol "Gold Marilyn Monroe" (1962 Original)', e:'🎨', brand:'Warhol Foundation',
+   desc:'Gold background. Original 1962 silkscreen. Provenance back to 1970 auction.',
+   price:195000000, notReq:2000, bonus:{type:'notoriety',val:20000}, flex:'+20000 Notoriety'},
+  {id:'lx_ao05', cat:'Art & Objects', n:'Fabergé Winter Egg (Imperial, 1913)', e:'🥚', brand:'Fabergé',
+   desc:'Rock crystal. Platinum. Imperial provenance. One of only 43 Imperial Fabergé Eggs known.',
+   price:9500000, notReq:0, bonus:{type:'incomeMult',val:0.08}, flex:'+8% property income'},
+  {id:'lx_ao06', cat:'Art & Objects', n:'Michelangelo Marble Study (Authenticated Fragment)', e:'🗿', brand:'Uffizi Provenance',
+   desc:'3kg marble fragment. Michelangelo\'s studio documented. Full provenance.',
+   price:12000000, notReq:0, bonus:{type:'defense',val:30}, flex:'+30 DEF'},
+  {id:'lx_ao07', cat:'Art & Objects', n:'Rembrandt "Self Portrait" (1659 Original)', e:'🎨', brand:'Private Dutch Collection',
+   desc:'Emerged from a private Dutch estate. Authenticated in 2022. Never publicly shown.',
+   price:89000000, notReq:0, bonus:{type:'xpMult',val:0.15}, flex:'+15% XP'},
+  {id:'lx_ao08', cat:'Art & Objects', n:'Cy Twombly "Untitled (New York City)" 1968', e:'🎨', brand:'Gagosian',
+   desc:'Blackboard series. Chalk loops on grey. The most copied painting of the century.',
+   price:22000000, notReq:0, bonus:{type:'cashMult',val:0.06}, flex:'+6% cash'},
+  {id:'lx_ao09', cat:'Art & Objects', n:'Ancient Roman Marble Gladiator Helmet (100 AD)', e:'🪖', brand:'Roman Antiquities — Sotheby\'s',
+   desc:'Full bronze-lined marble replica used in gladiatorial display. Provenance from Naples dig.',
+   price:5500000, notReq:0, bonus:{type:'defense',val:25}, flex:'+25 DEF — Roman-tested'},
+  {id:'lx_ao10', cat:'Art & Objects', n:'Banksy "Devolved Parliament" (Original)', e:'🎨', brand:'Banksy',
+   desc:'Brexit chimpanzees in Parliament. Sold for $12.2M in 2019. Largest Banksy at auction.',
+   price:12200000, notReq:0, bonus:{type:'notoriety',val:2000}, flex:'+2000 Notoriety'},
+
+  // ── MORE TECH & GADGETS ───────────────────────────────────────────────────
+  {id:'lx_tg01', cat:'Tech & Gadgets', n:'Neuralink Neural Interface (V2 Private)', e:'🧠', brand:'Neuralink',
+   desc:'Not public yet. But your money gets you the second-generation device. Mind-machine.',
+   price:2500000, notReq:0, bonus:{type:'energy',val:50}, flex:'+50 max energy — direct neural tap'},
+  {id:'lx_tg02', cat:'Tech & Gadgets', n:'Full Nuclear Bunker (DEFCON 1 Spec)', e:'🏗️', brand:'Atlas Survival Shelters',
+   desc:'Underground. 10,000sqft. 5-year supply. NBC filtration. Your city-proof fortress.',
+   price:15000000, notReq:0, bonus:{type:'health',val:200}, flex:'+200 max health — you survive everything'},
+  {id:'lx_tg03', cat:'Tech & Gadgets', n:'FLIR-Equipped Predator Drone (Demil)', e:'🛸', brand:'General Atomics (Demil)',
+   desc:'Full-size surveillance drone. Demilitarized. FLIR thermal. GPS tracking. Operational.',
+   price:5000000, notReq:500, bonus:{type:'lootBonus',val:25}, flex:'+25% loot chance — eyes everywhere'},
+  {id:'lx_tg04', cat:'Tech & Gadgets', n:'Rolls-Royce Merlin V12 Aircraft Engine (Display)', e:'⚙️', brand:'Rolls-Royce',
+   desc:'1943 Spitfire-spec Merlin. Fully restored and running. Museum quality. 1,470hp.',
+   price:2800000, notReq:0, bonus:{type:'attack',val:20}, flex:'+20 ATK'},
+  {id:'lx_tg05', cat:'Tech & Gadgets', n:'IBM Quantum Computer (5000 Qubit Array)', e:'💻', brand:'IBM Quantum',
+   desc:'Private lab quantum computer. 5,000 qubit. Climate-controlled room. AI applications.',
+   price:100000000, notReq:2000, bonus:{type:'cashMult',val:0.20}, flex:'+20% cash income. Compute everything.'},
+  {id:'lx_tg06', cat:'Tech & Gadgets', n:'Custom Armored iPhone (Caviar + IronCase)', e:'📱', brand:'Caviar x Apple',
+   desc:'Titanium shell. Patek Philippe dial insert. Bulletproof glass. One built.',
+   price:1800000, notReq:0, bonus:{type:'defense',val:10}, flex:'+10 DEF'},
+  {id:'lx_tg07', cat:'Tech & Gadgets', n:'Wilson Audio WAMM Master Chronosonic Speakers', e:'🔊', brand:'Wilson Audio',
+   desc:'$685,000 per pair. Most accurate speakers ever measured. Your listening room.',
+   price:685000, notReq:0, bonus:null, flex:'The most accurate sound reproduction in history.'},
+  {id:'lx_tg08', cat:'Tech & Gadgets', n:'Palladium Membership — Davos Inner Circle', e:'🌍', brand:'World Economic Forum',
+   desc:'Year-round private access. Pre-Davos briefings. The rooms where decisions are made.',
+   price:50000000, notReq:3000, bonus:{type:'cashMult',val:0.30}, flex:'+30% cash income. You\'re in the room.'},
+
+  // ── FOOD, DRINK & VICE ─────────────────────────────────────────────────────
+  {id:'lx_fd01', cat:'Food & Drink', n:'Kopi Luwak Private Estate Reserve (1kg)', e:'☕', brand:'Heritage Bali Estate',
+   desc:'Civet-processed. Single-estate. Shade-grown. The rarest coffee on earth.',
+   price:1200, notReq:0, bonus:null, flex:'The world\'s most exclusive cup.'},
+  {id:'lx_fd02', cat:'Food & Drink', n:'Almas Beluga Caviar — 1kg Tin (White)', e:'🫧', brand:'House of Caviar',
+   desc:'From 100+ year old albino Beluga sturgeon. $34,000 per kilo. White gold.',
+   price:34000, notReq:0, bonus:null, flex:'White caviar from a 100-year-old fish.'},
+  {id:'lx_fd03', cat:'Food & Drink', n:'Pappy Van Winkle 23yr (Case of 12)', e:'🥃', brand:'Buffalo Trace Distillery',
+   desc:'The unicorn bourbon. 12 bottles. Direct allocation. Worth $50K retail if you can find it.',
+   price:50000, notReq:0, bonus:null, flex:'Bourbon that people have actually committed crimes for.'},
+  {id:'lx_fd04', cat:'Food & Drink', n:'1945 Romanée-Conti Bottle (Single, Certified)', e:'🍷', brand:'Domaine de la Romanée-Conti',
+   desc:'$558,000 at Sotheby\'s. Pre-phylloxera vines. The rarest wine bottle in the world.',
+   price:558000, notReq:0, bonus:{type:'cashMult',val:0.03}, flex:'+3% cash income'},
+  {id:'lx_fd05', cat:'Food & Drink', n:'Nusret "Salt Bae" Private Gold Steak Dinner', e:'🥩', brand:'Nusr-Et Private',
+   desc:'$1,800 gold-leaf steak. Reserved private dining room. Gold flake poured tableside.',
+   price:25000, notReq:0, bonus:{type:'health',val:25}, flex:'+25 max health — the steak of champions'},
+  {id:'lx_fd06', cat:'Food & Drink', n:'Louis XIII Rare Cask 42.6 Cognac', e:'🍶', brand:'Rémy Martin',
+   desc:'100-year blend. 41.6% ABV. 738 decanters. Each numbered. Crystal flacon.',
+   price:22000, notReq:0, bonus:null, flex:'A hundred years in every glass.'},
+  {id:'lx_fd07', cat:'Food & Drink', n:'Dom Pérignon P3 1970 (Jeroboam)', e:'🍾', brand:'Dom Pérignon',
+   desc:'Third-plénitude release. Third fermentation cycle. 50+ year Champagne in 3L format.',
+   price:42000, notReq:0, bonus:null, flex:'50-year-old Champagne. For the night you earned this.'},
+  {id:'lx_fd08', cat:'Food & Drink', n:'Cigar Collection — H. Upmann 1844 Reserve Master Set', e:'🚬', brand:'H. Upmann',
+   desc:'500-cigar humidor. Six year aged. Hand-rolled by master rollers. Cedar-lined.',
+   price:65000, notReq:0, bonus:null, flex:'The Don always has a cigar for a moment like this.'},
+
+  // ── EXOTIC ANIMALS ─────────────────────────────────────────────────────────
+  {id:'lx_ea01', cat:'Exotic Animals', n:'Silver Arowana "Super Red" Pair', e:'🐟', brand:'Indonesian Breeder',
+   desc:'Known as the dragon fish. Blood-red scales. $400K for a pair this color.',
+   price:400000, notReq:0, bonus:null, flex:'The fish that brings fortune. Displayed in the office.'},
+  {id:'lx_ea02', cat:'Exotic Animals', n:'White Peacock Flock (6 birds)', e:'🦚', brand:'Royal Wildlife Estate, UK',
+   desc:'Six white Indian peafowl. From Windsor Estate stock. Roam the grounds.',
+   price:180000, notReq:0, bonus:null, flex:'Windsor Castle rejected this offer. You accepted.'},
+  {id:'lx_ea03', cat:'Exotic Animals', n:'Clouded Leopard (Captive-bred, F5)', e:'🐱', brand:'Exotic Feline Rescue',
+   desc:'Rarest big cat in private hands. Spotted coat. Docile F5 generation.',
+   price:850000, notReq:0, bonus:{type:'critChance',val:5}, flex:'+5% crit chance — predator energy'},
+  {id:'lx_ea04', cat:'Exotic Animals', n:'Komodo Dragon Enclosure (Private)', e:'🦎', brand:'Indonisian Wildlife Authority',
+   desc:'Three male Komodo dragons in a custom 5,000sqft enclosure. Venomous. Terrifying.',
+   price:2500000, notReq:0, bonus:{type:'defense',val:35}, flex:'+35 DEF — nobody tests you'},
+  {id:'lx_ea05', cat:'Exotic Animals', n:'Thoroughbred Racehorse — Grade 1 Winner', e:'🐎', brand:'Coolmore / Private',
+   desc:'Won two Grade 1s. Stud fee at $300K/year. Racing bloodline. Your colors.',
+   price:12000000, notReq:0, bonus:{type:'incomeMult',val:0.10}, flex:'+10% income — the horse pays for itself'},
+  {id:'lx_ea06', cat:'Exotic Animals', n:'Giant Pacific Octopus (Custom Aquarium)', e:'🐙', brand:'Monterey Aquarium Surplus',
+   desc:'2,000-gallon custom tank. Temperature-controlled. The most intelligent invertebrate.',
+   price:350000, notReq:0, bonus:null, flex:'The smartest animal in any room you\'re in.'},
+
+
+
+];
+
+// ── CSS for luxury panel ──
+const LUXURY_CSS = `
+#lux-wrap{display:flex;flex-direction:column;height:100%;}
+.lux-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px;}
+.lux-tab{background:var(--surface2);border:1px solid var(--border);color:var(--text-dim);
+  font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:.1em;padding:5px 12px;cursor:pointer;transition:all .15s;}
+.lux-tab.active{background:linear-gradient(135deg,var(--blood),#3a0000);border-color:var(--crimson);color:var(--bright-gold);}
+.lux-tab:hover{border-color:var(--gold);}
+.lux-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;}
+.lux-card{background:linear-gradient(135deg,#0a0005,var(--surface2));border:1px solid var(--border);
+  padding:14px;display:flex;flex-direction:column;gap:6px;transition:all .15s;position:relative;}
+.lux-card:hover{border-color:var(--gold);box-shadow:0 0 20px rgba(184,134,11,.15);}
+.lux-card.owned{border-color:var(--bright-gold);background:linear-gradient(135deg,#0a0800,#1a1200);}
+.lux-card-top{display:flex;align-items:flex-start;gap:10px;}
+.lux-emoji{font-size:32px;flex-shrink:0;}
+.lux-name{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--text);line-height:1.2;}
+.lux-brand{font-size:9px;letter-spacing:.2em;color:var(--gold);font-family:'Bebas Neue',sans-serif;}
+.lux-desc{font-family:'Special Elite',serif;font-size:10px;color:var(--text-dim);line-height:1.6;}
+.lux-price{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--bright-gold);}
+.lux-bonus{font-family:'Cutive Mono',monospace;font-size:9px;color:var(--bright-green);margin-top:2px;}
+.lux-flex{font-family:'Special Elite',serif;font-size:9px;color:var(--text-dim);font-style:italic;}
+.lux-owned-badge{position:absolute;top:8px;right:8px;background:linear-gradient(90deg,var(--gold),var(--bright-gold));
+  color:#000;font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:.15em;padding:2px 8px;}
+.lux-buy-btn{background:linear-gradient(135deg,var(--blood),#3a0000);border:2px solid var(--crimson);
+  color:var(--bright-gold);font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:.1em;
+  padding:8px;cursor:pointer;transition:all .2s;margin-top:4px;width:100%;}
+.lux-buy-btn:hover{background:linear-gradient(135deg,var(--crimson),var(--blood));box-shadow:0 0 15px rgba(196,30,58,.4);}
+.lux-buy-btn:disabled{opacity:.35;cursor:not-allowed;}
+.lux-stats{display:flex;justify-content:space-between;align-items:center;background:var(--surface);
+  padding:10px 14px;margin-bottom:14px;border:1px solid var(--border);}
+.lux-not-req{font-size:9px;color:var(--crimson);font-family:'Cutive Mono',monospace;margin-top:3px;}
+`;
+
+function buildLuxury(c){
+  if(!G.luxuryOwned)G.luxuryOwned={};
+  const tab=G.luxuryTab||'Collectibles';
+  const cats=[...new Set(LUXURY_ITEMS.map(i=>i.cat))];
+  const items=LUXURY_ITEMS.filter(i=>i.cat===tab);
+  const totalOwned=Object.keys(G.luxuryOwned).length;
+  const totalValue=LUXURY_ITEMS.filter(i=>G.luxuryOwned[i.id]).reduce((s,i)=>s+i.price,0);
+
+  // Inject CSS once
+  if(!document.getElementById('lux-css')){
+    const style=document.createElement('style');
+    style.id='lux-css';style.textContent=LUXURY_CSS;
+    document.head.appendChild(style);
+  }
+
+  let html='<div class="panel"><div class="ph"><h2>💎 LUXURY SHOP</h2><span class="psub">Real brand names. Real prices. No limits on how much you can flex.</span></div><div class="pb">';
+  html+='<div class="lux-stats">';
+  html+='<div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:13px;color:var(--text-dim);letter-spacing:.12em;">COLLECTION</div>';
+  html+='<div style="font-family:\'Bebas Neue\',sans-serif;font-size:22px;color:var(--bright-gold);">'+totalOwned+' / '+LUXURY_ITEMS.length+' Items</div></div>';
+  html+='<div style="text-align:right;"><div style="font-family:\'Bebas Neue\',sans-serif;font-size:13px;color:var(--text-dim);letter-spacing:.12em;">PORTFOLIO VALUE</div>';
+  html+='<div style="font-family:\'Bebas Neue\',sans-serif;font-size:22px;color:var(--bright-green);">$'+totalValue.toLocaleString()+'</div></div>';
+  html+='</div>';
+  html+='<div class="lux-tabs">';
+  for(const cat of cats){
+    const ownedInCat=LUXURY_ITEMS.filter(i=>i.cat===cat&&G.luxuryOwned[i.id]).length;
+    const totalInCat=LUXURY_ITEMS.filter(i=>i.cat===cat).length;
+    html+=`<div class="lux-tab ${tab===cat?'active':''}" onclick="G.luxuryTab='${cat}';buildLuxury(document.getElementById('center'))">${cat} (${ownedInCat}/${totalInCat})</div>`;
+  }
+  html+='</div>';
+  html+='<div class="lux-grid">';
+  for(const it of items){
+    const owned=G.luxuryOwned[it.id];
+    const canAfford=G.cash>=it.price;
+    const notMet=it.notReq>0&&(G.notoriety||0)<it.notReq;
+    html+=`<div class="lux-card ${owned?'owned':''}">`;
+    if(owned)html+='<div class="lux-owned-badge">✓ OWNED</div>';
+    html+='<div class="lux-card-top">';
+    html+='<div class="lux-emoji">'+it.e+'</div>';
+    html+='<div><div class="lux-name">'+it.n+'</div>';
+    html+='<div class="lux-brand">'+it.brand+'</div></div></div>';
+    html+='<div class="lux-desc">'+it.desc+'</div>';
+    if(it.bonus)html+='<div class="lux-bonus">⬆ '+it.flex+'</div>';
+    else html+='<div class="lux-flex">'+it.flex+'</div>';
+    if(notMet&&!owned)html+='<div class="lux-not-req">🔒 Requires '+it.notReq.toLocaleString()+' Notoriety</div>';
+    if(!owned){
+      html+='<div class="lux-price">$'+it.price.toLocaleString()+'</div>';
+      html+='<button class="lux-buy-btn" onclick="buyLuxury(\''+it.id+'\')" '+(canAfford&&!notMet?'':'disabled')+'>'+( notMet?'🔒 LOCKED':canAfford?'BUY NOW':'INSUFFICIENT FUNDS')+'</button>';
+    }
+    html+='</div>';
+  }
+  html+='</div></div></div>';
+  c.innerHTML=html;
+}
+
+function buyLuxury(id){
+  const it=LUXURY_ITEMS.find(x=>x.id===id);if(!it)return;
+  if(!G.luxuryOwned)G.luxuryOwned={};
+  if(G.luxuryOwned[id]){toast('Already owned!','r');return;}
+  if(G.cash<it.price){toast('Not enough cash!','r');return;}
+  if(it.notReq>0&&(G.notoriety||0)<it.notReq){toast('Need '+it.notReq+' Notoriety!','r');return;}
+  G.cash-=it.price;
+  G.luxuryOwned[id]=true;
+  // Apply bonus
+  if(it.bonus){
+    const b=it.bonus;
+    if(b.type==='cashMult')G.cashMult=(G.cashMult||1)+b.val;
+    else if(b.type==='xpMult')G.xpMult=(G.xpMult||1)+b.val;
+    else if(b.type==='incomeMult')G.incomeMult=(G.incomeMult||1)+b.val;
+    else if(b.type==='attack'){G.attack+=b.val;G.baseAttack+=b.val;}
+    else if(b.type==='defense'){G.defense+=b.val;G.baseDef+=b.val;}
+    else if(b.type==='energy'){G.maxEnergy+=b.val;G.energy=Math.min(G.energy+b.val,G.maxEnergy);}
+    else if(b.type==='stamina'){G.maxStamina+=b.val;G.stamina=Math.min(G.stamina+b.val,G.maxStamina);}
+    else if(b.type==='health'){G.maxHealth+=b.val;G.health=Math.min(G.health+b.val,G.maxHealth);}
+    else if(b.type==='critChance')G.critChance+=b.val;
+    else if(b.type==='lootBonus')G.lootBonus+=b.val;
+    else if(b.type==='notoriety')G.notoriety=(G.notoriety||0)+b.val;
+    else if(b.type==='heat')coolHeat(Math.abs(b.val));
+  }
+  G.notoriety=(G.notoriety||0)+Math.floor(it.price/1000000);
+  addLog('💎 PURCHASED: '+it.n+' — $'+it.price.toLocaleString(),'sp');
+  toast('💎 '+it.n+' is yours!','gold');
+  updateAll();save();
+  buildLuxury(document.getElementById('center'));
+}
+
 
 function buildPrestige(c){
   const next=G.prestige+1;
@@ -2670,6 +4067,20 @@ function checkMissions(){
 // ══════════════════════════════════════════
 function updateAll(){
   updateTopBar();updateBars();updateRight();updateMafia();
+  updateHeatBar();
+  // Apply heat cap from dark web
+  if(G.heatCap !== undefined) G.heat = Math.min(G.heatCap, G.heat||0);
+  // Notoriety perks applied passively
+  applyNotorietyPerks();
+  updateHeatBar();
+  const hEl=document.getElementById('rp-heat');
+  const nEl=document.getElementById('rp-not');
+  if(hEl)hEl.textContent=Math.floor(G.heat||0)+'%';
+  if(nEl)nEl.textContent=(G.notoriety||0).toLocaleString();
+}
+function applyNotorietyPerks(){
+  const tier = getNotorietyTier();
+  // perks are passive stat checks, not re-applied each tick (stored in G)
 }
 function updateTopBar(){
   document.getElementById('tb-cash').textContent='$'+G.cash.toLocaleString();
@@ -2761,9 +4172,14 @@ function toast(msg,type=''){
 // ══════════════════════════════════════════
 // REGEN LOOPS
 // ══════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════════════════
+// FULL EXPANSION PACK
+
 function startLoops(){
   const regenRates={Fearless:{e:1,s:1,h:4},Maniac:{e:3,s:1,h:2},Mogul:{e:1,s:2,h:2},Ghost:{e:2,s:2,h:2},Consigliere:{e:2,s:1,h:3}};
   const r=regenRates[G.playerClass]||regenRates.Fearless;
+  // Energy/stamina/health regen
   setInterval(()=>{
     let ch=false;
     if(G.energy<G.maxEnergy){G.energy=Math.min(G.maxEnergy,G.energy+r.e);ch=true;}
@@ -2774,15 +4190,52 @@ function startLoops(){
   // Auto income trickle
   setInterval(()=>{
     const inc=calcIncome();
-    if(inc>0){const e=Math.floor(inc*.05);if(e>0){G.cash+=e;G.totalEarned+=e;updateTopBar();}}
+    if(inc>0){const e=Math.min(100000,Math.floor(inc*.03));if(e>0){G.cash+=e;G.totalEarned+=e;updateTopBar();}}
   },30000);
   // Drug price fluctuation
   initDrugPrices();
   setInterval(fluctuateDrugPrices,30000);
-  // Achievement check loop
+  // Achievement check
   setInterval(checkAchievements,15000);
   // Auto save
   setInterval(save,45000);
+  // Heat cooldown (every 10s)
+  setInterval(()=>{
+    if((G.heat||0)>0){
+      let coolRate=1;
+      if(G.crew&&G.crew['cr07'])coolRate=4;
+      if((G.notoriety||0)>=1500)coolRate*=2;
+      coolHeat(coolRate);
+    }
+  },10000);
+  // Jail countdown (every 1s)
+  setInterval(()=>{
+    if(G.jailTimer>0){
+      G.jailTimer--;
+      updateJailTimer();
+      if(G.jailTimer<=0){
+        G.jailTimer=0;
+        const o=document.getElementById('jail-overlay');
+        if(o)o.style.display='none';
+        toast('🔓 Released from jail!','g');
+        addLog('🔓 Released. Back on the streets.','gold');
+        save();
+      }
+    }
+  },1000);
+  // Event ticker (countdown + random triggers every 10s)
+  setInterval(()=>{
+    if(activeEventObj&&eventCountdown>0){
+      eventCountdown-=10;
+      if(eventCountdown<=0)endEvent();
+      else if(G.currentPanel==='events')buildEvents(document.getElementById('center'));
+    }
+    if(!activeEventObj&&Math.random()<0.12)triggerRandomEvent();
+  },10000);
+  // Crew passives (every 60s)
+  setInterval(()=>{applyCrewPassives();},60000);
+  // Init heat bar
+  updateHeatBar();
 }
 </script>
 </body>
