@@ -160,8 +160,14 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .jr .jrl{color:var(--bright-purple);font-size:10px;}
 .djb{background:var(--blood);border:1px solid var(--crimson);color:var(--text);font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.08em;padding:5px 14px;cursor:pointer;transition:all .12s;white-space:nowrap;}
 .djb:hover{background:var(--crimson);box-shadow:0 0 8px rgba(196,30,58,.4);}
-.mbar{background:var(--surface3);height:3px;margin-top:5px;overflow:hidden;}
-.mfill{background:var(--gold);height:100%;transition:width .3s;}
+.mbar{background:var(--surface3);height:6px;margin-top:5px;overflow:hidden;border-radius:3px;}
+.mfill{height:100%;transition:width .4s ease;border-radius:3px;}
+.mfill.t1{background:linear-gradient(90deg,#CD7F32,#E8A96A);}
+.mfill.t2{background:linear-gradient(90deg,#9E9E9E,#E0E0E0);}
+.mfill.t3{background:linear-gradient(90deg,var(--gold),var(--bright-gold));}
+.jmas{border-color:var(--bright-gold)!important;}
+.jmas .jn{color:var(--bright-gold)!important;}
+.mastered-badge{display:inline-block;background:linear-gradient(90deg,var(--gold),var(--bright-gold));color:#000;font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:.15em;padding:1px 7px;margin-left:6px;border-radius:2px;}
 
 /* FIGHT */
 .ecard{background:var(--surface2);border:1px solid var(--border);padding:12px;cursor:pointer;transition:all .15s;margin-bottom:8px;}
@@ -1402,15 +1408,23 @@ function buildJobs(c){
     for(const j of tier.jobs){
       const dis=G.energy<j.e;
       const mas=G.jobMastery[j.id]||0;
-      const mp=Math.min(100,(mas/20)*100);
-      const adjCash=Math.floor(j.c*cashMult);
-      html+=`<div class="jcard ${dis?'jdis':''} ${mas>=20?'jmas':''}" id="jc-${j.id}">
+      const tier=mas>=30?3:mas>=20?2:mas>=10?1:0;
+      const tStart=[0,0,10,20][tier];
+      const tMax=10;
+      const tProg=Math.min(10,mas-tStart);
+      const mp=(tProg/tMax)*100;
+      const mastered=mas>=30;
+      const adjCash=Math.floor(j.c*cashMult*(1+(tier*.15)));
+      const tClass=tier===3?'t3':tier===2?'t2':'t1';
+      const tBadge=mastered?'<span class="mastered-badge">MASTERED</span>':tier===2?'<span style="font-size:9px;color:#E0E0E0;margin-left:5px">SILVER</span>':tier===1?'<span style="font-size:9px;color:#CD7F32;margin-left:5px">BRONZE</span>':'' ;
+      const tLabel=mastered?'Fully Mastered ★':tier===2?'Gold: '+tProg+'/10':tier===1?'Silver: '+tProg+'/10':'Bronze: '+tProg+'/10';
+      html+=`<div class="jcard ${dis?'jdis':''} ${mastered?'jmas':''}" id="jc-${j.id}">
         <div>
-          <div class="jn">${mas>=20?'★ ':''} ${j.n}</div>
+          <div class="jn">${mastered?'★ ':''} ${j.n} ${tBadge}</div>
           <div class="jd">${j.d}</div>
           <div class="jreq">⚡ ${j.e} energy${j.li?` &nbsp;🎁 Loot possible`:''}</div>
-          <div class="mbar"><div class="mfill" style="width:${mp}%"></div></div>
-          <div style="font-size:9px;color:var(--text-dim);font-family:'Cutive Mono',monospace;">Mastery ${mas}/20</div>
+          <div class="mbar"><div class="mfill ${tClass}" id="mf-${j.id}" style="width:${mp}%"></div></div>
+          <div style="font-size:9px;color:var(--text-dim);font-family:'Cutive Mono',monospace;margin-top:2px" id="ml-${j.id}">${tLabel}</div>
         </div>
         <div class="jr">
           <span class="jrv">$${adjCash.toLocaleString()}</span>
@@ -1443,7 +1457,33 @@ function doJob(id){
   const xp=Math.round(j.x*G.xpMult*G.pBonuses.xpMult);
   gainXP(xp);
   G.jobsDone++;
-  G.jobMastery[j.id]=Math.min(20,(G.jobMastery[j.id]||0)+1);
+  const prevMas=G.jobMastery[j.id]||0;
+  G.jobMastery[j.id]=Math.min(30,prevMas+1);
+  const newMas=G.jobMastery[j.id];
+  // Update mastery bar live without panel rebuild
+  const nTier=newMas>=30?3:newMas>=20?2:newMas>=10?1:0;
+  const nTStart=[0,0,10,20][nTier];
+  const nTProg=Math.min(10,newMas-nTStart);
+  const nMp=(nTProg/10)*100;
+  const mfEl=document.getElementById('mf-'+id);
+  const mlEl=document.getElementById('ml-'+id);
+  const jcEl=document.getElementById('jc-'+id);
+  if(mfEl){
+    mfEl.style.width=nMp+'%';
+    mfEl.className='mfill '+(nTier===3?'t3':nTier===2?'t2':'t1');
+  }
+  if(mlEl){
+    if(newMas>=30)mlEl.textContent='Fully Mastered ★';
+    else if(nTier===2)mlEl.textContent='Gold: '+nTProg+'/10';
+    else if(nTier===1)mlEl.textContent='Silver: '+nTProg+'/10';
+    else mlEl.textContent='Bronze: '+nTProg+'/10';
+  }
+  if(jcEl&&newMas>=30)jcEl.classList.add('jmas');
+  // Tier completion toasts
+  if(newMas===10&&prevMas===9){toast('🥉 '+j.n+' — Bronze Mastered! +15% cash','g');addLog('🥉 Bronze mastered: '+j.n,'gold');}
+  if(newMas===20&&prevMas===19){toast('🥈 '+j.n+' — Silver Mastered! +30% cash','g');addLog('🥈 Silver mastered: '+j.n,'gold');}
+  if(newMas===30&&prevMas===29){toast('★ '+j.n+' — FULLY MASTERED!','g');addLog('★ MASTERED: '+j.n,'sp');}
+
   addLog(`✓ ${j.n} — $${cash.toLocaleString()} +${xp}XP`,'good');
   // Loot
   const lc=j.lc+(G.lootBonus/100)+(getSkillBonus('loot')/100);
