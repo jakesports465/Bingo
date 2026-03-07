@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Mafia Wars Underground</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a0a14">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Special+Elite&family=Cutive+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ═══ AUTH SCREEN ═══ -->
+<div id="auth-screen">
+  <div class="auth-box">
+    <div class="auth-title">MAFIA WARS</div>
+    <div class="auth-sub">Sign in to sync your empire across devices</div>
+    <input type="email" id="auth-email" class="auth-input" placeholder="Email address" autocomplete="email">
+    <input type="password" id="auth-password" class="auth-input" placeholder="Password (6+ chars)" autocomplete="current-password">
+    <button id="auth-submit" class="auth-btn" data-mode="login" onclick="handleAuth()">SIGN IN</button>
+    <div id="auth-error" class="auth-error"></div>
+    <div id="auth-toggle" class="auth-toggle">No account? <a href="#" onclick="toggleAuthMode();return false">Create One</a></div>
+    <div class="auth-divider">OR</div>
+    <button class="auth-btn guest" onclick="handleGuestPlay()">PLAY AS GUEST (local save only)</button>
+  </div>
+</div>
+
+<!-- ═══ SAVE CONFLICT ═══ -->
+<div id="save-conflict">
+  <div class="conflict-box">
+    <div class="conflict-title">SAVE CONFLICT</div>
+    <p style="font-family:'Special Elite',serif;font-size:12px;color:var(--text-dim);margin-bottom:12px;">Found saves in two places. Which do you want to keep?</p>
+    <div class="conflict-opt" onclick="resolveSaveConflict('cloud')">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--bright-blue);">☁️ CLOUD SAVE</div>
+      <div style="font-family:'Cutive Mono',monospace;font-size:11px;color:var(--text-dim);">Level <span id="cloud-level">?</span></div>
+    </div>
+    <div class="conflict-opt" onclick="resolveSaveConflict('local')">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--bright-green);">💾 LOCAL SAVE</div>
+      <div style="font-family:'Cutive Mono',monospace;font-size:11px;color:var(--text-dim);">Level <span id="local-level">?</span></div>
+    </div>
+  </div>
+</div>
+
+<body>
+
+<!-- ═══ SPLASH ═══ -->
+<div id="splash">
+  <div class="bg-art"></div>
+  <div class="splash-logo">MAFIA WARS</div>
+  <div class="splash-sub">◆ Underground Edition ◆</div>
+  <div class="splash-tagline">Build. Fight. Conquer. Prestige. Repeat.</div>
+  <div class="splash-stats">
+    <div class="splash-stat"><div class="n">1500</div><div class="l">MAX LEVEL</div></div>
+    <div class="splash-stat"><div class="n">20</div><div class="l">CITIES</div></div>
+    <div class="splash-stat"><div class="n">400+</div><div class="l">JOBS</div></div>
+    <div class="splash-stat"><div class="n">∞</div><div class="l">PRESTIGE</div></div>
+  </div>
+  <button class="enter-btn" id="enter-btn">ENTER THE FAMILY</button>
+</div>
+
+<!-- ═══ CHARACTER CREATION ═══ -->
+<div id="char-screen">
+  <div class="cc-title">WHO ARE YOU?</div>
+  <div class="cc-sub">Every Don started somewhere. Choose wisely.</div>
+  <input id="cc-name-input" type="text" maxlength="22" placeholder="Your name..." class="" style="background:var(--surface);border:2px solid var(--gold);color:var(--bright-gold);font-family:'Special Elite',serif;font-size:20px;padding:10px 20px;text-align:center;width:280px;outline:none;"/>
+  
+  <div style="font-family:'Special Elite',serif;color:var(--text-dim);font-size:12px;letter-spacing:.2em;margin-top:4px;">CLASS</div>
+  <div class="class-row">
+    <div class="cls sel" id="cls-Fearless" onclick="selectClass('Fearless')">
+      <div class="ci">🔪</div><div class="cn">Fearless</div>
+      <div class="cd">+Health regen<br>+3 Attack base<br>Combat specialist</div>
+    </div>
+    <div class="cls" id="cls-Maniac" onclick="selectClass('Maniac')">
+      <div class="ci">⚡</div><div class="cn">Maniac</div>
+      <div class="cd">+Energy regen<br>+5 Max Energy<br>Job machine</div>
+    </div>
+    <div class="cls" id="cls-Mogul" onclick="selectClass('Mogul')">
+      <div class="ci">💰</div><div class="cn">Mogul</div>
+      <div class="cd">+Stamina regen<br>+15% income<br>Empire builder</div>
+    </div>
+    <div class="cls" id="cls-Ghost" onclick="selectClass('Ghost')">
+      <div class="ci">🥷</div><div class="cn">Ghost</div>
+      <div class="cd">+Crit hit chance<br>+Loot rate<br>Shadow operator</div>
+    </div>
+    <div class="cls" id="cls-Consigliere" onclick="selectClass('Consigliere')">
+      <div class="ci">🧠</div><div class="cn">Consigliere</div>
+      <div class="cd">+XP gain 10%<br>+Skill pts/level<br>The mastermind</div>
+    </div>
+  </div>
+
+  <div style="font-family:'Special Elite',serif;color:var(--text-dim);font-size:12px;letter-spacing:.2em;margin-top:6px;">BACKGROUND</div>
+  <div class="bg-row">
+    <div class="bg-card sel" id="bg-Streets" onclick="selectBG('Streets')">
+      <div class="bt">FROM THE STREETS</div>
+      <div class="bd">Start with $8,000 and a knife. You earned every cent.</div>
+    </div>
+    <div class="bg-card" id="bg-Military" onclick="selectBG('Military')">
+      <div class="bt">MILITARY VETERAN</div>
+      <div class="bd">Start with +5 Attack, +5 Defense. Disciplined killer.</div>
+    </div>
+    <div class="bg-card" id="bg-WhiteCollar" onclick="selectBG('WhiteCollar')">
+      <div class="bt">WHITE COLLAR CRIMINAL</div>
+      <div class="bd">Start with $25,000. Know how to move money.</div>
+    </div>
+    <div class="bg-card" id="bg-Born" onclick="selectBG('Born')">
+      <div class="bt">BORN INTO THE LIFE</div>
+      <div class="bd">Start with 3 mafia members. Connected from day one.</div>
+    </div>
+    <div class="bg-card" id="bg-Assassin" onclick="selectBG('Assassin')">
+      <div class="bt">FORMER ASSASSIN</div>
+      <div class="bd">Start with +10 Attack and a rifle. Nothing personal.</div>
+    </div>
+  </div>
+
+  <button class="start-game-btn" onclick="startGame()">JOIN THE FAMILY</button>
+</div>
+
+<!-- ═══ GAME ═══ -->
+<div id="game">
+  <!-- TOP BAR -->
+  <div id="topbar">
+    <div class="logo-sm">MAFIA WARS</div>
+    <div class="sp"><span class="sl">Cash</span><span class="sv g" id="tb-cash">$0</span></div>
+    <div class="sp"><span class="sl">Level</span><span class="sv gold" id="tb-level">1</span></div>
+    <div class="sp"><span class="sl">Attack</span><span class="sv r" id="tb-atk">10</span></div>
+    <div class="sp"><span class="sl">Defense</span><span class="sv b" id="tb-def">8</span></div>
+    <div class="sp"><span class="sl">Mafia</span><span class="sv" id="tb-mafia">1</span></div>
+    <div class="sp"><span class="sl">Respect</span><span class="sv gold" id="tb-resp">0</span></div>
+    <div class="sp"><span class="sl">Prestige</span><span class="sv p" id="tb-prestige">0★</span></div>
+    <div class="sp" style="display:none" id="xp-mult-pill"><span class="sl">XP Mult</span><span class="sv b" id="tb-xpmult">1.0×</span></div>
+    <button class="heal-btn" onclick="healPlayer()" style="margin-left:6px;" id="heal-btn-top">💊 HEAL</button>
+    <div id="tb-name" style="margin-left:auto;text-align:right;">
+      <div class="tn" id="tb-pname">PLAYER</div>
+      <div class="tr" id="tb-rank">Street Thug</div>
+    </div>
+  </div>
+
+  <!-- BARS -->
+  <div id="bars">
+    <div class="bar-row">
+      <div class="bitem">
+        <div class="blabel">⚡ ENERGY <span id="ev">50/50</span></div>
+        <div class="bbg"><div class="bfill ef" id="ebar" style="width:100%"></div></div>
+      </div>
+      <div class="bitem">
+        <div class="blabel">💪 STAMINA <span id="sv2">25/25</span></div>
+        <div class="bbg"><div class="bfill sf" id="sbar" style="width:100%"></div></div>
+      </div>
+      <div class="bitem">
+        <div class="blabel">❤️ HEALTH <span id="hv">100/100</span></div>
+        <div class="bbg"><div class="bfill hf" id="hbar" style="width:100%"></div></div>
+      </div>
+      <div class="bitem">
+        <div class="blabel">⭐ XP <span id="xv">0/100</span></div>
+        <div class="bbg"><div class="bfill xf" id="xbar" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEAT BAR -->
+  <div id="heat-bar-wrap">
+    <span class="heat-label">🌡️ HEAT</span>
+    <div id="heat-bar-bg"><div id="heat-bar-fill" style="width:0%;background:linear-gradient(90deg,#ff6f00,#d32f2f)"></div></div>
+    <span id="heat-level-txt" style="color:var(--text-dim)">CLEAN</span>
+  </div>
+  <!-- EVENT BANNER -->
+  <div id="event-banner" style="display:none;background:linear-gradient(90deg,#1a0030,#0a001a);border-bottom:2px solid #AB47BC;padding:5px 20px;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:.1em;color:#E040FB;text-align:center;"></div>
+  <!-- JAIL OVERLAY -->
+  <div id="jail-overlay" style="display:none;position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.93);flex-direction:column;align-items:center;justify-content:center;gap:14px;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:64px;color:var(--crimson);text-shadow:0 0 40px rgba(196,30,58,.7)">🚔 BUSTED</div>
+    <div style="font-family:'Special Elite',serif;color:var(--text-dim);font-size:15px;text-align:center;max-width:420px;line-height:1.8">The cops have you. Sit tight or pay bail to walk. Your properties keep earning while you're inside.</div>
+    <div id="jail-timer" style="font-family:'Bebas Neue',sans-serif;font-size:56px;color:var(--bright-gold)">0:00</div>
+    <div id="bail-cost-txt" style="font-family:'Special Elite',serif;color:var(--text-dim);font-size:13px;"></div>
+    <button id="bail-btn" onclick="payBail()" style="background:var(--blood);border:2px solid var(--crimson);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.15em;padding:13px 44px;cursor:pointer;transition:all .2s" onmouseover="this.style.background='var(--crimson)'" onmouseout="this.style.background='var(--blood)'">💰 PAY BAIL</button>
+    <div style="font-family:'Special Elite',serif;color:var(--text-dim);font-size:11px">Properties still collecting. Hang tight, boss.</div>
+  </div>
+  <!-- CONTENT -->
+  <div id="content-area">
+    <!-- LEFT SIDEBAR -->
+    <div id="sidebar">
+      <div class="ns">
+        <div class="nst">Operations</div>
+        <div class="nb active" id="nav-jobs" onclick="showPanel('jobs')"><span class="ni">💼</span> Jobs</div>
+        <div class="nb" id="nav-contracts" onclick="showPanel('contracts')"><span class="ni">📄</span> Contracts</div>
+        <div class="nb" id="nav-missions" onclick="showPanel('missions')"><span class="ni">📋</span> Missions</div>
+        <div class="nb" id="nav-operations" onclick="showPanel('operations')"><span class="ni">🎯</span> Operations</div>
+      </div>
+      <div class="ns">
+        <div class="nst">Combat</div>
+        <div class="nb" id="nav-fight" onclick="showPanel('fight')"><span class="ni">⚔️</span> Fight</div>
+        <div class="nb" id="nav-hitlist" onclick="showPanel('hitlist')"><span class="ni">🏹</span> Hitlist</div>
+        <div class="nb" id="nav-rob" onclick="showPanel('rob')"><span class="ni">🔫</span> Rob</div>
+        <div class="nb" id="nav-gangwar" onclick="showPanel('gangwar')"><span class="ni">💣</span> Gang War</div>
+        <div class="nb" id="nav-bosses" onclick="showPanel('bosses')"><span class="ni">💀</span> Boss Fights</div>
+      </div>
+      <div class="ns">
+        <div class="nst">Empire</div>
+        <div class="nb" id="nav-properties" onclick="showPanel('properties')"><span class="ni">🏢</span> Properties</div>
+        <div class="nb" id="nav-store" onclick="showPanel('store')"><span class="ni">🔧</span> Armory</div>
+        <div class="nb" id="nav-blackmarket" onclick="showPanel('blackmarket')"><span class="ni">🕶️</span> Black Market</div>
+        <div class="nb" id="nav-luxury" onclick="showPanel('luxury')"><span class="ni">💎</span> Luxury Shop</div>
+        <div class="nb" id="nav-darkweb" onclick="showPanel('darkweb')"><span class="ni">🕸️</span> Dark Web</div>
+        <div class="nb" id="nav-crafting" onclick="showPanel('crafting')"><span class="ni">⚗️</span> Crafting</div>
+        <div class="nb" id="nav-inventory" onclick="showPanel('inventory')"><span class="ni">🎒</span> Inventory</div>
+      </div>
+      <div class="ns">
+        <div class="nst">Progression</div>
+        <div class="nb" id="nav-skilltree" onclick="showPanel('skilltree')"><span class="ni">🌳</span> Skill Tree</div>
+        <div class="nb" id="nav-drugtrade" onclick="showPanel('drugtrade')"><span class="ni">💊</span> Drug Trade</div>
+        <div class="nb" id="nav-achievements" onclick="showPanel('achievements')"><span class="ni">🏆</span> Achievements</div>
+        <div class="nb" id="nav-casino" onclick="showPanel('casino')"><span class="ni">🎲</span> Casino</div>
+        <div class="nb" id="nav-prestige" onclick="showPanel('prestige')"><span class="ni">⭐</span> Prestige</div>
+        <div class="nb" id="nav-crew" onclick="showPanel('crew')"><span class="ni">👥</span> Crew</div>
+        <div class="nb" id="nav-hitman" onclick="showPanel('hitman')"><span class="ni">🎯</span> Hitman</div>
+        <div class="nb" id="nav-racing" onclick="showPanel('racing')"><span class="ni">🏎️</span> Street Racing</div>
+        <div class="nb" id="nav-underworld" onclick="showPanel('underworld')"><span class="ni">🌆</span> Underworld</div>
+        <div class="nb" id="nav-events" onclick="showPanel('events')"><span class="ni">⚡</span> Events</div>
+        <div class="nb" id="nav-notoriety" onclick="showPanel('notoriety')"><span class="ni">☠️</span> Notoriety</div>
+        <div class="nb" id="nav-savemgr" onclick="showPanel('savemgr')"><span class="ni">💾</span> Save / Load</div>
+      </div>
+      <div class="ns">
+        <div class="nst">Cities</div>
+        <div class="city-list" id="city-list"></div>
+      </div>
+    </div>
+
+    <!-- CENTER -->
+    <div id="center"></div>
+
+    <!-- RIGHT PANEL -->
+    <div id="rpanel">
+      <div class="rank-box">
+        <div class="rank-title" id="rp-rank">Street Thug</div>
+        <div class="rank-sub" id="rp-prestige-stars"></div>
+        <div class="rank-sub" id="rp-resp">0 Respect</div>
+      </div>
+
+      <div class="rps">
+        <div class="rph">📊 CHARACTER</div>
+        <div class="sr"><span class="srl">Level</span><span class="srv gold" id="rp-level">1</span></div>
+        <div class="sr"><span class="srl">Class</span><span class="srv" id="rp-class">—</span></div>
+        <div class="sr"><span class="srl">Background</span><span class="srv" id="rp-bg">—</span></div>
+        <div class="sr"><span class="srl">XP</span><span class="srv b" id="rp-xp">0</span></div>
+        <div class="sr"><span class="srl">Next Level</span><span class="srv" id="rp-xpnext">100</span></div>
+        <div class="sr"><span class="srl">Attack</span><span class="srv r" id="rp-atk">10</span></div>
+        <div class="sr"><span class="srl">Defense</span><span class="srv b" id="rp-def">8</span></div>
+        <div class="sr"><span class="srl">Crit Chance</span><span class="srv gold" id="rp-crit">5%</span></div>
+        <div class="sr"><span class="srl">Loot Bonus</span><span class="srv gold" id="rp-loot">0%</span></div>
+      </div>
+
+      <div class="rps">
+        <div class="rph">💰 FINANCES</div>
+        <div class="sr"><span class="srl">Cash</span><span class="srv g" id="rp-cash">$0</span></div>
+        <div class="sr"><span class="srl">Total Earned</span><span class="srv gold" id="rp-total">$0</span></div>
+        <div class="sr"><span class="srl">Prop Income/cycle</span><span class="srv g" id="rp-propinc">$0</span></div>
+        <div class="sr"><span class="srl">Properties</span><span class="srv" id="rp-propct">0</span></div>
+      </div>
+
+      <div class="rps">
+        <div class="rph">⚔️ COMBAT RECORD</div>
+        <div class="sr"><span class="srl">Fights Won</span><span class="srv g" id="rp-fw">0</span></div>
+        <div class="sr"><span class="srl">Fights Lost</span><span class="srv r" id="rp-fl">0</span></div>
+        <div class="sr"><span class="srl">Kills</span><span class="srv r" id="rp-kills">0</span></div>
+        <div class="sr"><span class="srl">Jobs Done</span><span class="srv" id="rp-jd">0</span></div>
+        <div class="sr"><span class="srl">Robberies</span><span class="srv" id="rp-rob">0</span></div>
+        <div class="sr"><span class="srl">Contracts Done</span><span class="srv gold" id="rp-cd">0</span></div>
+        <div class="sr"><span class="srl">Heat</span><span class="srv r" id="rp-heat">0</span></div>
+        <div class="sr"><span class="srl">Notoriety</span><span class="srv p" id="rp-not">0</span></div>
+      </div>
+      <div class="rps">
+        <div class="rph">🌆 STREET STATUS</div>
+        <div class="sr"><span class="srl">Notoriety</span><span class="srv gold" id="rp-notoriety">0</span></div>
+        <div class="sr"><span class="srl">Rep Tier</span><span class="srv" id="rp-rep-tier">Nobody</span></div>
+        <div class="sr"><span class="srl">Heat</span><span class="srv r" id="rp-heat2">0%</span></div>
+        <div class="sr"><span class="srl">Crew Hired</span><span class="srv" id="rp-crew">0</span></div>
+        <div class="sr"><span class="srl">Contracts Killed</span><span class="srv r" id="rp-hm-done">0</span></div>
+      </div>
+
+      <div class="rps">
+        <div class="rph">🎖️ SKILL POINTS (<span id="sp-count">0</span>)</div>
+        <div class="skrow"><span class="skn">⚡ Max Energy</span><div style="display:flex;align-items:center;gap:5px;"><span class="skv" id="sk-energy">50</span><button class="skb" onclick="spendSP('energy')">+</button></div></div>
+        <div class="skrow"><span class="skn">💪 Max Stamina</span><div style="display:flex;align-items:center;gap:5px;"><span class="skv" id="sk-stamina">25</span><button class="skb" onclick="spendSP('stamina')">+</button></div></div>
+        <div class="skrow"><span class="skn">❤️ Max Health</span><div style="display:flex;align-items:center;gap:5px;"><span class="skv" id="sk-health">100</span><button class="skb" onclick="spendSP('health')">+</button></div></div>
+        <div class="skrow"><span class="skn">⚔️ Attack</span><div style="display:flex;align-items:center;gap:5px;"><span class="skv" id="sk-attack">10</span><button class="skb" onclick="spendSP('attack')">+</button></div></div>
+        <div class="skrow"><span class="skn">🛡️ Defense</span><div style="display:flex;align-items:center;gap:5px;"><span class="skv" id="sk-defense">8</span><button class="skb" onclick="spendSP('defense')">+</button></div></div>
+      </div>
+
+      <div class="rps">
+        <div class="rph">📜 ACTIVITY LOG</div>
+        <div id="log"></div>
+      </div>
+
+      <div class="rps">
+        <div class="rph">👥 MAFIA FAMILY (<span id="rp-mafia">1</span>)</div>
+        <div class="mdots" id="mdots"></div>
+        <button onclick="recruitMember()" style="margin-top:8px;background:var(--surface3);border:1px solid var(--gold);color:var(--gold);font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.08em;padding:5px 12px;cursor:pointer;width:100%;transition:all .12s;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background='var(--surface3)'">+ RECRUIT ($5,000)</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LEVEL UP POPUP -->
+<div id="lvlup">
+  <h1>LEVEL UP!</h1>
+  <p id="lu-text">You are now Level 2</p>
+  <div class="lsub">+5 Skill Points — Spend them wisely, Don.</div>
+</div>
+
+<!-- TOASTS -->
+<div id="toasts"></div>
+
+
+<!-- CLOUD SYNC BADGE -->
+<div class="cloud-badge" id="cloud-badge" style="display:none;">☁️ synced</div>
+
+<!-- ═══ SCRIPTS ═══ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="data.js"></script>
+<script src="engine.js"></script>
+<script src="panels.js"></script>
+<script src="auth.js"></script>
+<script>
+// ═══ BOOT ═══
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+initSupabase();
+
+// Override the splash button
+document.getElementById('enter-btn').onclick = async function() {
+  if (isSupabaseReady()) {
+    // Try to restore existing session first
+    const restored = await tryRestoreSession();
+    if (restored) {
+      // Already logged in — go straight to game
+      document.getElementById('splash').style.display = 'none';
+      showCharScreen();
+    } else {
+      // No session — show login
+      showAuthScreen();
+    }
+  } else {
+    showCharScreen();
+  }
+};
+
+// Hook save() to also trigger cloud sync
+const _baseSave = save;
+save = function() {
+  _baseSave();
+  if (typeof cloudSaveHook === 'function') cloudSaveHook();
+};
+
+// Start cloud sync loop
+if (typeof startCloudSync === 'function') startCloudSync();
+
+// Show cloud badge if logged in
+setInterval(() => {
+  const badge = document.getElementById('cloud-badge');
+  if (badge) {
+    if (window._sbUser) {
+      badge.style.display = 'block';
+      badge.className = 'cloud-badge synced';
+      badge.textContent = '☁️ ' + (window._sbUser.email || 'synced');
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+}, 5000);
+</script>
+</body>
+</html>
