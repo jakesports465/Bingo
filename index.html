@@ -3362,10 +3362,16 @@ function importSave(input){
 }
 
 function resetSave(){
-  if(!confirm('This will WIPE your save and restart from scratch. Are you absolutely sure?')){return;}
+  if(!confirm('⚠️ This will PERMANENTLY WIPE your save and restart from scratch.\n\nAre you absolutely sure?')){return;}
+  if(!confirm('FINAL WARNING: All progress will be lost forever. Continue?')){return;}
+  // Stop all intervals to prevent auto-save from re-saving
+  window._wiping=true;
+  const highId=setInterval(()=>{},9999);for(let i=1;i<=highId;i++)clearInterval(i);
+  // Nuke the save
   try{localStorage.removeItem('mw2_save');}catch(e){}
+  try{localStorage.clear();}catch(e){}
   toast('Save wiped. Reloading...','r');
-  setTimeout(()=>location.reload(),1200);
+  setTimeout(()=>location.reload(),800);
 }
 
 
@@ -5169,7 +5175,7 @@ function toast(msg,type=''){
 
 function startLoops(){
   // Save on page close/refresh for reliable persistence
-  window.addEventListener('beforeunload',()=>{save();});
+  window.addEventListener('beforeunload',()=>{if(!window._wiping)save();});
   const regenRates={Fearless:{e:1,s:1,h:4},Maniac:{e:3,s:1,h:2},Mogul:{e:1,s:2,h:2},Ghost:{e:2,s:2,h:2},Consigliere:{e:2,s:1,h:3}};
   const r=regenRates[G.playerClass]||regenRates.Fearless;
   // Energy/stamina/health regen
