@@ -1974,7 +1974,7 @@ const PRESTIGE_UNLOCKS = [
 // SAVE / LOAD
 // ══════════════════════════════════════════
 let _saveTimer=null;
-function save(){try{localStorage.setItem('mw2_save',JSON.stringify(G));}catch(e){console.error('SAVE FAILED:',e);toast('⚠️ Save failed!','r');}}
+function save(){try{G.lastSeen=Date.now();localStorage.setItem('mw2_save',JSON.stringify(G));}catch(e){console.error('SAVE FAILED:',e);toast('⚠️ Save failed!','r');}}
 function saveSoon(){if(_saveTimer)return;_saveTimer=setTimeout(()=>{save();_saveTimer=null;},300);}
 function load(){try{const s=localStorage.getItem('mw2_save');if(s){const parsed=JSON.parse(s);Object.assign(G,parsed);return true;}}catch(e){console.error('LOAD FAILED:',e);}return false;}
 
@@ -2044,10 +2044,72 @@ function safeInitNewFields(){
   if(!G.fightBestStreak)G.fightBestStreak=0;
   if(!G.cityMastered)G.cityMastered={};
 }
+function calcOfflineProgress(){
+  if(!G.lastSeen)return;
+  const now=Date.now();
+  const elapsed=now-G.lastSeen;
+  if(elapsed<60000)return; // Less than 1 min away, skip
+
+  const seconds=Math.floor(elapsed/1000);
+  const minutes=Math.floor(seconds/60);
+  const hours=Math.min(24,Math.floor(minutes/60)); // Cap at 24 hours of offline progress
+  const cappedSec=Math.min(seconds,86400); // 24hr cap
+  const cappedMin=Math.min(minutes,1440);
+  let report=[];
+
+  // 1. Energy regen: 1 per 15s
+  const energyGain=Math.min(G.maxEnergy-G.energy, Math.floor(cappedSec/15));
+  if(energyGain>0){G.energy+=energyGain;report.push('+'+energyGain+' energy');}
+
+  // 2. Stamina regen: 1 per 15s
+  const stamGain=Math.min(G.maxStamina-G.stamina, Math.floor(cappedSec/15));
+  if(stamGain>0){G.stamina+=stamGain;report.push('+'+stamGain+' stamina');}
+
+  // 3. Health regen: full heal if away 5+ min
+  if(minutes>=5&&G.health<G.maxHealth){G.health=G.maxHealth;report.push('Full HP restored');}
+
+  // 4. Heat decay: 1 per 15s base (+ crew bonuses)
+  let heatDecayRate=1;
+  if(G.crew&&G.crew['cr07'])heatDecayRate=4;
+  if((G.notoriety||0)>=4000)heatDecayRate*=2;
+  const heatLost=Math.min(G.heat||0, Math.floor(cappedSec/15)*heatDecayRate);
+  if(heatLost>0){G.heat=Math.max(0,(G.heat||0)-heatLost);report.push('-'+heatLost+' heat');}
+
+  // 5. Property income: collect proportional to time away (capped at 12 cycles = 6 hours worth)
+  const inc=calcIncome();
+  if(inc>0){
+    const cycles=Math.min(12, cappedMin/30); // 1 cycle per 30 min, max 12
+    const offlineIncome=Math.floor(inc*cycles*0.5); // 50% efficiency while offline
+    if(offlineIncome>0){G.cash+=offlineIncome;G.totalEarned+=offlineIncome;report.push('+$'+fmtCash(offlineIncome)+' income');}
+  }
+
+  // 6. Crew passives: Doc Moretti heal (already handled), Chen Li heat (already handled above)
+
+  // 7. Drug price fluctuation: randomize prices since they would have changed
+  if(G.drugPrices){for(const d of DRUGS){G.drugPrices[d.id]=Math.max(d.buyBase*.4,d.buyBase*(0.6+Math.random()*.9));}}
+
+  // 8. Jail timer: reduce by time away
+  if(G.jailTimer>0){
+    G.jailTimer=Math.max(0,G.jailTimer-seconds);
+    if(G.jailTimer<=0)report.push('Released from jail');
+  }
+
+  // Show offline report
+  if(report.length>0){
+    const timeStr=hours>=1?(hours+'h '+Math.floor(cappedMin%60)+'m'):(cappedMin+'m');
+    toast('Offline '+timeStr+': '+report.join(', '),'gold');
+    addLog('⏰ OFFLINE PROGRESS ('+timeStr+'): '+report.join(', '),'sp');
+  }
+
+  G.lastSeen=now;
+  save();
+}
+
 function showCharScreen(){
   try{
     if(load()){
       safeInitNewFields();
+      calcOfflineProgress();
       document.getElementById('splash').style.display='none';
       document.getElementById('game').style.display='flex';
       buildCityList();showPanel('jobs');updateAll();startLoops();
