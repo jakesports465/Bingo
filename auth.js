@@ -3,8 +3,8 @@
 // ═══════════════════════════════════════════
 
 // ── CONFIG (REPLACE WITH YOUR SUPABASE CREDENTIALS) ──
-const SUPABASE_URL = 'https://YOUR_PROJECT_ID.supabase.co';
-const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY_HERE';
+const SUPABASE_URL = 'https://zuvgfpldudrzwotynhwr.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1dmdmcGxkdWRyendvdHluaHdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4ODE5NjcsImV4cCI6MjA4ODQ1Nzk2N30.1tDueUPrF-Uvbgn70KcF5uaIiwuyAl7CvGgrNl_VfUo';
 
 window._sb = null;       // Supabase client instance
 window._sbUser = null;   // Current logged-in user
