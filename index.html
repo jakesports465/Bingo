@@ -1507,6 +1507,7 @@ function safeInitNewFields(){
   if(!G.hackEarned)G.hackEarned=0;
   if(!G.fightStreak)G.fightStreak=0;
   if(!G.fightBestStreak)G.fightBestStreak=0;
+  if(!G.cityMastered)G.cityMastered={};
 }
 function showCharScreen(){
   try{
@@ -1577,11 +1578,14 @@ function applyBGBonuses(){
 function buildCityList(){
   const el=document.getElementById('city-list');
   el.innerHTML='';
+  if(!G.cityMastered)G.cityMastered={};
   for(const[id,c]of Object.entries(CITIES)){
     const locked=G.level<c.unlock&&G.prestige===0;
+    const conquered=G.cityMastered[id];
     const b=document.createElement('button');
     b.className='cb'+(locked?' locked':'')+(id===G.currentCity?' active':'');
-    b.innerHTML=`${c.emoji} ${c.name}<span class="cl">Lv${c.unlock}</span>`;
+    b.innerHTML=`${conquered?'👑':c.emoji} ${c.name}${conquered?' ★':''}<span class="cl">${conquered?'DONE':'Lv'+c.unlock}</span>`;
+    if(conquered)b.style.borderLeftColor='#DAA520';
     if(!locked)b.onclick=()=>{G.currentCity=id;buildCityList();showPanel('jobs');};
     el.appendChild(b);
   }
@@ -1617,7 +1621,13 @@ function buildJobs(c){
   let cashMult=1+getSkillBonus('cashMult');
   if(G.playerClass==='Mogul')cashMult*=1.15;
   cashMult*=G.pBonuses.cashMult;
-  let html=`<div class="panel"><div class="ph"><h2>${city.emoji} ${city.name} — JOBS</h2><span class="psub">Energy: ${G.energy}/${G.maxEnergy} | Jobs Done: ${G.jobsDone} | <span class="xp-mult">XP ×${(G.xpMult*G.pBonuses.xpMult).toFixed(2)}</span></span></div><div class="pb">`;
+  // City mastery progress
+  let allJobIds=[];
+  cityJobs.forEach(tier=>{if(tier.jobs)tier.jobs.forEach(jj=>allJobIds.push(jj.id));});
+  const masteredCount=allJobIds.filter(jid=>(G.jobMastery[jid]||0)>=30).length;
+  const totalJobs=allJobIds.length;
+  const cityConquered=G.cityMastered&&G.cityMastered[G.currentCity];
+  let html=`<div class="panel"><div class="ph"><h2>${city.emoji} ${city.name} — JOBS${cityConquered?' 👑':''}</h2><span class="psub">Energy: ${G.energy}/${G.maxEnergy} | Jobs Done: ${G.jobsDone} | Mastered: ${masteredCount}/${totalJobs}${cityConquered?' — CONQUERED':''}  | <span class="xp-mult">XP ×${(G.xpMult*G.pBonuses.xpMult).toFixed(2)}</span></span></div><div class="pb">`;
   for(const tier of cityJobs){
     html+=`<div class="tier-hdr">▸ ${tier.tier}</div>`;
     for(const j of tier.jobs){
@@ -1698,6 +1708,29 @@ function doJob(id){
   if(newMas===10&&prevMas===9){toast('🥉 '+j.n+' — Bronze Mastered! +15% cash','g');addLog('🥉 Bronze mastered: '+j.n,'gold');}
   if(newMas===20&&prevMas===19){toast('🥈 '+j.n+' — Silver Mastered! +30% cash','g');addLog('🥈 Silver mastered: '+j.n,'gold');}
   if(newMas===30&&prevMas===29){toast('★ '+j.n+' — FULLY MASTERED!','g');addLog('★ MASTERED: '+j.n,'sp');}
+
+  // Check city completion — all jobs in this city mastered?
+  if(newMas===30){
+    const cityJobs=JOBS[G.currentCity]||[];
+    let allJobIds=[];
+    cityJobs.forEach(tier=>{if(tier.jobs)tier.jobs.forEach(jj=>allJobIds.push(jj.id));});
+    const allMastered=allJobIds.every(jid=>(G.jobMastery[jid]||0)>=30);
+    if(allMastered&&!G.cityMastered[G.currentCity]){
+      G.cityMastered[G.currentCity]=true;
+      const city=CITIES[G.currentCity];
+      const tierRewards={1:50000,2:250000,3:1000000,4:5000000,5:25000000};
+      const xpRewards={1:500,2:2000,3:8000,4:30000,5:100000};
+      const cashReward=Math.floor((tierRewards[city.tier]||50000)*(G.cashMult||1));
+      const xpReward=xpRewards[city.tier]||500;
+      G.cash+=cashReward;G.totalEarned+=cashReward;
+      gainXP(xpReward);
+      G.respect=(G.respect||0)+Math.floor(xpReward/2);
+      addNotoriety(Math.floor(cashReward/5000)+50);
+      toast(`👑 ${city.emoji} ${city.name} CONQUERED! +$${fmtCash(cashReward)} +${xpReward}XP`,'gold');
+      addLog(`👑 CITY MASTERED: ${city.name}! All jobs fully mastered! +$${fmtCash(cashReward)} +${xpReward}XP`,'sp');
+      buildCityList();
+    }
+  }
 
   addLog(`✓ ${j.n} — $${cash.toLocaleString()} +${xp}XP`,'good');
   // Loot
