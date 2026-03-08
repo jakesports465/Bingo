@@ -939,6 +939,72 @@ const HITLIST = [
   {n:'The Immortal',b:3500000,st:24,d:'Been targeted 40 times. Still breathing.',tier:'Legendary',ml:100,loot:'golden_ak'},
   {n:'Shadow Council Chair',b:6000000,st:26,d:'Controls world leaders from behind a screen',tier:'Legendary',ml:150,loot:'crypto_wallet'},
   {n:'The Final Contract',b:15000000,st:30,d:'The most dangerous person alive. You included.',tier:'Legendary',ml:250,loot:'world_don_crown'},
+
+  // ── STREET (Expanded) ──
+  {n:'Dumpster Fire Dave',b:800,st:2,d:'Arsonist targeting your properties.',tier:'Street',ml:1,loot:null},
+  {n:'Squeaky Pete',b:1500,st:2,d:'Running his mouth at the bar. Loose lips.',tier:'Street',ml:2,loot:'lockpick_set'},
+  {n:'Needle Nick',b:2500,st:3,d:'Dealing bad product on your corners.',tier:'Street',ml:4,loot:null},
+  {n:'Brickhouse Barnes',b:5000,st:3,d:'Enforcer gone rogue. Breaking bones for fun.',tier:'Street',ml:6,loot:'brass_pipe'},
+  {n:'The Pickpocket King',b:8000,st:4,d:'Stealing from YOUR customers.',tier:'Street',ml:8,loot:'stolen_wallet'},
+  // ── POLITICAL (Expanded) ──
+  {n:'DA Williams',b:15000,st:5,d:'Prosecuting your crew. Has evidence.',tier:'Political',ml:12,loot:null},
+  {n:'Journalist Sarah Chen',b:25000,st:6,d:'Investigative reporter. About to publish everything.',tier:'Political',ml:15,loot:'burner_phone'},
+  {n:'IRS Agent Hoffman',b:40000,st:7,d:'Following the money. YOUR money.',tier:'Political',ml:18,loot:'fbi_badge'},
+  {n:'Senator Blackwood',b:60000,st:8,d:'Blocking your construction permits statewide.',tier:'Political',ml:22,loot:'compromising_photos'},
+  {n:'Federal Marshal Stone',b:90000,st:9,d:'Witness protection coordinator. Knows where everyone is.',tier:'Political',ml:25,loot:'forged_passport'},
+  // ── RIVAL DON (Expanded) ──
+  {n:'Don Calabrese',b:150000,st:10,d:'Old school rival. Wants your territory.',tier:'Rival Don',ml:30,loot:'don_ring'},
+  {n:'Madame Butterfly',b:200000,st:11,d:'Japanese crime queen. Elegant and deadly.',tier:'Rival Don',ml:35,loot:'katana'},
+  {n:'El Lobo',b:300000,st:12,d:'The Wolf. Hunts other criminals for sport.',tier:'Rival Don',ml:40,loot:'sniper_rifle'},
+  {n:'The Dutchman',b:450000,st:14,d:'Controls European drug routes. Amsterdam to everywhere.',tier:'Rival Don',ml:50,loot:'offshore_account'},
+  {n:'Tsarina Volkova',b:600000,st:15,d:'Russian oligarchs wife. More dangerous than he ever was.',tier:'Rival Don',ml:60,loot:'gold_bar'},
+  // ── INTELLIGENCE (Expanded) ──
+  {n:'MI6 Agent Blackthorne',b:900000,st:16,d:'British intelligence. Licensed to kill. Coming for you.',tier:'Intelligence',ml:70,loot:'british_rifle'},
+  {n:'Mossad Handler',b:1200000,st:18,d:'Israeli operative. Never misses.',tier:'Intelligence',ml:80,loot:'assassination_kit'},
+  {n:'NSA Analyst Zero',b:1500000,st:19,d:'Knows every phone call youve ever made.',tier:'Intelligence',ml:90,loot:'hacking_rig'},
+  {n:'Interpol Director',b:2000000,st:20,d:'Coordinating a 50-nation manhunt for YOU.',tier:'Intelligence',ml:100,loot:'fbi_badge'},
+  // ── INTERNATIONAL (Expanded) ──
+  {n:'Warlord Kony',b:3000000,st:22,d:'African warlord. Child army. Pure evil.',tier:'International',ml:120,loot:'ak47'},
+  {n:'Triad Dragonhead Chen',b:4500000,st:24,d:'50,000 soldiers across Asia.',tier:'International',ml:150,loot:'dragon_seal'},
+  {n:'Pablo III',b:6000000,st:25,d:'Third generation Escobar. Learned from the best.',tier:'International',ml:180,loot:'drug_lord_crown'},
+  // ── LEGENDARY (Expanded) ──
+  {n:'The Phantom President',b:8000000,st:26,d:'Runs a country from hiding. Nobody knows which one.',tier:'Legendary',ml:200,loot:'military_intel'},
+  {n:'Death Herself',b:12000000,st:28,d:'Assassin with 500 confirmed kills. Gender unknown.',tier:'Legendary',ml:250,loot:'nano_suit'},
+  {n:'The Last Emperor',b:20000000,st:30,d:'Claims descent from Genghis Khan. Has the army to prove it.',tier:'Legendary',ml:350,loot:'crown_jewel'},
+  {n:'The God Target',b:50000000,st:35,d:'Has never been seen. Runs everything. Is probably not human.',tier:'Legendary',ml:500,loot:'quantum_key'},
+
+// ── TIER V: ENDGAME BOUNTIES ──
+  {n:'The Clockwork Killer',b:1500000,st:22,d:'Kills at exactly midnight. Every night. For 30 years.',tier:'Legendary',ml:100,loot:'assassination_kit'},
+  {n:'The Blind Seer',b:2500000,st:24,d:'Lost his eyes but sees everything. Psychic enforcer.',tier:'Legendary',ml:130,loot:'ghost_protocol'},
+  {n:'Admiral Black',b:4000000,st:26,d:'Controls a private navy. 12 submarines. 40 destroyers.',tier:'Legendary',ml:160,loot:'military_intel'},
+  {n:'The Architect',b:6000000,st:28,d:'Designed every prison you cant break out of.',tier:'Legendary',ml:200,loot:'diamond_ring'},
+  {n:'The Comedian',b:8000000,st:30,d:'Laughs while he kills. Has a Netflix special about it.',tier:'Legendary',ml:250,loot:'rpg_launcher'},
+  // ── TIER VI: MYTHIC BOUNTIES ──
+  {n:'The Devourer',b:12000000,st:32,d:'Eats evidence. And witnesses. Literally.',tier:'Mythic',ml:300,loot:'titanium_vest'},
+  {n:'Thread Cutter',b:18000000,st:34,d:'Severs fate itself. Every contract he takes erases someone from history.',tier:'Mythic',ml:350,loot:'nano_suit'},
+  {n:'The Plague Doctor',b:25000000,st:36,d:'Biological weapons expert. One vial could end a city.',tier:'Mythic',ml:400,loot:'ghost_protocol'},
+  {n:'Cerberus',b:35000000,st:38,d:'Three people sharing one identity. Kill one and two remain.',tier:'Mythic',ml:450,loot:'quantum_key'},
+  {n:'Lazarus',b:50000000,st:40,d:'Died twice. Bounty collected twice. Hes back. Again.',tier:'Mythic',ml:500,loot:'crown_jewel'},
+  // ── TIER VII: IMPOSSIBLE ──
+  {n:'The God Machine',b:80000000,st:42,d:'AI-controlled assassination network. 10,000 drones.',tier:'Impossible',ml:600,loot:'missile_codes'},
+  {n:'The Last Angel',b:120000000,st:45,d:'Fell from grace. Has divine powers and zero mercy.',tier:'Impossible',ml:700,loot:'quantum_key'},
+  {n:'Entropy',b:200000000,st:48,d:'The heat death of organized crime. Everything he touches collapses.',tier:'Impossible',ml:850,loot:'nano_suit'},
+  {n:'The Narrator',b:350000000,st:50,d:'Knows the story. Knows the ending. Knows you lose.',tier:'Impossible',ml:1000,loot:'world_don_crown'},
+  {n:'Oblivion',b:500000000,st:55,d:'The final bounty. No one who accepted this contract returned.',tier:'Impossible',ml:1200,loot:'crown_jewel'},
+  // ── More Street/Political to fill gaps ──
+  {n:'The Lunch Lady',b:600,st:1,d:'Poisoning school lunches with your rivals product.',tier:'Street',ml:1,loot:null},
+  {n:'Counterfeit Carl',b:1200,st:2,d:'Flooding your territory with fake bills.',tier:'Street',ml:1,loot:'fake_rolex'},
+  {n:'Repo Ronnie',b:2000,st:2,d:'Repossessing your crews cars.',tier:'Street',ml:2,loot:'tire_iron'},
+  {n:'Code Inspector Bob',b:3500,st:3,d:'Shutting down your construction fronts.',tier:'Political',ml:4,loot:null},
+  {n:'Deputy DA Martinez',b:6000,st:4,d:'Building a RICO case against your operation.',tier:'Political',ml:6,loot:'burner_phone'},
+  {n:'FBI Trainee Collins',b:9000,st:5,d:'Eager rookie. Dangerous because hes too dumb to be scared.',tier:'Political',ml:8,loot:'fbi_badge'},
+  {n:'Don Piccolo',b:45000,st:7,d:'Small-time don with big-time ambitions on your turf.',tier:'Rival Don',ml:15,loot:'gold_chain'},
+  {n:'The Silver Fox',b:100000,st:9,d:'Retired don. Came back. Shouldnt have.',tier:'Rival Don',ml:22,loot:'don_ring'},
+  {n:'Mossad Agent Rachel',b:250000,st:13,d:'Israeli intelligence. Tracking your arms shipments.',tier:'Intelligence',ml:35,loot:'silenced_pistol'},
+  {n:'The Cleaner',b:400000,st:15,d:'Makes crime scenes disappear. Currently cleaning YOUR messes for a rival.',tier:'Intelligence',ml:45,loot:'assassination_kit'},
+  {n:'North Korean General',b:700000,st:17,d:'Nuclear blackmail. Pay or Pyongyang glows.',tier:'International',ml:55,loot:'military_intel'},
+  {n:'Amazon Cartel Lord',b:1000000,st:19,d:'Controls the entire Amazon basin drug route.',tier:'International',ml:70,loot:'drug_lord_crown'},
+  {n:'Submarine Pirate King',b:1800000,st:21,d:'Hijacks cargo ships from below. Ghost of the deep.',tier:'International',ml:85,loot:'rpg_launcher'},
 ];
 
 // ══════════════════════════════════════════
@@ -1156,7 +1222,8 @@ const BLACK_MARKET = [
   {id:'bm_time',n:'Time Dilation Field',e:'⌛',d:'Energy & stamina regen ×3.',p:20000000,atk:0,def:0,ml:120,tier:4,special:'tripleRegen',tag:['special','regen']},
   {id:'bm_godmode',n:'Project OLYMPUS',e:'⚡',d:'+200 ATK, +200 DEF, +50% all cash.',p:50000000,atk:200,def:200,ml:200,tier:4,special:'olympus',tag:['ultimate','endgame']},
   {id:'bm_matrix',n:'Reality Engine',e:'🔮',d:'×3 all income. ×2 XP. You rewrote the code.',p:100000000,atk:0,def:0,ml:300,tier:4,special:'reality',tag:['ultimate','endgame']},
-];
+
+  ];
 
 // ══════════════════════════════════════════
 // SKILL TREE
@@ -1260,6 +1327,77 @@ const CONTRACT_TEMPLATES = [
   {n:'Regime Change',d:'A small country needs new leadership. You\'re providing it.',diff:'elite',ec:55,sc:22,cb:1050000,cx:600},
   {n:'Erase a City Block',d:'Make it look like it was never there.',diff:'elite',ec:70,sc:28,cb:2100000,cx:1000},
   {n:'The Impossible Hit',d:'Protected by 200 guards. Underground bunker. 0.1% success rate advertised. You\'re better than that.',diff:'elite',ec:80,sc:30,cb:3500000,cx:1500},
+
+  // ── EASY (Expanded) ──
+  {n:'Trash a Competitors Store',d:'Bats, bricks, and bad intentions.',diff:'easy',ec:6,sc:1,cb:4000,cx:12},
+  {n:'Plant Evidence',d:'Make someone look guilty. Easy when you know cops.',diff:'easy',ec:8,sc:0,cb:6000,cx:15},
+  {n:'Steal a Laptop',d:'CEO left it in his car. You know what to do.',diff:'easy',ec:5,sc:0,cb:3500,cx:10},
+  {n:'Tag Rival Territory',d:'Spray your mark on every block.',diff:'easy',ec:4,sc:1,cb:2800,cx:8},
+  {n:'Slash Tires on a Fleet',d:'20 delivery trucks. One long night.',diff:'easy',ec:7,sc:0,cb:5000,cx:13},
+  // ── MEDIUM (Expanded) ──
+  {n:'Kidnap a Bookkeeper',d:'He has the records. We need them.',diff:'med',ec:15,sc:5,cb:18000,cx:35},
+  {n:'Hack a Bank Terminal',d:'Inside job. 90 seconds. In and out.',diff:'med',ec:12,sc:3,cb:15000,cx:30},
+  {n:'Intercept a Drug Shipment',d:'Highway 95. Blue van. Take everything.',diff:'med',ec:18,sc:6,cb:22000,cx:40},
+  {n:'Forge Immigration Papers',d:'50 passports. Different countries.',diff:'med',ec:14,sc:2,cb:16000,cx:32},
+  {n:'Rig a Horse Race',d:'Dope the favorite. Bet the underdog.',diff:'med',ec:10,sc:4,cb:20000,cx:38},
+  {n:'Rob a Jewelry Store',d:'Smash and grab. 45 seconds.',diff:'med',ec:16,sc:5,cb:25000,cx:42},
+  {n:'Sabotage Construction Site',d:'Competitor wins bid? Not for long.',diff:'med',ec:13,sc:3,cb:14000,cx:28},
+  // ── HARD (Expanded) ──
+  {n:'Assassinate a Judge',d:'Not guilty verdict incoming. Make it permanent.',diff:'hard',ec:25,sc:8,cb:65000,cx:80},
+  {n:'Steal Military Weapons',d:'Army depot. Night shift. Three guards.',diff:'hard',ec:30,sc:10,cb:80000,cx:95},
+  {n:'Crash a Federal Convoy',d:'Prisoner transport. Free our guy.',diff:'hard',ec:28,sc:9,cb:70000,cx:85},
+  {n:'Infiltrate a CIA Safe House',d:'In. Copy the files. Out. No traces.',diff:'hard',ec:35,sc:8,cb:90000,cx:100},
+  {n:'Blow Up a Rival Warehouse',d:'$10M in product goes up in smoke.',diff:'hard',ec:22,sc:7,cb:55000,cx:70},
+  {n:'Poison a Water Supply',d:'Entire district evacuated. Chaos cover.',diff:'hard',ec:32,sc:6,cb:75000,cx:90},
+  {n:'Frame a Police Chief',d:'Photos, emails, offshore accounts. All planted.',diff:'hard',ec:26,sc:5,cb:60000,cx:75},
+  // ── ELITE (Expanded) ──
+  {n:'Take Down a Senator',d:'Blackmail. Or worse. Your call.',diff:'elite',ec:40,sc:12,cb:150000,cx:150},
+  {n:'Hijack a Nuclear Sub',d:'Not the nukes. The sub itself. $500M resale.',diff:'elite',ec:50,sc:15,cb:250000,cx:200},
+  {n:'Steal the Federal Reserve Gold',d:'Fort Knox was a test run. This is the real one.',diff:'elite',ec:60,sc:18,cb:500000,cx:300},
+  {n:'Assassinate a World Leader',d:'History will change. You pull the trigger.',diff:'elite',ec:55,sc:20,cb:400000,cx:250},
+  {n:'Collapse a National Economy',d:'Currency manipulation. Short selling. Chaos.',diff:'elite',ec:45,sc:10,cb:350000,cx:220},
+  {n:'Wipe a Government Database',d:'Every record. Every citizen. Gone.',diff:'elite',ec:50,sc:12,cb:300000,cx:200},
+  {n:'The Impossible Hit',d:'Target has never been seen. Lives underground. Surrounded by 200 guards. Kill them anyway.',diff:'elite',ec:80,sc:25,cb:1000000,cx:500},
+  {n:'Topple a Regime',d:'Entire government. One night. Your army vs theirs.',diff:'elite',ec:70,sc:20,cb:800000,cx:400},
+  {n:'Steal a Satellite',d:'Redirect it. Own the sky.',diff:'elite',ec:65,sc:15,cb:600000,cx:350},
+
+  // ── MEDIUM ──
+  {n:'Sabotage a Rival Casino',d:'Rig the tables. Crash their profits.',diff:'medium',ec:15,sc:5,cb:25000,cx:50},
+  {n:'Intercept a Drug Shipment',d:'Hijack the convoy. Keep the product.',diff:'medium',ec:18,sc:4,cb:30000,cx:55},
+  {n:'Plant Evidence on a Judge',d:'Frame the honorable judge. Make it stick.',diff:'medium',ec:12,sc:6,cb:22000,cx:45},
+  {n:'Steal a Police Evidence Locker',d:'Your evidence. Your fingerprints. Get it back.',diff:'medium',ec:20,sc:3,cb:35000,cx:60},
+  {n:'Blackmail a City Council',d:'Photos. Videos. Leverage.',diff:'medium',ec:14,sc:5,cb:28000,cx:48},
+  {n:'Rig a Boxing Match',d:'The fighter takes a dive. Or else.',diff:'medium',ec:10,sc:8,cb:20000,cx:40},
+  {n:'Hijack a Fuel Tanker',d:'Gasoline is liquid gold right now.',diff:'medium',ec:16,sc:4,cb:32000,cx:52},
+  {n:'Bug the FBI Field Office',d:'Plant listening devices. Every phone. Every desk.',diff:'medium',ec:22,sc:6,cb:40000,cx:65},
+  {n:'Forge Art for a Museum Heist',d:'Replace the original. Sell it twice.',diff:'medium',ec:18,sc:3,cb:35000,cx:58},
+  {n:'Protect a Witness... From Testifying',d:'Keep them alive. Just make sure they forget everything.',diff:'medium',ec:14,sc:7,cb:26000,cx:44},
+  // ── HARD (more) ──
+  {n:'Assassinate a Foreign Ambassador',d:'Diplomatic immunity doesnt stop bullets.',diff:'hard',ec:30,sc:10,cb:80000,cx:120},
+  {n:'Steal from Fort Knox',d:'Gold bars. Maximum security. Zero margin.',diff:'hard',ec:35,sc:8,cb:100000,cx:140},
+  {n:'Blow Up a Bridges',d:'Cut the supply route. Permanently.',diff:'hard',ec:25,sc:12,cb:65000,cx:100},
+  {n:'Hack a Satellites',d:'Redirect the feed. Control the narrative.',diff:'hard',ec:28,sc:6,cb:75000,cx:110},
+  {n:'Kidnap a Tech CEO',d:'$50M ransom. Crypto only.',diff:'hard',ec:32,sc:10,cb:90000,cx:130},
+  {n:'Sink a Cargo Ship',d:'Insurance fraud on a global scale.',diff:'hard',ec:30,sc:14,cb:85000,cx:125},
+  {n:'Replace the Mayors Double',d:'Your guy sits in the mayors chair. Nobody notices.',diff:'hard',ec:35,sc:8,cb:95000,cx:135},
+  {n:'Break Into CIA Headquarters',d:'Langley. The vault. In and out.',diff:'hard',ec:40,sc:12,cb:120000,cx:160},
+  {n:'Stage a Coup in a Small Country',d:'New government. Your government.',diff:'hard',ec:45,sc:15,cb:150000,cx:180},
+  {n:'Poison the Water Supply',d:'Contaminate. Then sell the cure.',diff:'hard',ec:25,sc:10,cb:70000,cx:95},
+  // ── INSANE ──
+  {n:'Steal a Nuclear Warhead',d:'Deterrence is expensive. Theft is free.',diff:'insane',ec:50,sc:20,cb:500000,cx:400},
+  {n:'Crash the Stock Market',d:'Controlled demolition. Buy the dip.',diff:'insane',ec:45,sc:15,cb:400000,cx:350},
+  {n:'Replace the President',d:'Deepfake. Body double. Weekend at Bernies.',diff:'insane',ec:55,sc:25,cb:600000,cx:450},
+  {n:'Destroy Interpol HQ',d:'Burn every record. Every file. Every name.',diff:'insane',ec:60,sc:20,cb:700000,cx:500},
+  {n:'Hijack Air Force One',d:'The ultimate power move.',diff:'insane',ec:65,sc:30,cb:800000,cx:550},
+  {n:'Steal the Crown Jewels',d:'Tower of London. 1,000 years of security. One night.',diff:'insane',ec:50,sc:18,cb:550000,cx:420},
+  {n:'Blackmail Every World Leader',d:'Simultaneously. With proof.',diff:'insane',ec:55,sc:22,cb:650000,cx:480},
+  {n:'Erase Your Criminal Record Globally',d:'Every database. Every country. You never existed.',diff:'insane',ec:60,sc:25,cb:750000,cx:520},
+  // ── SUICIDAL ──
+  {n:'Overthrow a Superpower',d:'Start a revolution. Become the government.',diff:'suicidal',ec:80,sc:35,cb:2000000,cx:1000},
+  {n:'Destroy the Internet',d:'Kill switches exist. Find them all.',diff:'suicidal',ec:90,sc:40,cb:3000000,cx:1500},
+  {n:'Conquer Antarctica',d:'The last unclaimed continent. Plant your flag.',diff:'suicidal',ec:85,sc:45,cb:2500000,cx:1200},
+  {n:'Build a Moon Base',d:'Criminal headquarters in space. No extradition.',diff:'suicidal',ec:100,sc:50,cb:5000000,cx:2000},
+  {n:'Become a God',d:'Transcend mortality. Control everything. Everyone.',diff:'suicidal',ec:120,sc:60,cb:10000000,cx:5000},
 ];
 
 // ══════════════════════════════════════════
@@ -1298,6 +1436,7 @@ const PRESTIGE_UNLOCKS = [
   {p:4,req_level:100,desc:'Prestige IV — +75% XP, +55% cash, +35 ATK, +500 max energy.'},
   {p:5,req_level:100,desc:'Prestige V — ×2 XP, ×2 cash, +50 ATK, unlock Elite missions.'},
   {p:10,req_level:100,desc:'Prestige X — ×5 XP, ×5 cash, +150 ATK/DEF. A true legend.'},
+
 
 ];
 
