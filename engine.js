@@ -550,10 +550,11 @@ function checkMissions(){
   }
 }
 function updateAll(){
+  try{
   // Recalculate attack/defense with inventory every update
   const invStats=calcInventoryStats();
   let achAtk=0,achDef=0;
-  if(G.achUnlocked){
+  if(G.achUnlocked&&typeof ACHIEVEMENTS!=='undefined'){
     for(const a of ACHIEVEMENTS){
       if(G.achUnlocked[a.id]){
         if(a.id==='ach01')achAtk+=3;
@@ -568,8 +569,8 @@ function updateAll(){
       }
     }
   }
-  G.attack=G.baseAttack+G.pBonuses.attackBonus+getSkillBonus('atk')+achAtk+invStats.atk;
-  G.defense=G.baseDef+G.pBonuses.defBonus+getSkillBonus('def')+achDef+invStats.def;
+  G.attack=G.baseAttack+(G.pBonuses?G.pBonuses.attackBonus:0)+getSkillBonus('atk')+achAtk+invStats.atk;
+  G.defense=G.baseDef+(G.pBonuses?G.pBonuses.defBonus:0)+getSkillBonus('def')+achDef+invStats.def;
   updateTopBar();updateBars();updateRight();updateMafia();
   updateHeatBar();
   if(G.heatCap !== undefined) G.heat = Math.min(G.heatCap, G.heat||0);
@@ -579,6 +580,7 @@ function updateAll(){
   const nEl=document.getElementById('rp-not');
   if(hEl)hEl.textContent=Math.floor(G.heat||0)+'%';
   if(nEl)nEl.textContent=(G.notoriety||0).toLocaleString();
+  }catch(err){console.error('updateAll error:',err);}
 }
 function updateTopBar(){
   document.getElementById('tb-cash').textContent='$'+G.cash.toLocaleString();
