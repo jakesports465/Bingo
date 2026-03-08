@@ -384,7 +384,10 @@ function doFight(ename){
   addHeat(getEventMult('heatMult',3));
   // Notoriety only from killing higher-tier enemies
   if(win&&e.tier>=2)addNotoriety(Math.floor(e.r/20000)+1);
-  updateAll();checkMissions();save();
+  try{updateAll();}catch(err){console.error('updateAll error:',err);}
+  try{checkMissions();}catch(err){console.error('checkMissions error:',err);}
+  save();
+  try{buildFight(document.getElementById('center'));}catch(err){}
 }
 
 // ══════════════════════════════════════════
