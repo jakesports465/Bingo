@@ -1011,3 +1011,32 @@ function findLootSource(lootId){
   }
   return 'Various drops';
 }
+
+// ══════════════════════════════════════════
+// KNOCKOUT SYSTEM — triggers when HP hits 0
+// ══════════════════════════════════════════
+function checkKnockout(){
+  if(G.health>0) return;
+  G.health=0;
+  // Penalty: lose 10% cash, gain heat, brief cooldown
+  const cashLoss=Math.floor(G.cash*0.10);
+  G.cash=Math.max(0,G.cash-cashLoss);
+  G.heat=Math.min(100,(G.heat||0)+15);
+  // Heal back to 25% HP
+  G.health=Math.floor(G.maxHealth*0.25);
+  // Show knockout overlay
+  const overlay=document.createElement('div');
+  overlay.id='ko-overlay';
+  overlay.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;';
+  overlay.innerHTML=`
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--crimson);letter-spacing:.2em;">☠️ KNOCKED OUT</div>
+    <div style="font-family:'Special Elite',serif;font-size:14px;color:var(--text-dim);max-width:300px;text-align:center;">You were left for dead in an alley. Someone found you and dragged you to a back-room doctor.</div>
+    <div style="font-family:'Cutive Mono',monospace;font-size:12px;color:var(--crimson);margin-top:10px;">Lost $${fmtCash(cashLoss)} to hospital bills</div>
+    <div style="font-family:'Cutive Mono',monospace;font-size:12px;color:var(--bright-orange);">Heat +15%</div>
+    <div style="font-family:'Cutive Mono',monospace;font-size:12px;color:var(--bright-green);">Recovered to ${Math.floor(G.maxHealth*0.25)} HP</div>
+    <button onclick="document.getElementById('ko-overlay').remove()" style="margin-top:20px;background:linear-gradient(90deg,var(--blood),#5d0000);border:2px solid var(--crimson);color:var(--bright-gold);font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.15em;padding:12px 40px;cursor:pointer;">GET BACK UP</button>
+  `;
+  document.body.appendChild(overlay);
+  addLog('☠️ KNOCKED OUT! Lost $'+fmtCash(cashLoss)+'. Heat +15%.','bad');
+  updateAll();save();
+}
