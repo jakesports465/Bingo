@@ -109,804 +109,804 @@ const CITIES = {
 const JOBS = {
 new_york:[
   {tier:'I. Petty Crime',jobs:[
-    {id:'NY01',n:'Mug a Tourist',e:1,c:72,x:3,lc:0.06,li:'brass_knuckles',d:'Easy mark on 5th Avenue'},
-    {id:'NY02',n:'Steal a Wallet',e:1,c:60,x:3,lc:0.06,li:'tire_iron',d:'Quick hands, quicker feet'},
-    {id:'NY03',n:'Run Numbers',e:2,c:132,x:4,lc:0.06,li:'brass_knuckles',d:'Carry bets for the local book'},
-    {id:'NY04',n:'Smash a Car Window',e:1,c:90,x:3,lc:0.06,li:'brass_knuckles',d:'GPS units sell fast'},
-    {id:'NY05',n:'Boost a Bicycle',e:1,c:108,x:4,lc:0.06,li:'tire_iron',d:'Kids love new bikes. So do fences.'},
+    {id:'NY01',n:'Mug a Tourist',e:1,c:72,x:3,lc:0.18,li:'brass_knuckles',d:'Easy mark on 5th Avenue'},
+    {id:'NY02',n:'Steal a Wallet',e:1,c:60,x:3,lc:0.18,li:'tire_iron',d:'Quick hands, quicker feet'},
+    {id:'NY03',n:'Run Numbers',e:2,c:132,x:4,lc:0.18,li:'brass_knuckles',d:'Carry bets for the local book'},
+    {id:'NY04',n:'Smash a Car Window',e:1,c:90,x:3,lc:0.18,li:'brass_knuckles',d:'GPS units sell fast'},
+    {id:'NY05',n:'Boost a Bicycle',e:1,c:108,x:4,lc:0.18,li:'tire_iron',d:'Kids love new bikes. So do fences.'},
   ]},
   {tier:'II. Street Level',jobs:[
-    {id:'NY06',n:'Collect Protection Money',e:3,c:294,x:11,lc:0.06,li:'switchblade',d:'Pay or the restaurant burns'},
-    {id:'NY07',n:'Tag Rival Turf',e:2,c:180,x:6,lc:0.05,li:'police_scanner',req:'lockpick_set',d:'Mark territory, send a message'},
-    {id:'NY08',n:'Fence Stolen Electronics',e:3,c:350,x:11,lc:0.05,li:'pistol',req:'lockpick_set',d:'iPads move fast in Chinatown'},
-    {id:'NY09',n:'Rob a Bodega',e:4,c:454,x:15,lc:0.05,li:'pistol',req:'tire_iron',d:'Corner store, no cameras'},
-    {id:'NY10',n:'Sell Counterfeit Watches',e:3,c:336,x:13,lc:.05,d:'Tourists can\'t tell the difference'},
-    {id:'NY11',n:'Beat Up a Debtor',e:3,c:385,x:13,lc:0.05,li:'switchblade',req:'tire_iron',d:'He owes three weeks of vig'},
+    {id:'NY06',n:'Collect Protection Money',e:3,c:294,x:11,lc:0.18,li:'switchblade',d:'Pay or the restaurant burns'},
+    {id:'NY07',n:'Tag Rival Turf',e:2,c:180,x:6,lc:0.14,li:'police_scanner',req:'lockpick_set',d:'Mark territory, send a message'},
+    {id:'NY08',n:'Fence Stolen Electronics',e:3,c:350,x:11,lc:0.14,li:'pistol',req:'lockpick_set',d:'iPads move fast in Chinatown'},
+    {id:'NY09',n:'Rob a Bodega',e:4,c:454,x:15,lc:0.14,li:'pistol',req:'tire_iron',d:'Corner store, no cameras'},
+    {id:'NY10',n:'Sell Counterfeit Watches',e:3,c:336,x:13,lc:0.14,d:'Tourists can\'t tell the difference'},
+    {id:'NY11',n:'Beat Up a Debtor',e:3,c:385,x:13,lc:0.14,li:'switchblade',req:'tire_iron',d:'He owes three weeks of vig'},
   ]},
   {tier:'III. Made Man',jobs:[
-    {id:'NY12',n:'Hijack a Delivery Truck',e:5,c:770,x:22,lc:0.05,li:'baseball_bat',req:'tire_iron',d:'Intercept before the dock'},
-    {id:'NY13',n:'Shake Down a Business Block',e:6,c:1120,x:36,lc:0.04,li:'combat_knife',req:'switchblade',d:'Four restaurants, one collection run'},
-    {id:'NY14',n:'Bribe a Beat Cop',e:5,c:700,x:22,lc:0.04,li:'combat_knife',req:'fake_rolex',d:'Keep the precinct off your back'},
-    {id:'NY15',n:'Run an Illegal Numbers Game',e:5,c:840,x:24,lc:0.04,li:'tommy_gun',req:'switchblade',d:'Daily action from 200 bettors'},
-    {id:'NY16',n:'Car Theft Ring',e:6,c:1280,x:39,lc:0.04,li:'crowbar',req:'switchblade',d:'Five cars per night to the chop shop'},
-    {id:'NY17',n:'Intimidate a Witness',e:6,c:1200,x:36,lc:0.04,li:'bulletproof_vest',req:'pistol',d:'They saw nothing. Keep it that way.'},
+    {id:'NY12',n:'Hijack a Delivery Truck',e:5,c:770,x:22,lc:0.14,li:'baseball_bat',req:'tire_iron',d:'Intercept before the dock'},
+    {id:'NY13',n:'Shake Down a Business Block',e:6,c:1120,x:36,lc:0.11,li:'combat_knife',req:'switchblade',d:'Four restaurants, one collection run'},
+    {id:'NY14',n:'Bribe a Beat Cop',e:5,c:700,x:22,lc:0.11,li:'combat_knife',req:'fake_rolex',d:'Keep the precinct off your back'},
+    {id:'NY15',n:'Run an Illegal Numbers Game',e:5,c:840,x:24,lc:0.11,li:'tommy_gun',req:'switchblade',d:'Daily action from 200 bettors'},
+    {id:'NY16',n:'Car Theft Ring',e:6,c:1280,x:39,lc:0.11,li:'crowbar',req:'switchblade',d:'Five cars per night to the chop shop'},
+    {id:'NY17',n:'Intimidate a Witness',e:6,c:1200,x:36,lc:0.11,li:'bulletproof_vest',req:'pistol',d:'They saw nothing. Keep it that way.'},
   ]},
   {tier:'IV. Capo',jobs:[
-    {id:'NY18',n:'Rob an Armored Car',e:9,c:2800,x:60,lc:0.04,li:'tommy_gun',req:'kevlar_gloves',d:'Six guards, one payday'},
-    {id:'NY19',n:'Bribe a Police Captain',e:8,c:2400,x:54,lc:0.03,li:'forged_passport',req:'tommy_gun',d:'A captain is very... persuadable'},
-    {id:'NY20',n:'Fix a Court Case',e:9,c:3040,x:60,lc:0.03,li:'briefcase_of_cash',req:'combat_knife',d:'Justice has a price. You know it.'},
-    {id:'NY21',n:'Control the Docks',e:10,c:3600,x:66,lc:0.03,li:'briefcase_of_cash',req:'body_armor',d:'Every container pays a toll'},
-    {id:'NY22',n:'Smuggle Cargo Through Customs',e:10,c:3360,x:63,lc:0.03,li:'bulletproof_vest',req:'body_armor',d:'The agent is on the payroll'},
-    {id:'NY23',n:'Eliminate a Rival Capo',e:14,c:7200,x:131,lc:0.03,li:'sniper_rifle',req:'body_armor',d:'Commission approved. Green light.'},
+    {id:'NY18',n:'Rob an Armored Car',e:9,c:2800,x:60,lc:0.11,li:'tommy_gun',req:'kevlar_gloves',d:'Six guards, one payday'},
+    {id:'NY19',n:'Bribe a Police Captain',e:8,c:2400,x:54,lc:0.08,li:'forged_passport',req:'tommy_gun',d:'A captain is very... persuadable'},
+    {id:'NY20',n:'Fix a Court Case',e:9,c:3040,x:60,lc:0.08,li:'briefcase_of_cash',req:'combat_knife',d:'Justice has a price. You know it.'},
+    {id:'NY21',n:'Control the Docks',e:10,c:3600,x:66,lc:0.08,li:'briefcase_of_cash',req:'body_armor',d:'Every container pays a toll'},
+    {id:'NY22',n:'Smuggle Cargo Through Customs',e:10,c:3360,x:63,lc:0.08,li:'bulletproof_vest',req:'body_armor',d:'The agent is on the payroll'},
+    {id:'NY23',n:'Eliminate a Rival Capo',e:14,c:7200,x:131,lc:0.08,li:'sniper_rifle',req:'body_armor',d:'Commission approved. Green light.'},
   ]},
   {tier:'V. Boss Tier',jobs:[
-    {id:'NY24',n:'Launder Money Through Restaurants',e:12,c:6300,x:112,lc:0.03,li:'forged_passport',req:'crowbar',d:'The books are immaculate'},
-    {id:'NY25',n:'Run a Chop Shop Network',e:12,c:6750,x:120,lc:0.025,li:'don_ring',req:'night_vision',d:'Parts worth more than whole vehicles'},
-    {id:'NY26',n:'Bribe the DA',e:14,c:9000,x:142,lc:0.025,li:'offshore_account',req:'fbi_badge',d:'Entire case gets dismissed'},
-    {id:'NY27',n:'Takeover a Casino',e:15,c:6750,x:168,lc:0.025,li:'ak47',req:'sniper_rifle',d:'The gamblers barely notice the new owner'},
-    {id:'NY28',n:'Control the Financial District',e:16,c:8100,x:187,lc:0.025,li:'gold_watch',req:'briefcase_of_cash',d:'Banks. Brokerages. Yours.'},
-    {id:'NY29',n:'Execute a Rival Don',e:20,c:12600,x:262,lc:0.025,li:'don_ring',req:'night_vision',d:'The Five Families have spoken'},
+    {id:'NY24',n:'Launder Money Through Restaurants',e:12,c:6300,x:112,lc:0.08,li:'forged_passport',req:'crowbar',d:'The books are immaculate'},
+    {id:'NY25',n:'Run a Chop Shop Network',e:12,c:6750,x:120,lc:0.06,li:'don_ring',req:'night_vision',d:'Parts worth more than whole vehicles'},
+    {id:'NY26',n:'Bribe the DA',e:14,c:9000,x:142,lc:0.06,li:'offshore_account',req:'fbi_badge',d:'Entire case gets dismissed'},
+    {id:'NY27',n:'Takeover a Casino',e:15,c:6750,x:168,lc:0.06,li:'ak47',req:'sniper_rifle',d:'The gamblers barely notice the new owner'},
+    {id:'NY28',n:'Control the Financial District',e:16,c:8100,x:187,lc:0.06,li:'gold_watch',req:'briefcase_of_cash',d:'Banks. Brokerages. Yours.'},
+    {id:'NY29',n:'Execute a Rival Don',e:20,c:12600,x:262,lc:0.06,li:'don_ring',req:'night_vision',d:'The Five Families have spoken'},
   ]},
 ],
 chicago:[
   {tier:'I. The Underground',jobs:[
-    {id:'CH01',n:'Bootleg Whiskey Run',e:2,c:300,x:7,lc:0.06,li:'switchblade',d:'High-stakes criminal enterprise'},
-    {id:'CH02',n:'Break Up a Union Meeting',e:3,c:489,x:15,lc:0.06,li:'baseball_bat',d:'High-stakes criminal enterprise'},
-    {id:'CH03',n:'Rob a Poker Game',e:3,c:560,x:17,lc:0.06,li:'ski_mask',d:'High-stakes criminal enterprise'},
-    {id:'CH04',n:'Cut a Numbers Wire',e:2,c:330,x:8,lc:0.06,li:'ski_mask',d:'High-stakes criminal enterprise'},
-    {id:'CH05',n:'Extort a Pawn Shop',e:3,c:454,x:14,lc:0.06,li:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'CH06',n:'Mug Drunk Cubs Fans',e:2,c:270,x:6,lc:0.06,li:'brass_pipe',d:'High-stakes criminal enterprise'}
+    {id:'CH01',n:'Bootleg Whiskey Run',e:2,c:300,x:7,lc:0.18,li:'switchblade',d:'High-stakes criminal enterprise'},
+    {id:'CH02',n:'Break Up a Union Meeting',e:3,c:489,x:15,lc:0.18,li:'baseball_bat',d:'High-stakes criminal enterprise'},
+    {id:'CH03',n:'Rob a Poker Game',e:3,c:560,x:17,lc:0.18,li:'ski_mask',d:'High-stakes criminal enterprise'},
+    {id:'CH04',n:'Cut a Numbers Wire',e:2,c:330,x:8,lc:0.18,li:'ski_mask',d:'High-stakes criminal enterprise'},
+    {id:'CH05',n:'Extort a Pawn Shop',e:3,c:454,x:14,lc:0.18,li:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'CH06',n:'Mug Drunk Cubs Fans',e:2,c:270,x:6,lc:0.18,li:'brass_pipe',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'II. Syndicate',jobs:[
-    {id:'CH07',n:'Bomb a Rival Speakeasy',e:5,c:1260,x:29,lc:0.05,li:'dynamite',req:'ski_mask',d:'High-stakes criminal enterprise'},
-    {id:'CH08',n:'Control the Gambling Dens',e:5,c:1400,x:31,lc:0.05,li:'switchblade',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'CH09',n:'Bribe a Federal Judge',e:6,c:2000,x:48,lc:0.05,li:'crowbar',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'CH10',n:'Whack a Police Informant',e:6,c:2240,x:51,lc:0.05,li:'silenced_pistol',req:'ski_mask',d:'High-stakes criminal enterprise'},
-    {id:'CH11',n:'Run the Stockyards Racket',e:5,c:1540,x:33,lc:0.05,li:'police_scanner',req:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'CH12',n:'Hijack a Meat Truck',e:6,c:2080,x:49,lc:0.05,li:'crowbar',req:'ski_mask',d:'High-stakes criminal enterprise'}
+    {id:'CH07',n:'Bomb a Rival Speakeasy',e:5,c:1260,x:29,lc:0.14,li:'dynamite',req:'ski_mask',d:'High-stakes criminal enterprise'},
+    {id:'CH08',n:'Control the Gambling Dens',e:5,c:1400,x:31,lc:0.14,li:'switchblade',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'CH09',n:'Bribe a Federal Judge',e:6,c:2000,x:48,lc:0.14,li:'crowbar',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'CH10',n:'Whack a Police Informant',e:6,c:2240,x:51,lc:0.14,li:'silenced_pistol',req:'ski_mask',d:'High-stakes criminal enterprise'},
+    {id:'CH11',n:'Run the Stockyards Racket',e:5,c:1540,x:33,lc:0.14,li:'police_scanner',req:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'CH12',n:'Hijack a Meat Truck',e:6,c:2080,x:49,lc:0.14,li:'crowbar',req:'ski_mask',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'III. Outfit Boss',jobs:[
-    {id:'CH13',n:'Rig a Union Election',e:9,c:4000,x:84,lc:0.04,li:'briefcase_of_cash',req:'switchblade',d:'High-stakes criminal enterprise'},
-    {id:'CH14',n:'Smuggle Guns Through OHare',e:10,c:4800,x:96,lc:0.04,li:'tommy_gun',req:'crowbar',d:'High-stakes criminal enterprise'},
-    {id:'CH15',n:'Hijack a Federal Shipment',e:10,c:5200,x:102,lc:0.04,li:'fbi_badge',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
-    {id:'CH16',n:'Take Over the Projects',e:8,c:3600,x:78,lc:0.04,li:'tommy_gun',req:'crowbar',d:'High-stakes criminal enterprise'},
-    {id:'CH17',n:'Run the Meatpacking Racket',e:9,c:4400,x:90,lc:0.04,li:'tommy_gun',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
-    {id:'CH18',n:'Control the Taxi Union',e:8,c:3840,x:81,lc:0.04,li:'bulletproof_vest',req:'kevlar_gloves',d:'High-stakes criminal enterprise'}
+    {id:'CH13',n:'Rig a Union Election',e:9,c:4000,x:84,lc:0.11,li:'briefcase_of_cash',req:'switchblade',d:'High-stakes criminal enterprise'},
+    {id:'CH14',n:'Smuggle Guns Through OHare',e:10,c:4800,x:96,lc:0.11,li:'tommy_gun',req:'crowbar',d:'High-stakes criminal enterprise'},
+    {id:'CH15',n:'Hijack a Federal Shipment',e:10,c:5200,x:102,lc:0.11,li:'fbi_badge',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
+    {id:'CH16',n:'Take Over the Projects',e:8,c:3600,x:78,lc:0.11,li:'tommy_gun',req:'crowbar',d:'High-stakes criminal enterprise'},
+    {id:'CH17',n:'Run the Meatpacking Racket',e:9,c:4400,x:90,lc:0.11,li:'tommy_gun',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
+    {id:'CH18',n:'Control the Taxi Union',e:8,c:3840,x:81,lc:0.11,li:'bulletproof_vest',req:'kevlar_gloves',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'IV. Kingpin',jobs:[
-    {id:'CH19',n:'Control the Commodity Exchange',e:13,c:8100,x:165,lc:0.03,li:'offshore_account',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
-    {id:'CH20',n:'Own the Police Superintendent',e:14,c:9000,x:187,lc:0.03,li:'grenade',req:'dynamite',d:'High-stakes criminal enterprise'},
-    {id:'CH21',n:'Run Great Lakes Smuggling',e:13,c:7650,x:157,lc:0.03,li:'speedboat_key',req:'tommy_gun',d:'High-stakes criminal enterprise'},
-    {id:'CH22',n:'Rig City Contracts',e:12,c:7200,x:150,lc:0.03,li:'sniper_rifle',req:'dynamite',d:'High-stakes criminal enterprise'},
-    {id:'CH23',n:'Control McCormick Place',e:14,c:9450,x:195,lc:0.03,li:'fbi_badge',req:'tommy_gun',d:'High-stakes criminal enterprise'},
-    {id:'CH24',n:'Infiltrate FBI Field Office',e:15,c:10800,x:210,lc:0.03,li:'fbi_badge',req:'dynamite',d:'High-stakes criminal enterprise'}
+    {id:'CH19',n:'Control the Commodity Exchange',e:13,c:8100,x:165,lc:0.08,li:'offshore_account',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
+    {id:'CH20',n:'Own the Police Superintendent',e:14,c:9000,x:187,lc:0.08,li:'grenade',req:'dynamite',d:'High-stakes criminal enterprise'},
+    {id:'CH21',n:'Run Great Lakes Smuggling',e:13,c:7650,x:157,lc:0.08,li:'speedboat_key',req:'tommy_gun',d:'High-stakes criminal enterprise'},
+    {id:'CH22',n:'Rig City Contracts',e:12,c:7200,x:150,lc:0.08,li:'sniper_rifle',req:'dynamite',d:'High-stakes criminal enterprise'},
+    {id:'CH23',n:'Control McCormick Place',e:14,c:9450,x:195,lc:0.08,li:'fbi_badge',req:'tommy_gun',d:'High-stakes criminal enterprise'},
+    {id:'CH24',n:'Infiltrate FBI Field Office',e:15,c:10800,x:210,lc:0.08,li:'fbi_badge',req:'dynamite',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'V. Chicago Don',jobs:[
-    {id:'CH25',n:'Merge All Five Outfits',e:18,c:14400,x:285,lc:0.025,li:'don_ring',req:'sniper_rifle',d:'High-stakes criminal enterprise'},
-    {id:'CH26',n:'Buy the Governor',e:20,c:18000,x:315,lc:0.025,li:'military_intel',req:'fbi_badge',d:'High-stakes criminal enterprise'},
-    {id:'CH27',n:'Control Midwest Drug Pipeline',e:22,c:22800,x:408,lc:0.025,li:'drug_lord_crown',req:'night_vision',d:'High-stakes criminal enterprise'},
-    {id:'CH28',n:'Blackmail the FBI Director',e:25,c:28500,x:467,lc:0.025,li:'fbi_badge',req:'fbi_badge',d:'High-stakes criminal enterprise'},
-    {id:'CH29',n:'The Capone Legacy',e:28,c:36100,x:552,lc:0.025,li:'don_ring',req:'fbi_badge',d:'High-stakes criminal enterprise'}
+    {id:'CH25',n:'Merge All Five Outfits',e:18,c:14400,x:285,lc:0.06,li:'don_ring',req:'sniper_rifle',d:'High-stakes criminal enterprise'},
+    {id:'CH26',n:'Buy the Governor',e:20,c:18000,x:315,lc:0.06,li:'military_intel',req:'fbi_badge',d:'High-stakes criminal enterprise'},
+    {id:'CH27',n:'Control Midwest Drug Pipeline',e:22,c:22800,x:408,lc:0.06,li:'drug_lord_crown',req:'night_vision',d:'High-stakes criminal enterprise'},
+    {id:'CH28',n:'Blackmail the FBI Director',e:25,c:28500,x:467,lc:0.06,li:'fbi_badge',req:'fbi_badge',d:'High-stakes criminal enterprise'},
+    {id:'CH29',n:'The Capone Legacy',e:28,c:36100,x:552,lc:0.06,li:'don_ring',req:'fbi_badge',d:'High-stakes criminal enterprise'}
   ]},
 ],
 miami:[
   {tier:'I. Beach City',jobs:[
-    {id:'MI01',n:'Hustle Tourists on Ocean Drive',e:2,c:360,x:8,lc:0.06,li:'burner_phone',d:'High-stakes criminal enterprise'},
-    {id:'MI02',n:'Run Beach Gambling Ring',e:3,c:560,x:15,lc:0.06,li:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'MI03',n:'Steal from Yacht Club',e:3,c:630,x:17,lc:0.06,li:'gold_watch',d:'High-stakes criminal enterprise'},
-    {id:'MI04',n:'Deal at the Nightclubs',e:2,c:420,x:9,lc:0.06,li:'gold_watch',d:'High-stakes criminal enterprise'},
-    {id:'MI05',n:'Carjack Luxury Vehicles',e:4,c:770,x:20,lc:0.06,li:'burner_phone',d:'High-stakes criminal enterprise'},
-    {id:'MI06',n:'Rob Spring Breakers',e:2,c:330,x:7,lc:0.06,li:'gold_watch',d:'High-stakes criminal enterprise'}
+    {id:'MI01',n:'Hustle Tourists on Ocean Drive',e:2,c:360,x:8,lc:0.18,li:'burner_phone',d:'High-stakes criminal enterprise'},
+    {id:'MI02',n:'Run Beach Gambling Ring',e:3,c:560,x:15,lc:0.18,li:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'MI03',n:'Steal from Yacht Club',e:3,c:630,x:17,lc:0.18,li:'gold_watch',d:'High-stakes criminal enterprise'},
+    {id:'MI04',n:'Deal at the Nightclubs',e:2,c:420,x:9,lc:0.18,li:'gold_watch',d:'High-stakes criminal enterprise'},
+    {id:'MI05',n:'Carjack Luxury Vehicles',e:4,c:770,x:20,lc:0.18,li:'burner_phone',d:'High-stakes criminal enterprise'},
+    {id:'MI06',n:'Rob Spring Breakers',e:2,c:330,x:7,lc:0.18,li:'gold_watch',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'II. Cartel Connection',jobs:[
-    {id:'MI07',n:'Smuggle Cocaine Through Port',e:6,c:2000,x:48,lc:0.05,li:'cartel_pistol',req:'gold_watch',d:'High-stakes criminal enterprise'},
-    {id:'MI08',n:'Run a Pill Mill',e:5,c:1400,x:29,lc:0.05,li:'pistol',req:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'MI09',n:'Control the Fishing Fleet',e:5,c:1260,x:27,lc:0.05,li:'speedboat_key',req:'gold_watch',d:'High-stakes criminal enterprise'},
-    {id:'MI10',n:'Launder Through Art Basel',e:7,c:2400,x:57,lc:0.05,li:'stolen_masterpiece',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'MI11',n:'Bribe the Coast Guard',e:6,c:1760,x:45,lc:0.05,li:'kevlar_gloves',req:'gold_watch',d:'High-stakes criminal enterprise'},
-    {id:'MI12',n:'Extort Condo Developers',e:6,c:2080,x:49,lc:0.05,li:'speedboat_key',req:'stolen_wallet',d:'High-stakes criminal enterprise'}
+    {id:'MI07',n:'Smuggle Cocaine Through Port',e:6,c:2000,x:48,lc:0.14,li:'cartel_pistol',req:'gold_watch',d:'High-stakes criminal enterprise'},
+    {id:'MI08',n:'Run a Pill Mill',e:5,c:1400,x:29,lc:0.14,li:'pistol',req:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'MI09',n:'Control the Fishing Fleet',e:5,c:1260,x:27,lc:0.14,li:'speedboat_key',req:'gold_watch',d:'High-stakes criminal enterprise'},
+    {id:'MI10',n:'Launder Through Art Basel',e:7,c:2400,x:57,lc:0.14,li:'stolen_masterpiece',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'MI11',n:'Bribe the Coast Guard',e:6,c:1760,x:45,lc:0.14,li:'kevlar_gloves',req:'gold_watch',d:'High-stakes criminal enterprise'},
+    {id:'MI12',n:'Extort Condo Developers',e:6,c:2080,x:49,lc:0.14,li:'speedboat_key',req:'stolen_wallet',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'III. Miami Vice',jobs:[
-    {id:'MI13',n:'Take Over Little Havana',e:9,c:4000,x:84,lc:0.04,li:'forged_passport',req:'police_scanner',d:'High-stakes criminal enterprise'},
-    {id:'MI14',n:'Control Strip Club Empire',e:8,c:3360,x:72,lc:0.04,li:'entertainer_contract',req:'fake_rolex',d:'High-stakes criminal enterprise'},
-    {id:'MI15',n:'Run Guns to Central America',e:10,c:4800,x:96,lc:0.04,li:'ak47',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
-    {id:'MI16',n:'Infiltrate DEA Field Office',e:11,c:6300,x:135,lc:0.04,li:'fbi_badge',req:'speedboat_key',d:'High-stakes criminal enterprise'},
-    {id:'MI17',n:'Hurricane Insurance Fraud',e:9,c:3840,x:78,lc:0.04,li:'briefcase_of_cash',req:'fake_rolex',d:'High-stakes criminal enterprise'},
-    {id:'MI18',n:'Own the Orange Bowl',e:10,c:4400,x:90,lc:0.04,li:'ak47',req:'speedboat_key',d:'High-stakes criminal enterprise'}
+    {id:'MI13',n:'Take Over Little Havana',e:9,c:4000,x:84,lc:0.11,li:'forged_passport',req:'police_scanner',d:'High-stakes criminal enterprise'},
+    {id:'MI14',n:'Control Strip Club Empire',e:8,c:3360,x:72,lc:0.11,li:'entertainer_contract',req:'fake_rolex',d:'High-stakes criminal enterprise'},
+    {id:'MI15',n:'Run Guns to Central America',e:10,c:4800,x:96,lc:0.11,li:'ak47',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
+    {id:'MI16',n:'Infiltrate DEA Field Office',e:11,c:6300,x:135,lc:0.11,li:'fbi_badge',req:'speedboat_key',d:'High-stakes criminal enterprise'},
+    {id:'MI17',n:'Hurricane Insurance Fraud',e:9,c:3840,x:78,lc:0.11,li:'briefcase_of_cash',req:'fake_rolex',d:'High-stakes criminal enterprise'},
+    {id:'MI18',n:'Own the Orange Bowl',e:10,c:4400,x:90,lc:0.11,li:'ak47',req:'speedboat_key',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'IV. Vice Lord',jobs:[
-    {id:'MI19',n:'Control All Ports of Entry',e:14,c:9000,x:195,lc:0.03,li:'sniper_rifle',req:'body_armor',d:'High-stakes criminal enterprise'},
-    {id:'MI20',n:'Run the Caribbean Pipeline',e:15,c:10800,x:225,lc:0.03,li:'drug_lord_crown',req:'forged_passport',d:'High-stakes criminal enterprise'},
-    {id:'MI21',n:'Corrupt the State Attorney',e:14,c:9450,x:202,lc:0.03,li:'diamond_ring',req:'ak47',d:'High-stakes criminal enterprise'},
-    {id:'MI22',n:'Take Over Star Island',e:16,c:11700,x:240,lc:0.03,li:'offshore_account',req:'cartel_pistol',d:'High-stakes criminal enterprise'},
-    {id:'MI23',n:'Control Cruise Ship Industry',e:15,c:10350,x:217,lc:0.03,li:'military_intel',req:'body_armor',d:'High-stakes criminal enterprise'}
+    {id:'MI19',n:'Control All Ports of Entry',e:14,c:9000,x:195,lc:0.08,li:'sniper_rifle',req:'body_armor',d:'High-stakes criminal enterprise'},
+    {id:'MI20',n:'Run the Caribbean Pipeline',e:15,c:10800,x:225,lc:0.08,li:'drug_lord_crown',req:'forged_passport',d:'High-stakes criminal enterprise'},
+    {id:'MI21',n:'Corrupt the State Attorney',e:14,c:9450,x:202,lc:0.08,li:'diamond_ring',req:'ak47',d:'High-stakes criminal enterprise'},
+    {id:'MI22',n:'Take Over Star Island',e:16,c:11700,x:240,lc:0.08,li:'offshore_account',req:'cartel_pistol',d:'High-stakes criminal enterprise'},
+    {id:'MI23',n:'Control Cruise Ship Industry',e:15,c:10350,x:217,lc:0.08,li:'military_intel',req:'body_armor',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'V. King of Miami',jobs:[
-    {id:'MI24',n:'Unite the Florida Cartels',e:20,c:16200,x:315,lc:0.03,li:'cartel_pistol',req:'cartel_pistol',d:'High-stakes criminal enterprise'},
-    {id:'MI25',n:'Build Private Island Base',e:25,c:26600,x:467,lc:0.025,li:'blood_diamond',req:'offshore_account',d:'High-stakes criminal enterprise'},
-    {id:'MI26',n:'Control Straits of Florida',e:28,c:33250,x:552,lc:0.025,li:'speedboat_key',req:'offshore_account',d:'High-stakes criminal enterprise'},
-    {id:'MI27',n:'The Scarface Legacy',e:30,c:39900,x:637,lc:0.025,li:'golden_ak',req:'drug_lord_crown',d:'High-stakes criminal enterprise'},
-    {id:'MI28',n:'Rule the Tropics',e:32,c:45600,x:722,lc:0.025,li:'assassination_kit',req:'drug_lord_crown',d:'High-stakes criminal enterprise'}
+    {id:'MI24',n:'Unite the Florida Cartels',e:20,c:16200,x:315,lc:0.08,li:'cartel_pistol',req:'cartel_pistol',d:'High-stakes criminal enterprise'},
+    {id:'MI25',n:'Build Private Island Base',e:25,c:26600,x:467,lc:0.06,li:'blood_diamond',req:'offshore_account',d:'High-stakes criminal enterprise'},
+    {id:'MI26',n:'Control Straits of Florida',e:28,c:33250,x:552,lc:0.06,li:'speedboat_key',req:'offshore_account',d:'High-stakes criminal enterprise'},
+    {id:'MI27',n:'The Scarface Legacy',e:30,c:39900,x:637,lc:0.06,li:'golden_ak',req:'drug_lord_crown',d:'High-stakes criminal enterprise'},
+    {id:'MI28',n:'Rule the Tropics',e:32,c:45600,x:722,lc:0.06,li:'assassination_kit',req:'drug_lord_crown',d:'High-stakes criminal enterprise'}
   ]},
 ],
 los_angeles:[
   {tier:'I. Hollywood Hustle',jobs:[
-    {id:'LA01',n:'Sell Fake Scripts',e:2,c:390,x:9,lc:0.06,li:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'LA02',n:'Run a Chop Shop in Compton',e:3,c:630,x:17,lc:0.06,li:'tire_iron',d:'High-stakes criminal enterprise'},
-    {id:'LA03',n:'Deal at Hollywood Parties',e:3,c:700,x:18,lc:0.06,li:'burner_phone',d:'High-stakes criminal enterprise'},
-    {id:'LA04',n:'Rob a Dispensary',e:4,c:840,x:21,lc:0.06,li:'pistol',d:'High-stakes criminal enterprise'},
-    {id:'LA05',n:'Shake Down Food Trucks',e:2,c:420,x:9,lc:0.06,li:'burner_phone',d:'High-stakes criminal enterprise'},
-    {id:'LA06',n:'Control the Rap Industry',e:3,c:595,x:16,lc:0.06,li:'platinum_chain',d:'High-stakes criminal enterprise'}
+    {id:'LA01',n:'Sell Fake Scripts',e:2,c:390,x:9,lc:0.18,li:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'LA02',n:'Run a Chop Shop in Compton',e:3,c:630,x:17,lc:0.18,li:'tire_iron',d:'High-stakes criminal enterprise'},
+    {id:'LA03',n:'Deal at Hollywood Parties',e:3,c:700,x:18,lc:0.18,li:'burner_phone',d:'High-stakes criminal enterprise'},
+    {id:'LA04',n:'Rob a Dispensary',e:4,c:840,x:21,lc:0.18,li:'pistol',d:'High-stakes criminal enterprise'},
+    {id:'LA05',n:'Shake Down Food Trucks',e:2,c:420,x:9,lc:0.18,li:'burner_phone',d:'High-stakes criminal enterprise'},
+    {id:'LA06',n:'Control the Rap Industry',e:3,c:595,x:16,lc:0.18,li:'platinum_chain',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'II. West Coast Boss',jobs:[
-    {id:'LA07',n:'Rig a Film Production',e:6,c:2240,x:51,lc:0.05,li:'police_scanner',req:'tire_iron',d:'High-stakes criminal enterprise'},
-    {id:'LA08',n:'Control Port of Long Beach',e:7,c:2800,x:60,lc:0.05,li:'combat_knife',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'LA09',n:'Run the Cannabis Cartel',e:6,c:2000,x:46,lc:0.05,li:'combat_knife',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'LA10',n:'Extort the Tech Bros',e:5,c:1540,x:31,lc:0.05,li:'police_scanner',req:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'LA11',n:'Bribe LAPD Captains',e:7,c:2560,x:57,lc:0.05,li:'fbi_badge',req:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'LA12',n:'Own the Nightclub Scene',e:6,c:2080,x:49,lc:0.05,li:'entertainer_contract',req:'burner_phone',d:'High-stakes criminal enterprise'}
+    {id:'LA07',n:'Rig a Film Production',e:6,c:2240,x:51,lc:0.14,li:'police_scanner',req:'tire_iron',d:'High-stakes criminal enterprise'},
+    {id:'LA08',n:'Control Port of Long Beach',e:7,c:2800,x:60,lc:0.14,li:'combat_knife',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'LA09',n:'Run the Cannabis Cartel',e:6,c:2000,x:46,lc:0.14,li:'combat_knife',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'LA10',n:'Extort the Tech Bros',e:5,c:1540,x:31,lc:0.14,li:'police_scanner',req:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'LA11',n:'Bribe LAPD Captains',e:7,c:2560,x:57,lc:0.14,li:'fbi_badge',req:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'LA12',n:'Own the Nightclub Scene',e:6,c:2080,x:49,lc:0.14,li:'entertainer_contract',req:'burner_phone',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'III. LA Kingpin',jobs:[
-    {id:'LA13',n:'Take Over Garment District',e:9,c:4400,x:90,lc:0.04,li:'forged_passport',req:'switchblade',d:'High-stakes criminal enterprise'},
-    {id:'LA14',n:'Control Skid Row Drug Trade',e:10,c:5200,x:102,lc:0.04,li:'drug_lord_crown',req:'switchblade',d:'High-stakes criminal enterprise'},
-    {id:'LA15',n:'Infiltrate the Studios',e:9,c:4000,x:84,lc:0.04,li:'tommy_gun',req:'switchblade',d:'High-stakes criminal enterprise'},
-    {id:'LA16',n:'Run the Border Tunnel',e:11,c:6750,x:142,lc:0.04,li:'cartel_pistol',req:'pistol',d:'High-stakes criminal enterprise'},
-    {id:'LA17',n:'Own the Water Rights',e:10,c:4800,x:96,lc:0.04,li:'grenade',req:'pistol',d:'High-stakes criminal enterprise'},
-    {id:'LA18',n:'Rig the Oscars',e:9,c:4160,x:87,lc:0.04,li:'stolen_masterpiece',req:'fake_rolex',d:'High-stakes criminal enterprise'}
+    {id:'LA13',n:'Take Over Garment District',e:9,c:4400,x:90,lc:0.11,li:'forged_passport',req:'switchblade',d:'High-stakes criminal enterprise'},
+    {id:'LA14',n:'Control Skid Row Drug Trade',e:10,c:5200,x:102,lc:0.11,li:'drug_lord_crown',req:'switchblade',d:'High-stakes criminal enterprise'},
+    {id:'LA15',n:'Infiltrate the Studios',e:9,c:4000,x:84,lc:0.11,li:'tommy_gun',req:'switchblade',d:'High-stakes criminal enterprise'},
+    {id:'LA16',n:'Run the Border Tunnel',e:11,c:6750,x:142,lc:0.11,li:'cartel_pistol',req:'pistol',d:'High-stakes criminal enterprise'},
+    {id:'LA17',n:'Own the Water Rights',e:10,c:4800,x:96,lc:0.11,li:'grenade',req:'pistol',d:'High-stakes criminal enterprise'},
+    {id:'LA18',n:'Rig the Oscars',e:9,c:4160,x:87,lc:0.11,li:'stolen_masterpiece',req:'fake_rolex',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'IV. Pacific Boss',jobs:[
-    {id:'LA19',n:'Control West Coast Ports',e:14,c:9900,x:210,lc:0.03,li:'offshore_account',req:'night_vision',d:'High-stakes criminal enterprise'},
-    {id:'LA20',n:'Own Sacramento Legislature',e:15,c:11700,x:240,lc:0.03,li:'sniper_rifle',req:'forged_passport',d:'High-stakes criminal enterprise'},
-    {id:'LA21',n:'Run Asian Import Pipeline',e:14,c:9450,x:202,lc:0.03,li:'jade_dragon',req:'forged_passport',d:'High-stakes criminal enterprise'},
-    {id:'LA22',n:'Take Over Silicon Valley',e:16,c:13500,x:262,lc:0.03,li:'hacking_rig',req:'night_vision',d:'High-stakes criminal enterprise'},
-    {id:'LA23',n:'Control Entertainment Empire',e:15,c:10800,x:225,lc:0.03,li:'entertainer_contract',req:'forged_passport',d:'High-stakes criminal enterprise'}
+    {id:'LA19',n:'Control West Coast Ports',e:14,c:9900,x:210,lc:0.08,li:'offshore_account',req:'night_vision',d:'High-stakes criminal enterprise'},
+    {id:'LA20',n:'Own Sacramento Legislature',e:15,c:11700,x:240,lc:0.08,li:'sniper_rifle',req:'forged_passport',d:'High-stakes criminal enterprise'},
+    {id:'LA21',n:'Run Asian Import Pipeline',e:14,c:9450,x:202,lc:0.08,li:'jade_dragon',req:'forged_passport',d:'High-stakes criminal enterprise'},
+    {id:'LA22',n:'Take Over Silicon Valley',e:16,c:13500,x:262,lc:0.08,li:'hacking_rig',req:'night_vision',d:'High-stakes criminal enterprise'},
+    {id:'LA23',n:'Control Entertainment Empire',e:15,c:10800,x:225,lc:0.08,li:'entertainer_contract',req:'forged_passport',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'V. West Coast Don',jobs:[
-    {id:'LA24',n:'Unite Pacific Coast Families',e:20,c:18000,x:337,lc:0.03,li:'don_ring',req:'night_vision',d:'High-stakes criminal enterprise'},
-    {id:'LA25',n:'Buy the Governor of California',e:22,c:23750,x:442,lc:0.025,li:'quantum_key',req:'military_intel',d:'High-stakes criminal enterprise'},
-    {id:'LA26',n:'Control Pacific Trade Routes',e:25,c:30400,x:510,lc:0.025,li:'speedboat_key',req:'ghost_protocol',d:'High-stakes criminal enterprise'},
-    {id:'LA27',n:'Own Hollywood',e:28,c:36100,x:595,lc:0.025,li:'golden_ak',req:'rpg_launcher',d:'High-stakes criminal enterprise'},
-    {id:'LA28',n:'The West Coast Legacy',e:30,c:42750,x:680,lc:0.025,li:'don_ring',req:'rpg_launcher',d:'High-stakes criminal enterprise'}
+    {id:'LA24',n:'Unite Pacific Coast Families',e:20,c:18000,x:337,lc:0.08,li:'don_ring',req:'night_vision',d:'High-stakes criminal enterprise'},
+    {id:'LA25',n:'Buy the Governor of California',e:22,c:23750,x:442,lc:0.06,li:'quantum_key',req:'military_intel',d:'High-stakes criminal enterprise'},
+    {id:'LA26',n:'Control Pacific Trade Routes',e:25,c:30400,x:510,lc:0.06,li:'speedboat_key',req:'ghost_protocol',d:'High-stakes criminal enterprise'},
+    {id:'LA27',n:'Own Hollywood',e:28,c:36100,x:595,lc:0.06,li:'golden_ak',req:'rpg_launcher',d:'High-stakes criminal enterprise'},
+    {id:'LA28',n:'The West Coast Legacy',e:30,c:42750,x:680,lc:0.06,li:'don_ring',req:'rpg_launcher',d:'High-stakes criminal enterprise'}
   ]},
 ],
 cuba:[
   {tier:'I. Island Life',jobs:[
-    {id:'CU01',n:'Sell Black Market Rum',e:2,c:420,x:9,lc:0.06,li:'rum_pistol',d:'High-stakes criminal enterprise'},
-    {id:'CU02',n:'Run a Beach Con',e:2,c:360,x:8,lc:0.06,li:'burner_phone',d:'High-stakes criminal enterprise'},
-    {id:'CU03',n:'Smuggle Cigars',e:3,c:630,x:17,lc:0.06,li:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'CU04',n:'Bribe the Harbor Master',e:3,c:595,x:15,lc:0.06,li:'ski_mask',d:'High-stakes criminal enterprise'},
-    {id:'CU05',n:'Pickpocket Diplomats',e:2,c:390,x:9,lc:0.06,li:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'CU06',n:'Run Numbers in Old Havana',e:3,c:560,x:15,lc:0.06,li:'tire_iron',d:'High-stakes criminal enterprise'}
+    {id:'CU01',n:'Sell Black Market Rum',e:2,c:420,x:9,lc:0.18,li:'rum_pistol',d:'High-stakes criminal enterprise'},
+    {id:'CU02',n:'Run a Beach Con',e:2,c:360,x:8,lc:0.18,li:'burner_phone',d:'High-stakes criminal enterprise'},
+    {id:'CU03',n:'Smuggle Cigars',e:3,c:630,x:17,lc:0.18,li:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'CU04',n:'Bribe the Harbor Master',e:3,c:595,x:15,lc:0.18,li:'ski_mask',d:'High-stakes criminal enterprise'},
+    {id:'CU05',n:'Pickpocket Diplomats',e:2,c:390,x:9,lc:0.18,li:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'CU06',n:'Run Numbers in Old Havana',e:3,c:560,x:15,lc:0.18,li:'tire_iron',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'II. Island Boss',jobs:[
-    {id:'CU07',n:'Control the Rum Distilleries',e:6,c:2240,x:51,lc:0.05,li:'police_scanner',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'CU08',n:'Run the Havana Casino Ring',e:6,c:2400,x:54,lc:0.05,li:'police_scanner',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'CU09',n:'Smuggle Refugees for Profit',e:5,c:1540,x:32,lc:0.05,li:'speedboat_key',req:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'CU10',n:'Extort Sugar Plantations',e:5,c:1400,x:30,lc:0.05,li:'kevlar_gloves',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'CU11',n:'Bribe Military Brass',e:7,c:2800,x:60,lc:0.05,li:'fake_rolex',req:'tire_iron',d:'High-stakes criminal enterprise'},
-    {id:'CU12',n:'Run Guns from Miami',e:7,c:2560,x:57,lc:0.05,li:'ak47',req:'ski_mask',d:'High-stakes criminal enterprise'}
+    {id:'CU07',n:'Control the Rum Distilleries',e:6,c:2240,x:51,lc:0.14,li:'police_scanner',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'CU08',n:'Run the Havana Casino Ring',e:6,c:2400,x:54,lc:0.14,li:'police_scanner',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'CU09',n:'Smuggle Refugees for Profit',e:5,c:1540,x:32,lc:0.14,li:'speedboat_key',req:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'CU10',n:'Extort Sugar Plantations',e:5,c:1400,x:30,lc:0.14,li:'kevlar_gloves',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'CU11',n:'Bribe Military Brass',e:7,c:2800,x:60,lc:0.14,li:'fake_rolex',req:'tire_iron',d:'High-stakes criminal enterprise'},
+    {id:'CU12',n:'Run Guns from Miami',e:7,c:2560,x:57,lc:0.14,li:'ak47',req:'ski_mask',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'III. Caribbean Power',jobs:[
-    {id:'CU13',n:'Control Drug Transit Route',e:9,c:4400,x:90,lc:0.04,li:'cartel_pistol',req:'combat_knife',d:'High-stakes criminal enterprise'},
-    {id:'CU14',n:'Own the Fishing Fleet',e:8,c:3600,x:78,lc:0.04,li:'tommy_gun',req:'pistol',d:'High-stakes criminal enterprise'},
-    {id:'CU15',n:'Infiltrate Secret Police',e:10,c:5200,x:102,lc:0.04,li:'fbi_badge',req:'combat_knife',d:'High-stakes criminal enterprise'},
-    {id:'CU16',n:'Run Underground Economy',e:9,c:4000,x:84,lc:0.04,li:'ak47',req:'fake_rolex',d:'High-stakes criminal enterprise'},
-    {id:'CU17',n:'Take Over Port of Mariel',e:10,c:4800,x:96,lc:0.04,li:'bulletproof_vest',req:'fake_rolex',d:'High-stakes criminal enterprise'},
-    {id:'CU18',n:'Control Tourist Industry',e:8,c:3840,x:81,lc:0.04,li:'briefcase_of_cash',req:'combat_knife',d:'High-stakes criminal enterprise'}
+    {id:'CU13',n:'Control Drug Transit Route',e:9,c:4400,x:90,lc:0.11,li:'cartel_pistol',req:'combat_knife',d:'High-stakes criminal enterprise'},
+    {id:'CU14',n:'Own the Fishing Fleet',e:8,c:3600,x:78,lc:0.11,li:'tommy_gun',req:'pistol',d:'High-stakes criminal enterprise'},
+    {id:'CU15',n:'Infiltrate Secret Police',e:10,c:5200,x:102,lc:0.11,li:'fbi_badge',req:'combat_knife',d:'High-stakes criminal enterprise'},
+    {id:'CU16',n:'Run Underground Economy',e:9,c:4000,x:84,lc:0.11,li:'ak47',req:'fake_rolex',d:'High-stakes criminal enterprise'},
+    {id:'CU17',n:'Take Over Port of Mariel',e:10,c:4800,x:96,lc:0.11,li:'bulletproof_vest',req:'fake_rolex',d:'High-stakes criminal enterprise'},
+    {id:'CU18',n:'Control Tourist Industry',e:8,c:3840,x:81,lc:0.11,li:'briefcase_of_cash',req:'combat_knife',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'IV. Island Emperor',jobs:[
-    {id:'CU19',n:'Own the Cuban Military',e:14,c:9000,x:195,lc:0.03,li:'military_intel',req:'body_armor',d:'High-stakes criminal enterprise'},
-    {id:'CU20',n:'Control Caribbean Drug Routes',e:15,c:10800,x:225,lc:0.03,li:'drug_lord_crown',req:'body_armor',d:'High-stakes criminal enterprise'},
-    {id:'CU21',n:'Establish Private Island Base',e:14,c:9450,x:202,lc:0.03,li:'diamond_ring',req:'tommy_gun',d:'High-stakes criminal enterprise'},
-    {id:'CU22',n:'Run Venezuelan Oil Scam',e:16,c:12600,x:255,lc:0.03,li:'offshore_account',req:'body_armor',d:'High-stakes criminal enterprise'},
-    {id:'CU23',n:'Own the Mexican Pipeline',e:15,c:10350,x:217,lc:0.03,li:'military_intel',req:'tommy_gun',d:'High-stakes criminal enterprise'}
+    {id:'CU19',n:'Own the Cuban Military',e:14,c:9000,x:195,lc:0.08,li:'military_intel',req:'body_armor',d:'High-stakes criminal enterprise'},
+    {id:'CU20',n:'Control Caribbean Drug Routes',e:15,c:10800,x:225,lc:0.08,li:'drug_lord_crown',req:'body_armor',d:'High-stakes criminal enterprise'},
+    {id:'CU21',n:'Establish Private Island Base',e:14,c:9450,x:202,lc:0.08,li:'diamond_ring',req:'tommy_gun',d:'High-stakes criminal enterprise'},
+    {id:'CU22',n:'Run Venezuelan Oil Scam',e:16,c:12600,x:255,lc:0.08,li:'offshore_account',req:'body_armor',d:'High-stakes criminal enterprise'},
+    {id:'CU23',n:'Own the Mexican Pipeline',e:15,c:10350,x:217,lc:0.08,li:'military_intel',req:'tommy_gun',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'V. Caribbean Don',jobs:[
-    {id:'CU24',n:'Unite Caribbean Cartels',e:20,c:16200,x:315,lc:0.03,li:'military_intel',req:'ak47',d:'High-stakes criminal enterprise'},
-    {id:'CU25',n:'Overthrow the Government',e:25,c:26600,x:467,lc:0.025,li:'crown_jewel',req:'offshore_account',d:'High-stakes criminal enterprise'},
-    {id:'CU26',n:'Control All Caribbean Shipping',e:28,c:33250,x:552,lc:0.025,li:'speedboat_key',req:'sniper_rifle',d:'High-stakes criminal enterprise'},
-    {id:'CU27',n:'The Castro Legacy',e:30,c:39900,x:637,lc:0.025,li:'cuban_pistol',req:'sniper_rifle',d:'High-stakes criminal enterprise'},
-    {id:'CU28',n:'Caribbean Empire',e:32,c:47500,x:722,lc:0.025,li:'crown_jewel',req:'ghost_protocol',d:'High-stakes criminal enterprise'}
+    {id:'CU24',n:'Unite Caribbean Cartels',e:20,c:16200,x:315,lc:0.08,li:'military_intel',req:'ak47',d:'High-stakes criminal enterprise'},
+    {id:'CU25',n:'Overthrow the Government',e:25,c:26600,x:467,lc:0.06,li:'crown_jewel',req:'offshore_account',d:'High-stakes criminal enterprise'},
+    {id:'CU26',n:'Control All Caribbean Shipping',e:28,c:33250,x:552,lc:0.06,li:'speedboat_key',req:'sniper_rifle',d:'High-stakes criminal enterprise'},
+    {id:'CU27',n:'The Castro Legacy',e:30,c:39900,x:637,lc:0.06,li:'cuban_pistol',req:'sniper_rifle',d:'High-stakes criminal enterprise'},
+    {id:'CU28',n:'Caribbean Empire',e:32,c:47500,x:722,lc:0.06,li:'crown_jewel',req:'ghost_protocol',d:'High-stakes criminal enterprise'}
   ]},
 ],
 mexico_city:[
   {tier:'I. Cartel Initiate',jobs:[
-    {id:'MC01',n:'Run Street Corner Sales',e:2,c:480,x:10,lc:0.06,li:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'MC02',n:'Extort Local Merchants',e:3,c:770,x:18,lc:0.06,li:'ski_mask',d:'High-stakes criminal enterprise'},
-    {id:'MC03',n:'Smuggle Across the Border',e:3,c:840,x:20,lc:0.06,li:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'MC04',n:'Recruit Sicarios',e:2,c:540,x:11,lc:0.06,li:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'MC05',n:'Steal from Rich Neighborhoods',e:3,c:700,x:18,lc:0.06,li:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'MC06',n:'Run a Tianguis Black Market',e:2,c:510,x:10,lc:0.06,li:'burner_phone',d:'High-stakes criminal enterprise'}
+    {id:'MC01',n:'Run Street Corner Sales',e:2,c:480,x:10,lc:0.18,li:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'MC02',n:'Extort Local Merchants',e:3,c:770,x:18,lc:0.18,li:'ski_mask',d:'High-stakes criminal enterprise'},
+    {id:'MC03',n:'Smuggle Across the Border',e:3,c:840,x:20,lc:0.18,li:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'MC04',n:'Recruit Sicarios',e:2,c:540,x:11,lc:0.18,li:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'MC05',n:'Steal from Rich Neighborhoods',e:3,c:700,x:18,lc:0.18,li:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'MC06',n:'Run a Tianguis Black Market',e:2,c:510,x:10,lc:0.18,li:'burner_phone',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'II. Cartel Soldier',jobs:[
-    {id:'MC07',n:'Guard a Drug Shipment',e:6,c:2400,x:54,lc:0.05,li:'switchblade',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'MC08',n:'Assassinate a Rival Lieutenant',e:7,c:3040,x:66,lc:0.05,li:'silenced_pistol',req:'tire_iron',d:'High-stakes criminal enterprise'},
-    {id:'MC09',n:'Run a Meth Superlab',e:6,c:2560,x:57,lc:0.05,li:'kevlar_gloves',req:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'MC10',n:'Control a Border Crossing',e:7,c:3200,x:69,lc:0.05,li:'switchblade',req:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'MC11',n:'Extort the Avocado Farmers',e:5,c:1819,x:36,lc:0.05,li:'combat_knife',req:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'MC12',n:'Kidnap a Businessman',e:6,c:2720,x:60,lc:0.05,li:'pistol',req:'lockpick_set',d:'High-stakes criminal enterprise'}
+    {id:'MC07',n:'Guard a Drug Shipment',e:6,c:2400,x:54,lc:0.14,li:'switchblade',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'MC08',n:'Assassinate a Rival Lieutenant',e:7,c:3040,x:66,lc:0.14,li:'silenced_pistol',req:'tire_iron',d:'High-stakes criminal enterprise'},
+    {id:'MC09',n:'Run a Meth Superlab',e:6,c:2560,x:57,lc:0.14,li:'kevlar_gloves',req:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'MC10',n:'Control a Border Crossing',e:7,c:3200,x:69,lc:0.14,li:'switchblade',req:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'MC11',n:'Extort the Avocado Farmers',e:5,c:1819,x:36,lc:0.14,li:'combat_knife',req:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'MC12',n:'Kidnap a Businessman',e:6,c:2720,x:60,lc:0.14,li:'pistol',req:'lockpick_set',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'III. Cartel Lieutenant',jobs:[
-    {id:'MC13',n:'Take Over a State Government',e:10,c:5600,x:108,lc:0.04,li:'body_armor',req:'fake_rolex',d:'High-stakes criminal enterprise'},
-    {id:'MC14',n:'Run the Fentanyl Pipeline',e:11,c:7200,x:150,lc:0.04,li:'drug_lord_crown',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
-    {id:'MC15',n:'Control the Migration Routes',e:9,c:4800,x:96,lc:0.04,li:'night_vision',req:'pistol',d:'High-stakes criminal enterprise'},
-    {id:'MC16',n:'Own the Federal Police',e:10,c:6000,x:114,lc:0.04,li:'fbi_badge',req:'police_scanner',d:'High-stakes criminal enterprise'},
-    {id:'MC17',n:'Run the Tunnel Network',e:9,c:5200,x:102,lc:0.04,li:'night_vision',req:'combat_knife',d:'High-stakes criminal enterprise'},
-    {id:'MC18',n:'Assassinate a Governor',e:11,c:7650,x:157,lc:0.04,li:'assassination_kit',req:'kevlar_gloves',d:'High-stakes criminal enterprise'}
+    {id:'MC13',n:'Take Over a State Government',e:10,c:5600,x:108,lc:0.11,li:'body_armor',req:'fake_rolex',d:'High-stakes criminal enterprise'},
+    {id:'MC14',n:'Run the Fentanyl Pipeline',e:11,c:7200,x:150,lc:0.11,li:'drug_lord_crown',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
+    {id:'MC15',n:'Control the Migration Routes',e:9,c:4800,x:96,lc:0.11,li:'night_vision',req:'pistol',d:'High-stakes criminal enterprise'},
+    {id:'MC16',n:'Own the Federal Police',e:10,c:6000,x:114,lc:0.11,li:'fbi_badge',req:'police_scanner',d:'High-stakes criminal enterprise'},
+    {id:'MC17',n:'Run the Tunnel Network',e:9,c:5200,x:102,lc:0.11,li:'night_vision',req:'combat_knife',d:'High-stakes criminal enterprise'},
+    {id:'MC18',n:'Assassinate a Governor',e:11,c:7650,x:157,lc:0.11,li:'assassination_kit',req:'kevlar_gloves',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'IV. Cartel Boss',jobs:[
-    {id:'MC19',n:'Merge Two Major Cartels',e:15,c:11700,x:240,lc:0.03,li:'briefcase_of_cash',req:'night_vision',d:'High-stakes criminal enterprise'},
-    {id:'MC20',n:'Control the Pacific Port',e:16,c:13500,x:270,lc:0.03,li:'ghost_protocol',req:'grenade',d:'High-stakes criminal enterprise'},
-    {id:'MC21',n:'Own the Mexican Military',e:15,c:12600,x:255,lc:0.03,li:'rpg_launcher',req:'body_armor',d:'High-stakes criminal enterprise'},
-    {id:'MC22',n:'Run the US Distribution Network',e:17,c:15300,x:300,lc:0.03,li:'drug_lord_crown',req:'grenade',d:'High-stakes criminal enterprise'},
-    {id:'MC23',n:'Control the Oil Pipeline',e:16,c:14400,x:285,lc:0.03,li:'offshore_account',req:'bulletproof_vest',d:'High-stakes criminal enterprise'}
+    {id:'MC19',n:'Merge Two Major Cartels',e:15,c:11700,x:240,lc:0.08,li:'briefcase_of_cash',req:'night_vision',d:'High-stakes criminal enterprise'},
+    {id:'MC20',n:'Control the Pacific Port',e:16,c:13500,x:270,lc:0.08,li:'ghost_protocol',req:'grenade',d:'High-stakes criminal enterprise'},
+    {id:'MC21',n:'Own the Mexican Military',e:15,c:12600,x:255,lc:0.08,li:'rpg_launcher',req:'body_armor',d:'High-stakes criminal enterprise'},
+    {id:'MC22',n:'Run the US Distribution Network',e:17,c:15300,x:300,lc:0.08,li:'drug_lord_crown',req:'grenade',d:'High-stakes criminal enterprise'},
+    {id:'MC23',n:'Control the Oil Pipeline',e:16,c:14400,x:285,lc:0.08,li:'offshore_account',req:'bulletproof_vest',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'V. El Jefe',jobs:[
-    {id:'MC24',n:'Rule All of Mexico',e:22,c:23750,x:442,lc:0.03,li:'offshore_account',req:'grenade',d:'High-stakes criminal enterprise'},
-    {id:'MC25',n:'Control the Americas Drug Supply',e:26,c:33250,x:552,lc:0.025,li:'drug_lord_crown',req:'rpg_launcher',d:'High-stakes criminal enterprise'},
-    {id:'MC26',n:'Own the Government',e:28,c:38000,x:612,lc:0.025,li:'crown_jewel',req:'offshore_account',d:'High-stakes criminal enterprise'},
-    {id:'MC27',n:'The El Chapo Legacy',e:30,c:45600,x:680,lc:0.025,li:'world_don_crown',req:'sniper_rifle',d:'High-stakes criminal enterprise'},
-    {id:'MC28',n:'Continental Empire',e:32,c:52250,x:765,lc:0.025,li:'blood_diamond',req:'briefcase_of_cash',d:'High-stakes criminal enterprise'}
+    {id:'MC24',n:'Rule All of Mexico',e:22,c:23750,x:442,lc:0.08,li:'offshore_account',req:'grenade',d:'High-stakes criminal enterprise'},
+    {id:'MC25',n:'Control the Americas Drug Supply',e:26,c:33250,x:552,lc:0.06,li:'drug_lord_crown',req:'rpg_launcher',d:'High-stakes criminal enterprise'},
+    {id:'MC26',n:'Own the Government',e:28,c:38000,x:612,lc:0.06,li:'crown_jewel',req:'offshore_account',d:'High-stakes criminal enterprise'},
+    {id:'MC27',n:'The El Chapo Legacy',e:30,c:45600,x:680,lc:0.06,li:'world_don_crown',req:'sniper_rifle',d:'High-stakes criminal enterprise'},
+    {id:'MC28',n:'Continental Empire',e:32,c:52250,x:765,lc:0.06,li:'blood_diamond',req:'briefcase_of_cash',d:'High-stakes criminal enterprise'}
   ]},
 ],
 las_vegas:[
   {tier:'I. The Strip',jobs:[
-    {id:'LV01',n:'Count Cards at the Bellagio',e:2,c:540,x:11,lc:0.06,li:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'LV02',n:'Run a Fake Casino Chip Ring',e:3,c:840,x:20,lc:0.06,li:'ski_mask',d:'High-stakes criminal enterprise'},
-    {id:'LV03',n:'Pickpocket High Rollers',e:2,c:480,x:10,lc:0.06,li:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'LV04',n:'Sell Fake Show Tickets',e:2,c:450,x:9,lc:0.06,li:'burner_phone',d:'High-stakes criminal enterprise'},
-    {id:'LV05',n:'Rob a Pawn Shop on Fremont',e:3,c:770,x:18,lc:0.06,li:'burner_phone',d:'High-stakes criminal enterprise'},
-    {id:'LV06',n:'Run a Street Dice Game',e:3,c:700,x:18,lc:0.06,li:'lockpick_set',d:'High-stakes criminal enterprise'}
+    {id:'LV01',n:'Count Cards at the Bellagio',e:2,c:540,x:11,lc:0.18,li:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'LV02',n:'Run a Fake Casino Chip Ring',e:3,c:840,x:20,lc:0.18,li:'ski_mask',d:'High-stakes criminal enterprise'},
+    {id:'LV03',n:'Pickpocket High Rollers',e:2,c:480,x:10,lc:0.18,li:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'LV04',n:'Sell Fake Show Tickets',e:2,c:450,x:9,lc:0.18,li:'burner_phone',d:'High-stakes criminal enterprise'},
+    {id:'LV05',n:'Rob a Pawn Shop on Fremont',e:3,c:770,x:18,lc:0.18,li:'burner_phone',d:'High-stakes criminal enterprise'},
+    {id:'LV06',n:'Run a Street Dice Game',e:3,c:700,x:18,lc:0.18,li:'lockpick_set',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'II. Vegas Royalty',jobs:[
-    {id:'LV07',n:'Rig Slot Machines',e:6,c:2560,x:57,lc:0.05,li:'combat_knife',req:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'LV08',n:'Run the Underground Fight Club',e:7,c:3200,x:69,lc:0.05,li:'switchblade',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'LV09',n:'Extort the Strip Club Owners',e:6,c:2800,x:60,lc:0.05,li:'entertainer_contract',req:'tire_iron',d:'High-stakes criminal enterprise'},
-    {id:'LV10',n:'Bribe the Gaming Commission',e:7,c:3360,x:72,lc:0.05,li:'fake_rolex',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'LV11',n:'Control the Escort Services',e:5,c:1959,x:38,lc:0.05,li:'pistol',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'LV12',n:'Launder Through Wedding Chapels',e:6,c:2400,x:54,lc:0.05,li:'briefcase_of_cash',req:'brass_knuckles',d:'High-stakes criminal enterprise'}
+    {id:'LV07',n:'Rig Slot Machines',e:6,c:2560,x:57,lc:0.14,li:'combat_knife',req:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'LV08',n:'Run the Underground Fight Club',e:7,c:3200,x:69,lc:0.14,li:'switchblade',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'LV09',n:'Extort the Strip Club Owners',e:6,c:2800,x:60,lc:0.14,li:'entertainer_contract',req:'tire_iron',d:'High-stakes criminal enterprise'},
+    {id:'LV10',n:'Bribe the Gaming Commission',e:7,c:3360,x:72,lc:0.14,li:'fake_rolex',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'LV11',n:'Control the Escort Services',e:5,c:1959,x:38,lc:0.14,li:'pistol',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'LV12',n:'Launder Through Wedding Chapels',e:6,c:2400,x:54,lc:0.14,li:'briefcase_of_cash',req:'brass_knuckles',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'III. Casino Boss',jobs:[
-    {id:'LV13',n:'Take Over a Casino Floor',e:10,c:6000,x:114,lc:0.04,li:'tommy_gun',req:'police_scanner',d:'High-stakes criminal enterprise'},
-    {id:'LV14',n:'Run the Sports Betting Wire',e:11,c:7650,x:157,lc:0.04,li:'ak47',req:'combat_knife',d:'High-stakes criminal enterprise'},
-    {id:'LV15',n:'Control the Convention Industry',e:9,c:5200,x:102,lc:0.04,li:'body_armor',req:'police_scanner',d:'High-stakes criminal enterprise'},
-    {id:'LV16',n:'Own the Teamsters Pension Fund',e:10,c:5600,x:108,lc:0.04,li:'offshore_account',req:'fake_rolex',d:'High-stakes criminal enterprise'},
-    {id:'LV17',n:'Rig a Boxing Championship',e:11,c:7200,x:150,lc:0.04,li:'forged_passport',req:'pistol',d:'High-stakes criminal enterprise'},
-    {id:'LV18',n:'Blackmail Casino Executives',e:9,c:5440,x:105,lc:0.04,li:'compromising_photos',req:'combat_knife',d:'High-stakes criminal enterprise'}
+    {id:'LV13',n:'Take Over a Casino Floor',e:10,c:6000,x:114,lc:0.11,li:'tommy_gun',req:'police_scanner',d:'High-stakes criminal enterprise'},
+    {id:'LV14',n:'Run the Sports Betting Wire',e:11,c:7650,x:157,lc:0.11,li:'ak47',req:'combat_knife',d:'High-stakes criminal enterprise'},
+    {id:'LV15',n:'Control the Convention Industry',e:9,c:5200,x:102,lc:0.11,li:'body_armor',req:'police_scanner',d:'High-stakes criminal enterprise'},
+    {id:'LV16',n:'Own the Teamsters Pension Fund',e:10,c:5600,x:108,lc:0.11,li:'offshore_account',req:'fake_rolex',d:'High-stakes criminal enterprise'},
+    {id:'LV17',n:'Rig a Boxing Championship',e:11,c:7200,x:150,lc:0.11,li:'forged_passport',req:'pistol',d:'High-stakes criminal enterprise'},
+    {id:'LV18',n:'Blackmail Casino Executives',e:9,c:5440,x:105,lc:0.11,li:'compromising_photos',req:'combat_knife',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'IV. Desert King',jobs:[
-    {id:'LV19',n:'Own Three Casinos',e:15,c:12600,x:255,lc:0.03,li:'briefcase_of_cash',req:'grenade',d:'High-stakes criminal enterprise'},
-    {id:'LV20',n:'Control the Water Supply',e:16,c:14400,x:285,lc:0.03,li:'military_intel',req:'night_vision',d:'High-stakes criminal enterprise'},
-    {id:'LV21',n:'Run Nevada State Politics',e:15,c:12150,x:247,lc:0.03,li:'offshore_account',req:'body_armor',d:'High-stakes criminal enterprise'},
-    {id:'LV22',n:'Build an Underground Bunker Network',e:17,c:16200,x:315,lc:0.03,li:'ghost_protocol',req:'forged_passport',d:'High-stakes criminal enterprise'},
-    {id:'LV23',n:'Control Area 51 Security Contracts',e:16,c:13500,x:270,lc:0.03,li:'hacking_rig',req:'tommy_gun',d:'High-stakes criminal enterprise'}
+    {id:'LV19',n:'Own Three Casinos',e:15,c:12600,x:255,lc:0.08,li:'briefcase_of_cash',req:'grenade',d:'High-stakes criminal enterprise'},
+    {id:'LV20',n:'Control the Water Supply',e:16,c:14400,x:285,lc:0.08,li:'military_intel',req:'night_vision',d:'High-stakes criminal enterprise'},
+    {id:'LV21',n:'Run Nevada State Politics',e:15,c:12150,x:247,lc:0.08,li:'offshore_account',req:'body_armor',d:'High-stakes criminal enterprise'},
+    {id:'LV22',n:'Build an Underground Bunker Network',e:17,c:16200,x:315,lc:0.08,li:'ghost_protocol',req:'forged_passport',d:'High-stakes criminal enterprise'},
+    {id:'LV23',n:'Control Area 51 Security Contracts',e:16,c:13500,x:270,lc:0.08,li:'hacking_rig',req:'tommy_gun',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'V. King of Vegas',jobs:[
-    {id:'LV24',n:'Own the Entire Strip',e:22,c:24700,x:459,lc:0.03,li:'offshore_account',req:'body_armor',d:'High-stakes criminal enterprise'},
-    {id:'LV25',n:'Control All Nevada Gaming',e:26,c:34200,x:561,lc:0.025,li:'don_ring',req:'sniper_rifle',d:'High-stakes criminal enterprise'},
-    {id:'LV26',n:'Build a Criminal Empire in the Desert',e:28,c:39900,x:629,lc:0.025,li:'don_ring',req:'rpg_launcher',d:'High-stakes criminal enterprise'},
-    {id:'LV27',n:'The Bugsy Legacy',e:30,c:47500,x:697,lc:0.025,li:'nano_suit',req:'diamond_ring',d:'High-stakes criminal enterprise'},
-    {id:'LV28',n:'Sin City Is Your City',e:32,c:55100,x:765,lc:0.025,li:'nano_suit',req:'offshore_account',d:'High-stakes criminal enterprise'}
+    {id:'LV24',n:'Own the Entire Strip',e:22,c:24700,x:459,lc:0.08,li:'offshore_account',req:'body_armor',d:'High-stakes criminal enterprise'},
+    {id:'LV25',n:'Control All Nevada Gaming',e:26,c:34200,x:561,lc:0.06,li:'don_ring',req:'sniper_rifle',d:'High-stakes criminal enterprise'},
+    {id:'LV26',n:'Build a Criminal Empire in the Desert',e:28,c:39900,x:629,lc:0.06,li:'don_ring',req:'rpg_launcher',d:'High-stakes criminal enterprise'},
+    {id:'LV27',n:'The Bugsy Legacy',e:30,c:47500,x:697,lc:0.06,li:'nano_suit',req:'diamond_ring',d:'High-stakes criminal enterprise'},
+    {id:'LV28',n:'Sin City Is Your City',e:32,c:55100,x:765,lc:0.06,li:'nano_suit',req:'offshore_account',d:'High-stakes criminal enterprise'}
   ]},
 ],
 london:[
   {tier:'I. Eastside',jobs:[
-    {id:'LO01',n:'Pickpocket on the Tube',e:2,c:600,x:12,lc:0.06,li:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'LO02',n:'Fence Stolen Antiques',e:3,c:979,x:21,lc:0.06,li:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'LO03',n:'Run a Betting Shop Scam',e:3,c:840,x:19,lc:0.06,li:'tire_iron',d:'High-stakes criminal enterprise'},
-    {id:'LO04',n:'Mug Tourists at Big Ben',e:2,c:540,x:11,lc:0.06,li:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'LO05',n:'Sell Counterfeit Pounds',e:3,c:909,x:20,lc:0.06,li:'tire_iron',d:'High-stakes criminal enterprise'},
-    {id:'LO06',n:'Burgle Kensington Homes',e:4,c:1120,x:23,lc:0.06,li:'gold_watch',d:'High-stakes criminal enterprise'}
+    {id:'LO01',n:'Pickpocket on the Tube',e:2,c:600,x:12,lc:0.18,li:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'LO02',n:'Fence Stolen Antiques',e:3,c:979,x:21,lc:0.18,li:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'LO03',n:'Run a Betting Shop Scam',e:3,c:840,x:19,lc:0.18,li:'tire_iron',d:'High-stakes criminal enterprise'},
+    {id:'LO04',n:'Mug Tourists at Big Ben',e:2,c:540,x:11,lc:0.18,li:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'LO05',n:'Sell Counterfeit Pounds',e:3,c:909,x:20,lc:0.18,li:'tire_iron',d:'High-stakes criminal enterprise'},
+    {id:'LO06',n:'Burgle Kensington Homes',e:4,c:1120,x:23,lc:0.18,li:'gold_watch',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'II. London Don',jobs:[
-    {id:'LO07',n:'Control the East End Firms',e:6,c:2800,x:60,lc:0.05,li:'fake_rolex',req:'tire_iron',d:'High-stakes criminal enterprise'},
-    {id:'LO08',n:'Run the Soho Gambling Dens',e:7,c:3360,x:72,lc:0.05,li:'switchblade',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'LO09',n:'Extort the City Bankers',e:7,c:3600,x:75,lc:0.05,li:'briefcase_of_cash',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'LO10',n:'Smuggle Through the Chunnel',e:6,c:3040,x:64,lc:0.05,li:'fake_rolex',req:'ski_mask',d:'High-stakes criminal enterprise'},
-    {id:'LO11',n:'Bribe Scotland Yard',e:8,c:4000,x:81,lc:0.05,li:'fbi_badge',req:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'LO12',n:'Run the Football Hooligan Firm',e:6,c:2560,x:57,lc:0.05,li:'switchblade',req:'lockpick_set',d:'High-stakes criminal enterprise'}
+    {id:'LO07',n:'Control the East End Firms',e:6,c:2800,x:60,lc:0.14,li:'fake_rolex',req:'tire_iron',d:'High-stakes criminal enterprise'},
+    {id:'LO08',n:'Run the Soho Gambling Dens',e:7,c:3360,x:72,lc:0.14,li:'switchblade',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'LO09',n:'Extort the City Bankers',e:7,c:3600,x:75,lc:0.14,li:'briefcase_of_cash',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'LO10',n:'Smuggle Through the Chunnel',e:6,c:3040,x:64,lc:0.14,li:'fake_rolex',req:'ski_mask',d:'High-stakes criminal enterprise'},
+    {id:'LO11',n:'Bribe Scotland Yard',e:8,c:4000,x:81,lc:0.14,li:'fbi_badge',req:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'LO12',n:'Run the Football Hooligan Firm',e:6,c:2560,x:57,lc:0.14,li:'switchblade',req:'lockpick_set',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'III. Crown Syndicate',jobs:[
-    {id:'LO13',n:'Take Over the Docklands',e:10,c:6400,x:120,lc:0.04,li:'body_armor',req:'pistol',d:'High-stakes criminal enterprise'},
-    {id:'LO14',n:'Control the Diamond Trade',e:11,c:8100,x:165,lc:0.04,li:'uncut_diamonds',req:'combat_knife',d:'High-stakes criminal enterprise'},
-    {id:'LO15',n:'Infiltrate MI5',e:11,c:8550,x:172,lc:0.04,li:'fbi_badge',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
-    {id:'LO16',n:'Run the Arms Trade to Africa',e:10,c:6800,x:126,lc:0.04,li:'british_rifle',req:'pistol',d:'High-stakes criminal enterprise'},
-    {id:'LO17',n:'Own the West End',e:9,c:6000,x:114,lc:0.04,li:'entertainer_contract',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
-    {id:'LO18',n:'Corrupt a Cabinet Minister',e:10,c:6560,x:123,lc:0.04,li:'compromising_photos',req:'pistol',d:'High-stakes criminal enterprise'}
+    {id:'LO13',n:'Take Over the Docklands',e:10,c:6400,x:120,lc:0.11,li:'body_armor',req:'pistol',d:'High-stakes criminal enterprise'},
+    {id:'LO14',n:'Control the Diamond Trade',e:11,c:8100,x:165,lc:0.11,li:'uncut_diamonds',req:'combat_knife',d:'High-stakes criminal enterprise'},
+    {id:'LO15',n:'Infiltrate MI5',e:11,c:8550,x:172,lc:0.11,li:'fbi_badge',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
+    {id:'LO16',n:'Run the Arms Trade to Africa',e:10,c:6800,x:126,lc:0.11,li:'british_rifle',req:'pistol',d:'High-stakes criminal enterprise'},
+    {id:'LO17',n:'Own the West End',e:9,c:6000,x:114,lc:0.11,li:'entertainer_contract',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
+    {id:'LO18',n:'Corrupt a Cabinet Minister',e:10,c:6560,x:123,lc:0.11,li:'compromising_photos',req:'pistol',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'IV. Empire Builder',jobs:[
-    {id:'LO19',n:'Control the City of London Banks',e:16,c:14400,x:285,lc:0.03,li:'diamond_ring',req:'forged_passport',d:'High-stakes criminal enterprise'},
-    {id:'LO20',n:'Run European Drug Distribution',e:17,c:16200,x:315,lc:0.03,li:'drug_lord_crown',req:'body_armor',d:'High-stakes criminal enterprise'},
-    {id:'LO21',n:'Own the House of Lords',e:16,c:15300,x:300,lc:0.03,li:'ghost_protocol',req:'ak47',d:'High-stakes criminal enterprise'},
-    {id:'LO22',n:'Control the Arms Export Industry',e:18,c:18000,x:337,lc:0.03,li:'british_rifle',req:'forged_passport',d:'High-stakes criminal enterprise'},
-    {id:'LO23',n:'Take Over Canary Wharf',e:17,c:17100,x:322,lc:0.03,li:'offshore_account',req:'tommy_gun',d:'High-stakes criminal enterprise'}
+    {id:'LO19',n:'Control the City of London Banks',e:16,c:14400,x:285,lc:0.08,li:'diamond_ring',req:'forged_passport',d:'High-stakes criminal enterprise'},
+    {id:'LO20',n:'Run European Drug Distribution',e:17,c:16200,x:315,lc:0.08,li:'drug_lord_crown',req:'body_armor',d:'High-stakes criminal enterprise'},
+    {id:'LO21',n:'Own the House of Lords',e:16,c:15300,x:300,lc:0.08,li:'ghost_protocol',req:'ak47',d:'High-stakes criminal enterprise'},
+    {id:'LO22',n:'Control the Arms Export Industry',e:18,c:18000,x:337,lc:0.08,li:'british_rifle',req:'forged_passport',d:'High-stakes criminal enterprise'},
+    {id:'LO23',n:'Take Over Canary Wharf',e:17,c:17100,x:322,lc:0.08,li:'offshore_account',req:'tommy_gun',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'V. Lord of London',jobs:[
-    {id:'LO24',n:'Own the Crown Jewels Heist',e:22,c:26600,x:476,lc:0.03,li:'ghost_protocol',req:'tommy_gun',d:'High-stakes criminal enterprise'},
-    {id:'LO25',n:'Control All of Europe',e:26,c:36100,x:578,lc:0.025,li:'don_ring',req:'sniper_rifle',d:'High-stakes criminal enterprise'},
-    {id:'LO26',n:'Infiltrate the Royal Family',e:28,c:41800,x:646,lc:0.025,li:'papal_signet',req:'rpg_launcher',d:'High-stakes criminal enterprise'},
-    {id:'LO27',n:'The Kray Legacy',e:30,c:49400,x:714,lc:0.025,li:'golden_ak',req:'sniper_rifle',d:'High-stakes criminal enterprise'},
-    {id:'LO28',n:'British Empire Reborn',e:32,c:57000,x:782,lc:0.025,li:'world_don_crown',req:'ghost_protocol',d:'High-stakes criminal enterprise'}
+    {id:'LO24',n:'Own the Crown Jewels Heist',e:22,c:26600,x:476,lc:0.08,li:'ghost_protocol',req:'tommy_gun',d:'High-stakes criminal enterprise'},
+    {id:'LO25',n:'Control All of Europe',e:26,c:36100,x:578,lc:0.06,li:'don_ring',req:'sniper_rifle',d:'High-stakes criminal enterprise'},
+    {id:'LO26',n:'Infiltrate the Royal Family',e:28,c:41800,x:646,lc:0.06,li:'papal_signet',req:'rpg_launcher',d:'High-stakes criminal enterprise'},
+    {id:'LO27',n:'The Kray Legacy',e:30,c:49400,x:714,lc:0.06,li:'golden_ak',req:'sniper_rifle',d:'High-stakes criminal enterprise'},
+    {id:'LO28',n:'British Empire Reborn',e:32,c:57000,x:782,lc:0.06,li:'world_don_crown',req:'ghost_protocol',d:'High-stakes criminal enterprise'}
   ]},
 ],
 paris:[
   {tier:'I. Parisian Underground',jobs:[
-    {id:'PA01',n:'Pickpocket at the Louvre',e:2,c:720,x:13,lc:0.06,li:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'PA02',n:'Run a Montmartre Con',e:3,c:1050,x:22,lc:0.06,li:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'PA03',n:'Sell Fake Designer Goods',e:2,c:660,x:12,lc:0.06,li:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'PA04',n:'Burgle the Marais District',e:3,c:1120,x:23,lc:0.06,li:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'PA05',n:'Extort Cafe Owners',e:2,c:600,x:12,lc:0.06,li:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'PA06',n:'Run an Illegal Cabaret',e:3,c:979,x:21,lc:0.06,li:'entertainer_contract',d:'High-stakes criminal enterprise'}
+    {id:'PA01',n:'Pickpocket at the Louvre',e:2,c:720,x:13,lc:0.18,li:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'PA02',n:'Run a Montmartre Con',e:3,c:1050,x:22,lc:0.18,li:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'PA03',n:'Sell Fake Designer Goods',e:2,c:660,x:12,lc:0.18,li:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'PA04',n:'Burgle the Marais District',e:3,c:1120,x:23,lc:0.18,li:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'PA05',n:'Extort Cafe Owners',e:2,c:600,x:12,lc:0.18,li:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'PA06',n:'Run an Illegal Cabaret',e:3,c:979,x:21,lc:0.18,li:'entertainer_contract',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'II. Parisian Don',jobs:[
-    {id:'PA07',n:'Control the Banlieue Drug Trade',e:6,c:3200,x:69,lc:0.05,li:'kevlar_gloves',req:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'PA08',n:'Run the Art Forgery Ring',e:7,c:3840,x:78,lc:0.05,li:'stolen_masterpiece',req:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'PA09',n:'Extort the Fashion Houses',e:7,c:4000,x:81,lc:0.05,li:'kevlar_gloves',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'PA10',n:'Smuggle Through Charles de Gaulle',e:6,c:3360,x:72,lc:0.05,li:'pistol',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'PA11',n:'Bribe the Gendarmerie',e:7,c:3600,x:75,lc:0.05,li:'fbi_badge',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'PA12',n:'Control the Wine Fraud Network',e:6,c:3040,x:66,lc:0.05,li:'kevlar_gloves',req:'ski_mask',d:'High-stakes criminal enterprise'}
+    {id:'PA07',n:'Control the Banlieue Drug Trade',e:6,c:3200,x:69,lc:0.14,li:'kevlar_gloves',req:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'PA08',n:'Run the Art Forgery Ring',e:7,c:3840,x:78,lc:0.14,li:'stolen_masterpiece',req:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'PA09',n:'Extort the Fashion Houses',e:7,c:4000,x:81,lc:0.14,li:'kevlar_gloves',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'PA10',n:'Smuggle Through Charles de Gaulle',e:6,c:3360,x:72,lc:0.14,li:'pistol',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'PA11',n:'Bribe the Gendarmerie',e:7,c:3600,x:75,lc:0.14,li:'fbi_badge',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'PA12',n:'Control the Wine Fraud Network',e:6,c:3040,x:66,lc:0.14,li:'kevlar_gloves',req:'ski_mask',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'III. French Connection',jobs:[
-    {id:'PA13',n:'Run the Heroin Pipeline',e:10,c:6800,x:126,lc:0.04,li:'tommy_gun',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
-    {id:'PA14',n:'Take Over the Corsican Mafia',e:11,c:8550,x:172,lc:0.04,li:'corsican_blade',req:'police_scanner',d:'High-stakes criminal enterprise'},
-    {id:'PA15',n:'Control the Riviera Casinos',e:10,c:6400,x:120,lc:0.04,li:'forged_passport',req:'fake_rolex',d:'High-stakes criminal enterprise'},
-    {id:'PA16',n:'Infiltrate the DGSE',e:11,c:9000,x:180,lc:0.04,li:'fbi_badge',req:'fake_rolex',d:'High-stakes criminal enterprise'},
-    {id:'PA17',n:'Own the Champagne Trade',e:9,c:6000,x:114,lc:0.04,li:'tommy_gun',req:'combat_knife',d:'High-stakes criminal enterprise'},
-    {id:'PA18',n:'Run the Monaco Heist',e:10,c:7200,x:132,lc:0.04,li:'uncut_diamonds',req:'fake_rolex',d:'High-stakes criminal enterprise'}
+    {id:'PA13',n:'Run the Heroin Pipeline',e:10,c:6800,x:126,lc:0.11,li:'tommy_gun',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
+    {id:'PA14',n:'Take Over the Corsican Mafia',e:11,c:8550,x:172,lc:0.11,li:'corsican_blade',req:'police_scanner',d:'High-stakes criminal enterprise'},
+    {id:'PA15',n:'Control the Riviera Casinos',e:10,c:6400,x:120,lc:0.11,li:'forged_passport',req:'fake_rolex',d:'High-stakes criminal enterprise'},
+    {id:'PA16',n:'Infiltrate the DGSE',e:11,c:9000,x:180,lc:0.11,li:'fbi_badge',req:'fake_rolex',d:'High-stakes criminal enterprise'},
+    {id:'PA17',n:'Own the Champagne Trade',e:9,c:6000,x:114,lc:0.11,li:'tommy_gun',req:'combat_knife',d:'High-stakes criminal enterprise'},
+    {id:'PA18',n:'Run the Monaco Heist',e:10,c:7200,x:132,lc:0.11,li:'uncut_diamonds',req:'fake_rolex',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'IV. Continental Boss',jobs:[
-    {id:'PA19',n:'Control the European Drug Routes',e:16,c:15300,x:300,lc:0.03,li:'drug_lord_crown',req:'grenade',d:'High-stakes criminal enterprise'},
-    {id:'PA20',n:'Own the EU Parliament Members',e:17,c:17100,x:330,lc:0.03,li:'offshore_account',req:'body_armor',d:'High-stakes criminal enterprise'},
-    {id:'PA21',n:'Run the Mediterranean Smuggling',e:16,c:16200,x:315,lc:0.03,li:'briefcase_of_cash',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
-    {id:'PA22',n:'Take Over the French Banking System',e:18,c:18900,x:360,lc:0.03,li:'offshore_account',req:'body_armor',d:'High-stakes criminal enterprise'},
-    {id:'PA23',n:'Control the Nuclear Industry',e:17,c:18000,x:345,lc:0.03,li:'sniper_rifle',req:'night_vision',d:'High-stakes criminal enterprise'}
+    {id:'PA19',n:'Control the European Drug Routes',e:16,c:15300,x:300,lc:0.08,li:'drug_lord_crown',req:'grenade',d:'High-stakes criminal enterprise'},
+    {id:'PA20',n:'Own the EU Parliament Members',e:17,c:17100,x:330,lc:0.08,li:'offshore_account',req:'body_armor',d:'High-stakes criminal enterprise'},
+    {id:'PA21',n:'Run the Mediterranean Smuggling',e:16,c:16200,x:315,lc:0.08,li:'briefcase_of_cash',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
+    {id:'PA22',n:'Take Over the French Banking System',e:18,c:18900,x:360,lc:0.08,li:'offshore_account',req:'body_armor',d:'High-stakes criminal enterprise'},
+    {id:'PA23',n:'Control the Nuclear Industry',e:17,c:18000,x:345,lc:0.08,li:'sniper_rifle',req:'night_vision',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'V. Emperor of Paris',jobs:[
-    {id:'PA24',n:'Unite the European Families',e:22,c:26600,x:476,lc:0.03,li:'don_ring',req:'grenade',d:'High-stakes criminal enterprise'},
-    {id:'PA25',n:'Own the European Union',e:26,c:36100,x:578,lc:0.025,li:'golden_ak',req:'rpg_launcher',d:'High-stakes criminal enterprise'},
-    {id:'PA26',n:'Control All Continental Trade',e:28,c:42750,x:646,lc:0.025,li:'crown_jewel',req:'sniper_rifle',d:'High-stakes criminal enterprise'},
-    {id:'PA27',n:'The Napoleon Legacy',e:30,c:51300,x:731,lc:0.025,li:'golden_ak',req:'military_intel',d:'High-stakes criminal enterprise'},
-    {id:'PA28',n:'LEmpire',e:32,c:58900,x:799,lc:0.025,li:'world_don_crown',req:'military_intel',d:'High-stakes criminal enterprise'}
+    {id:'PA24',n:'Unite the European Families',e:22,c:26600,x:476,lc:0.08,li:'don_ring',req:'grenade',d:'High-stakes criminal enterprise'},
+    {id:'PA25',n:'Own the European Union',e:26,c:36100,x:578,lc:0.06,li:'golden_ak',req:'rpg_launcher',d:'High-stakes criminal enterprise'},
+    {id:'PA26',n:'Control All Continental Trade',e:28,c:42750,x:646,lc:0.06,li:'crown_jewel',req:'sniper_rifle',d:'High-stakes criminal enterprise'},
+    {id:'PA27',n:'The Napoleon Legacy',e:30,c:51300,x:731,lc:0.06,li:'golden_ak',req:'military_intel',d:'High-stakes criminal enterprise'},
+    {id:'PA28',n:'LEmpire',e:32,c:58900,x:799,lc:0.06,li:'world_don_crown',req:'military_intel',d:'High-stakes criminal enterprise'}
   ]},
 ],
 moscow:[
   {tier:'I. Bratva',jobs:[
-    {id:'MO01',n:'Shake Down Market Vendors',e:2,c:900,x:14,lc:0.06,li:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'MO02',n:'Run a Vodka Smuggling Ring',e:3,c:1260,x:24,lc:0.06,li:'burner_phone',d:'High-stakes criminal enterprise'},
-    {id:'MO03',n:'Extort the Metro Merchants',e:2,c:780,x:13,lc:0.06,li:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'MO04',n:'Rob Oligarch Apartments',e:4,c:1540,x:27,lc:0.06,li:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'MO05',n:'Run Underground Card Games',e:3,c:1120,x:22,lc:0.06,li:'burner_phone',d:'High-stakes criminal enterprise'},
-    {id:'MO06',n:'Sell Black Market Electronics',e:3,c:1190,x:23,lc:0.06,li:'brass_knuckles',d:'High-stakes criminal enterprise'}
+    {id:'MO01',n:'Shake Down Market Vendors',e:2,c:900,x:14,lc:0.18,li:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'MO02',n:'Run a Vodka Smuggling Ring',e:3,c:1260,x:24,lc:0.18,li:'burner_phone',d:'High-stakes criminal enterprise'},
+    {id:'MO03',n:'Extort the Metro Merchants',e:2,c:780,x:13,lc:0.18,li:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'MO04',n:'Rob Oligarch Apartments',e:4,c:1540,x:27,lc:0.18,li:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'MO05',n:'Run Underground Card Games',e:3,c:1120,x:22,lc:0.18,li:'burner_phone',d:'High-stakes criminal enterprise'},
+    {id:'MO06',n:'Sell Black Market Electronics',e:3,c:1190,x:23,lc:0.18,li:'brass_knuckles',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'II. Vor',jobs:[
-    {id:'MO07',n:'Control the Arms Bazaar',e:7,c:4000,x:81,lc:0.05,li:'pistol',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'MO08',n:'Run the Protection Racket',e:6,c:3360,x:69,lc:0.05,li:'combat_knife',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'MO09',n:'Smuggle Gold from Siberia',e:7,c:4400,x:87,lc:0.05,li:'gold_bar',req:'tire_iron',d:'High-stakes criminal enterprise'},
-    {id:'MO10',n:'Bribe FSB Officers',e:8,c:4800,x:93,lc:0.05,li:'fbi_badge',req:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'MO11',n:'Control the Vodka Trade',e:6,c:3600,x:72,lc:0.05,li:'pistol',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'MO12',n:'Run the Human Trafficking Route',e:7,c:4160,x:84,lc:0.05,li:'switchblade',req:'burner_phone',d:'High-stakes criminal enterprise'}
+    {id:'MO07',n:'Control the Arms Bazaar',e:7,c:4000,x:81,lc:0.14,li:'pistol',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'MO08',n:'Run the Protection Racket',e:6,c:3360,x:69,lc:0.14,li:'combat_knife',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'MO09',n:'Smuggle Gold from Siberia',e:7,c:4400,x:87,lc:0.14,li:'gold_bar',req:'tire_iron',d:'High-stakes criminal enterprise'},
+    {id:'MO10',n:'Bribe FSB Officers',e:8,c:4800,x:93,lc:0.14,li:'fbi_badge',req:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'MO11',n:'Control the Vodka Trade',e:6,c:3600,x:72,lc:0.14,li:'pistol',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'MO12',n:'Run the Human Trafficking Route',e:7,c:4160,x:84,lc:0.14,li:'switchblade',req:'burner_phone',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'III. Pakhan',jobs:[
-    {id:'MO13',n:'Take Over the Oil Pipeline',e:11,c:9000,x:180,lc:0.04,li:'body_armor',req:'combat_knife',d:'High-stakes criminal enterprise'},
-    {id:'MO14',n:'Control Moscow Real Estate',e:10,c:7200,x:132,lc:0.04,li:'night_vision',req:'switchblade',d:'High-stakes criminal enterprise'},
-    {id:'MO15',n:'Run the Oligarch Extortion Ring',e:11,c:9450,x:187,lc:0.04,li:'compromising_photos',req:'combat_knife',d:'High-stakes criminal enterprise'},
-    {id:'MO16',n:'Infiltrate the Kremlin Guard',e:12,c:10800,x:210,lc:0.04,li:'fbi_badge',req:'switchblade',d:'High-stakes criminal enterprise'},
-    {id:'MO17',n:'Own the Trans-Siberian Route',e:10,c:7600,x:138,lc:0.04,li:'forged_passport',req:'fake_rolex',d:'High-stakes criminal enterprise'},
-    {id:'MO18',n:'Control the Cybercrime Network',e:11,c:9900,x:195,lc:0.04,li:'hacking_rig',req:'combat_knife',d:'High-stakes criminal enterprise'}
+    {id:'MO13',n:'Take Over the Oil Pipeline',e:11,c:9000,x:180,lc:0.11,li:'body_armor',req:'combat_knife',d:'High-stakes criminal enterprise'},
+    {id:'MO14',n:'Control Moscow Real Estate',e:10,c:7200,x:132,lc:0.11,li:'night_vision',req:'switchblade',d:'High-stakes criminal enterprise'},
+    {id:'MO15',n:'Run the Oligarch Extortion Ring',e:11,c:9450,x:187,lc:0.11,li:'compromising_photos',req:'combat_knife',d:'High-stakes criminal enterprise'},
+    {id:'MO16',n:'Infiltrate the Kremlin Guard',e:12,c:10800,x:210,lc:0.11,li:'fbi_badge',req:'switchblade',d:'High-stakes criminal enterprise'},
+    {id:'MO17',n:'Own the Trans-Siberian Route',e:10,c:7600,x:138,lc:0.11,li:'forged_passport',req:'fake_rolex',d:'High-stakes criminal enterprise'},
+    {id:'MO18',n:'Control the Cybercrime Network',e:11,c:9900,x:195,lc:0.11,li:'hacking_rig',req:'combat_knife',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'IV. Krestniy Otets',jobs:[
-    {id:'MO19',n:'Own the Russian Energy Sector',e:17,c:18000,x:345,lc:0.03,li:'military_intel',req:'night_vision',d:'High-stakes criminal enterprise'},
-    {id:'MO20',n:'Control the Nuclear Arsenal Access',e:18,c:19800,x:375,lc:0.03,li:'diamond_ring',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
-    {id:'MO21',n:'Run the Global Weapons Trade',e:17,c:18900,x:360,lc:0.03,li:'ak47',req:'body_armor',d:'High-stakes criminal enterprise'},
-    {id:'MO22',n:'Bribe the Presidentss Inner Circle',e:19,c:22500,x:405,lc:0.03,li:'compromising_photos',req:'grenade',d:'High-stakes criminal enterprise'},
-    {id:'MO23',n:'Take Over Gazprom',e:18,c:20700,x:390,lc:0.03,li:'offshore_account',req:'grenade',d:'High-stakes criminal enterprise'}
+    {id:'MO19',n:'Own the Russian Energy Sector',e:17,c:18000,x:345,lc:0.08,li:'military_intel',req:'night_vision',d:'High-stakes criminal enterprise'},
+    {id:'MO20',n:'Control the Nuclear Arsenal Access',e:18,c:19800,x:375,lc:0.08,li:'diamond_ring',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
+    {id:'MO21',n:'Run the Global Weapons Trade',e:17,c:18900,x:360,lc:0.08,li:'ak47',req:'body_armor',d:'High-stakes criminal enterprise'},
+    {id:'MO22',n:'Bribe the Presidentss Inner Circle',e:19,c:22500,x:405,lc:0.08,li:'compromising_photos',req:'grenade',d:'High-stakes criminal enterprise'},
+    {id:'MO23',n:'Take Over Gazprom',e:18,c:20700,x:390,lc:0.08,li:'offshore_account',req:'grenade',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'V. Tsar of the Underworld',jobs:[
-    {id:'MO24',n:'Unite All Russian Mafia Families',e:24,c:30400,x:527,lc:0.03,li:'vor_crown',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
-    {id:'MO25',n:'Own the Kremlin',e:28,c:39900,x:629,lc:0.025,li:'blood_diamond',req:'diamond_ring',d:'High-stakes criminal enterprise'},
-    {id:'MO26',n:'Control the Arctic Resources',e:30,c:47500,x:714,lc:0.025,li:'nano_suit',req:'briefcase_of_cash',d:'High-stakes criminal enterprise'},
-    {id:'MO27',n:'The Putin Gambit',e:32,c:55100,x:782,lc:0.025,li:'quantum_key',req:'offshore_account',d:'High-stakes criminal enterprise'},
-    {id:'MO28',n:'Russian Empire Reborn',e:35,c:64600,x:850,lc:0.025,li:'world_don_crown',req:'diamond_ring',d:'High-stakes criminal enterprise'}
+    {id:'MO24',n:'Unite All Russian Mafia Families',e:24,c:30400,x:527,lc:0.08,li:'vor_crown',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
+    {id:'MO25',n:'Own the Kremlin',e:28,c:39900,x:629,lc:0.06,li:'blood_diamond',req:'diamond_ring',d:'High-stakes criminal enterprise'},
+    {id:'MO26',n:'Control the Arctic Resources',e:30,c:47500,x:714,lc:0.06,li:'nano_suit',req:'briefcase_of_cash',d:'High-stakes criminal enterprise'},
+    {id:'MO27',n:'The Putin Gambit',e:32,c:55100,x:782,lc:0.06,li:'quantum_key',req:'offshore_account',d:'High-stakes criminal enterprise'},
+    {id:'MO28',n:'Russian Empire Reborn',e:35,c:64600,x:850,lc:0.06,li:'world_don_crown',req:'diamond_ring',d:'High-stakes criminal enterprise'}
   ]},
 ],
 berlin:[
   {tier:'I. Underground',jobs:[
-    {id:'BE01',n:'Deal in Kreuzberg Clubs',e:2,c:960,x:15,lc:0.06,li:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'BE02',n:'Run a Counterfeit Euro Ring',e:3,c:1400,x:26,lc:0.06,li:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'BE03',n:'Steal from Museum Island',e:3,c:1540,x:27,lc:0.06,li:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'BE04',n:'Extort the Kebab Shops',e:2,c:900,x:14,lc:0.06,li:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'BE05',n:'Smuggle Through Checkpoint Charlie',e:3,c:1260,x:24,lc:0.06,li:'burner_phone',d:'High-stakes criminal enterprise'},
-    {id:'BE06',n:'Run Underground Raves',e:2,c:1020,x:15,lc:0.06,li:'entertainer_contract',d:'High-stakes criminal enterprise'}
+    {id:'BE01',n:'Deal in Kreuzberg Clubs',e:2,c:960,x:15,lc:0.18,li:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'BE02',n:'Run a Counterfeit Euro Ring',e:3,c:1400,x:26,lc:0.18,li:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'BE03',n:'Steal from Museum Island',e:3,c:1540,x:27,lc:0.18,li:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'BE04',n:'Extort the Kebab Shops',e:2,c:900,x:14,lc:0.18,li:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'BE05',n:'Smuggle Through Checkpoint Charlie',e:3,c:1260,x:24,lc:0.18,li:'burner_phone',d:'High-stakes criminal enterprise'},
+    {id:'BE06',n:'Run Underground Raves',e:2,c:1020,x:15,lc:0.18,li:'entertainer_contract',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'II. German Syndicate',jobs:[
-    {id:'BE07',n:'Control the Autobahn Smuggling',e:7,c:4400,x:87,lc:0.05,li:'combat_knife',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'BE08',n:'Run the Berlin Club Empire',e:7,c:4640,x:90,lc:0.05,li:'switchblade',req:'burner_phone',d:'High-stakes criminal enterprise'},
-    {id:'BE09',n:'Extort the Auto Industry',e:8,c:5200,x:99,lc:0.05,li:'pistol',req:'burner_phone',d:'High-stakes criminal enterprise'},
-    {id:'BE10',n:'Bribe the BND',e:8,c:5440,x:102,lc:0.05,li:'fbi_badge',req:'ski_mask',d:'High-stakes criminal enterprise'},
-    {id:'BE11',n:'Run the Eastern European Pipeline',e:7,c:4160,x:84,lc:0.05,li:'pistol',req:'ski_mask',d:'High-stakes criminal enterprise'},
-    {id:'BE12',n:'Control the Port of Hamburg',e:8,c:4960,x:94,lc:0.05,li:'switchblade',req:'lockpick_set',d:'High-stakes criminal enterprise'}
+    {id:'BE07',n:'Control the Autobahn Smuggling',e:7,c:4400,x:87,lc:0.14,li:'combat_knife',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'BE08',n:'Run the Berlin Club Empire',e:7,c:4640,x:90,lc:0.14,li:'switchblade',req:'burner_phone',d:'High-stakes criminal enterprise'},
+    {id:'BE09',n:'Extort the Auto Industry',e:8,c:5200,x:99,lc:0.14,li:'pistol',req:'burner_phone',d:'High-stakes criminal enterprise'},
+    {id:'BE10',n:'Bribe the BND',e:8,c:5440,x:102,lc:0.14,li:'fbi_badge',req:'ski_mask',d:'High-stakes criminal enterprise'},
+    {id:'BE11',n:'Run the Eastern European Pipeline',e:7,c:4160,x:84,lc:0.14,li:'pistol',req:'ski_mask',d:'High-stakes criminal enterprise'},
+    {id:'BE12',n:'Control the Port of Hamburg',e:8,c:4960,x:94,lc:0.14,li:'switchblade',req:'lockpick_set',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'III. European Power',jobs:[
-    {id:'BE13',n:'Take Over Deutsche Bank Operations',e:11,c:9900,x:195,lc:0.04,li:'bulletproof_vest',req:'police_scanner',d:'High-stakes criminal enterprise'},
-    {id:'BE14',n:'Control the EU Drug Trade',e:12,c:11700,x:225,lc:0.04,li:'body_armor',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
-    {id:'BE15',n:'Run the Balkans Arms Route',e:11,c:10350,x:202,lc:0.04,li:'ak47',req:'combat_knife',d:'High-stakes criminal enterprise'},
-    {id:'BE16',n:'Own the Bundesliga',e:11,c:10800,x:210,lc:0.04,li:'grenade',req:'police_scanner',d:'High-stakes criminal enterprise'},
-    {id:'BE17',n:'Infiltrate German Intelligence',e:12,c:12150,x:232,lc:0.04,li:'fbi_badge',req:'combat_knife',d:'High-stakes criminal enterprise'},
-    {id:'BE18',n:'Control the Rhine Shipping',e:11,c:10620,x:206,lc:0.04,li:'tommy_gun',req:'fake_rolex',d:'High-stakes criminal enterprise'}
+    {id:'BE13',n:'Take Over Deutsche Bank Operations',e:11,c:9900,x:195,lc:0.11,li:'bulletproof_vest',req:'police_scanner',d:'High-stakes criminal enterprise'},
+    {id:'BE14',n:'Control the EU Drug Trade',e:12,c:11700,x:225,lc:0.11,li:'body_armor',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
+    {id:'BE15',n:'Run the Balkans Arms Route',e:11,c:10350,x:202,lc:0.11,li:'ak47',req:'combat_knife',d:'High-stakes criminal enterprise'},
+    {id:'BE16',n:'Own the Bundesliga',e:11,c:10800,x:210,lc:0.11,li:'grenade',req:'police_scanner',d:'High-stakes criminal enterprise'},
+    {id:'BE17',n:'Infiltrate German Intelligence',e:12,c:12150,x:232,lc:0.11,li:'fbi_badge',req:'combat_knife',d:'High-stakes criminal enterprise'},
+    {id:'BE18',n:'Control the Rhine Shipping',e:11,c:10620,x:206,lc:0.11,li:'tommy_gun',req:'fake_rolex',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'IV. Continental Lord',jobs:[
-    {id:'BE19',n:'Own German Industry',e:18,c:19800,x:375,lc:0.03,li:'military_intel',req:'ak47',d:'High-stakes criminal enterprise'},
-    {id:'BE20',n:'Control the European Arms Trade',e:19,c:22500,x:412,lc:0.03,li:'rpg_launcher',req:'tommy_gun',d:'High-stakes criminal enterprise'},
-    {id:'BE21',n:'Run the EU Banking Fraud',e:18,c:20700,x:390,lc:0.03,li:'offshore_account',req:'night_vision',d:'High-stakes criminal enterprise'},
-    {id:'BE22',n:'Take Over the Bundestag',e:20,c:25200,x:450,lc:0.03,li:'diamond_ring',req:'grenade',d:'High-stakes criminal enterprise'},
-    {id:'BE23',n:'Control the Pharma Industry',e:19,c:23400,x:420,lc:0.03,li:'sniper_rifle',req:'body_armor',d:'High-stakes criminal enterprise'}
+    {id:'BE19',n:'Own German Industry',e:18,c:19800,x:375,lc:0.08,li:'military_intel',req:'ak47',d:'High-stakes criminal enterprise'},
+    {id:'BE20',n:'Control the European Arms Trade',e:19,c:22500,x:412,lc:0.08,li:'rpg_launcher',req:'tommy_gun',d:'High-stakes criminal enterprise'},
+    {id:'BE21',n:'Run the EU Banking Fraud',e:18,c:20700,x:390,lc:0.08,li:'offshore_account',req:'night_vision',d:'High-stakes criminal enterprise'},
+    {id:'BE22',n:'Take Over the Bundestag',e:20,c:25200,x:450,lc:0.08,li:'diamond_ring',req:'grenade',d:'High-stakes criminal enterprise'},
+    {id:'BE23',n:'Control the Pharma Industry',e:19,c:23400,x:420,lc:0.08,li:'sniper_rifle',req:'body_armor',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'V. Kaiser',jobs:[
-    {id:'BE24',n:'Unite the European Mafias',e:26,c:36100,x:595,lc:0.03,li:'diamond_ring',req:'ak47',d:'High-stakes criminal enterprise'},
-    {id:'BE25',n:'Own the EU',e:30,c:47500,x:714,lc:0.025,li:'don_ring',req:'rpg_launcher',d:'High-stakes criminal enterprise'},
-    {id:'BE26',n:'Control Continental Banking',e:32,c:55100,x:782,lc:0.025,li:'assassination_kit',req:'diamond_ring',d:'High-stakes criminal enterprise'},
-    {id:'BE27',n:'The Fourth Reich of Crime',e:35,c:64600,x:850,lc:0.025,li:'don_ring',req:'diamond_ring',d:'High-stakes criminal enterprise'},
-    {id:'BE28',n:'European Emperor',e:38,c:74100,x:935,lc:0.025,li:'blood_diamond',req:'rpg_launcher',d:'High-stakes criminal enterprise'}
+    {id:'BE24',n:'Unite the European Mafias',e:26,c:36100,x:595,lc:0.08,li:'diamond_ring',req:'ak47',d:'High-stakes criminal enterprise'},
+    {id:'BE25',n:'Own the EU',e:30,c:47500,x:714,lc:0.06,li:'don_ring',req:'rpg_launcher',d:'High-stakes criminal enterprise'},
+    {id:'BE26',n:'Control Continental Banking',e:32,c:55100,x:782,lc:0.06,li:'assassination_kit',req:'diamond_ring',d:'High-stakes criminal enterprise'},
+    {id:'BE27',n:'The Fourth Reich of Crime',e:35,c:64600,x:850,lc:0.06,li:'don_ring',req:'diamond_ring',d:'High-stakes criminal enterprise'},
+    {id:'BE28',n:'European Emperor',e:38,c:74100,x:935,lc:0.06,li:'blood_diamond',req:'rpg_launcher',d:'High-stakes criminal enterprise'}
   ]},
 ],
 dubai:[
   {tier:'I. Oil Money',jobs:[
-    {id:'DU01',n:'Scam Rich Tourists',e:2,c:1200,x:17,lc:0.06,li:'ski_mask',d:'High-stakes criminal enterprise'},
-    {id:'DU02',n:'Run a Gold Smuggling Ring',e:3,c:1750,x:30,lc:0.06,li:'gold_bar',d:'High-stakes criminal enterprise'},
-    {id:'DU03',n:'Sell Fake Luxury Goods',e:2,c:1080,x:16,lc:0.06,li:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'DU04',n:'Extort Construction Workers',e:2,c:1020,x:15,lc:0.06,li:'tire_iron',d:'High-stakes criminal enterprise'},
-    {id:'DU05',n:'Run an Underground Fight Club',e:3,c:1540,x:27,lc:0.06,li:'tire_iron',d:'High-stakes criminal enterprise'},
-    {id:'DU06',n:'Bribe the Port Authority',e:3,c:1680,x:29,lc:0.06,li:'brass_pipe',d:'High-stakes criminal enterprise'}
+    {id:'DU01',n:'Scam Rich Tourists',e:2,c:1200,x:17,lc:0.18,li:'ski_mask',d:'High-stakes criminal enterprise'},
+    {id:'DU02',n:'Run a Gold Smuggling Ring',e:3,c:1750,x:30,lc:0.18,li:'gold_bar',d:'High-stakes criminal enterprise'},
+    {id:'DU03',n:'Sell Fake Luxury Goods',e:2,c:1080,x:16,lc:0.18,li:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'DU04',n:'Extort Construction Workers',e:2,c:1020,x:15,lc:0.18,li:'tire_iron',d:'High-stakes criminal enterprise'},
+    {id:'DU05',n:'Run an Underground Fight Club',e:3,c:1540,x:27,lc:0.18,li:'tire_iron',d:'High-stakes criminal enterprise'},
+    {id:'DU06',n:'Bribe the Port Authority',e:3,c:1680,x:29,lc:0.18,li:'brass_pipe',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'II. Desert Syndicate',jobs:[
-    {id:'DU07',n:'Control the Gold Souk',e:7,c:4800,x:93,lc:0.05,li:'police_scanner',req:'burner_phone',d:'High-stakes criminal enterprise'},
-    {id:'DU08',n:'Run the Oil Futures Scam',e:8,c:5600,x:105,lc:0.05,li:'kevlar_gloves',req:'ski_mask',d:'High-stakes criminal enterprise'},
-    {id:'DU09',n:'Extort the Real Estate Developers',e:7,c:5200,x:99,lc:0.05,li:'offshore_account',req:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'DU10',n:'Smuggle Weapons to Yemen',e:8,c:6000,x:111,lc:0.05,li:'ak47',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'DU11',n:'Control the Luxury Car Trade',e:7,c:4960,x:96,lc:0.05,li:'switchblade',req:'tire_iron',d:'High-stakes criminal enterprise'},
-    {id:'DU12',n:'Run the Hawala Network',e:8,c:5760,x:106,lc:0.05,li:'kevlar_gloves',req:'brass_pipe',d:'High-stakes criminal enterprise'}
+    {id:'DU07',n:'Control the Gold Souk',e:7,c:4800,x:93,lc:0.14,li:'police_scanner',req:'burner_phone',d:'High-stakes criminal enterprise'},
+    {id:'DU08',n:'Run the Oil Futures Scam',e:8,c:5600,x:105,lc:0.14,li:'kevlar_gloves',req:'ski_mask',d:'High-stakes criminal enterprise'},
+    {id:'DU09',n:'Extort the Real Estate Developers',e:7,c:5200,x:99,lc:0.14,li:'offshore_account',req:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'DU10',n:'Smuggle Weapons to Yemen',e:8,c:6000,x:111,lc:0.14,li:'ak47',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'DU11',n:'Control the Luxury Car Trade',e:7,c:4960,x:96,lc:0.14,li:'switchblade',req:'tire_iron',d:'High-stakes criminal enterprise'},
+    {id:'DU12',n:'Run the Hawala Network',e:8,c:5760,x:106,lc:0.14,li:'kevlar_gloves',req:'brass_pipe',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'III. Gulf Power',jobs:[
-    {id:'DU13',n:'Take Over the Free Zone',e:12,c:12600,x:240,lc:0.04,li:'bulletproof_vest',req:'switchblade',d:'High-stakes criminal enterprise'},
-    {id:'DU14',n:'Control the Oil Tanker Routes',e:13,c:14400,x:270,lc:0.04,li:'ak47',req:'police_scanner',d:'High-stakes criminal enterprise'},
-    {id:'DU15',n:'Run the Diamond Pipeline',e:12,c:13500,x:255,lc:0.04,li:'uncut_diamonds',req:'pistol',d:'High-stakes criminal enterprise'},
-    {id:'DU16',n:'Own the Emirates Airline Board',e:13,c:14850,x:277,lc:0.04,li:'grenade',req:'police_scanner',d:'High-stakes criminal enterprise'},
-    {id:'DU17',n:'Infiltrate the Royal Guard',e:14,c:16200,x:300,lc:0.04,li:'body_armor',req:'fake_rolex',d:'High-stakes criminal enterprise'},
-    {id:'DU18',n:'Control the Crypto Exchange',e:12,c:13050,x:247,lc:0.04,li:'crypto_wallet',req:'kevlar_gloves',d:'High-stakes criminal enterprise'}
+    {id:'DU13',n:'Take Over the Free Zone',e:12,c:12600,x:240,lc:0.11,li:'bulletproof_vest',req:'switchblade',d:'High-stakes criminal enterprise'},
+    {id:'DU14',n:'Control the Oil Tanker Routes',e:13,c:14400,x:270,lc:0.11,li:'ak47',req:'police_scanner',d:'High-stakes criminal enterprise'},
+    {id:'DU15',n:'Run the Diamond Pipeline',e:12,c:13500,x:255,lc:0.11,li:'uncut_diamonds',req:'pistol',d:'High-stakes criminal enterprise'},
+    {id:'DU16',n:'Own the Emirates Airline Board',e:13,c:14850,x:277,lc:0.11,li:'grenade',req:'police_scanner',d:'High-stakes criminal enterprise'},
+    {id:'DU17',n:'Infiltrate the Royal Guard',e:14,c:16200,x:300,lc:0.11,li:'body_armor',req:'fake_rolex',d:'High-stakes criminal enterprise'},
+    {id:'DU18',n:'Control the Crypto Exchange',e:12,c:13050,x:247,lc:0.11,li:'crypto_wallet',req:'kevlar_gloves',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'IV. Gulf Emperor',jobs:[
-    {id:'DU19',n:'Own the OPEC Decision Makers',e:19,c:23400,x:420,lc:0.03,li:'military_intel',req:'grenade',d:'High-stakes criminal enterprise'},
-    {id:'DU20',n:'Control the Suez Canal',e:20,c:27000,x:465,lc:0.03,li:'offshore_account',req:'night_vision',d:'High-stakes criminal enterprise'},
-    {id:'DU21',n:'Run the Global Gold Trade',e:19,c:25200,x:435,lc:0.03,li:'gold_bar',req:'ak47',d:'High-stakes criminal enterprise'},
-    {id:'DU22',n:'Take Over the Sovereign Wealth Fund',e:21,c:32300,x:578,lc:0.03,li:'offshore_account',req:'ak47',d:'High-stakes criminal enterprise'},
-    {id:'DU23',n:'Own the Arms Trade to Africa',e:20,c:28800,x:480,lc:0.03,li:'sniper_rifle',req:'grenade',d:'High-stakes criminal enterprise'}
+    {id:'DU19',n:'Own the OPEC Decision Makers',e:19,c:23400,x:420,lc:0.08,li:'military_intel',req:'grenade',d:'High-stakes criminal enterprise'},
+    {id:'DU20',n:'Control the Suez Canal',e:20,c:27000,x:465,lc:0.08,li:'offshore_account',req:'night_vision',d:'High-stakes criminal enterprise'},
+    {id:'DU21',n:'Run the Global Gold Trade',e:19,c:25200,x:435,lc:0.08,li:'gold_bar',req:'ak47',d:'High-stakes criminal enterprise'},
+    {id:'DU22',n:'Take Over the Sovereign Wealth Fund',e:21,c:32300,x:578,lc:0.08,li:'offshore_account',req:'ak47',d:'High-stakes criminal enterprise'},
+    {id:'DU23',n:'Own the Arms Trade to Africa',e:20,c:28800,x:480,lc:0.08,li:'sniper_rifle',req:'grenade',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'V. Sultan of Crime',jobs:[
-    {id:'DU24',n:'Unite the Gulf Cartels',e:28,c:42750,x:663,lc:0.03,li:'briefcase_of_cash',req:'night_vision',d:'High-stakes criminal enterprise'},
-    {id:'DU25',n:'Own the Middle East',e:32,c:55100,x:782,lc:0.025,li:'golden_ak',req:'ghost_protocol',d:'High-stakes criminal enterprise'},
-    {id:'DU26',n:'Control Global Oil Prices',e:35,c:64600,x:867,lc:0.025,li:'crown_jewel',req:'military_intel',d:'High-stakes criminal enterprise'},
-    {id:'DU27',n:'The Sheikh Legacy',e:38,c:76000,x:935,lc:0.025,li:'assassination_kit',req:'offshore_account',d:'High-stakes criminal enterprise'},
-    {id:'DU28',n:'Desert Empire',e:40,c:85500,x:1020,lc:0.025,li:'world_don_crown',req:'briefcase_of_cash',d:'High-stakes criminal enterprise'}
+    {id:'DU24',n:'Unite the Gulf Cartels',e:28,c:42750,x:663,lc:0.08,li:'briefcase_of_cash',req:'night_vision',d:'High-stakes criminal enterprise'},
+    {id:'DU25',n:'Own the Middle East',e:32,c:55100,x:782,lc:0.06,li:'golden_ak',req:'ghost_protocol',d:'High-stakes criminal enterprise'},
+    {id:'DU26',n:'Control Global Oil Prices',e:35,c:64600,x:867,lc:0.06,li:'crown_jewel',req:'military_intel',d:'High-stakes criminal enterprise'},
+    {id:'DU27',n:'The Sheikh Legacy',e:38,c:76000,x:935,lc:0.06,li:'assassination_kit',req:'offshore_account',d:'High-stakes criminal enterprise'},
+    {id:'DU28',n:'Desert Empire',e:40,c:85500,x:1020,lc:0.06,li:'world_don_crown',req:'briefcase_of_cash',d:'High-stakes criminal enterprise'}
   ]},
 ],
 istanbul:[
   {tier:'I. Bosphorus',jobs:[
-    {id:'IS01',n:'Sell Fake Antiquities',e:2,c:1320,x:18,lc:0.06,li:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'IS02',n:'Run the Carpet Scam',e:2,c:1200,x:17,lc:0.06,li:'ski_mask',d:'High-stakes criminal enterprise'},
-    {id:'IS03',n:'Smuggle Through the Bazaar',e:3,c:1819,x:30,lc:0.06,li:'ski_mask',d:'High-stakes criminal enterprise'},
-    {id:'IS04',n:'Extort the Ferry Operators',e:3,c:1680,x:29,lc:0.06,li:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'IS05',n:'Run Underground Gambling',e:3,c:1750,x:29,lc:0.06,li:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'IS06',n:'Pickpocket in Sultanahmet',e:2,c:1260,x:18,lc:0.06,li:'brass_knuckles',d:'High-stakes criminal enterprise'}
+    {id:'IS01',n:'Sell Fake Antiquities',e:2,c:1320,x:18,lc:0.18,li:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'IS02',n:'Run the Carpet Scam',e:2,c:1200,x:17,lc:0.18,li:'ski_mask',d:'High-stakes criminal enterprise'},
+    {id:'IS03',n:'Smuggle Through the Bazaar',e:3,c:1819,x:30,lc:0.18,li:'ski_mask',d:'High-stakes criminal enterprise'},
+    {id:'IS04',n:'Extort the Ferry Operators',e:3,c:1680,x:29,lc:0.18,li:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'IS05',n:'Run Underground Gambling',e:3,c:1750,x:29,lc:0.18,li:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'IS06',n:'Pickpocket in Sultanahmet',e:2,c:1260,x:18,lc:0.18,li:'brass_knuckles',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'II. Turkish Syndicate',jobs:[
-    {id:'IS07',n:'Control the Heroin Route',e:7,c:5200,x:99,lc:0.05,li:'police_scanner',req:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'IS08',n:'Run the Bosphorus Smuggling',e:8,c:6000,x:111,lc:0.05,li:'fake_rolex',req:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'IS09',n:'Extort the Grand Bazaar',e:7,c:5440,x:102,lc:0.05,li:'ottoman_blade',req:'tire_iron',d:'High-stakes criminal enterprise'},
-    {id:'IS10',n:'Bribe the Jandarma',e:8,c:5760,x:106,lc:0.05,li:'switchblade',req:'ski_mask',d:'High-stakes criminal enterprise'},
-    {id:'IS11',n:'Control the Migrant Pipeline',e:7,c:4960,x:96,lc:0.05,li:'combat_knife',req:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'IS12',n:'Run the Counterfeit Goods Trade',e:8,c:6240,x:114,lc:0.05,li:'kevlar_gloves',req:'burner_phone',d:'High-stakes criminal enterprise'}
+    {id:'IS07',n:'Control the Heroin Route',e:7,c:5200,x:99,lc:0.14,li:'police_scanner',req:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'IS08',n:'Run the Bosphorus Smuggling',e:8,c:6000,x:111,lc:0.14,li:'fake_rolex',req:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'IS09',n:'Extort the Grand Bazaar',e:7,c:5440,x:102,lc:0.14,li:'ottoman_blade',req:'tire_iron',d:'High-stakes criminal enterprise'},
+    {id:'IS10',n:'Bribe the Jandarma',e:8,c:5760,x:106,lc:0.14,li:'switchblade',req:'ski_mask',d:'High-stakes criminal enterprise'},
+    {id:'IS11',n:'Control the Migrant Pipeline',e:7,c:4960,x:96,lc:0.14,li:'combat_knife',req:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'IS12',n:'Run the Counterfeit Goods Trade',e:8,c:6240,x:114,lc:0.14,li:'kevlar_gloves',req:'burner_phone',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'III. Ottoman Power',jobs:[
-    {id:'IS13',n:'Take Over the Strait Traffic',e:12,c:13500,x:255,lc:0.04,li:'grenade',req:'pistol',d:'High-stakes criminal enterprise'},
-    {id:'IS14',n:'Control the Arms to Syria',e:13,c:15300,x:285,lc:0.04,li:'ak47',req:'pistol',d:'High-stakes criminal enterprise'},
-    {id:'IS15',n:'Run the Kurdish Smuggling Route',e:12,c:13950,x:262,lc:0.04,li:'tommy_gun',req:'pistol',d:'High-stakes criminal enterprise'},
-    {id:'IS16',n:'Own the Turkish Military Contracts',e:13,c:15750,x:292,lc:0.04,li:'tommy_gun',req:'pistol',d:'High-stakes criminal enterprise'},
-    {id:'IS17',n:'Infiltrate MIT Intelligence',e:14,c:17100,x:315,lc:0.04,li:'fbi_badge',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
-    {id:'IS18',n:'Control the Refugee Trade',e:12,c:14400,x:270,lc:0.04,li:'ak47',req:'pistol',d:'High-stakes criminal enterprise'}
+    {id:'IS13',n:'Take Over the Strait Traffic',e:12,c:13500,x:255,lc:0.11,li:'grenade',req:'pistol',d:'High-stakes criminal enterprise'},
+    {id:'IS14',n:'Control the Arms to Syria',e:13,c:15300,x:285,lc:0.11,li:'ak47',req:'pistol',d:'High-stakes criminal enterprise'},
+    {id:'IS15',n:'Run the Kurdish Smuggling Route',e:12,c:13950,x:262,lc:0.11,li:'tommy_gun',req:'pistol',d:'High-stakes criminal enterprise'},
+    {id:'IS16',n:'Own the Turkish Military Contracts',e:13,c:15750,x:292,lc:0.11,li:'tommy_gun',req:'pistol',d:'High-stakes criminal enterprise'},
+    {id:'IS17',n:'Infiltrate MIT Intelligence',e:14,c:17100,x:315,lc:0.11,li:'fbi_badge',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
+    {id:'IS18',n:'Control the Refugee Trade',e:12,c:14400,x:270,lc:0.11,li:'ak47',req:'pistol',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'IV. Pasha',jobs:[
-    {id:'IS19',n:'Control the Mediterranean Drug Routes',e:20,c:27000,x:465,lc:0.03,li:'rpg_launcher',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
-    {id:'IS20',n:'Own the Bosphorus',e:21,c:32300,x:578,lc:0.03,li:'ghost_protocol',req:'forged_passport',d:'High-stakes criminal enterprise'},
-    {id:'IS21',n:'Run the Central Asian Pipeline',e:20,c:28800,x:480,lc:0.03,li:'ghost_protocol',req:'grenade',d:'High-stakes criminal enterprise'},
-    {id:'IS22',n:'Take Over Turkish Politics',e:22,c:36100,x:629,lc:0.03,li:'compromising_photos',req:'tommy_gun',d:'High-stakes criminal enterprise'},
-    {id:'IS23',n:'Control the Black Sea Trade',e:21,c:34200,x:595,lc:0.03,li:'rpg_launcher',req:'tommy_gun',d:'High-stakes criminal enterprise'}
+    {id:'IS19',n:'Control the Mediterranean Drug Routes',e:20,c:27000,x:465,lc:0.08,li:'rpg_launcher',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
+    {id:'IS20',n:'Own the Bosphorus',e:21,c:32300,x:578,lc:0.08,li:'ghost_protocol',req:'forged_passport',d:'High-stakes criminal enterprise'},
+    {id:'IS21',n:'Run the Central Asian Pipeline',e:20,c:28800,x:480,lc:0.08,li:'ghost_protocol',req:'grenade',d:'High-stakes criminal enterprise'},
+    {id:'IS22',n:'Take Over Turkish Politics',e:22,c:36100,x:629,lc:0.08,li:'compromising_photos',req:'tommy_gun',d:'High-stakes criminal enterprise'},
+    {id:'IS23',n:'Control the Black Sea Trade',e:21,c:34200,x:595,lc:0.08,li:'rpg_launcher',req:'tommy_gun',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'V. Sultan',jobs:[
-    {id:'IS24',n:'Unite the Silk Road Cartels',e:28,c:45600,x:680,lc:0.03,li:'briefcase_of_cash',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
-    {id:'IS25',n:'Own the Crossroads of Empires',e:32,c:57000,x:799,lc:0.025,li:'assassination_kit',req:'ghost_protocol',d:'High-stakes criminal enterprise'},
-    {id:'IS26',n:'Control Europe to Asia Trade',e:35,c:66500,x:884,lc:0.025,li:'don_ring',req:'offshore_account',d:'High-stakes criminal enterprise'},
-    {id:'IS27',n:'The Ottoman Legacy',e:38,c:77900,x:969,lc:0.025,li:'golden_ak',req:'ghost_protocol',d:'High-stakes criminal enterprise'},
-    {id:'IS28',n:'Eurasian Empire',e:40,c:90250,x:1062,lc:0.025,li:'world_don_crown',req:'offshore_account',d:'High-stakes criminal enterprise'}
+    {id:'IS24',n:'Unite the Silk Road Cartels',e:28,c:45600,x:680,lc:0.08,li:'briefcase_of_cash',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
+    {id:'IS25',n:'Own the Crossroads of Empires',e:32,c:57000,x:799,lc:0.06,li:'assassination_kit',req:'ghost_protocol',d:'High-stakes criminal enterprise'},
+    {id:'IS26',n:'Control Europe to Asia Trade',e:35,c:66500,x:884,lc:0.06,li:'don_ring',req:'offshore_account',d:'High-stakes criminal enterprise'},
+    {id:'IS27',n:'The Ottoman Legacy',e:38,c:77900,x:969,lc:0.06,li:'golden_ak',req:'ghost_protocol',d:'High-stakes criminal enterprise'},
+    {id:'IS28',n:'Eurasian Empire',e:40,c:90250,x:1062,lc:0.06,li:'world_don_crown',req:'offshore_account',d:'High-stakes criminal enterprise'}
   ]},
 ],
 bangkok:[
   {tier:'I. Golden Triangle',jobs:[
-    {id:'BK01',n:'Run a Ping Pong Show Scam',e:2,c:1440,x:19,lc:0.06,li:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'BK02',n:'Sell Fake Gems to Tourists',e:2,c:1320,x:18,lc:0.06,li:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'BK03',n:'Control the Tuk-Tuk Mafia',e:3,c:1959,x:32,lc:0.06,li:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'BK04',n:'Smuggle Through the Mekong',e:3,c:2100,x:33,lc:0.06,li:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'BK05',n:'Deal in Khao San Road',e:2,c:1500,x:20,lc:0.06,li:'ski_mask',d:'High-stakes criminal enterprise'},
-    {id:'BK06',n:'Run a Muay Thai Fixing Ring',e:3,c:1889,x:31,lc:0.06,li:'ski_mask',d:'High-stakes criminal enterprise'}
+    {id:'BK01',n:'Run a Ping Pong Show Scam',e:2,c:1440,x:19,lc:0.18,li:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'BK02',n:'Sell Fake Gems to Tourists',e:2,c:1320,x:18,lc:0.18,li:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'BK03',n:'Control the Tuk-Tuk Mafia',e:3,c:1959,x:32,lc:0.18,li:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'BK04',n:'Smuggle Through the Mekong',e:3,c:2100,x:33,lc:0.18,li:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'BK05',n:'Deal in Khao San Road',e:2,c:1500,x:20,lc:0.18,li:'ski_mask',d:'High-stakes criminal enterprise'},
+    {id:'BK06',n:'Run a Muay Thai Fixing Ring',e:3,c:1889,x:31,lc:0.18,li:'ski_mask',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'II. Thai Syndicate',jobs:[
-    {id:'BK07',n:'Control the Meth Labs',e:7,c:5600,x:105,lc:0.05,li:'pistol',req:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'BK08',n:'Run the Sex Tourism Industry',e:7,c:6000,x:111,lc:0.05,li:'switchblade',req:'tire_iron',d:'High-stakes criminal enterprise'},
-    {id:'BK09',n:'Smuggle Gems from Myanmar',e:8,c:6400,x:117,lc:0.05,li:'uncut_diamonds',req:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'BK10',n:'Extort the Night Market Empire',e:7,c:5760,x:108,lc:0.05,li:'kevlar_gloves',req:'ski_mask',d:'High-stakes criminal enterprise'},
-    {id:'BK11',n:'Bribe the Royal Thai Police',e:8,c:6800,x:123,lc:0.05,li:'fbi_badge',req:'ski_mask',d:'High-stakes criminal enterprise'},
-    {id:'BK12',n:'Control the Fishing Slave Trade',e:8,c:6240,x:114,lc:0.05,li:'switchblade',req:'brass_pipe',d:'High-stakes criminal enterprise'}
+    {id:'BK07',n:'Control the Meth Labs',e:7,c:5600,x:105,lc:0.14,li:'pistol',req:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'BK08',n:'Run the Sex Tourism Industry',e:7,c:6000,x:111,lc:0.14,li:'switchblade',req:'tire_iron',d:'High-stakes criminal enterprise'},
+    {id:'BK09',n:'Smuggle Gems from Myanmar',e:8,c:6400,x:117,lc:0.14,li:'uncut_diamonds',req:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'BK10',n:'Extort the Night Market Empire',e:7,c:5760,x:108,lc:0.14,li:'kevlar_gloves',req:'ski_mask',d:'High-stakes criminal enterprise'},
+    {id:'BK11',n:'Bribe the Royal Thai Police',e:8,c:6800,x:123,lc:0.14,li:'fbi_badge',req:'ski_mask',d:'High-stakes criminal enterprise'},
+    {id:'BK12',n:'Control the Fishing Slave Trade',e:8,c:6240,x:114,lc:0.14,li:'switchblade',req:'brass_pipe',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'III. Southeast Asian Power',jobs:[
-    {id:'BK13',n:'Take Over the Drug Triangle',e:12,c:14400,x:270,lc:0.04,li:'bulletproof_vest',req:'police_scanner',d:'High-stakes criminal enterprise'},
-    {id:'BK14',n:'Control the Mekong Smuggling Route',e:13,c:16200,x:300,lc:0.04,li:'grenade',req:'combat_knife',d:'High-stakes criminal enterprise'},
-    {id:'BK15',n:'Run the ASEAN Crime Network',e:12,c:14850,x:277,lc:0.04,li:'drug_lord_crown',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
-    {id:'BK16',n:'Own the Thai Military Contracts',e:13,c:15750,x:292,lc:0.04,li:'grenade',req:'combat_knife',d:'High-stakes criminal enterprise'},
-    {id:'BK17',n:'Infiltrate the Palace Guard',e:14,c:18000,x:330,lc:0.04,li:'bulletproof_vest',req:'switchblade',d:'High-stakes criminal enterprise'},
-    {id:'BK18',n:'Control the Migrant Worker Trade',e:12,c:15300,x:285,lc:0.04,li:'ak47',req:'police_scanner',d:'High-stakes criminal enterprise'}
+    {id:'BK13',n:'Take Over the Drug Triangle',e:12,c:14400,x:270,lc:0.11,li:'bulletproof_vest',req:'police_scanner',d:'High-stakes criminal enterprise'},
+    {id:'BK14',n:'Control the Mekong Smuggling Route',e:13,c:16200,x:300,lc:0.11,li:'grenade',req:'combat_knife',d:'High-stakes criminal enterprise'},
+    {id:'BK15',n:'Run the ASEAN Crime Network',e:12,c:14850,x:277,lc:0.11,li:'drug_lord_crown',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
+    {id:'BK16',n:'Own the Thai Military Contracts',e:13,c:15750,x:292,lc:0.11,li:'grenade',req:'combat_knife',d:'High-stakes criminal enterprise'},
+    {id:'BK17',n:'Infiltrate the Palace Guard',e:14,c:18000,x:330,lc:0.11,li:'bulletproof_vest',req:'switchblade',d:'High-stakes criminal enterprise'},
+    {id:'BK18',n:'Control the Migrant Worker Trade',e:12,c:15300,x:285,lc:0.11,li:'ak47',req:'police_scanner',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'IV. Dragon of the East',jobs:[
-    {id:'BK19',n:'Control All of Southeast Asia',e:20,c:28800,x:495,lc:0.03,li:'briefcase_of_cash',req:'night_vision',d:'High-stakes criminal enterprise'},
-    {id:'BK20',n:'Own the Opium Trade',e:21,c:34200,x:612,lc:0.03,li:'drug_lord_crown',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
-    {id:'BK21',n:'Run the Pacific Smuggling Routes',e:20,c:30600,x:510,lc:0.03,li:'sniper_rifle',req:'ak47',d:'High-stakes criminal enterprise'},
-    {id:'BK22',n:'Take Over the Thai Government',e:22,c:38000,x:663,lc:0.03,li:'military_intel',req:'forged_passport',d:'High-stakes criminal enterprise'},
-    {id:'BK23',n:'Control the Golden Triangle',e:21,c:36100,x:629,lc:0.03,li:'diamond_ring',req:'grenade',d:'High-stakes criminal enterprise'}
+    {id:'BK19',n:'Control All of Southeast Asia',e:20,c:28800,x:495,lc:0.08,li:'briefcase_of_cash',req:'night_vision',d:'High-stakes criminal enterprise'},
+    {id:'BK20',n:'Own the Opium Trade',e:21,c:34200,x:612,lc:0.08,li:'drug_lord_crown',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
+    {id:'BK21',n:'Run the Pacific Smuggling Routes',e:20,c:30600,x:510,lc:0.08,li:'sniper_rifle',req:'ak47',d:'High-stakes criminal enterprise'},
+    {id:'BK22',n:'Take Over the Thai Government',e:22,c:38000,x:663,lc:0.08,li:'military_intel',req:'forged_passport',d:'High-stakes criminal enterprise'},
+    {id:'BK23',n:'Control the Golden Triangle',e:21,c:36100,x:629,lc:0.08,li:'diamond_ring',req:'grenade',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'V. King of the East',jobs:[
-    {id:'BK24',n:'Unite the Asian Cartels',e:28,c:47500,x:714,lc:0.03,li:'ghost_protocol',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
-    {id:'BK25',n:'Own Southeast Asia',e:32,c:60800,x:833,lc:0.025,li:'nano_suit',req:'military_intel',d:'High-stakes criminal enterprise'},
-    {id:'BK26',n:'Control the Pacific Drug Routes',e:35,c:71250,x:918,lc:0.025,li:'don_ring',req:'offshore_account',d:'High-stakes criminal enterprise'},
-    {id:'BK27',n:'The Dragon Legacy',e:38,c:83600,x:1003,lc:0.025,li:'blood_diamond',req:'diamond_ring',d:'High-stakes criminal enterprise'},
-    {id:'BK28',n:'Asian Empire',e:40,c:95000,x:1105,lc:0.025,li:'golden_ak',req:'rpg_launcher',d:'High-stakes criminal enterprise'}
+    {id:'BK24',n:'Unite the Asian Cartels',e:28,c:47500,x:714,lc:0.08,li:'ghost_protocol',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
+    {id:'BK25',n:'Own Southeast Asia',e:32,c:60800,x:833,lc:0.06,li:'nano_suit',req:'military_intel',d:'High-stakes criminal enterprise'},
+    {id:'BK26',n:'Control the Pacific Drug Routes',e:35,c:71250,x:918,lc:0.06,li:'don_ring',req:'offshore_account',d:'High-stakes criminal enterprise'},
+    {id:'BK27',n:'The Dragon Legacy',e:38,c:83600,x:1003,lc:0.06,li:'blood_diamond',req:'diamond_ring',d:'High-stakes criminal enterprise'},
+    {id:'BK28',n:'Asian Empire',e:40,c:95000,x:1105,lc:0.06,li:'golden_ak',req:'rpg_launcher',d:'High-stakes criminal enterprise'}
   ]},
 ],
 hong_kong:[
   {tier:'I. Triad',jobs:[
-    {id:'HK01',n:'Run a Counterfeit Electronics Ring',e:2,c:1680,x:21,lc:0.06,li:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'HK02',n:'Extort the Night Markets',e:3,c:2240,x:36,lc:0.06,li:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'HK03',n:'Smuggle Through Victoria Harbor',e:3,c:2450,x:38,lc:0.06,li:'burner_phone',d:'High-stakes criminal enterprise'},
-    {id:'HK04',n:'Run Underground Mahjong Parlors',e:2,c:1560,x:20,lc:0.06,li:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'HK05',n:'Sell Fake Luxury Watches',e:2,c:1500,x:19,lc:0.06,li:'burner_phone',d:'High-stakes criminal enterprise'},
-    {id:'HK06',n:'Control the Taxi Fleet',e:3,c:2100,x:34,lc:0.06,li:'tire_iron',d:'High-stakes criminal enterprise'}
+    {id:'HK01',n:'Run a Counterfeit Electronics Ring',e:2,c:1680,x:21,lc:0.18,li:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'HK02',n:'Extort the Night Markets',e:3,c:2240,x:36,lc:0.18,li:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'HK03',n:'Smuggle Through Victoria Harbor',e:3,c:2450,x:38,lc:0.18,li:'burner_phone',d:'High-stakes criminal enterprise'},
+    {id:'HK04',n:'Run Underground Mahjong Parlors',e:2,c:1560,x:20,lc:0.18,li:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'HK05',n:'Sell Fake Luxury Watches',e:2,c:1500,x:19,lc:0.18,li:'burner_phone',d:'High-stakes criminal enterprise'},
+    {id:'HK06',n:'Control the Taxi Fleet',e:3,c:2100,x:34,lc:0.18,li:'tire_iron',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'II. Dragon Head',jobs:[
-    {id:'HK07',n:'Control the Heroin Pipeline',e:8,c:6400,x:117,lc:0.05,li:'fake_rolex',req:'tire_iron',d:'High-stakes criminal enterprise'},
-    {id:'HK08',n:'Run the Money Laundering Network',e:8,c:6800,x:123,lc:0.05,li:'fake_rolex',req:'tire_iron',d:'High-stakes criminal enterprise'},
-    {id:'HK09',n:'Extort the Banking Sector',e:9,c:7600,x:135,lc:0.05,li:'offshore_account',req:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'HK10',n:'Smuggle Through Macau Casinos',e:8,c:6560,x:120,lc:0.05,li:'police_scanner',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'HK11',n:'Bribe the HKPF',e:9,c:7200,x:129,lc:0.05,li:'fbi_badge',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'HK12',n:'Control the Container Port',e:8,c:7040,x:126,lc:0.05,li:'fake_rolex',req:'ski_mask',d:'High-stakes criminal enterprise'}
+    {id:'HK07',n:'Control the Heroin Pipeline',e:8,c:6400,x:117,lc:0.14,li:'fake_rolex',req:'tire_iron',d:'High-stakes criminal enterprise'},
+    {id:'HK08',n:'Run the Money Laundering Network',e:8,c:6800,x:123,lc:0.14,li:'fake_rolex',req:'tire_iron',d:'High-stakes criminal enterprise'},
+    {id:'HK09',n:'Extort the Banking Sector',e:9,c:7600,x:135,lc:0.14,li:'offshore_account',req:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'HK10',n:'Smuggle Through Macau Casinos',e:8,c:6560,x:120,lc:0.14,li:'police_scanner',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'HK11',n:'Bribe the HKPF',e:9,c:7200,x:129,lc:0.14,li:'fbi_badge',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'HK12',n:'Control the Container Port',e:8,c:7040,x:126,lc:0.14,li:'fake_rolex',req:'ski_mask',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'III. Triad Master',jobs:[
-    {id:'HK13',n:'Take Over Kowloon',e:13,c:16200,x:300,lc:0.04,li:'night_vision',req:'police_scanner',d:'High-stakes criminal enterprise'},
-    {id:'HK14',n:'Control the South China Sea Routes',e:14,c:18000,x:330,lc:0.04,li:'grenade',req:'switchblade',d:'High-stakes criminal enterprise'},
-    {id:'HK15',n:'Run the Asian Drug Distribution',e:13,c:17100,x:315,lc:0.04,li:'drug_lord_crown',req:'fake_rolex',d:'High-stakes criminal enterprise'},
-    {id:'HK16',n:'Own the Macau Casino Empire',e:14,c:18900,x:345,lc:0.04,li:'bulletproof_vest',req:'combat_knife',d:'High-stakes criminal enterprise'},
-    {id:'HK17',n:'Infiltrate Chinese Intelligence',e:15,c:20700,x:375,lc:0.04,li:'fbi_badge',req:'police_scanner',d:'High-stakes criminal enterprise'},
-    {id:'HK18',n:'Control the Tech Smuggling',e:13,c:16650,x:307,lc:0.04,li:'hacking_rig',req:'fake_rolex',d:'High-stakes criminal enterprise'}
+    {id:'HK13',n:'Take Over Kowloon',e:13,c:16200,x:300,lc:0.11,li:'night_vision',req:'police_scanner',d:'High-stakes criminal enterprise'},
+    {id:'HK14',n:'Control the South China Sea Routes',e:14,c:18000,x:330,lc:0.11,li:'grenade',req:'switchblade',d:'High-stakes criminal enterprise'},
+    {id:'HK15',n:'Run the Asian Drug Distribution',e:13,c:17100,x:315,lc:0.11,li:'drug_lord_crown',req:'fake_rolex',d:'High-stakes criminal enterprise'},
+    {id:'HK16',n:'Own the Macau Casino Empire',e:14,c:18900,x:345,lc:0.11,li:'bulletproof_vest',req:'combat_knife',d:'High-stakes criminal enterprise'},
+    {id:'HK17',n:'Infiltrate Chinese Intelligence',e:15,c:20700,x:375,lc:0.11,li:'fbi_badge',req:'police_scanner',d:'High-stakes criminal enterprise'},
+    {id:'HK18',n:'Control the Tech Smuggling',e:13,c:16650,x:307,lc:0.11,li:'hacking_rig',req:'fake_rolex',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'IV. Shan Chu',jobs:[
-    {id:'HK19',n:'Control All Chinese Triads',e:21,c:34200,x:612,lc:0.03,li:'offshore_account',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
-    {id:'HK20',n:'Own the Pearl River Delta',e:22,c:38000,x:663,lc:0.03,li:'offshore_account',req:'grenade',d:'High-stakes criminal enterprise'},
-    {id:'HK21',n:'Run the Fentanyl Precursor Trade',e:21,c:36100,x:629,lc:0.03,li:'diamond_ring',req:'night_vision',d:'High-stakes criminal enterprise'},
-    {id:'HK22',n:'Take Over the Stock Exchange',e:23,c:41800,x:714,lc:0.03,li:'offshore_account',req:'body_armor',d:'High-stakes criminal enterprise'},
-    {id:'HK23',n:'Control the Belt and Road Corruption',e:22,c:39900,x:680,lc:0.03,li:'briefcase_of_cash',req:'forged_passport',d:'High-stakes criminal enterprise'}
+    {id:'HK19',n:'Control All Chinese Triads',e:21,c:34200,x:612,lc:0.08,li:'offshore_account',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
+    {id:'HK20',n:'Own the Pearl River Delta',e:22,c:38000,x:663,lc:0.08,li:'offshore_account',req:'grenade',d:'High-stakes criminal enterprise'},
+    {id:'HK21',n:'Run the Fentanyl Precursor Trade',e:21,c:36100,x:629,lc:0.08,li:'diamond_ring',req:'night_vision',d:'High-stakes criminal enterprise'},
+    {id:'HK22',n:'Take Over the Stock Exchange',e:23,c:41800,x:714,lc:0.08,li:'offshore_account',req:'body_armor',d:'High-stakes criminal enterprise'},
+    {id:'HK23',n:'Control the Belt and Road Corruption',e:22,c:39900,x:680,lc:0.08,li:'briefcase_of_cash',req:'forged_passport',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'V. Dragon Emperor',jobs:[
-    {id:'HK24',n:'Unite All Asian Syndicates',e:30,c:53200,x:782,lc:0.03,li:'rpg_launcher',req:'forged_passport',d:'High-stakes criminal enterprise'},
-    {id:'HK25',n:'Own the Pacific Rim',e:34,c:66500,x:901,lc:0.025,li:'assassination_kit',req:'military_intel',d:'High-stakes criminal enterprise'},
-    {id:'HK26',n:'Control the Global Supply Chain',e:36,c:76000,x:969,lc:0.025,li:'quantum_key',req:'offshore_account',d:'High-stakes criminal enterprise'},
-    {id:'HK27',n:'The Triad Legacy',e:38,c:85500,x:1037,lc:0.025,li:'dragon_seal',req:'military_intel',d:'High-stakes criminal enterprise'},
-    {id:'HK28',n:'Eastern Empire',e:40,c:99750,x:1147,lc:0.025,li:'golden_ak',req:'diamond_ring',d:'High-stakes criminal enterprise'}
+    {id:'HK24',n:'Unite All Asian Syndicates',e:30,c:53200,x:782,lc:0.08,li:'rpg_launcher',req:'forged_passport',d:'High-stakes criminal enterprise'},
+    {id:'HK25',n:'Own the Pacific Rim',e:34,c:66500,x:901,lc:0.06,li:'assassination_kit',req:'military_intel',d:'High-stakes criminal enterprise'},
+    {id:'HK26',n:'Control the Global Supply Chain',e:36,c:76000,x:969,lc:0.06,li:'quantum_key',req:'offshore_account',d:'High-stakes criminal enterprise'},
+    {id:'HK27',n:'The Triad Legacy',e:38,c:85500,x:1037,lc:0.06,li:'dragon_seal',req:'military_intel',d:'High-stakes criminal enterprise'},
+    {id:'HK28',n:'Eastern Empire',e:40,c:99750,x:1147,lc:0.06,li:'golden_ak',req:'diamond_ring',d:'High-stakes criminal enterprise'}
   ]},
 ],
 tokyo:[
   {tier:'I. Yakuza Initiate',jobs:[
-    {id:'TO01',n:'Run Pachinko Parlor Skims',e:2,c:1800,x:23,lc:0.06,li:'ski_mask',d:'High-stakes criminal enterprise'},
-    {id:'TO02',n:'Extort the Shinjuku Bars',e:3,c:2450,x:39,lc:0.06,li:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'TO03',n:'Sell Fake Electronics in Akihabara',e:2,c:1680,x:22,lc:0.06,li:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'TO04',n:'Run an Illegal Host Club',e:3,c:2240,x:36,lc:0.06,li:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'TO05',n:'Shake Down the Fish Market',e:3,c:2380,x:38,lc:0.06,li:'burner_phone',d:'High-stakes criminal enterprise'},
-    {id:'TO06',n:'Collect Debts in Kabukicho',e:2,c:1740,x:22,lc:0.06,li:'burner_phone',d:'High-stakes criminal enterprise'}
+    {id:'TO01',n:'Run Pachinko Parlor Skims',e:2,c:1800,x:23,lc:0.18,li:'ski_mask',d:'High-stakes criminal enterprise'},
+    {id:'TO02',n:'Extort the Shinjuku Bars',e:3,c:2450,x:39,lc:0.18,li:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'TO03',n:'Sell Fake Electronics in Akihabara',e:2,c:1680,x:22,lc:0.18,li:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'TO04',n:'Run an Illegal Host Club',e:3,c:2240,x:36,lc:0.18,li:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'TO05',n:'Shake Down the Fish Market',e:3,c:2380,x:38,lc:0.18,li:'burner_phone',d:'High-stakes criminal enterprise'},
+    {id:'TO06',n:'Collect Debts in Kabukicho',e:2,c:1740,x:22,lc:0.18,li:'burner_phone',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'II. Yakuza Soldier',jobs:[
-    {id:'TO07',n:'Control the Akihabara Electronics Racket',e:8,c:7200,x:129,lc:0.05,li:'fake_rolex',req:'ski_mask',d:'High-stakes criminal enterprise'},
-    {id:'TO08',n:'Run the Underground Fight Circuit',e:8,c:7600,x:135,lc:0.05,li:'kevlar_gloves',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'TO09',n:'Extort the Construction Industry',e:9,c:8000,x:144,lc:0.05,li:'kevlar_gloves',req:'tire_iron',d:'High-stakes criminal enterprise'},
-    {id:'TO10',n:'Smuggle Through Yokohama Port',e:9,c:8400,x:150,lc:0.05,li:'pistol',req:'burner_phone',d:'High-stakes criminal enterprise'},
-    {id:'TO11',n:'Bribe the Tokyo Metropolitan Police',e:10,c:8800,x:156,lc:0.05,li:'fbi_badge',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'TO12',n:'Control the Gambling Dens',e:8,c:7360,x:132,lc:0.05,li:'katana',req:'brass_pipe',d:'High-stakes criminal enterprise'}
+    {id:'TO07',n:'Control the Akihabara Electronics Racket',e:8,c:7200,x:129,lc:0.14,li:'fake_rolex',req:'ski_mask',d:'High-stakes criminal enterprise'},
+    {id:'TO08',n:'Run the Underground Fight Circuit',e:8,c:7600,x:135,lc:0.14,li:'kevlar_gloves',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'TO09',n:'Extort the Construction Industry',e:9,c:8000,x:144,lc:0.14,li:'kevlar_gloves',req:'tire_iron',d:'High-stakes criminal enterprise'},
+    {id:'TO10',n:'Smuggle Through Yokohama Port',e:9,c:8400,x:150,lc:0.14,li:'pistol',req:'burner_phone',d:'High-stakes criminal enterprise'},
+    {id:'TO11',n:'Bribe the Tokyo Metropolitan Police',e:10,c:8800,x:156,lc:0.14,li:'fbi_badge',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'TO12',n:'Control the Gambling Dens',e:8,c:7360,x:132,lc:0.14,li:'katana',req:'brass_pipe',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'III. Wakagashira',jobs:[
-    {id:'TO13',n:'Take Over the Keiretsu',e:14,c:19800,x:360,lc:0.04,li:'tommy_gun',req:'fake_rolex',d:'High-stakes criminal enterprise'},
-    {id:'TO14',n:'Control the Drug Distribution',e:14,c:20700,x:375,lc:0.04,li:'drug_lord_crown',req:'pistol',d:'High-stakes criminal enterprise'},
-    {id:'TO15',n:'Run the Real Estate Yakuza',e:13,c:18000,x:330,lc:0.04,li:'grenade',req:'switchblade',d:'High-stakes criminal enterprise'},
-    {id:'TO16',n:'Own the Entertainment Industry',e:13,c:18900,x:345,lc:0.04,li:'entertainer_contract',req:'police_scanner',d:'High-stakes criminal enterprise'},
-    {id:'TO17',n:'Infiltrate the NPA',e:15,c:22500,x:405,lc:0.04,li:'fbi_badge',req:'combat_knife',d:'High-stakes criminal enterprise'},
-    {id:'TO18',n:'Control the Tech Underground',e:14,c:20250,x:367,lc:0.04,li:'hacking_rig',req:'fake_rolex',d:'High-stakes criminal enterprise'}
+    {id:'TO13',n:'Take Over the Keiretsu',e:14,c:19800,x:360,lc:0.11,li:'tommy_gun',req:'fake_rolex',d:'High-stakes criminal enterprise'},
+    {id:'TO14',n:'Control the Drug Distribution',e:14,c:20700,x:375,lc:0.11,li:'drug_lord_crown',req:'pistol',d:'High-stakes criminal enterprise'},
+    {id:'TO15',n:'Run the Real Estate Yakuza',e:13,c:18000,x:330,lc:0.11,li:'grenade',req:'switchblade',d:'High-stakes criminal enterprise'},
+    {id:'TO16',n:'Own the Entertainment Industry',e:13,c:18900,x:345,lc:0.11,li:'entertainer_contract',req:'police_scanner',d:'High-stakes criminal enterprise'},
+    {id:'TO17',n:'Infiltrate the NPA',e:15,c:22500,x:405,lc:0.11,li:'fbi_badge',req:'combat_knife',d:'High-stakes criminal enterprise'},
+    {id:'TO18',n:'Control the Tech Underground',e:14,c:20250,x:367,lc:0.11,li:'hacking_rig',req:'fake_rolex',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'IV. Kumicho',jobs:[
-    {id:'TO19',n:'Own the Yamaguchi-gumi',e:22,c:38000,x:663,lc:0.03,li:'rpg_launcher',req:'night_vision',d:'High-stakes criminal enterprise'},
-    {id:'TO20',n:'Control All Japanese Crime',e:23,c:41800,x:714,lc:0.03,li:'diamond_ring',req:'ak47',d:'High-stakes criminal enterprise'},
-    {id:'TO21',n:'Run the Pacific Heroin Route',e:22,c:39900,x:680,lc:0.03,li:'ghost_protocol',req:'tommy_gun',d:'High-stakes criminal enterprise'},
-    {id:'TO22',n:'Bribe the LDP Leadership',e:24,c:45600,x:765,lc:0.03,li:'compromising_photos',req:'body_armor',d:'High-stakes criminal enterprise'},
-    {id:'TO23',n:'Take Over the Bank of Japan',e:23,c:43700,x:731,lc:0.03,li:'offshore_account',req:'grenade',d:'High-stakes criminal enterprise'}
+    {id:'TO19',n:'Own the Yamaguchi-gumi',e:22,c:38000,x:663,lc:0.08,li:'rpg_launcher',req:'night_vision',d:'High-stakes criminal enterprise'},
+    {id:'TO20',n:'Control All Japanese Crime',e:23,c:41800,x:714,lc:0.08,li:'diamond_ring',req:'ak47',d:'High-stakes criminal enterprise'},
+    {id:'TO21',n:'Run the Pacific Heroin Route',e:22,c:39900,x:680,lc:0.08,li:'ghost_protocol',req:'tommy_gun',d:'High-stakes criminal enterprise'},
+    {id:'TO22',n:'Bribe the LDP Leadership',e:24,c:45600,x:765,lc:0.08,li:'compromising_photos',req:'body_armor',d:'High-stakes criminal enterprise'},
+    {id:'TO23',n:'Take Over the Bank of Japan',e:23,c:43700,x:731,lc:0.08,li:'offshore_account',req:'grenade',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'V. Shogun of Crime',jobs:[
-    {id:'TO24',n:'Unite All Yakuza Families',e:30,c:55100,x:799,lc:0.03,li:'yakuza_tattoo_scroll',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
-    {id:'TO25',n:'Own Japan',e:34,c:68400,x:918,lc:0.025,li:'blood_diamond',req:'ghost_protocol',d:'High-stakes criminal enterprise'},
-    {id:'TO26',n:'Control the Pacific Crime Network',e:36,c:77900,x:986,lc:0.025,li:'blood_diamond',req:'briefcase_of_cash',d:'High-stakes criminal enterprise'},
-    {id:'TO27',n:'The Yakuza Legacy',e:38,c:89300,x:1071,lc:0.025,li:'samurai_sword',req:'sniper_rifle',d:'High-stakes criminal enterprise'},
-    {id:'TO28',n:'Eastern Shogunate',e:40,c:104500,x:1190,lc:0.025,li:'golden_ak',req:'briefcase_of_cash',d:'High-stakes criminal enterprise'}
+    {id:'TO24',n:'Unite All Yakuza Families',e:30,c:55100,x:799,lc:0.08,li:'yakuza_tattoo_scroll',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
+    {id:'TO25',n:'Own Japan',e:34,c:68400,x:918,lc:0.06,li:'blood_diamond',req:'ghost_protocol',d:'High-stakes criminal enterprise'},
+    {id:'TO26',n:'Control the Pacific Crime Network',e:36,c:77900,x:986,lc:0.06,li:'blood_diamond',req:'briefcase_of_cash',d:'High-stakes criminal enterprise'},
+    {id:'TO27',n:'The Yakuza Legacy',e:38,c:89300,x:1071,lc:0.06,li:'samurai_sword',req:'sniper_rifle',d:'High-stakes criminal enterprise'},
+    {id:'TO28',n:'Eastern Shogunate',e:40,c:104500,x:1190,lc:0.06,li:'golden_ak',req:'briefcase_of_cash',d:'High-stakes criminal enterprise'}
   ]},
 ],
 brazil:[
   {tier:'I. Favela',jobs:[
-    {id:'BR01',n:'Run Drugs in Rocinha',e:2,c:1920,x:24,lc:0.06,li:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'BR02',n:'Control a Favela Block',e:3,c:2660,x:41,lc:0.06,li:'burner_phone',d:'High-stakes criminal enterprise'},
-    {id:'BR03',n:'Rob Tourists in Copacabana',e:2,c:1800,x:23,lc:0.06,li:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'BR04',n:'Extort the Taxi Drivers',e:2,c:1680,x:22,lc:0.06,li:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'BR05',n:'Run Underground Samba Clubs',e:3,c:2450,x:39,lc:0.06,li:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'BR06',n:'Sell Stolen Electronics',e:3,c:2520,x:40,lc:0.06,li:'stolen_wallet',d:'High-stakes criminal enterprise'}
+    {id:'BR01',n:'Run Drugs in Rocinha',e:2,c:1920,x:24,lc:0.18,li:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'BR02',n:'Control a Favela Block',e:3,c:2660,x:41,lc:0.18,li:'burner_phone',d:'High-stakes criminal enterprise'},
+    {id:'BR03',n:'Rob Tourists in Copacabana',e:2,c:1800,x:23,lc:0.18,li:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'BR04',n:'Extort the Taxi Drivers',e:2,c:1680,x:22,lc:0.18,li:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'BR05',n:'Run Underground Samba Clubs',e:3,c:2450,x:39,lc:0.18,li:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'BR06',n:'Sell Stolen Electronics',e:3,c:2520,x:40,lc:0.18,li:'stolen_wallet',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'II. PCC Soldier',jobs:[
-    {id:'BR07',n:'Control the Prison Drug Trade',e:8,c:8000,x:144,lc:0.05,li:'kevlar_gloves',req:'tire_iron',d:'High-stakes criminal enterprise'},
-    {id:'BR08',n:'Run the Cocaine Export',e:9,c:8800,x:156,lc:0.05,li:'combat_knife',req:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'BR09',n:'Extort the Construction Firms',e:8,c:8400,x:150,lc:0.05,li:'fake_rolex',req:'tire_iron',d:'High-stakes criminal enterprise'},
-    {id:'BR10',n:'Smuggle Through Santos Port',e:9,c:9200,x:162,lc:0.05,li:'kevlar_gloves',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'BR11',n:'Bribe the Policia Civil',e:9,c:8960,x:159,lc:0.05,li:'fbi_badge',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'BR12',n:'Run the Numbers Game',e:8,c:7840,x:141,lc:0.05,li:'pistol',req:'lockpick_set',d:'High-stakes criminal enterprise'}
+    {id:'BR07',n:'Control the Prison Drug Trade',e:8,c:8000,x:144,lc:0.14,li:'kevlar_gloves',req:'tire_iron',d:'High-stakes criminal enterprise'},
+    {id:'BR08',n:'Run the Cocaine Export',e:9,c:8800,x:156,lc:0.14,li:'combat_knife',req:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'BR09',n:'Extort the Construction Firms',e:8,c:8400,x:150,lc:0.14,li:'fake_rolex',req:'tire_iron',d:'High-stakes criminal enterprise'},
+    {id:'BR10',n:'Smuggle Through Santos Port',e:9,c:9200,x:162,lc:0.14,li:'kevlar_gloves',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'BR11',n:'Bribe the Policia Civil',e:9,c:8960,x:159,lc:0.14,li:'fbi_badge',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'BR12',n:'Run the Numbers Game',e:8,c:7840,x:141,lc:0.14,li:'pistol',req:'lockpick_set',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'III. PCC Captain',jobs:[
-    {id:'BR13',n:'Take Over the Amazon Drug Route',e:14,c:20700,x:375,lc:0.04,li:'grenade',req:'fake_rolex',d:'High-stakes criminal enterprise'},
-    {id:'BR14',n:'Control the Mining Operations',e:14,c:21600,x:390,lc:0.04,li:'gold_bar',req:'switchblade',d:'High-stakes criminal enterprise'},
-    {id:'BR15',n:'Run the Arms Trade to Africa',e:15,c:23400,x:420,lc:0.04,li:'ak47',req:'switchblade',d:'High-stakes criminal enterprise'},
-    {id:'BR16',n:'Own the Carnival Revenue',e:13,c:18900,x:345,lc:0.04,li:'entertainer_contract',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
-    {id:'BR17',n:'Infiltrate the Federal Police',e:15,c:24300,x:435,lc:0.04,li:'fbi_badge',req:'pistol',d:'High-stakes criminal enterprise'},
-    {id:'BR18',n:'Control the Deforestation Mafia',e:14,c:22500,x:405,lc:0.04,li:'body_armor',req:'fake_rolex',d:'High-stakes criminal enterprise'}
+    {id:'BR13',n:'Take Over the Amazon Drug Route',e:14,c:20700,x:375,lc:0.11,li:'grenade',req:'fake_rolex',d:'High-stakes criminal enterprise'},
+    {id:'BR14',n:'Control the Mining Operations',e:14,c:21600,x:390,lc:0.11,li:'gold_bar',req:'switchblade',d:'High-stakes criminal enterprise'},
+    {id:'BR15',n:'Run the Arms Trade to Africa',e:15,c:23400,x:420,lc:0.11,li:'ak47',req:'switchblade',d:'High-stakes criminal enterprise'},
+    {id:'BR16',n:'Own the Carnival Revenue',e:13,c:18900,x:345,lc:0.11,li:'entertainer_contract',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
+    {id:'BR17',n:'Infiltrate the Federal Police',e:15,c:24300,x:435,lc:0.11,li:'fbi_badge',req:'pistol',d:'High-stakes criminal enterprise'},
+    {id:'BR18',n:'Control the Deforestation Mafia',e:14,c:22500,x:405,lc:0.11,li:'body_armor',req:'fake_rolex',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'IV. Primeiro Comando',jobs:[
-    {id:'BR19',n:'Control All Brazilian Prisons',e:22,c:39900,x:680,lc:0.03,li:'military_intel',req:'forged_passport',d:'High-stakes criminal enterprise'},
-    {id:'BR20',n:'Own the Amazon',e:23,c:43700,x:731,lc:0.03,li:'sniper_rifle',req:'night_vision',d:'High-stakes criminal enterprise'},
-    {id:'BR21',n:'Run the South American Drug Trade',e:22,c:41800,x:697,lc:0.03,li:'drug_lord_crown',req:'body_armor',d:'High-stakes criminal enterprise'},
-    {id:'BR22',n:'Take Over Petrobras',e:24,c:47500,x:782,lc:0.03,li:'offshore_account',req:'tommy_gun',d:'High-stakes criminal enterprise'},
-    {id:'BR23',n:'Control the Soybean Mafia',e:23,c:45600,x:748,lc:0.03,li:'sniper_rifle',req:'forged_passport',d:'High-stakes criminal enterprise'}
+    {id:'BR19',n:'Control All Brazilian Prisons',e:22,c:39900,x:680,lc:0.08,li:'military_intel',req:'forged_passport',d:'High-stakes criminal enterprise'},
+    {id:'BR20',n:'Own the Amazon',e:23,c:43700,x:731,lc:0.08,li:'sniper_rifle',req:'night_vision',d:'High-stakes criminal enterprise'},
+    {id:'BR21',n:'Run the South American Drug Trade',e:22,c:41800,x:697,lc:0.08,li:'drug_lord_crown',req:'body_armor',d:'High-stakes criminal enterprise'},
+    {id:'BR22',n:'Take Over Petrobras',e:24,c:47500,x:782,lc:0.08,li:'offshore_account',req:'tommy_gun',d:'High-stakes criminal enterprise'},
+    {id:'BR23',n:'Control the Soybean Mafia',e:23,c:45600,x:748,lc:0.08,li:'sniper_rifle',req:'forged_passport',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'V. King of Brazil',jobs:[
-    {id:'BR24',n:'Unite South American Cartels',e:30,c:57000,x:816,lc:0.03,li:'briefcase_of_cash',req:'tommy_gun',d:'High-stakes criminal enterprise'},
-    {id:'BR25',n:'Own the Continent',e:34,c:70300,x:935,lc:0.025,li:'world_don_crown',req:'rpg_launcher',d:'High-stakes criminal enterprise'},
-    {id:'BR26',n:'Control the Atlantic Trade Routes',e:36,c:79800,x:1003,lc:0.025,li:'crown_jewel',req:'ghost_protocol',d:'High-stakes criminal enterprise'},
-    {id:'BR27',n:'The PCC Legacy',e:38,c:91200,x:1088,lc:0.025,li:'pcc_crown',req:'offshore_account',d:'High-stakes criminal enterprise'},
-    {id:'BR28',n:'South American Empire',e:40,c:106400,x:1207,lc:0.025,li:'nano_suit',req:'ghost_protocol',d:'High-stakes criminal enterprise'}
+    {id:'BR24',n:'Unite South American Cartels',e:30,c:57000,x:816,lc:0.08,li:'briefcase_of_cash',req:'tommy_gun',d:'High-stakes criminal enterprise'},
+    {id:'BR25',n:'Own the Continent',e:34,c:70300,x:935,lc:0.06,li:'world_don_crown',req:'rpg_launcher',d:'High-stakes criminal enterprise'},
+    {id:'BR26',n:'Control the Atlantic Trade Routes',e:36,c:79800,x:1003,lc:0.06,li:'crown_jewel',req:'ghost_protocol',d:'High-stakes criminal enterprise'},
+    {id:'BR27',n:'The PCC Legacy',e:38,c:91200,x:1088,lc:0.06,li:'pcc_crown',req:'offshore_account',d:'High-stakes criminal enterprise'},
+    {id:'BR28',n:'South American Empire',e:40,c:106400,x:1207,lc:0.06,li:'nano_suit',req:'ghost_protocol',d:'High-stakes criminal enterprise'}
   ]},
 ],
 nairobi:[
   {tier:'I. East Africa',jobs:[
-    {id:'NA01',n:'Run a Matatu Protection Racket',e:2,c:2100,x:26,lc:0.06,li:'burner_phone',d:'High-stakes criminal enterprise'},
-    {id:'NA02',n:'Sell Fake Medicines',e:2,c:1920,x:24,lc:0.06,li:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'NA03',n:'Smuggle Ivory',e:3,c:2800,x:42,lc:0.06,li:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'NA04',n:'Extort the Market Vendors',e:2,c:1800,x:23,lc:0.06,li:'tire_iron',d:'High-stakes criminal enterprise'},
-    {id:'NA05',n:'Run an M-Pesa Fraud Ring',e:3,c:2660,x:41,lc:0.06,li:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'NA06',n:'Control the Charcoal Mafia',e:3,c:2520,x:40,lc:0.06,li:'stolen_wallet',d:'High-stakes criminal enterprise'}
+    {id:'NA01',n:'Run a Matatu Protection Racket',e:2,c:2100,x:26,lc:0.18,li:'burner_phone',d:'High-stakes criminal enterprise'},
+    {id:'NA02',n:'Sell Fake Medicines',e:2,c:1920,x:24,lc:0.18,li:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'NA03',n:'Smuggle Ivory',e:3,c:2800,x:42,lc:0.18,li:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'NA04',n:'Extort the Market Vendors',e:2,c:1800,x:23,lc:0.18,li:'tire_iron',d:'High-stakes criminal enterprise'},
+    {id:'NA05',n:'Run an M-Pesa Fraud Ring',e:3,c:2660,x:41,lc:0.18,li:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'NA06',n:'Control the Charcoal Mafia',e:3,c:2520,x:40,lc:0.18,li:'stolen_wallet',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'II. East African Syndicate',jobs:[
-    {id:'NA07',n:'Control the Somali Piracy Network',e:8,c:8400,x:150,lc:0.05,li:'kevlar_gloves',req:'ski_mask',d:'High-stakes criminal enterprise'},
-    {id:'NA08',n:'Run the Miraa Trade',e:8,c:8000,x:144,lc:0.05,li:'pistol',req:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'NA09',n:'Smuggle Weapons from Libya',e:9,c:9600,x:168,lc:0.05,li:'ak47',req:'tire_iron',d:'High-stakes criminal enterprise'},
-    {id:'NA10',n:'Extort the Safari Industry',e:8,c:8800,x:156,lc:0.05,li:'police_scanner',req:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'NA11',n:'Bribe the Kenyan Military',e:9,c:10000,x:174,lc:0.05,li:'fbi_badge',req:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'NA12',n:'Control the Refugee Camp Rackets',e:9,c:9200,x:162,lc:0.05,li:'combat_knife',req:'stolen_wallet',d:'High-stakes criminal enterprise'}
+    {id:'NA07',n:'Control the Somali Piracy Network',e:8,c:8400,x:150,lc:0.14,li:'kevlar_gloves',req:'ski_mask',d:'High-stakes criminal enterprise'},
+    {id:'NA08',n:'Run the Miraa Trade',e:8,c:8000,x:144,lc:0.14,li:'pistol',req:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'NA09',n:'Smuggle Weapons from Libya',e:9,c:9600,x:168,lc:0.14,li:'ak47',req:'tire_iron',d:'High-stakes criminal enterprise'},
+    {id:'NA10',n:'Extort the Safari Industry',e:8,c:8800,x:156,lc:0.14,li:'police_scanner',req:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'NA11',n:'Bribe the Kenyan Military',e:9,c:10000,x:174,lc:0.14,li:'fbi_badge',req:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'NA12',n:'Control the Refugee Camp Rackets',e:9,c:9200,x:162,lc:0.14,li:'combat_knife',req:'stolen_wallet',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'III. African Power',jobs:[
-    {id:'NA13',n:'Take Over the Congo Mining',e:14,c:22500,x:405,lc:0.04,li:'uncut_diamonds',req:'fake_rolex',d:'High-stakes criminal enterprise'},
-    {id:'NA14',n:'Control the Sahel Drug Route',e:15,c:25200,x:450,lc:0.04,li:'body_armor',req:'police_scanner',d:'High-stakes criminal enterprise'},
-    {id:'NA15',n:'Run the Blood Diamond Trade',e:14,c:23400,x:420,lc:0.04,li:'uncut_diamonds',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
-    {id:'NA16',n:'Own the Ethiopian Coffee Export',e:14,c:21600,x:390,lc:0.04,li:'ak47',req:'fake_rolex',d:'High-stakes criminal enterprise'},
-    {id:'NA17',n:'Infiltrate the African Union',e:15,c:26100,x:465,lc:0.04,li:'fbi_badge',req:'police_scanner',d:'High-stakes criminal enterprise'},
-    {id:'NA18',n:'Control the Coltan Supply',e:14,c:24300,x:435,lc:0.04,li:'body_armor',req:'police_scanner',d:'High-stakes criminal enterprise'}
+    {id:'NA13',n:'Take Over the Congo Mining',e:14,c:22500,x:405,lc:0.11,li:'uncut_diamonds',req:'fake_rolex',d:'High-stakes criminal enterprise'},
+    {id:'NA14',n:'Control the Sahel Drug Route',e:15,c:25200,x:450,lc:0.11,li:'body_armor',req:'police_scanner',d:'High-stakes criminal enterprise'},
+    {id:'NA15',n:'Run the Blood Diamond Trade',e:14,c:23400,x:420,lc:0.11,li:'uncut_diamonds',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
+    {id:'NA16',n:'Own the Ethiopian Coffee Export',e:14,c:21600,x:390,lc:0.11,li:'ak47',req:'fake_rolex',d:'High-stakes criminal enterprise'},
+    {id:'NA17',n:'Infiltrate the African Union',e:15,c:26100,x:465,lc:0.11,li:'fbi_badge',req:'police_scanner',d:'High-stakes criminal enterprise'},
+    {id:'NA18',n:'Control the Coltan Supply',e:14,c:24300,x:435,lc:0.11,li:'body_armor',req:'police_scanner',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'IV. Warlord',jobs:[
-    {id:'NA19',n:'Control East Africa',e:23,c:45600,x:748,lc:0.03,li:'diamond_ring',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
-    {id:'NA20',n:'Own the Indian Ocean Trade',e:24,c:49400,x:799,lc:0.03,li:'military_intel',req:'ak47',d:'High-stakes criminal enterprise'},
-    {id:'NA21',n:'Run the Arms to Conflict Zones',e:23,c:47500,x:765,lc:0.03,li:'briefcase_of_cash',req:'body_armor',d:'High-stakes criminal enterprise'},
-    {id:'NA22',n:'Take Over the Oil of South Sudan',e:25,c:53200,x:850,lc:0.03,li:'offshore_account',req:'body_armor',d:'High-stakes criminal enterprise'},
-    {id:'NA23',n:'Control the Migration Routes',e:24,c:51300,x:816,lc:0.03,li:'offshore_account',req:'grenade',d:'High-stakes criminal enterprise'}
+    {id:'NA19',n:'Control East Africa',e:23,c:45600,x:748,lc:0.08,li:'diamond_ring',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
+    {id:'NA20',n:'Own the Indian Ocean Trade',e:24,c:49400,x:799,lc:0.08,li:'military_intel',req:'ak47',d:'High-stakes criminal enterprise'},
+    {id:'NA21',n:'Run the Arms to Conflict Zones',e:23,c:47500,x:765,lc:0.08,li:'briefcase_of_cash',req:'body_armor',d:'High-stakes criminal enterprise'},
+    {id:'NA22',n:'Take Over the Oil of South Sudan',e:25,c:53200,x:850,lc:0.08,li:'offshore_account',req:'body_armor',d:'High-stakes criminal enterprise'},
+    {id:'NA23',n:'Control the Migration Routes',e:24,c:51300,x:816,lc:0.08,li:'offshore_account',req:'grenade',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'V. King of Africa',jobs:[
-    {id:'NA24',n:'Unite the African Syndicates',e:32,c:64600,x:901,lc:0.03,li:'briefcase_of_cash',req:'grenade',d:'High-stakes criminal enterprise'},
-    {id:'NA25',n:'Own the Continent',e:36,c:77900,x:1003,lc:0.025,li:'blood_diamond',req:'sniper_rifle',d:'High-stakes criminal enterprise'},
-    {id:'NA26',n:'Control African Resources',e:38,c:89300,x:1088,lc:0.025,li:'nano_suit',req:'offshore_account',d:'High-stakes criminal enterprise'},
-    {id:'NA27',n:'The Warlord Legacy',e:40,c:102600,x:1173,lc:0.025,li:'crown_jewel',req:'military_intel',d:'High-stakes criminal enterprise'},
-    {id:'NA28',n:'African Empire',e:42,c:114000,x:1275,lc:0.025,li:'world_don_crown',req:'offshore_account',d:'High-stakes criminal enterprise'}
+    {id:'NA24',n:'Unite the African Syndicates',e:32,c:64600,x:901,lc:0.08,li:'briefcase_of_cash',req:'grenade',d:'High-stakes criminal enterprise'},
+    {id:'NA25',n:'Own the Continent',e:36,c:77900,x:1003,lc:0.06,li:'blood_diamond',req:'sniper_rifle',d:'High-stakes criminal enterprise'},
+    {id:'NA26',n:'Control African Resources',e:38,c:89300,x:1088,lc:0.06,li:'nano_suit',req:'offshore_account',d:'High-stakes criminal enterprise'},
+    {id:'NA27',n:'The Warlord Legacy',e:40,c:102600,x:1173,lc:0.06,li:'crown_jewel',req:'military_intel',d:'High-stakes criminal enterprise'},
+    {id:'NA28',n:'African Empire',e:42,c:114000,x:1275,lc:0.06,li:'world_don_crown',req:'offshore_account',d:'High-stakes criminal enterprise'}
   ]},
 ],
 singapore:[
   {tier:'I. Tiger City',jobs:[
-    {id:'SI01',n:'Run the Clean Money Corridor',e:3,c:2800,x:42,lc:0.06,li:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'SI02',n:'Hack the Banking Network',e:3,c:2940,x:44,lc:0.06,li:'hacking_rig',d:'High-stakes criminal enterprise'},
-    {id:'SI03',n:'Smuggle Through the Strait',e:3,c:3150,x:45,lc:0.06,li:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'SI04',n:'Run a Crypto Scam',e:2,c:2100,x:26,lc:0.06,li:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'SI05',n:'Extort the Ship Operators',e:3,c:2660,x:41,lc:0.06,li:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'SI06',n:'Control the Dark Web Marketplace',e:3,c:2870,x:43,lc:0.06,li:'crypto_wallet',d:'High-stakes criminal enterprise'}
+    {id:'SI01',n:'Run the Clean Money Corridor',e:3,c:2800,x:42,lc:0.18,li:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'SI02',n:'Hack the Banking Network',e:3,c:2940,x:44,lc:0.18,li:'hacking_rig',d:'High-stakes criminal enterprise'},
+    {id:'SI03',n:'Smuggle Through the Strait',e:3,c:3150,x:45,lc:0.18,li:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'SI04',n:'Run a Crypto Scam',e:2,c:2100,x:26,lc:0.18,li:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'SI05',n:'Extort the Ship Operators',e:3,c:2660,x:41,lc:0.18,li:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'SI06',n:'Control the Dark Web Marketplace',e:3,c:2870,x:43,lc:0.18,li:'crypto_wallet',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'II. Asian Finance Syndicate',jobs:[
-    {id:'SI07',n:'Control Shipping Through Malacca',e:9,c:9600,x:168,lc:0.05,li:'kevlar_gloves',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'SI08',n:'Run the ASEAN Dark Finance',e:9,c:10000,x:174,lc:0.05,li:'combat_knife',req:'tire_iron',d:'High-stakes criminal enterprise'},
-    {id:'SI09',n:'Extort the Semiconductor Trade',e:10,c:10800,x:186,lc:0.05,li:'switchblade',req:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'SI10',n:'Launder Through Crypto Exchanges',e:9,c:10400,x:180,lc:0.05,li:'crypto_wallet',req:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'SI11',n:'Bribe the Singapore Police Force',e:10,c:11200,x:192,lc:0.05,li:'fbi_badge',req:'burner_phone',d:'High-stakes criminal enterprise'},
-    {id:'SI12',n:'Control the Casino Revenue',e:9,c:10240,x:177,lc:0.05,li:'kevlar_gloves',req:'stolen_wallet',d:'High-stakes criminal enterprise'}
+    {id:'SI07',n:'Control Shipping Through Malacca',e:9,c:9600,x:168,lc:0.14,li:'kevlar_gloves',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'SI08',n:'Run the ASEAN Dark Finance',e:9,c:10000,x:174,lc:0.14,li:'combat_knife',req:'tire_iron',d:'High-stakes criminal enterprise'},
+    {id:'SI09',n:'Extort the Semiconductor Trade',e:10,c:10800,x:186,lc:0.14,li:'switchblade',req:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'SI10',n:'Launder Through Crypto Exchanges',e:9,c:10400,x:180,lc:0.14,li:'crypto_wallet',req:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'SI11',n:'Bribe the Singapore Police Force',e:10,c:11200,x:192,lc:0.14,li:'fbi_badge',req:'burner_phone',d:'High-stakes criminal enterprise'},
+    {id:'SI12',n:'Control the Casino Revenue',e:9,c:10240,x:177,lc:0.14,li:'kevlar_gloves',req:'stolen_wallet',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'III. Pacific Master',jobs:[
-    {id:'SI13',n:'Take Over the Pacific Shipping Routes',e:15,c:25200,x:450,lc:0.04,li:'ak47',req:'police_scanner',d:'High-stakes criminal enterprise'},
-    {id:'SI14',n:'Control the Asian Drug Finance',e:15,c:26100,x:465,lc:0.04,li:'bulletproof_vest',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
-    {id:'SI15',n:'Run the Cyber Warfare Network',e:16,c:28800,x:510,lc:0.04,li:'hacking_rig',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
-    {id:'SI16',n:'Own the Tech Company Fronts',e:15,c:27000,x:480,lc:0.04,li:'night_vision',req:'fake_rolex',d:'High-stakes criminal enterprise'},
-    {id:'SI17',n:'Infiltrate the ISA',e:16,c:29700,x:525,lc:0.04,li:'fbi_badge',req:'fake_rolex',d:'High-stakes criminal enterprise'},
-    {id:'SI18',n:'Control the Rare Earth Trade',e:15,c:27900,x:495,lc:0.04,li:'night_vision',req:'combat_knife',d:'High-stakes criminal enterprise'}
+    {id:'SI13',n:'Take Over the Pacific Shipping Routes',e:15,c:25200,x:450,lc:0.11,li:'ak47',req:'police_scanner',d:'High-stakes criminal enterprise'},
+    {id:'SI14',n:'Control the Asian Drug Finance',e:15,c:26100,x:465,lc:0.11,li:'bulletproof_vest',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
+    {id:'SI15',n:'Run the Cyber Warfare Network',e:16,c:28800,x:510,lc:0.11,li:'hacking_rig',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
+    {id:'SI16',n:'Own the Tech Company Fronts',e:15,c:27000,x:480,lc:0.11,li:'night_vision',req:'fake_rolex',d:'High-stakes criminal enterprise'},
+    {id:'SI17',n:'Infiltrate the ISA',e:16,c:29700,x:525,lc:0.11,li:'fbi_badge',req:'fake_rolex',d:'High-stakes criminal enterprise'},
+    {id:'SI18',n:'Control the Rare Earth Trade',e:15,c:27900,x:495,lc:0.11,li:'night_vision',req:'combat_knife',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'IV. Pacific Emperor',jobs:[
-    {id:'SI19',n:'Control the ASEAN Economy',e:24,c:51300,x:816,lc:0.03,li:'briefcase_of_cash',req:'forged_passport',d:'High-stakes criminal enterprise'},
-    {id:'SI20',n:'Own the Pacific Banking',e:25,c:55100,x:867,lc:0.03,li:'briefcase_of_cash',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
-    {id:'SI21',n:'Run the Global Cyber Crime',e:24,c:53200,x:833,lc:0.03,li:'hacking_rig',req:'forged_passport',d:'High-stakes criminal enterprise'},
-    {id:'SI22',n:'Take Over the Sovereign Wealth Funds',e:26,c:58900,x:918,lc:0.03,li:'offshore_account',req:'forged_passport',d:'High-stakes criminal enterprise'},
-    {id:'SI23',n:'Control the Strait of Malacca',e:25,c:57000,x:884,lc:0.03,li:'sniper_rifle',req:'forged_passport',d:'High-stakes criminal enterprise'}
+    {id:'SI19',n:'Control the ASEAN Economy',e:24,c:51300,x:816,lc:0.08,li:'briefcase_of_cash',req:'forged_passport',d:'High-stakes criminal enterprise'},
+    {id:'SI20',n:'Own the Pacific Banking',e:25,c:55100,x:867,lc:0.08,li:'briefcase_of_cash',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
+    {id:'SI21',n:'Run the Global Cyber Crime',e:24,c:53200,x:833,lc:0.08,li:'hacking_rig',req:'forged_passport',d:'High-stakes criminal enterprise'},
+    {id:'SI22',n:'Take Over the Sovereign Wealth Funds',e:26,c:58900,x:918,lc:0.08,li:'offshore_account',req:'forged_passport',d:'High-stakes criminal enterprise'},
+    {id:'SI23',n:'Control the Strait of Malacca',e:25,c:57000,x:884,lc:0.08,li:'sniper_rifle',req:'forged_passport',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'V. Tiger Emperor',jobs:[
-    {id:'SI24',n:'Own the Pacific Rim Finance',e:34,c:74100,x:969,lc:0.03,li:'diamond_ring',req:'grenade',d:'High-stakes criminal enterprise'},
-    {id:'SI25',n:'Control Global Shipping',e:38,c:87400,x:1071,lc:0.025,li:'nano_suit',req:'rpg_launcher',d:'High-stakes criminal enterprise'},
-    {id:'SI26',n:'The Lion City Legacy',e:40,c:100700,x:1173,lc:0.025,li:'assassination_kit',req:'ghost_protocol',d:'High-stakes criminal enterprise'},
-    {id:'SI27',n:'Pacific Empire',e:42,c:114000,x:1275,lc:0.025,li:'world_don_crown',req:'briefcase_of_cash',d:'High-stakes criminal enterprise'},
-    {id:'SI28',n:'Global Financial Emperor',e:45,c:133000,x:1445,lc:0.025,li:'world_don_crown',req:'military_intel',d:'High-stakes criminal enterprise'}
+    {id:'SI24',n:'Own the Pacific Rim Finance',e:34,c:74100,x:969,lc:0.08,li:'diamond_ring',req:'grenade',d:'High-stakes criminal enterprise'},
+    {id:'SI25',n:'Control Global Shipping',e:38,c:87400,x:1071,lc:0.06,li:'nano_suit',req:'rpg_launcher',d:'High-stakes criminal enterprise'},
+    {id:'SI26',n:'The Lion City Legacy',e:40,c:100700,x:1173,lc:0.06,li:'assassination_kit',req:'ghost_protocol',d:'High-stakes criminal enterprise'},
+    {id:'SI27',n:'Pacific Empire',e:42,c:114000,x:1275,lc:0.06,li:'world_don_crown',req:'briefcase_of_cash',d:'High-stakes criminal enterprise'},
+    {id:'SI28',n:'Global Financial Emperor',e:45,c:133000,x:1445,lc:0.06,li:'world_don_crown',req:'military_intel',d:'High-stakes criminal enterprise'}
   ]},
 ],
 italy:[
   {tier:'I. Sicilian Streets',jobs:[
-    {id:'IT01',n:'Run a Protection Racket in Palermo',e:2,c:2700,x:30,lc:0.06,li:'burner_phone',d:'High-stakes criminal enterprise'},
-    {id:'IT02',n:'Sell Counterfeit Wine',e:2,c:2400,x:28,lc:0.06,li:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'IT03',n:'Extort the Fish Market',e:3,c:3500,x:49,lc:0.06,li:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'IT04',n:'Smuggle Through the Mediterranean',e:3,c:3639,x:51,lc:0.06,li:'burner_phone',d:'High-stakes criminal enterprise'},
-    {id:'IT05',n:'Rob Tourist Villas',e:3,c:3360,x:48,lc:0.06,li:'burner_phone',d:'High-stakes criminal enterprise'},
-    {id:'IT06',n:'Run Underground Gambling',e:2,c:2520,x:29,lc:0.06,li:'renaissance_dagger',d:'High-stakes criminal enterprise'}
+    {id:'IT01',n:'Run a Protection Racket in Palermo',e:2,c:2700,x:30,lc:0.18,li:'burner_phone',d:'High-stakes criminal enterprise'},
+    {id:'IT02',n:'Sell Counterfeit Wine',e:2,c:2400,x:28,lc:0.18,li:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'IT03',n:'Extort the Fish Market',e:3,c:3500,x:49,lc:0.18,li:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'IT04',n:'Smuggle Through the Mediterranean',e:3,c:3639,x:51,lc:0.18,li:'burner_phone',d:'High-stakes criminal enterprise'},
+    {id:'IT05',n:'Rob Tourist Villas',e:3,c:3360,x:48,lc:0.18,li:'burner_phone',d:'High-stakes criminal enterprise'},
+    {id:'IT06',n:'Run Underground Gambling',e:2,c:2520,x:29,lc:0.18,li:'renaissance_dagger',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'II. Cosa Nostra',jobs:[
-    {id:'IT07',n:'Control the Ndrangheta Pipeline',e:9,c:10400,x:180,lc:0.05,li:'fake_rolex',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'IT08',n:'Run the Vatican Bank Fraud',e:10,c:12000,x:204,lc:0.05,li:'papal_signet',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
-    {id:'IT09',n:'Extort the Fashion Industry',e:9,c:10800,x:186,lc:0.05,li:'fake_rolex',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
-    {id:'IT10',n:'Smuggle Antiquities',e:10,c:11600,x:198,lc:0.05,li:'ancient_artifact',req:'lockpick_set',d:'High-stakes criminal enterprise'},
-    {id:'IT11',n:'Bribe the Carabinieri',e:10,c:11200,x:192,lc:0.05,li:'fbi_badge',req:'brass_pipe',d:'High-stakes criminal enterprise'},
-    {id:'IT12',n:'Control the Olive Oil Mafia',e:9,c:10560,x:183,lc:0.05,li:'kevlar_gloves',req:'lockpick_set',d:'High-stakes criminal enterprise'}
+    {id:'IT07',n:'Control the Ndrangheta Pipeline',e:9,c:10400,x:180,lc:0.14,li:'fake_rolex',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'IT08',n:'Run the Vatican Bank Fraud',e:10,c:12000,x:204,lc:0.14,li:'papal_signet',req:'brass_knuckles',d:'High-stakes criminal enterprise'},
+    {id:'IT09',n:'Extort the Fashion Industry',e:9,c:10800,x:186,lc:0.14,li:'fake_rolex',req:'stolen_wallet',d:'High-stakes criminal enterprise'},
+    {id:'IT10',n:'Smuggle Antiquities',e:10,c:11600,x:198,lc:0.14,li:'ancient_artifact',req:'lockpick_set',d:'High-stakes criminal enterprise'},
+    {id:'IT11',n:'Bribe the Carabinieri',e:10,c:11200,x:192,lc:0.14,li:'fbi_badge',req:'brass_pipe',d:'High-stakes criminal enterprise'},
+    {id:'IT12',n:'Control the Olive Oil Mafia',e:9,c:10560,x:183,lc:0.14,li:'kevlar_gloves',req:'lockpick_set',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'III. Padrino',jobs:[
-    {id:'IT13',n:'Take Over the Camorra',e:15,c:27000,x:480,lc:0.04,li:'ak47',req:'police_scanner',d:'High-stakes criminal enterprise'},
-    {id:'IT14',n:'Control the European Drug Route',e:16,c:30600,x:540,lc:0.04,li:'forged_passport',req:'police_scanner',d:'High-stakes criminal enterprise'},
-    {id:'IT15',n:'Run the Mediterranean Arms Trade',e:15,c:28800,x:510,lc:0.04,li:'ak47',req:'pistol',d:'High-stakes criminal enterprise'},
-    {id:'IT16',n:'Own the Vatican Finances',e:16,c:31500,x:555,lc:0.04,li:'papal_signet',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
-    {id:'IT17',n:'Infiltrate the Italian Intelligence',e:16,c:29700,x:525,lc:0.04,li:'fbi_badge',req:'police_scanner',d:'High-stakes criminal enterprise'},
-    {id:'IT18',n:'Control the Construction Mafia',e:15,c:27900,x:495,lc:0.04,li:'bulletproof_vest',req:'kevlar_gloves',d:'High-stakes criminal enterprise'}
+    {id:'IT13',n:'Take Over the Camorra',e:15,c:27000,x:480,lc:0.11,li:'ak47',req:'police_scanner',d:'High-stakes criminal enterprise'},
+    {id:'IT14',n:'Control the European Drug Route',e:16,c:30600,x:540,lc:0.11,li:'forged_passport',req:'police_scanner',d:'High-stakes criminal enterprise'},
+    {id:'IT15',n:'Run the Mediterranean Arms Trade',e:15,c:28800,x:510,lc:0.11,li:'ak47',req:'pistol',d:'High-stakes criminal enterprise'},
+    {id:'IT16',n:'Own the Vatican Finances',e:16,c:31500,x:555,lc:0.11,li:'papal_signet',req:'kevlar_gloves',d:'High-stakes criminal enterprise'},
+    {id:'IT17',n:'Infiltrate the Italian Intelligence',e:16,c:29700,x:525,lc:0.11,li:'fbi_badge',req:'police_scanner',d:'High-stakes criminal enterprise'},
+    {id:'IT18',n:'Control the Construction Mafia',e:15,c:27900,x:495,lc:0.11,li:'bulletproof_vest',req:'kevlar_gloves',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'IV. Capo di Tutti Capi',jobs:[
-    {id:'IT19',n:'Control All Italian Mafia Families',e:25,c:55100,x:867,lc:0.03,li:'diamond_ring',req:'tommy_gun',d:'High-stakes criminal enterprise'},
-    {id:'IT20',n:'Own the Mediterranean',e:26,c:58900,x:918,lc:0.03,li:'ghost_protocol',req:'forged_passport',d:'High-stakes criminal enterprise'},
-    {id:'IT21',n:'Run the European Crime Network',e:25,c:57000,x:884,lc:0.03,li:'don_ring',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
-    {id:'IT22',n:'Take Over the European Banking',e:27,c:62700,x:969,lc:0.03,li:'offshore_account',req:'tommy_gun',d:'High-stakes criminal enterprise'},
-    {id:'IT23',n:'Control the Vatican',e:26,c:60800,x:935,lc:0.03,li:'papal_signet',req:'ak47',d:'High-stakes criminal enterprise'}
+    {id:'IT19',n:'Control All Italian Mafia Families',e:25,c:55100,x:867,lc:0.08,li:'diamond_ring',req:'tommy_gun',d:'High-stakes criminal enterprise'},
+    {id:'IT20',n:'Own the Mediterranean',e:26,c:58900,x:918,lc:0.08,li:'ghost_protocol',req:'forged_passport',d:'High-stakes criminal enterprise'},
+    {id:'IT21',n:'Run the European Crime Network',e:25,c:57000,x:884,lc:0.08,li:'don_ring',req:'bulletproof_vest',d:'High-stakes criminal enterprise'},
+    {id:'IT22',n:'Take Over the European Banking',e:27,c:62700,x:969,lc:0.08,li:'offshore_account',req:'tommy_gun',d:'High-stakes criminal enterprise'},
+    {id:'IT23',n:'Control the Vatican',e:26,c:60800,x:935,lc:0.08,li:'papal_signet',req:'ak47',d:'High-stakes criminal enterprise'}
   ]},
   {tier:'V. Il Padrino Eterno',jobs:[
-    {id:'IT24',n:'Unite All Mediterranean Families',e:35,c:77900,x:1020,lc:0.03,li:'offshore_account',req:'ak47',d:'High-stakes criminal enterprise'},
-    {id:'IT25',n:'Own Europe',e:38,c:91200,x:1122,lc:0.025,li:'golden_ak',req:'diamond_ring',d:'High-stakes criminal enterprise'},
-    {id:'IT26',n:'Control the Global Mafia Network',e:40,c:104500,x:1224,lc:0.025,li:'blood_diamond',req:'rpg_launcher',d:'High-stakes criminal enterprise'},
-    {id:'IT27',n:'The Corleone Legacy',e:42,c:118750,x:1326,lc:0.025,li:'don_ring',req:'sniper_rifle',d:'High-stakes criminal enterprise'},
-    {id:'IT28',n:'Eternal Godfather',e:45,c:137750,x:1487,lc:0.025,li:'world_don_crown',req:'ghost_protocol',d:'High-stakes criminal enterprise'}
+    {id:'IT24',n:'Unite All Mediterranean Families',e:35,c:77900,x:1020,lc:0.08,li:'offshore_account',req:'ak47',d:'High-stakes criminal enterprise'},
+    {id:'IT25',n:'Own Europe',e:38,c:91200,x:1122,lc:0.06,li:'golden_ak',req:'diamond_ring',d:'High-stakes criminal enterprise'},
+    {id:'IT26',n:'Control the Global Mafia Network',e:40,c:104500,x:1224,lc:0.06,li:'blood_diamond',req:'rpg_launcher',d:'High-stakes criminal enterprise'},
+    {id:'IT27',n:'The Corleone Legacy',e:42,c:118750,x:1326,lc:0.06,li:'don_ring',req:'sniper_rifle',d:'High-stakes criminal enterprise'},
+    {id:'IT28',n:'Eternal Godfather',e:45,c:137750,x:1487,lc:0.06,li:'world_don_crown',req:'ghost_protocol',d:'High-stakes criminal enterprise'}
   ]},
 ],
 };
@@ -1128,63 +1128,92 @@ const STORE = [
 
 // LOOT TABLE
 const LOOT = {
-  brass_knuckles:{n:'Brass Knuckles',e:'👊',t:'weapon',atk:2,def:0},
-  switchblade:{n:'Switchblade',e:'🔪',t:'weapon',atk:5,def:0},
-  baseball_bat:{n:'Aluminum Bat',e:'⚾',t:'weapon',atk:7,def:1},
-  crowbar:{n:'Crowbar',e:'🔩',t:'weapon',atk:8,def:0},
-  pistol:{n:'.45 Pistol',e:'🔫',t:'weapon',atk:12,def:0},
-  silenced_pistol:{n:'Silenced Pistol',e:'🔫',t:'weapon',atk:15,def:0},
-  tommy_gun:{n:'Tommy Gun',e:'🔫',t:'weapon',atk:22,def:1},
-  bulletproof_vest:{n:'Bulletproof Vest',e:'🦺',t:'armor',atk:0,def:18},
   ak47:{n:'AK-47',e:'🔫',t:'weapon',atk:35,def:2},
-  sniper_rifle:{n:'Sniper Rifle',e:'🎯',t:'weapon',atk:55,def:0},
-  desert_eagle:{n:'Desert Eagle',e:'🔫',t:'weapon',atk:40,def:1},
-  kalashnikov:{n:'Kalashnikov Elite',e:'🔫',t:'weapon',atk:80,def:4},
-  rocket_launcher:{n:'RPG-7',e:'💥',t:'weapon',atk:150,def:0},
-  rum_pistol:{n:'Rum Runner\'s Pistol',e:'🔫',t:'weapon',atk:25,def:0},
-  dynamite:{n:'Dynamite Bundle',e:'🧨',t:'weapon',atk:28,def:0},
-  jade_dragon:{n:'Jade Dragon',e:'🐉',t:'armor',atk:0,def:25},
-  jungle_machete:{n:'Jungle Machete',e:'🌿',t:'weapon',atk:35,def:3},
-  diamonds:{n:'Blood Diamonds',e:'💎',t:'armor',atk:5,def:12},
-  renaissance_dagger:{n:'Renaissance Dagger',e:'🗡️',t:'weapon',atk:50,def:5},
-  papal_signet:{n:'Papal Signet Ring',e:'💍',t:'armor',atk:10,def:35},
-  don_ring:{n:'Don\'s Ring',e:'💍',t:'armor',atk:20,def:45},
-  gold_watch:{n:'Gold Watch',e:'⌚',t:'armor',atk:5,def:8},
-  uncut_diamonds:{n:'Uncut Diamonds',e:'💎',t:'armor',atk:8,def:20},
-  katana:{n:'Katana',e:'⚔️',t:'weapon',atk:65,def:5},
-  samurai_sword:{n:'Samurai Sword',e:'⚔️',t:'weapon',atk:90,def:8},
-  hacking_rig:{n:'Hacking Rig',e:'💻',t:'special',atk:20,def:20},
-  gold_bar:{n:'Gold Bar',e:'🥇',t:'armor',atk:0,def:15},
-  crypto_wallet:{n:'Crypto Wallet',e:'💰',t:'special',atk:10,def:10},
-  golden_ak:{n:'Golden AK-47',e:'🔫',t:'weapon',atk:95,def:5},
-  ottoman_blade:{n:'Ottoman Blade',e:'🗡️',t:'weapon',atk:70,def:7},
-  dragon_seal:{n:'Dragon Seal',e:'🐉',t:'special',atk:30,def:30},
-  yakuza_tattoo_scroll:{n:'Yakuza Oath Scroll',e:'📜',t:'special',atk:15,def:15},
-  world_don_crown:{n:'World Don Crown',e:'👑',t:'special',atk:100,def:100},
-  // Missing loot items from jobs
   ancient_artifact:{n:'Ancient Artifact',e:'🏺',t:'special',atk:20,def:20},
+  armored_car_key:{n:'Armored Car Key',e:'🔐',t:'special',atk:0,def:0},
   assassination_kit:{n:'Assassination Kit',e:'🧰',t:'weapon',atk:60,def:0},
+  baseball_bat:{n:'Aluminum Bat',e:'⚾',t:'weapon',atk:7,def:1},
+  black_card:{n:'Black Amex',e:'💳',t:'special',atk:0,def:0},
+  blood_diamond:{n:'Blood Diamond',e:'💎',t:'special',atk:0,def:0},
+  body_armor:{n:'Body Armor',e:'🛡️',t:'armor',atk:0,def:15},
+  brass_knuckles:{n:'Brass Knuckles',e:'👊',t:'weapon',atk:2,def:0},
+  brass_pipe:{n:'Brass Pipe',e:'🔧',t:'weapon',atk:3,def:0},
   briefcase_of_cash:{n:'Briefcase of Cash',e:'💼',t:'special',atk:0,def:0},
   british_rifle:{n:'British Rifle',e:'🔫',t:'weapon',atk:45,def:0},
+  bulletproof_vest:{n:'Bulletproof Vest',e:'🦺',t:'armor',atk:0,def:18},
+  burner_phone:{n:'Burner Phone',e:'📱',t:'special',atk:0,def:1},
   cartel_pistol:{n:'Cartel Pistol',e:'🔫',t:'weapon',atk:40,def:0},
+  combat_knife:{n:'Combat Knife',e:'🔪',t:'weapon',atk:12,def:0},
   compromising_photos:{n:'Compromising Photos',e:'📸',t:'special',atk:0,def:15},
   corsican_blade:{n:'Corsican Blade',e:'🗡️',t:'weapon',atk:50,def:5},
+  crowbar:{n:'Crowbar',e:'🔩',t:'weapon',atk:8,def:0},
+  crown_jewel:{n:'Crown Jewel',e:'👑',t:'special',atk:0,def:0},
+  crypto_wallet:{n:'Crypto Wallet',e:'💰',t:'special',atk:10,def:10},
   cuban_pistol:{n:'Cuban Pistol',e:'🔫',t:'weapon',atk:25,def:0},
+  desert_eagle:{n:'Desert Eagle',e:'🔫',t:'weapon',atk:40,def:1},
+  diamond_ring:{n:'Diamond Ring',e:'💍',t:'special',atk:0,def:0},
+  diamonds:{n:'Blood Diamonds',e:'💎',t:'armor',atk:5,def:12},
+  dirty_bomb_plans:{n:'Dirty Bomb Plans',e:'☢️',t:'special',atk:0,def:0},
+  don_ring:{n:'Don\'s Ring',e:'💍',t:'armor',atk:20,def:45},
+  dragon_seal:{n:'Dragon Seal',e:'🐉',t:'special',atk:30,def:30},
   drug_lord_crown:{n:'Drug Lord Crown',e:'👑',t:'special',atk:35,def:10},
+  dynamite:{n:'Dynamite Bundle',e:'🧨',t:'weapon',atk:28,def:0},
   entertainer_contract:{n:'Entertainer Contract',e:'🎭',t:'special',atk:0,def:10},
   fake_rolex:{n:'Fake Rolex',e:'⌚',t:'special',atk:0,def:5},
   fbi_badge:{n:'FBI Badge',e:'🪪',t:'special',atk:10,def:25},
+  forged_passport:{n:'Forged Passport',e:'📕',t:'special',atk:0,def:2},
+  ghost_protocol:{n:'Ghost Protocol Device',e:'👻',t:'special',atk:5,def:15},
+  gold_bar:{n:'Gold Bar',e:'🥇',t:'armor',atk:0,def:15},
   gold_chain:{n:'Gold Chain',e:'⛓️',t:'armor',atk:0,def:12},
+  gold_watch:{n:'Gold Watch',e:'⌚',t:'armor',atk:5,def:8},
+  golden_ak:{n:'Golden AK-47',e:'🔫',t:'weapon',atk:95,def:5},
+  grenade:{n:'Fragmentation Grenade',e:'💣',t:'weapon',atk:20,def:0},
+  hacking_rig:{n:'Hacking Rig',e:'💻',t:'special',atk:20,def:20},
   ivory_tusk:{n:'Ivory Tusk',e:'🦷',t:'special',atk:15,def:0},
+  jade_dragon:{n:'Jade Dragon',e:'🐉',t:'armor',atk:0,def:25},
+  jungle_machete:{n:'Jungle Machete',e:'🌿',t:'weapon',atk:35,def:3},
+  kalashnikov:{n:'Kalashnikov Elite',e:'🔫',t:'weapon',atk:80,def:4},
+  katana:{n:'Katana',e:'⚔️',t:'weapon',atk:65,def:5},
+  kevlar_gloves:{n:'Kevlar Gloves',e:'🧤',t:'armor',atk:2,def:8},
+  lockpick_set:{n:'Lockpick Set',e:'🔑',t:'weapon',atk:1,def:0},
+  military_intel:{n:'Military Intelligence',e:'📋',t:'special',atk:0,def:10},
+  missile_codes:{n:'Missile Codes',e:'🎯',t:'special',atk:0,def:0},
+  nano_suit:{n:'Nano Suit',e:'🤖',t:'armor',atk:10,def:35},
+  neural_implant:{n:'Neural Implant',e:'🧬',t:'special',atk:10,def:10},
+  night_vision:{n:'Night Vision Goggles',e:'🥽',t:'armor',atk:0,def:5},
   offshore_account:{n:'Offshore Account',e:'🏦',t:'special',atk:0,def:0},
+  ottoman_blade:{n:'Ottoman Blade',e:'🗡️',t:'weapon',atk:70,def:7},
+  papal_signet:{n:'Papal Signet Ring',e:'💍',t:'armor',atk:10,def:35},
   pcc_crown:{n:'PCC Crown',e:'👑',t:'special',atk:40,def:15},
+  pistol:{n:'.45 Pistol',e:'🔫',t:'weapon',atk:12,def:0},
+  plasma_cutter:{n:'Plasma Cutter',e:'⚡',t:'weapon',atk:30,def:0},
   platinum_chain:{n:'Platinum Chain',e:'⛓️',t:'armor',atk:5,def:20},
+  police_scanner:{n:'Police Scanner',e:'📻',t:'special',atk:0,def:3},
   polonium_vial:{n:'Polonium Vial',e:'☢️',t:'weapon',atk:80,def:0},
+  quantum_key:{n:'Quantum Encryption Key',e:'🔮',t:'special',atk:0,def:20},
+  renaissance_dagger:{n:'Renaissance Dagger',e:'🗡️',t:'weapon',atk:50,def:5},
+  rocket_launcher:{n:'RPG-7',e:'💥',t:'weapon',atk:150,def:0},
+  rpg_launcher:{n:'RPG Launcher',e:'🚀',t:'weapon',atk:35,def:0},
+  rum_pistol:{n:'Rum Runner\'s Pistol',e:'🔫',t:'weapon',atk:25,def:0},
+  samurai_sword:{n:'Samurai Sword',e:'⚔️',t:'weapon',atk:90,def:8},
+  satellite_phone:{n:'Satellite Phone',e:'📡',t:'special',atk:0,def:5},
+  silenced_pistol:{n:'Silenced Pistol',e:'🔫',t:'weapon',atk:15,def:0},
+  ski_mask:{n:'Ski Mask',e:'🎭',t:'armor',atk:0,def:2},
+  smugglers_map:{n:'Smugglers Map',e:'🗺️',t:'special',atk:0,def:0},
+  sniper_rifle:{n:'Sniper Rifle',e:'🎯',t:'weapon',atk:55,def:0},
   speedboat_key:{n:'Speedboat Key',e:'🚤',t:'vehicle',atk:0,def:10},
   stolen_masterpiece:{n:'Stolen Masterpiece',e:'🖼️',t:'special',atk:0,def:0},
+  stolen_wallet:{n:'Stolen Wallet',e:'👛',t:'special',atk:0,def:0},
+  switchblade:{n:'Switchblade',e:'🔪',t:'weapon',atk:5,def:0},
+  tire_iron:{n:'Tire Iron',e:'🔩',t:'weapon',atk:4,def:0},
+  titanium_vest:{n:'Titanium Vest',e:'🦾',t:'armor',atk:0,def:25},
+  tommy_gun:{n:'Tommy Gun',e:'🔫',t:'weapon',atk:22,def:1},
+  uncut_diamonds:{n:'Uncut Diamonds',e:'💎',t:'armor',atk:8,def:20},
   usp_pistol:{n:'USP Pistol',e:'🔫',t:'weapon',atk:30,def:0},
   vor_crown:{n:'Vor Crown',e:'👑',t:'special',atk:55,def:20},
   world_bank_key:{n:'World Bank Key',e:'🔑',t:'special',atk:0,def:0},
+  world_don_crown:{n:'World Don Crown',e:'👑',t:'special',atk:100,def:100},
+  yakuza_tattoo_scroll:{n:'Yakuza Oath Scroll',e:'📜',t:'special',atk:15,def:15},
 };
 
 // ══════════════════════════════════════════
@@ -1295,6 +1324,26 @@ const SKILL_TREE = {
   titanium_vest:{n:'Titanium Vest',e:'🦾',t:'armor',atk:0,def:25},
   plasma_cutter:{n:'Plasma Cutter',e:'⚡',t:'weapon',atk:30,def:0},
   nano_suit:{n:'Nano Suit',e:'🤖',t:'armor',atk:10,def:35},
+  lockpick_set:{n:'Lockpick Set',e:'🔑',t:'weapon',atk:1,def:0},
+  brass_pipe:{n:'Brass Pipe',e:'🔧',t:'weapon',atk:3,def:0},
+  ski_mask:{n:'Ski Mask',e:'🎭',t:'armor',atk:0,def:2},
+  burner_phone:{n:'Burner Phone',e:'📱',t:'special',atk:0,def:1},
+  stolen_wallet:{n:'Stolen Wallet',e:'👛',t:'special',atk:0,def:0},
+  tire_iron:{n:'Tire Iron',e:'🔩',t:'weapon',atk:4,def:0},
+  police_scanner:{n:'Police Scanner',e:'📻',t:'special',atk:0,def:3},
+  kevlar_gloves:{n:'Kevlar Gloves',e:'🧤',t:'armor',atk:2,def:8},
+  night_vision:{n:'Night Vision Goggles',e:'🥽',t:'armor',atk:0,def:5},
+  combat_knife:{n:'Combat Knife',e:'🔪',t:'weapon',atk:12,def:0},
+  body_armor:{n:'Body Armor',e:'🛡️',t:'armor',atk:0,def:15},
+  grenade:{n:'Fragmentation Grenade',e:'💣',t:'weapon',atk:20,def:0},
+  forged_passport:{n:'Forged Passport',e:'📕',t:'special',atk:0,def:2},
+  rpg_launcher:{n:'RPG Launcher',e:'🚀',t:'weapon',atk:35,def:0},
+  diamond_ring:{n:'Diamond Ring',e:'💍',t:'special',atk:0,def:0},
+  blood_diamond:{n:'Blood Diamond',e:'💎',t:'special',atk:0,def:0},
+  military_intel:{n:'Military Intelligence',e:'📋',t:'special',atk:0,def:10},
+  ghost_protocol:{n:'Ghost Protocol Device',e:'👻',t:'special',atk:5,def:15},
+  quantum_key:{n:'Quantum Encryption Key',e:'🔮',t:'special',atk:0,def:20},
+  crown_jewel:{n:'Crown Jewel',e:'👑',t:'special',atk:0,def:0},
 };
 
 // ══════════════════════════════════════════
