@@ -650,7 +650,15 @@ function updateRight(){
   document.getElementById('sk-defense').textContent=G.defense;
   // Heal button color
   const hb=document.getElementById('heal-btn-top');
-  if(hb)hb.style.opacity=G.health<G.maxHealth*.5?'1':'.5';
+  const hcEl=document.getElementById('heal-cost');
+  if(hb){
+    const healCost=Math.floor(G.maxHealth*10 + Math.pow(G.level,1.8)*20);
+    const now=Date.now();
+    const cdLeft=G._lastHeal?Math.max(0,Math.ceil((60000-(now-G._lastHeal))/1000)):0;
+    if(hcEl) hcEl.textContent=cdLeft>0?cdLeft+'s':'$'+fmtCash(healCost);
+    hb.style.opacity=G.health<G.maxHealth&&cdLeft===0?'1':'.4';
+    hb.disabled=G.health>=G.maxHealth||cdLeft>0||G.cash<healCost;
+  }
   // Street Status section
   const rpNot=document.getElementById('rp-notoriety');
   if(rpNot)rpNot.textContent=(G.notoriety||0).toLocaleString();
