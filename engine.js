@@ -305,11 +305,16 @@ function getHeatLevel(){
 }
 function addHeat(amount){
   let heatAmt=amount;
-  if(G.crew&&G.crew['cr05'])heatAmt=Math.floor(heatAmt*0.70); // Roxanne -30%
-  if(G.crew&&G.crew['cr_shadow'])heatAmt=Math.floor(heatAmt*0.50); // Shadow halves gain
-  if(G.blackMarketBuys&&G.blackMarketBuys['bm_silencer'])heatAmt=Math.floor(heatAmt*0.75); // Silencer -25%
-  if(G.blackMarketBuys&&G.blackMarketBuys['bm_stolen_badges'])heatAmt=Math.floor(heatAmt*0.85); // Badges -15%
-  G.heat=Math.min(100,(G.heat||0)+Math.max(0,heatAmt));
+  // Heat reduction: additive percentages, capped at 70% total reduction
+  let reduction=0;
+  if(G.crew&&G.crew['cr05'])reduction+=30; // Roxanne -30%
+  if(G.crew&&G.crew['cr_shadow'])reduction+=25; // Shadow -25%
+  if(G.blackMarketBuys&&G.blackMarketBuys['bm_silencer'])reduction+=15; // Silencer -15%
+  if(G.blackMarketBuys&&G.blackMarketBuys['bm_stolen_badges'])reduction+=10; // Badges -10%
+  if(activeEventObj&&activeEventObj.effect==='noRobHeat')reduction+=50;
+  reduction=Math.min(70,reduction); // Cap at 70% — always get SOME heat
+  heatAmt=Math.max(1,Math.floor(heatAmt*(1-reduction/100))); // Floor at 1
+  G.heat=Math.min(100,(G.heat||0)+heatAmt);
   // heatDanger event: random arrest at high heat
   if(activeEventObj&&activeEventObj.effect==='heatDanger'&&G.heat>60&&Math.random()<0.08){triggerJail(10+Math.floor(G.level/10));toast('🚔 Federal sweep! Arrested!','r');}
   updateHeatBar();
