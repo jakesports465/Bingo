@@ -1028,10 +1028,10 @@ function findLootSource(lootId){
 function checkKnockout(){
   try{
     if(G.health>0) return;
-    var loss=Math.floor(G.cash*0.10);
+    var loss=Math.floor(G.cash*0.20);
     G.cash=Math.max(0,G.cash-loss);
-    G.heat=Math.min(100,(G.heat||0)+15);
-    G.health=Math.max(25,Math.floor(G.maxHealth*0.25));
+    G.heat=Math.min(100,(G.heat||0)+25);
+    G.health=Math.max(5,Math.floor(G.maxHealth*0.05));
     var old=document.getElementById("ko-overlay");
     if(old)old.remove();
     var d=document.createElement("div");
