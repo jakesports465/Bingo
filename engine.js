@@ -55,6 +55,7 @@ function safeInitNewFields(){
   if(!G.propUpgrades)G.propUpgrades={};
   if(!G.hitlistKills)G.hitlistKills=0;
   if(!G.hitlistEarned)G.hitlistEarned=0;
+  if(!G.hitlistDone)G.hitlistDone={};
   if(!G.raceLosses)G.raceLosses=0;
   if(!G.raceStreak)G.raceStreak=0;
   if(!G.raceBestStreak)G.raceBestStreak=0;
