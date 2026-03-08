@@ -1275,6 +1275,8 @@ function buySk(id){
   if(sk.effect.energy){G.maxEnergy+=sk.effect.energy;}
   if(sk.effect.crit){G.critChance+=sk.effect.crit;}
   if(sk.effect.loot){G.lootBonus+=sk.effect.loot;}
+  if(sk.effect.xpMult){G.xpMult+=sk.effect.xpMult;}
+  if(sk.effect.cashMult){/* applied via getSkillBonus at runtime */}
   addLog(`🌳 SKILL UNLOCKED: ${sk.n}!`,'sp');toast(`${sk.n} unlocked!`,'gold');
   updateAll();save();buildSkillTree(document.getElementById('center'));
 }
