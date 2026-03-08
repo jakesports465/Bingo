@@ -261,7 +261,6 @@ const ENEMIES = [
   {n:'Il Diavolo',rank:'Hell\'s Don',atk:8000,def:7000,ml:1100,r:89230,xr:442,kc:.35,tier:5,loot:null},
   {n:'The Absolute',rank:'Beyond Mortal',atk:15000,def:13000,ml:1300,r:104615,xr:496,kc:.38,tier:5,loot:null},
   {n:'Maximum Don',rank:'Level 1500 Challenge',atk:25000,def:22000,ml:1480,r:118461,xr:544,kc:.40,tier:5,loot:null},
-,
   {n:'Bag Snatcher',rank:'Petty Thief',atk:5,def:3,ml:1,r:50,xr:3,kc:.06,tier:0,loot:'stolen_wallet'},
   {n:'Graffiti Punk',rank:'Vandal',atk:7,def:4,ml:1,r:50,xr:3,kc:.05,tier:0,loot:'ski_mask'},
   {n:'Crack Dealer',rank:'Corner Boy',atk:9,def:6,ml:2,r:66,xr:3,kc:.08,tier:0,loot:'burner_phone'},
@@ -3860,8 +3859,7 @@ const LUXURY_ITEMS = [
    price:75000000, notReq:0, bonus:null, flex:'Fly anywhere, anytime.'},
 {id:'lx_m609', cat:'Jets & Yachts', n:'Azzam Superyacht', e:'🛥️', brand:'Custom',
    desc:'590 feet. The worlds largest.',
-   price:600000000, notReq:0, bonus:null, flex:'A floating city.'}
-,
+   price:600000000, notReq:0, bonus:null, flex:'A floating city.'},
   {id:'lx_n301', cat:'Trading Cards', n:'2024 Topps Series 1 Pack', e:'🃏', brand:'Topps',
    desc:'Standard hobby pack. Maybe you pull something.',
    price:3, notReq:0, bonus:null, flex:'Ripping packs like a kid.'},
