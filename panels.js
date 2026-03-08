@@ -361,7 +361,8 @@ function doFight(ename){
   if(win){
     // You still take some damage on wins based on enemy power
     const winDmg=Math.max(0,Math.floor(eRoll*.15));
-    if(winDmg>0)G.health=Math.max(1,G.health-winDmg);
+    if(winDmg>0)G.health=Math.max(0,G.health-winDmg);
+    checkKnockout();
     const streakBonus=G.fightStreak>=5?G.fightStreak*3:0;
     let cash=Math.floor(e.r*(1+Math.random()*.3)*(1+streakBonus/100)*getEventMult('cashMult',1));
     const xp=Math.round(e.xr*G.xpMult*G.pBonuses.xpMult*getEventMult('xpMult',1)*getNotorietyMult('xp'));
@@ -379,6 +380,7 @@ function doFight(ename){
   }else{
     const dmg=Math.floor((eRoll-myRoll)*.6)+15+Math.floor(e.atk*.1); // Much more damage on loss
     G.health=Math.max(0,G.health-dmg);G.fightsLost++;
+    checkKnockout();
     G.fightStreak=0;
     if(fra)fra.innerHTML=`<div class="fr lose">✗ DEFEATED by ${e.n}<br>You: ${myRoll.toFixed(0)} vs Enemy: ${eRoll.toFixed(0)}<br>❤️ -${dmg} HP</div>`;
     addLog(`✗ Lost to ${e.n} — took ${dmg} dmg`,'bad');
@@ -451,7 +453,8 @@ function collectBounty(name){
     if(t.loot&&Math.random()<.35){addLoot(t.loot);}
   }else{
     const dmg=t.st*10+Math.floor(Math.random()*30);
-    G.health=Math.max(1,G.health-dmg);
+    G.health=Math.max(0,G.health-dmg);
+    checkKnockout();
     addLog(`✗ Failed bounty on ${t.n} — ${dmg} dmg`,'bad');
     toast('Target escaped. You took damage.','r');
   }
@@ -500,7 +503,8 @@ function robTarget(def,cash){
     addLog(`🔫 Rob success: $${s.toLocaleString()}`,'gold');toast(`Robbed! +$${s.toLocaleString()}`,'gold');
   }else{
     const d=12+Math.floor(Math.random()*25);
-    G.health=Math.max(1,G.health-d);
+    G.health=Math.max(0,G.health-d);
+    checkKnockout();
     addLog('✗ Rob failed. Got shot.','bad');toast('They were ready. Took damage.','r');
   }
   addHeat(getEventMult('heatMult',5));
@@ -657,7 +661,8 @@ function gangWarAttack(gid,blitz){
     toast(`Gang War Victory! $${fmtCash(cash)}!`,'gold');
   }else{
     const dmg=power>ePow?Math.floor(Math.random()*15)+3:Math.floor(Math.random()*30)+10;
-    G.health=Math.max(1,G.health-dmg);
+    G.health=Math.max(0,G.health-dmg);
+    checkKnockout();
     if(power>ePow)addLog(`⚔️ ${g.n}: +${gain}% territory (${prog}%)`,'good');
     else addLog(`⚔️ ${g.n}: Repelled. -${dmg} HP. Territory: ${prog}%`,'bad');
   }
@@ -1325,7 +1330,8 @@ function doContract(name){
     addLog(`📄 CONTRACT DONE: ${ct.n} — $${cash.toLocaleString()}!`,'gold');
     toast(`Contract complete! $${cash.toLocaleString()}!`,'gold');
   }else{
-    const dmg=15+Math.floor(Math.random()*35);G.health=Math.max(1,G.health-dmg);
+    const dmg=15+Math.floor(Math.random()*35);G.health=Math.max(0,G.health-dmg);
+    checkKnockout();
     addLog(`✗ Contract failed: ${ct.n}. Took ${dmg} dmg.`,'bad');
     toast('Contract failed. Took damage.','r');
   }
@@ -1670,7 +1676,8 @@ function doBossFight(bid){
   const dmgDealt=Math.max(1,Math.floor(myAtk-b.def*.2+Math.random()*myAtk*.3));
   const dmgTaken=Math.max(5,Math.floor(b.atk*.08+Math.random()*25));
   G.bossHP[bid]=Math.max(0,G.bossHP[bid]-dmgDealt);
-  G.health=Math.max(1,G.health-dmgTaken);
+  G.health=Math.max(0,G.health-dmgTaken);
+  checkKnockout();
   if(G.bossHP[bid]<=0){
     if(!G.bossDefeated)G.bossDefeated={};
     G.bossDefeated[bid]=true;
@@ -2324,7 +2331,8 @@ function doHit(id){
   } else {
     addHeat(t.heatCost*2);
     const dmg=Math.floor(t.heatCost*2+Math.random()*20);
-    G.health=Math.max(1,G.health-dmg);
+    G.health=Math.max(0,G.health-dmg);
+    checkKnockout();
     G.notoriety=(G.notoriety||0)+1;
     toast('❌ Hit failed! Target escaped. Heat +'+t.heatCost*2,'r');
     addLog('❌ Failed hit on '+t.n+'. Heat +'+t.heatCost*2+', -'+dmg+' HP','bad');
@@ -4447,7 +4455,8 @@ function doRace(rid){
     const fine=Math.floor(race.cash*0.15);
     const dmg=Math.floor(race.stamina*8+Math.random()*15);
     G.cash=Math.max(0,G.cash-fine);
-    G.health=Math.max(1,G.health-dmg);
+    G.health=Math.max(0,G.health-dmg);
+    checkKnockout();
     addLog(`💥 LOST: ${race.n}. Crashed. -$${fmtCash(fine)} -${dmg}HP`,'bad');
     toast(`Race Lost! -$${fmtCash(fine)} -${dmg}HP`,'r');
   }
@@ -4624,7 +4633,8 @@ function doHack(hid){
     const heatPenalty=10+hack.tier*5;
     addHeat(heatPenalty);
     const dmg=Math.floor(hack.tier*8+Math.random()*15);
-    G.health=Math.max(1,G.health-dmg);
+    G.health=Math.max(0,G.health-dmg);
+    checkKnockout();
     addLog(`🚨 HACK FAILED: ${hack.n} — traced! Heat +${heatPenalty}`,'bad');
     toast(`Hack Failed! Traced! Heat +${heatPenalty}`,'r');
     if(G.heat>85)triggerJail(10+hack.tier*5);
