@@ -90,12 +90,18 @@ function calcOfflineProgress(){
   const cappedMin=Math.min(minutes,1440);
   let report=[];
 
-  // 1. Energy regen: 1 per 15s
-  const energyGain=Math.min(G.maxEnergy-G.energy, Math.floor(cappedSec/15));
+  // 1. Energy regen: class-based, every 8s
+  const offlineRegen={Fearless:{e:3,s:2},Maniac:{e:5,s:2},Mogul:{e:3,s:2},Ghost:{e:3,s:2},Consigliere:{e:3,s:2}};
+  const oR=offlineRegen[G.playerClass]||offlineRegen.Fearless;
+  let eRate=oR.e, sRate=oR.s;
+  if(G.crew&&G.crew['cr_time'])eRate*=2;
+  if(G.blackMarketBuys&&G.blackMarketBuys['bm_time']){eRate*=3;sRate*=3;}
+  const ticks=Math.floor(cappedSec/8);
+  const energyGain=Math.min(G.maxEnergy-G.energy, ticks*eRate);
   if(energyGain>0){G.energy+=energyGain;report.push('+'+energyGain+' energy');}
 
-  // 2. Stamina regen: 1 per 15s
-  const stamGain=Math.min(G.maxStamina-G.stamina, Math.floor(cappedSec/15));
+  // 2. Stamina regen: class-based, every 8s
+  const stamGain=Math.min(G.maxStamina-G.stamina, ticks*sRate);
   if(stamGain>0){G.stamina+=stamGain;report.push('+'+stamGain+' stamina');}
 
   // 3. Health regen: full heal if away 5+ min
@@ -700,7 +706,7 @@ function startLoops(){
 
   // ── DAILY REWARD CHECK ──
   checkDailyReward();
-  const regenRates={Fearless:{e:1,s:1,h:3},Maniac:{e:2,s:1,h:2},Mogul:{e:1,s:1,h:2},Ghost:{e:1,s:1,h:2},Consigliere:{e:1,s:1,h:2}};
+  const regenRates={Fearless:{e:3,s:2,h:5},Maniac:{e:5,s:2,h:4},Mogul:{e:3,s:2,h:4},Ghost:{e:3,s:2,h:4},Consigliere:{e:3,s:2,h:4}};
   const r=regenRates[G.playerClass]||regenRates.Fearless;
   // Energy/stamina/health regen (every 15s)
   setInterval(()=>{
@@ -714,7 +720,7 @@ function startLoops(){
     if(G.stamina<G.maxStamina){G.stamina=Math.min(G.maxStamina,G.stamina+Math.floor(sRegen));ch=true;}
     if(G.health<G.maxHealth){G.health=Math.min(G.maxHealth,G.health+r.h);ch=true;}
     if(ch){updateBars();updateTopBar();}
-  },15000);
+  },8000);
   // Auto income trickle
   setInterval(()=>{
     const inc=calcIncome();
