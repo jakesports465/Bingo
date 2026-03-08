@@ -1013,30 +1013,32 @@ function findLootSource(lootId){
 }
 
 // ══════════════════════════════════════════
-// KNOCKOUT SYSTEM — triggers when HP hits 0
+// KNOCKOUT SYSTEM
 // ══════════════════════════════════════════
 function checkKnockout(){
-  if(G.health>0) return;
-  G.health=0;
-  // Penalty: lose 10% cash, gain heat, brief cooldown
-  const cashLoss=Math.floor(G.cash*0.10);
-  G.cash=Math.max(0,G.cash-cashLoss);
-  G.heat=Math.min(100,(G.heat||0)+15);
-  // Heal back to 25% HP
-  G.health=Math.floor(G.maxHealth*0.25);
-  // Show knockout overlay
-  const overlay=document.createElement('div');
-  overlay.id='ko-overlay';
-  overlay.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;';
-  overlay.innerHTML=`
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--crimson);letter-spacing:.2em;">☠️ KNOCKED OUT</div>
-    <div style="font-family:'Special Elite',serif;font-size:14px;color:var(--text-dim);max-width:300px;text-align:center;">You were left for dead in an alley. Someone found you and dragged you to a back-room doctor.</div>
-    <div style="font-family:'Cutive Mono',monospace;font-size:12px;color:var(--crimson);margin-top:10px;">Lost $${fmtCash(cashLoss)} to hospital bills</div>
-    <div style="font-family:'Cutive Mono',monospace;font-size:12px;color:var(--bright-orange);">Heat +15%</div>
-    <div style="font-family:'Cutive Mono',monospace;font-size:12px;color:var(--bright-green);">Recovered to ${Math.floor(G.maxHealth*0.25)} HP</div>
-    <button onclick="document.getElementById('ko-overlay').remove()" style="margin-top:20px;background:linear-gradient(90deg,var(--blood),#5d0000);border:2px solid var(--crimson);color:var(--bright-gold);font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.15em;padding:12px 40px;cursor:pointer;">GET BACK UP</button>
-  `;
-  document.body.appendChild(overlay);
-  addLog('☠️ KNOCKED OUT! Lost $'+fmtCash(cashLoss)+'. Heat +15%.','bad');
-  updateAll();save();
+  try{
+    if(G.health>0) return;
+    var loss=Math.floor(G.cash*0.10);
+    G.cash=Math.max(0,G.cash-loss);
+    G.heat=Math.min(100,(G.heat||0)+15);
+    G.health=Math.max(25,Math.floor(G.maxHealth*0.25));
+    var old=document.getElementById("ko-overlay");
+    if(old)old.remove();
+    var d=document.createElement("div");
+    d.id="ko-overlay";
+    d.style.cssText="position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px";
+    var h="<div style=\"font-family:Bebas Neue,sans-serif;font-size:48px;color:#F44336;letter-spacing:.2em\">☠️ KNOCKED OUT</div>";
+    h+="<div style=\"font-family:Special Elite,serif;font-size:14px;color:#888;max-width:300px;text-align:center\">You were left for dead. A back-room doctor patched you up.</div>";
+    h+="<div style=\"font-family:Cutive Mono,monospace;font-size:12px;color:#F44336;margin-top:10px\">Lost $"+fmtCash(loss)+" to hospital bills</div>";
+    h+="<div style=\"font-family:Cutive Mono,monospace;font-size:12px;color:#FF9800\">Heat +15%</div>";
+    h+="<div style=\"font-family:Cutive Mono,monospace;font-size:12px;color:#4CAF50\">Recovered to "+G.health+" HP</div>";
+    h+="<button id=\"ko-btn\" style=\"margin-top:20px;background:linear-gradient(90deg,#8B0000,#5d0000);border:2px solid #F44336;color:#FFD700;font-family:Bebas Neue,sans-serif;font-size:20px;letter-spacing:.15em;padding:12px 40px;cursor:pointer\">GET BACK UP</button>";
+    d.innerHTML=h;
+    document.body.appendChild(d);
+    document.getElementById("ko-btn").onclick=function(){document.getElementById("ko-overlay").remove();};
+    addLog("☠️ KNOCKED OUT! Lost $"+fmtCash(loss)+". Heat +15%.","bad");
+    toast("☠️ KNOCKED OUT!","r");
+    try{updateAll();}catch(e2){}
+    save();
+  }catch(err){console.error("KO error:",err);}
 }
