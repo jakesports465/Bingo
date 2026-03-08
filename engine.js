@@ -972,3 +972,29 @@ function calcInventoryStats(){
   def+=bestArmDEF+bestVehDEF;
   return{atk,def};
 }
+
+// ══════════════════════════════════════════
+// LOOT SOURCE FINDER
+// ══════════════════════════════════════════
+function findLootSource(lootId){
+  // Check jobs
+  for(const[cityId,tiers] of Object.entries(JOBS)){
+    for(const tier of tiers){
+      for(const j of tier.jobs){
+        if(j.li===lootId){
+          const city=CITIES[cityId];
+          return city?city.emoji+' '+j.n+' ('+city.name+')':'Job: '+j.n;
+        }
+      }
+    }
+  }
+  // Check enemies
+  for(const e of ENEMIES){
+    if(e.loot===lootId)return '⚔️ Fight: '+e.n;
+  }
+  // Check store
+  for(const s of STORE){
+    if(s.id===lootId)return '🔧 Armory: $'+fmtCash(s.c);
+  }
+  return 'Various drops';
+}
