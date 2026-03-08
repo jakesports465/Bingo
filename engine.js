@@ -742,14 +742,15 @@ function startLoops(){
   // Heat cooldown (every 10s)
   setInterval(()=>{
     if((G.heat||0)>0){
-      let coolRate=1;
-      if(G.crew&&G.crew['cr07'])coolRate=4;
+      let coolRate=2; // Base: 2 per tick (was 1)
+      if(G.crew&&G.crew['cr07'])coolRate+=4; // Shadow: +4
+      if(G.crew&&G.crew['cr_shadow'])coolRate+=2; // The Shadow: +2
       if((G.notoriety||0)>=4000)coolRate*=2;
       if(G.heatDecayBonus)coolRate+=G.heatDecayBonus;
-      if(G.blackMarketBuys&&G.blackMarketBuys['bm_stolen_badges'])coolRate=Math.ceil(coolRate*1.15);
+      if(G.blackMarketBuys&&G.blackMarketBuys['bm_stolen_badges'])coolRate=Math.ceil(coolRate*1.3);
       coolHeat(coolRate);
     }
-  },10000);
+  },5000); // Every 5 seconds (was 10)
   // Jail countdown (every 1s)
   setInterval(()=>{
     if(G.jailTimer>0){
