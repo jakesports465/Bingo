@@ -484,19 +484,28 @@ function buildRob(c){
 function genRobTargets(){
   const nms=['Fat Tony','Knuckles','Dimitri V','Carlos F','Wei C','Big Sal','Lucky L','Black Mamba','Razor Ray','The Weasel','Ghost Mike','Silent Pete','Diamond Joe','Two-Face Sal','Nicky Needles','Mad Dog Morales'];
   const rks=['Soldier','Capo','Enforcer','Underboss','Associate'];
-  return Array.from({length:8},()=>({
-    n:nms[Math.floor(Math.random()*nms.length)],
-    lv:Math.max(1,G.level+Math.floor(Math.random()*8)-4),
-    rank:rks[Math.floor(Math.random()*rks.length)],
-    def:Math.floor(G.defense*(.6+Math.random()*.9)),
-    cash:Math.floor(G.cash*(.04+Math.random()*.12))+1000,
-  }));
+  // Cash scales with LEVEL not player wealth — prevents infinite money
+  const baseCash=500+G.level*200+Math.pow(G.level,1.3)*50;
+  return Array.from({length:8},()=>{
+    const tLv=Math.max(1,G.level+Math.floor(Math.random()*8)-4);
+    const tDef=Math.floor(20+tLv*3+Math.random()*tLv*2);
+    return {
+      n:nms[Math.floor(Math.random()*nms.length)],
+      lv:tLv,
+      rank:rks[Math.floor(Math.random()*rks.length)],
+      def:tDef,
+      cash:Math.floor(baseCash*(.6+Math.random()*.8)),
+    };
+  });
 }
 
 function robTarget(def,cash){
   if(G.stamina<2){toast('Need 2 stamina!','r');return;}
   G.stamina-=2;
-  const win=G.attack*(1+Math.random()*.4)>def*(1+Math.random()*.4);
+  // Win chance: your ATK vs target DEF, balanced
+  const myRoll=G.attack*(0.85+Math.random()*.3);
+  const tRoll=def*(0.85+Math.random()*.3);
+  const win=myRoll>tRoll;
   if(win){
     const s=Math.floor(cash*(.5+Math.random()*.5));
     G.cash+=s;G.totalEarned+=s;G.robberies++;gainXP(10);
