@@ -4198,18 +4198,18 @@ function spendSP(s){
 }
 function healPlayer(){
   if(G.health>=G.maxHealth){toast('Already at full HP!','r');return;}
-  // Cost scales with level squared + maxHealth — gets expensive fast
-  const baseCost=Math.floor(G.maxHealth*3 + Math.pow(G.level,1.5)*10);
-  // Cooldown: 30 seconds between heals
+  // Cost: maxHealth*10 + level^1.8 * 20 — VERY expensive
+  const baseCost=Math.floor(G.maxHealth*10 + Math.pow(G.level,1.8)*20);
+  // Cooldown: 60 seconds between heals
   const now=Date.now();
-  if(G._lastHeal&&now-G._lastHeal<30000){
-    const wait=Math.ceil((30000-(now-G._lastHeal))/1000);
+  if(G._lastHeal&&now-G._lastHeal<60000){
+    const wait=Math.ceil((60000-(now-G._lastHeal))/1000);
     toast('Heal cooldown: '+wait+'s','r');return;
   }
-  if(G.cash<baseCost){toast(`Heal costs $${baseCost.toLocaleString()}!`,'r');return;}
+  if(G.cash<baseCost){toast('Heal costs $'+fmtCash(baseCost)+'!','r');return;}
   G.cash-=baseCost;
-  // Heal 50% of max HP, not full (unless below 50%)
-  const healAmt=G.health<G.maxHealth*0.5?G.maxHealth:Math.floor(G.maxHealth*0.5);
+  // Heal 40% of max HP (never full in one heal)
+  const healAmt=Math.floor(G.maxHealth*0.4);
   G.health=Math.min(G.maxHealth, G.health+healAmt);
   G._lastHeal=now;
   const fullText=G.health>=G.maxHealth?'Full HP!':'HP +'+healAmt;
