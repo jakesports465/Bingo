@@ -94,7 +94,7 @@ function buildJobs(c){
         <div>
           <div class="jn">${mastered?'★ ':''} ${j.n} ${tBadge}</div>
           <div class="jd">${j.d}</div>
-          <div class="jreq">⚡ ${j.e} energy${j.li?` &nbsp;🎁 Loot: ${getItem(j.li).e}${(j.lc*100+G.lootBonus).toFixed(0)}%`:''}${tierLocked?' &nbsp;🔒 Lv'+tierLvReq:''}${j.req?(needsReq?' &nbsp;<span style="color:#F44336">❌ Need '+reqItem.e+' '+reqItem.n+'</span>':' &nbsp;<span style="color:#4CAF50">✅ '+reqItem.e+'</span>'):''}</div>
+          <div class="jreq">⚡ ${j.e} energy${j.li?` &nbsp;🎁 Loot: ${getItem(j.li).e}${(j.lc*100+G.lootBonus).toFixed(0)}%`:''}${tierLocked?' &nbsp;🔒 Lv'+tierLvReq:''}${j.req?(needsReq?' &nbsp;<span style="color:#F44336">❌ Need '+reqItem.e+' '+reqItem.n+' <span style="font-size:8px;color:var(--text-dim)">('+findLootSource(j.req)+')</span></span>':' &nbsp;<span style="color:#4CAF50">✅ '+reqItem.e+'</span>'):''}</div>
           <div class="mbar"><div class="mfill ${tClass}" id="mf-${j.id}" style="width:${mp}%"></div></div>
           <div style="font-size:9px;color:var(--text-dim);font-family:'Cutive Mono',monospace;margin-top:2px" id="ml-${j.id}">${tLabel}</div>
         </div>
@@ -134,7 +134,7 @@ function doJob(id){
   // Check loot requirement
   if(j.req&&!hasLoot(j.req)){
     const reqItem=getItem(j.req);
-    toast('Need '+reqItem.e+' '+reqItem.n+'!','r');return;
+    toast('Need '+reqItem.e+' '+reqItem.n+'! ('+findLootSource(j.req)+')','r');return;
   }
   G.energy-=j.e;
   let cashMult=1+getSkillBonus('cashMult');
