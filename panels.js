@@ -218,42 +218,42 @@ function doJob(id){
 const ENEMY_TIERS=['Street Thugs','Made Men','Bosses & Capos','International','Legendary','Mythic'];
 const ENEMIES = [
   // ── STREET THUGS ──
-  {n:'Danny the Rat',rank:'Street Thug',atk:6,def:4,ml:1,r:50,xr:3,kc:.08,tier:0,loot:null},
-  {n:'Skinny Pete',rank:'Pickpocket',atk:4,def:3,ml:1,r:50,xr:3,kc:.06,tier:0,loot:null},
-  {n:'Alley Cat Jones',rank:'Mugger',atk:8,def:5,ml:1,r:50,xr:3,kc:.09,tier:0,loot:'brass_knuckles'},
-  {n:'Knuckles McGee',rank:'Corner Bookie',atk:10,def:7,ml:2,r:66,xr:3,kc:.10,tier:0,loot:'brass_knuckles'},
-  {n:'Dumpster Dave',rank:'Fence',atk:12,def:8,ml:3,r:83,xr:4,kc:.10,tier:0,loot:'fake_rolex'},
-  {n:'Frankie Two Shoes',rank:'Numbers Runner',atk:14,def:10,ml:4,r:100,xr:4,kc:.12,tier:0,loot:null},
-  {n:'Big Sal Romano',rank:'Enforcer',atk:20,def:15,ml:7,r:150,xr:6,kc:.14,tier:0,loot:'switchblade'},
-  {n:'Tommy the Torch',rank:'Arsonist',atk:16,def:8,ml:5,r:116,xr:5,kc:.11,tier:0,loot:'dynamite'},
-  {n:'Needles Moretti',rank:'Loan Shark',atk:24,def:18,ml:9,r:183,xr:7,kc:.13,tier:0,loot:'gold_chain'},
-  {n:'Vinnie the Knife',rank:'Soldier',atk:28,def:22,ml:10,r:200,xr:8,kc:.15,tier:0,loot:'switchblade'},
+  {n:'Danny the Rat',rank:'Street Thug',atk:13,def:8,ml:1,r:50,xr:3,kc:.08,tier:0,loot:null},
+  {n:'Skinny Pete',rank:'Pickpocket',atk:13,def:8,ml:1,r:50,xr:3,kc:.06,tier:0,loot:null},
+  {n:'Alley Cat Jones',rank:'Mugger',atk:13,def:8,ml:1,r:50,xr:3,kc:.09,tier:0,loot:'brass_knuckles'},
+  {n:'Knuckles McGee',rank:'Corner Bookie',atk:18,def:11,ml:2,r:66,xr:3,kc:.10,tier:0,loot:'brass_knuckles'},
+  {n:'Dumpster Dave',rank:'Fence',atk:23,def:14,ml:3,r:83,xr:4,kc:.10,tier:0,loot:'fake_rolex'},
+  {n:'Frankie Two Shoes',rank:'Numbers Runner',atk:28,def:18,ml:4,r:100,xr:4,kc:.12,tier:0,loot:null},
+  {n:'Big Sal Romano',rank:'Enforcer',atk:42,def:27,ml:7,r:150,xr:6,kc:.14,tier:0,loot:'switchblade'},
+  {n:'Tommy the Torch',rank:'Arsonist',atk:32,def:20,ml:5,r:116,xr:5,kc:.11,tier:0,loot:'dynamite'},
+  {n:'Needles Moretti',rank:'Loan Shark',atk:52,def:33,ml:9,r:183,xr:7,kc:.13,tier:0,loot:'gold_chain'},
+  {n:'Vinnie the Knife',rank:'Soldier',atk:57,def:37,ml:10,r:200,xr:8,kc:.15,tier:0,loot:'switchblade'},
   // ── MADE MEN ──
-  {n:'Marco the Butcher',rank:'Capo',atk:40,def:32,ml:15,r:266,xr:13,kc:.17,tier:1,loot:'pistol'},
-  {n:'Don Eduardo Santini',rank:'Underboss',atk:55,def:44,ml:20,r:325,xr:15,kc:.18,tier:1,loot:'gold_watch'},
-  {n:'The Sicilian',rank:'Consigliere',atk:75,def:60,ml:28,r:418,xr:17,kc:.19,tier:1,loot:'silenced_pistol'},
-  {n:'Ghost',rank:'Assassin',atk:95,def:78,ml:35,r:500,xr:20,kc:.20,tier:1,loot:'assassination_kit'},
-  {n:'Lucky Lucchese',rank:'Family Boss',atk:68,def:55,ml:25,r:383,xr:16,kc:.18,tier:1,loot:'don_ring'},
-  {n:'Crazy Eyes Colombo',rank:'Hitman',atk:85,def:65,ml:30,r:441,xr:18,kc:.19,tier:1,loot:'desert_eagle'},
+  {n:'Marco the Butcher',rank:'Capo',atk:81,def:52,ml:15,r:266,xr:13,kc:.17,tier:1,loot:'pistol'},
+  {n:'Don Eduardo Santini',rank:'Underboss',atk:106,def:68,ml:20,r:325,xr:15,kc:.18,tier:1,loot:'gold_watch'},
+  {n:'The Sicilian',rank:'Consigliere',atk:151,def:98,ml:28,r:418,xr:17,kc:.19,tier:1,loot:'silenced_pistol'},
+  {n:'Ghost',rank:'Assassin',atk:190,def:123,ml:35,r:500,xr:20,kc:.20,tier:1,loot:'assassination_kit'},
+  {n:'Lucky Lucchese',rank:'Family Boss',atk:134,def:87,ml:25,r:383,xr:16,kc:.18,tier:1,loot:'don_ring'},
+  {n:'Crazy Eyes Colombo',rank:'Hitman',atk:162,def:105,ml:30,r:441,xr:18,kc:.19,tier:1,loot:'desert_eagle'},
   // ── BOSSES & CAPOS ──
-  {n:'Viktor Solokov',rank:'Bratva Commander',atk:120,def:100,ml:45,r:907,xr:32,kc:.21,tier:2,loot:'ak47'},
-  {n:'Chen Wei',rank:'Triad Master',atk:150,def:125,ml:55,r:1076,xr:35,kc:.22,tier:2,loot:'jade_dragon'},
-  {n:'El Señor',rank:'Cartel Kingpin',atk:190,def:160,ml:65,r:1246,xr:39,kc:.23,tier:2,loot:'cartel_pistol'},
-  {n:'Black Sun Yoshida',rank:'Yakuza Oyabun',atk:240,def:200,ml:80,r:1500,xr:45,kc:.24,tier:2,loot:'katana'},
-  {n:'Natasha Volkov',rank:'Red Mafiya Queen',atk:180,def:150,ml:60,r:1161,xr:37,kc:.22,tier:2,loot:'polonium_vial'},
-  {n:'Ibrahim Al-Rashid',rank:'Gulf Warlord',atk:210,def:175,ml:70,r:1330,xr:41,kc:.23,tier:2,loot:'gold_bar'},
+  {n:'Viktor Solokov',rank:'Bratva Commander',atk:246,def:159,ml:45,r:907,xr:32,kc:.21,tier:2,loot:'ak47'},
+  {n:'Chen Wei',rank:'Triad Master',atk:315,def:204,ml:55,r:1076,xr:35,kc:.22,tier:2,loot:'jade_dragon'},
+  {n:'El Señor',rank:'Cartel Kingpin',atk:385,def:250,ml:65,r:1246,xr:39,kc:.23,tier:2,loot:'cartel_pistol'},
+  {n:'Black Sun Yoshida',rank:'Yakuza Oyabun',atk:489,def:317,ml:80,r:1500,xr:45,kc:.24,tier:2,loot:'katana'},
+  {n:'Natasha Volkov',rank:'Red Mafiya Queen',atk:350,def:227,ml:60,r:1161,xr:37,kc:.22,tier:2,loot:'polonium_vial'},
+  {n:'Ibrahim Al-Rashid',rank:'Gulf Warlord',atk:420,def:273,ml:70,r:1330,xr:41,kc:.23,tier:2,loot:'gold_bar'},
   // ── INTERNATIONAL ──
-  {n:'The Architect',rank:'Shadow Broker',atk:300,def:255,ml:100,r:3794,xr:61,kc:.25,tier:3,loot:'hacking_rig'},
-  {n:'Cardinal Leone',rank:'Vatican Insider',atk:370,def:315,ml:125,r:4750,xr:70,kc:.26,tier:3,loot:'papal_signet'},
-  {n:'Iron Duke Morozov',rank:'Russian Oligarch',atk:460,def:395,ml:150,r:5705,xr:78,kc:.27,tier:3,loot:'vor_crown'},
-  {n:'The Dragon Lady',rank:'Asian Syndicate Chief',atk:570,def:490,ml:180,r:6852,xr:89,kc:.27,tier:3,loot:'dragon_seal'},
-  {n:'Phantom',rank:'International Assassin',atk:700,def:605,ml:210,r:8000,xr:100,kc:.28,tier:3,loot:'sniper_rifle'},
-  {n:'Baron von Krieg',rank:'Arms Dealer Lord',atk:520,def:440,ml:165,r:6279,xr:84,kc:.26,tier:3,loot:'kalashnikov'},
+  {n:'The Architect',rank:'Shadow Broker',atk:630,def:409,ml:100,r:3794,xr:61,kc:.25,tier:3,loot:'hacking_rig'},
+  {n:'Cardinal Leone',rank:'Vatican Insider',atk:770,def:500,ml:125,r:4750,xr:70,kc:.26,tier:3,loot:'papal_signet'},
+  {n:'Iron Duke Morozov',rank:'Russian Oligarch',atk:909,def:590,ml:150,r:5705,xr:78,kc:.27,tier:3,loot:'vor_crown'},
+  {n:'The Dragon Lady',rank:'Asian Syndicate Chief',atk:1078,def:700,ml:180,r:6852,xr:89,kc:.27,tier:3,loot:'dragon_seal'},
+  {n:'Phantom',rank:'International Assassin',atk:1218,def:791,ml:210,r:8000,xr:100,kc:.28,tier:3,loot:'sniper_rifle'},
+  {n:'Baron von Krieg',rank:'Arms Dealer Lord',atk:993,def:645,ml:165,r:6279,xr:84,kc:.26,tier:3,loot:'kalashnikov'},
   // ── LEGENDARY ──
-  {n:'Lazarus Vane',rank:'Dark Network Controller',atk:880,def:760,ml:250,r:14042,xr:120,kc:.28,tier:4,loot:'crypto_wallet'},
-  {n:'The Eternal Don',rank:'Immortal Crime Lord',atk:1100,def:955,ml:300,r:16702,xr:133,kc:.29,tier:4,loot:'world_don_crown'},
-  {n:'Shadow Emperor Kai',rank:'World Syndicate Boss',atk:1400,def:1210,ml:375,r:20691,xr:153,kc:.30,tier:4,loot:'samurai_sword'},
-  {n:'The Devil',rank:'Primordial Evil',atk:1800,def:1560,ml:450,r:24680,xr:173,kc:.30,tier:4,loot:'golden_ak'},
+  {n:'Lazarus Vane',rank:'Dark Network Controller',atk:1330,def:864,ml:250,r:14042,xr:120,kc:.28,tier:4,loot:'crypto_wallet'},
+  {n:'The Eternal Don',rank:'Immortal Crime Lord',atk:1470,def:955,ml:300,r:16702,xr:133,kc:.29,tier:4,loot:'world_don_crown'},
+  {n:'Shadow Emperor Kai',rank:'World Syndicate Boss',atk:1680,def:1210,ml:375,r:20691,xr:153,kc:.30,tier:4,loot:'samurai_sword'},
+  {n:'The Devil',rank:'Primordial Evil',atk:1889,def:1560,ml:450,r:24680,xr:173,kc:.30,tier:4,loot:'golden_ak'},
   {n:'Omega Prime',rank:'Final Adversary',atk:2300,def:1990,ml:550,r:30000,xr:200,kc:.31,tier:4,loot:null},
   // ── MYTHIC ──
   {n:'God of Crime',rank:'Transcendent',atk:3000,def:2600,ml:700,r:58461,xr:334,kc:.32,tier:5,loot:null},
@@ -261,46 +261,46 @@ const ENEMIES = [
   {n:'Il Diavolo',rank:'Hell\'s Don',atk:8000,def:7000,ml:1100,r:89230,xr:442,kc:.35,tier:5,loot:null},
   {n:'The Absolute',rank:'Beyond Mortal',atk:15000,def:13000,ml:1300,r:104615,xr:496,kc:.38,tier:5,loot:null},
   {n:'Maximum Don',rank:'Level 1500 Challenge',atk:25000,def:22000,ml:1480,r:118461,xr:544,kc:.40,tier:5,loot:null},
-  {n:'Bag Snatcher',rank:'Petty Thief',atk:5,def:3,ml:1,r:50,xr:3,kc:.06,tier:0,loot:'stolen_wallet'},
-  {n:'Graffiti Punk',rank:'Vandal',atk:7,def:4,ml:1,r:50,xr:3,kc:.05,tier:0,loot:'ski_mask'},
-  {n:'Crack Dealer',rank:'Corner Boy',atk:9,def:6,ml:2,r:66,xr:3,kc:.08,tier:0,loot:'burner_phone'},
-  {n:'Pawnshop Robber',rank:'Small Timer',atk:7,def:5,ml:1,r:50,xr:3,kc:.07,tier:0,loot:'lockpick_set'},
-  {n:'Bar Room Brawler',rank:'Drunk',atk:10,def:7,ml:2,r:66,xr:3,kc:.07,tier:0,loot:'brass_pipe'},
-  {n:'Car Radio Thief',rank:'Tweaker',atk:6,def:3,ml:1,r:50,xr:3,kc:.05,tier:0,loot:'tire_iron'},
-  {n:'Switchblade Sal',rank:'Street Enforcer',atk:18,def:12,ml:5,r:150,xr:10,kc:.10,tier:1,loot:'switchblade'},
-  {n:'Baseball Bat Mike',rank:'Leg Breaker',atk:22,def:14,ml:6,r:161,xr:10,kc:.10,tier:1,loot:'baseball_bat'},
-  {n:'Lookout Larry',rank:'Spotter',atk:15,def:10,ml:5,r:150,xr:10,kc:.08,tier:1,loot:'police_scanner'},
-  {n:'Repo Rick',rank:'Debt Collector',atk:25,def:18,ml:8,r:185,xr:11,kc:.11,tier:1,loot:'tire_iron'},
-  {n:'Jimmy Locks',rank:'B&E Specialist',atk:20,def:15,ml:7,r:173,xr:10,kc:.09,tier:1,loot:'lockpick_set'},
-  {n:'Razor Rodriguez',rank:'Gang Lieutenant',atk:28,def:20,ml:10,r:208,xr:11,kc:.12,tier:1,loot:'combat_knife'},
-  {n:'Stonewall Jackson',rank:'Bouncer',atk:30,def:25,ml:12,r:231,xr:12,kc:.11,tier:1,loot:'kevlar_gloves'},
-  {n:'Dirty Danny',rank:'Corrupt Cop',atk:24,def:22,ml:10,r:208,xr:11,kc:.10,tier:1,loot:'fbi_badge'},
-  {n:'Frankie Four Fingers',rank:'Made Man',atk:55,def:40,ml:15,r:400,xr:21,kc:.13,tier:2,loot:'silenced_pistol'},
-  {n:'The Accountant',rank:'Money Man',atk:40,def:35,ml:15,r:400,xr:21,kc:.10,tier:2,loot:'briefcase_of_cash'},
-  {n:'Iron Mike',rank:'Enforcer',atk:65,def:50,ml:20,r:484,xr:22,kc:.14,tier:2,loot:'body_armor'},
-  {n:'Scar Hernandez',rank:'Cartel Soldier',atk:70,def:45,ml:22,r:518,xr:23,kc:.14,tier:2,loot:'cartel_pistol'},
-  {n:'Ghost Face',rank:'Hitman',atk:75,def:55,ml:25,r:569,xr:24,kc:.16,tier:2,loot:'night_vision'},
-  {n:'Boris the Bear',rank:'Russian Muscle',atk:80,def:60,ml:28,r:620,xr:25,kc:.15,tier:2,loot:'ak47'},
-  {n:'Diamond Dave',rank:'Jewel Thief',atk:50,def:38,ml:18,r:450,xr:22,kc:.12,tier:2,loot:'diamond_ring'},
-  {n:'The Professor',rank:'Con Artist',atk:45,def:42,ml:20,r:484,xr:22,kc:.09,tier:2,loot:'forged_passport'},
-  {n:'Machete Maria',rank:'Enforcer',atk:68,def:48,ml:24,r:552,xr:24,kc:.15,tier:2,loot:'jungle_machete'},
-  {n:'Nails Nelson',rank:'Torturer',atk:72,def:52,ml:26,r:586,xr:25,kc:.16,tier:2,loot:'combat_knife'},
-  {n:'Don Valentino',rank:'Family Boss',atk:150,def:120,ml:40,r:1500,xr:40,kc:.18,tier:3,loot:'don_ring'},
-  {n:'The Surgeon',rank:'Professional',atk:180,def:140,ml:50,r:1882,xr:43,kc:.20,tier:3,loot:'assassination_kit'},
-  {n:'General Sato',rank:'Yakuza Lord',atk:200,def:160,ml:55,r:2073,xr:45,kc:.20,tier:3,loot:'katana'},
-  {n:'El Diablo',rank:'Cartel King',atk:220,def:170,ml:60,r:2264,xr:47,kc:.22,tier:3,loot:'drug_lord_crown'},
-  {n:'The Duchess',rank:'Crime Baroness',atk:170,def:150,ml:45,r:1691,xr:41,kc:.18,tier:3,loot:'offshore_account'},
-  {n:'Viktor Volkov',rank:'Bratva Boss',atk:190,def:155,ml:52,r:1958,xr:44,kc:.19,tier:3,loot:'gold_bar'},
-  {n:'The Butcher',rank:'Psychopath',atk:240,def:130,ml:65,r:2455,xr:48,kc:.25,tier:3,loot:'grenade'},
-  {n:'Phantom',rank:'Ghost Operative',atk:210,def:180,ml:58,r:2188,xr:46,kc:.21,tier:3,loot:'ghost_protocol'},
-  {n:'Lady Venom',rank:'Poison Expert',atk:160,def:140,ml:42,r:1576,xr:40,kc:.17,tier:3,loot:'polonium_vial'},
+  {n:'Bag Snatcher',rank:'Petty Thief',atk:13,def:8,ml:1,r:50,xr:3,kc:.06,tier:0,loot:'stolen_wallet'},
+  {n:'Graffiti Punk',rank:'Vandal',atk:13,def:8,ml:1,r:50,xr:3,kc:.05,tier:0,loot:'ski_mask'},
+  {n:'Crack Dealer',rank:'Corner Boy',atk:18,def:11,ml:2,r:66,xr:3,kc:.08,tier:0,loot:'burner_phone'},
+  {n:'Pawnshop Robber',rank:'Small Timer',atk:13,def:8,ml:1,r:50,xr:3,kc:.07,tier:0,loot:'lockpick_set'},
+  {n:'Bar Room Brawler',rank:'Drunk',atk:18,def:11,ml:2,r:66,xr:3,kc:.07,tier:0,loot:'brass_pipe'},
+  {n:'Car Radio Thief',rank:'Tweaker',atk:13,def:8,ml:1,r:50,xr:3,kc:.05,tier:0,loot:'tire_iron'},
+  {n:'Switchblade Sal',rank:'Street Enforcer',atk:32,def:20,ml:5,r:150,xr:10,kc:.10,tier:1,loot:'switchblade'},
+  {n:'Baseball Bat Mike',rank:'Leg Breaker',atk:37,def:24,ml:6,r:161,xr:10,kc:.10,tier:1,loot:'baseball_bat'},
+  {n:'Lookout Larry',rank:'Spotter',atk:32,def:20,ml:5,r:150,xr:10,kc:.08,tier:1,loot:'police_scanner'},
+  {n:'Repo Rick',rank:'Debt Collector',atk:47,def:30,ml:8,r:185,xr:11,kc:.11,tier:1,loot:'tire_iron'},
+  {n:'Jimmy Locks',rank:'B&E Specialist',atk:42,def:27,ml:7,r:173,xr:10,kc:.09,tier:1,loot:'lockpick_set'},
+  {n:'Razor Rodriguez',rank:'Gang Lieutenant',atk:57,def:37,ml:10,r:208,xr:11,kc:.12,tier:1,loot:'combat_knife'},
+  {n:'Stonewall Jackson',rank:'Bouncer',atk:67,def:43,ml:12,r:231,xr:12,kc:.11,tier:1,loot:'kevlar_gloves'},
+  {n:'Dirty Danny',rank:'Corrupt Cop',atk:57,def:37,ml:10,r:208,xr:11,kc:.10,tier:1,loot:'fbi_badge'},
+  {n:'Frankie Four Fingers',rank:'Made Man',atk:81,def:52,ml:15,r:400,xr:21,kc:.13,tier:2,loot:'silenced_pistol'},
+  {n:'The Accountant',rank:'Money Man',atk:81,def:52,ml:15,r:400,xr:21,kc:.10,tier:2,loot:'briefcase_of_cash'},
+  {n:'Iron Mike',rank:'Enforcer',atk:106,def:68,ml:20,r:484,xr:22,kc:.14,tier:2,loot:'body_armor'},
+  {n:'Scar Hernandez',rank:'Cartel Soldier',atk:117,def:76,ml:22,r:518,xr:23,kc:.14,tier:2,loot:'cartel_pistol'},
+  {n:'Ghost Face',rank:'Hitman',atk:134,def:87,ml:25,r:569,xr:24,kc:.16,tier:2,loot:'night_vision'},
+  {n:'Boris the Bear',rank:'Russian Muscle',atk:151,def:98,ml:28,r:620,xr:25,kc:.15,tier:2,loot:'ak47'},
+  {n:'Diamond Dave',rank:'Jewel Thief',atk:96,def:62,ml:18,r:450,xr:22,kc:.12,tier:2,loot:'diamond_ring'},
+  {n:'The Professor',rank:'Con Artist',atk:106,def:68,ml:20,r:484,xr:22,kc:.09,tier:2,loot:'forged_passport'},
+  {n:'Machete Maria',rank:'Enforcer',atk:128,def:83,ml:24,r:552,xr:24,kc:.15,tier:2,loot:'jungle_machete'},
+  {n:'Nails Nelson',rank:'Torturer',atk:140,def:91,ml:26,r:586,xr:25,kc:.16,tier:2,loot:'combat_knife'},
+  {n:'Don Valentino',rank:'Family Boss',atk:218,def:141,ml:40,r:1500,xr:40,kc:.18,tier:3,loot:'don_ring'},
+  {n:'The Surgeon',rank:'Professional',atk:274,def:178,ml:50,r:1882,xr:43,kc:.20,tier:3,loot:'assassination_kit'},
+  {n:'General Sato',rank:'Yakuza Lord',atk:315,def:204,ml:55,r:2073,xr:45,kc:.20,tier:3,loot:'katana'},
+  {n:'El Diablo',rank:'Cartel King',atk:350,def:227,ml:60,r:2264,xr:47,kc:.22,tier:3,loot:'drug_lord_crown'},
+  {n:'The Duchess',rank:'Crime Baroness',atk:246,def:159,ml:45,r:1691,xr:41,kc:.18,tier:3,loot:'offshore_account'},
+  {n:'Viktor Volkov',rank:'Bratva Boss',atk:294,def:191,ml:52,r:1958,xr:44,kc:.19,tier:3,loot:'gold_bar'},
+  {n:'The Butcher',rank:'Psychopath',atk:385,def:250,ml:65,r:2455,xr:48,kc:.25,tier:3,loot:'grenade'},
+  {n:'Phantom',rank:'Ghost Operative',atk:336,def:218,ml:58,r:2188,xr:46,kc:.21,tier:3,loot:'ghost_protocol'},
+  {n:'Lady Venom',rank:'Poison Expert',atk:229,def:148,ml:42,r:1576,xr:40,kc:.17,tier:3,loot:'polonium_vial'},
   {n:'The Immortal',rank:'Undying Legend',atk:500,def:400,ml:80,r:5000,xr:75,kc:.22,tier:4,loot:'titanium_vest'},
-  {n:'Black Dragon',rank:'Triad Supreme',atk:600,def:450,ml:100,r:6063,xr:80,kc:.23,tier:4,loot:'dragon_seal'},
-  {n:'The President',rank:'Shadow Ruler',atk:700,def:550,ml:120,r:7127,xr:85,kc:.24,tier:4,loot:'military_intel'},
-  {n:'Omega Red',rank:'Super Soldier',atk:800,def:600,ml:150,r:8723,xr:93,kc:.25,tier:4,loot:'nano_suit'},
-  {n:'The Cardinal',rank:'Vatican Shadow',atk:550,def:500,ml:90,r:5531,xr:77,kc:.22,tier:4,loot:'papal_signet'},
-  {n:'Ghost Emperor',rank:'The Unseen',atk:650,def:520,ml:110,r:6595,xr:82,kc:.23,tier:4,loot:'ghost_protocol'},
-  {n:'Warlord Kahn',rank:'Conqueror',atk:750,def:580,ml:140,r:8191,xr:90,kc:.25,tier:4,loot:'rpg_launcher'},
+  {n:'Black Dragon',rank:'Triad Supreme',atk:630,def:450,ml:100,r:6063,xr:80,kc:.23,tier:4,loot:'dragon_seal'},
+  {n:'The President',rank:'Shadow Ruler',atk:742,def:550,ml:120,r:7127,xr:85,kc:.24,tier:4,loot:'military_intel'},
+  {n:'Omega Red',rank:'Super Soldier',atk:909,def:600,ml:150,r:8723,xr:93,kc:.25,tier:4,loot:'nano_suit'},
+  {n:'The Cardinal',rank:'Vatican Shadow',atk:560,def:500,ml:90,r:5531,xr:77,kc:.22,tier:4,loot:'papal_signet'},
+  {n:'Ghost Emperor',rank:'The Unseen',atk:686,def:520,ml:110,r:6595,xr:82,kc:.23,tier:4,loot:'ghost_protocol'},
+  {n:'Warlord Kahn',rank:'Conqueror',atk:854,def:580,ml:140,r:8191,xr:90,kc:.25,tier:4,loot:'rpg_launcher'},
   {n:'The Architect of War',rank:'World Shaper',atk:1200,def:1000,ml:200,r:20000,xr:200,kc:.27,tier:5,loot:'missile_codes'},
   {n:'The Shadowlord',rank:'Darkness Incarnate',atk:1500,def:1200,ml:250,r:23846,xr:213,kc:.28,tier:5,loot:'quantum_key'},
   {n:'Eternal One',rank:'Beyond Death',atk:2000,def:1600,ml:300,r:27692,xr:226,kc:.30,tier:5,loot:'crown_jewel'}
@@ -354,11 +354,15 @@ function doFight(ename){
   G.stamina-=stCost;
   if(!G.fightStreak)G.fightStreak=0;
   if(!G.fightBestStreak)G.fightBestStreak=0;
-  const myR=G.attack*(1+Math.random()*.5)*(G.mafiaSize*.05+1);
-  const eR=e.atk*(1+Math.random()*.4)*((e.def/50)+.5);
+  const mafiaBonus=Math.min(2,1+G.mafiaSize*.02); // Capped at 2x (was uncapped)
+  const myR=G.attack*(1+Math.random()*.5)*mafiaBonus;
+  const eR=e.atk*(1+Math.random()*.5)*((e.def/40)+.8); // Enemies hit harder
   const win=myR>eR;
   const fra=document.getElementById('fr-area');
   if(win){
+    // You still take some damage on wins based on enemy power
+    const winDmg=Math.max(0,Math.floor(eR*.15));
+    if(winDmg>0)G.health=Math.max(1,G.health-winDmg);
     const streakBonus=G.fightStreak>=5?G.fightStreak*3:0;
     let cash=Math.floor(e.r*(1+Math.random()*.3)*(1+streakBonus/100)*getEventMult('cashMult',1));
     const xp=Math.round(e.xr*G.xpMult*G.pBonuses.xpMult*getEventMult('xpMult',1)*getNotorietyMult('xp'));
@@ -371,10 +375,10 @@ function doFight(ename){
     if(Math.random()<G.critChance/100){const bonus=Math.floor(cash*.5);G.cash+=bonus;G.totalEarned+=bonus;cash+=bonus;addLog(`💥 CRITICAL HIT! +$${fmtCash(bonus)}`,'gold');}
     // Loot drop
     if(e.loot&&Math.random()<.12*getEventMult('lootMult',1)){addLoot(e.loot);}
-    if(fra)fra.innerHTML=`<div class="fr win">✓ VICTORY — ${e.n} defeated!${G.fightStreak>=5?' 🔥×'+G.fightStreak:''}<br>You: ${myR.toFixed(0)} vs Enemy: ${eR.toFixed(0)}<br>💰 +$${fmtCash(cash)} ⭐ +${xp}XP 🎖️ +${Math.floor(e.xr/3)+1} Respect</div>`;
-    addLog(`✓ Beat ${e.n} — $${fmtCash(cash)}`,'good');
+    if(fra)fra.innerHTML=`<div class="fr win">✓ VICTORY — ${e.n} defeated!${G.fightStreak>=5?' 🔥×'+G.fightStreak:''}${winDmg>0?' ❤️-'+winDmg:''}<br>You: ${myR.toFixed(0)} vs Enemy: ${eR.toFixed(0)}<br>💰 +$${fmtCash(cash)} ⭐ +${xp}XP</div>`;
+    addLog(`✓ Beat ${e.n} — $${fmtCash(cash)}${winDmg>0?' (-'+winDmg+' HP)':''}`,'good');
   }else{
-    const dmg=Math.floor((eR-myR)*.4)+8;
+    const dmg=Math.floor((eR-myR)*.6)+15+Math.floor(e.atk*.1); // Much more damage on loss
     G.health=Math.max(0,G.health-dmg);G.fightsLost++;
     G.fightStreak=0;
     if(fra)fra.innerHTML=`<div class="fr lose">✗ DEFEATED by ${e.n}<br>You: ${myR.toFixed(0)} vs Enemy: ${eR.toFixed(0)}<br>❤️ -${dmg} HP</div>`;
@@ -564,7 +568,7 @@ const GANGS = [
   {id:'g34',n:'OMEGA Syndicate',e:'Ω',strength:250000,ml:400,reward:20000000,xpr:2000,tier:3,d:'Beyond nations. Beyond law. Beyond death.'},
   {id:'g35',n:'The Void',e:'🌑',strength:500000,ml:500,reward:50000000,xpr:3000,tier:3,d:'Nobody returns from fighting The Void.'},
 
-  {id:'g36',n:'The Favela Kings',e:'🇧🇷',ml:10,strength:60,tier:0,reward:8000,xpr:200,d:'Control the Rio slums.'},
+  {id:'g36',n:'The Favela Kings',e:'🇧🇷',ml:10,strength:65,tier:0,reward:8000,xpr:200,d:'Control the Rio slums.'},
   {id:'g37',n:'Lagos Street Pirates',e:'🏴‍☠️',ml:18,strength:115,tier:1,reward:15000,xpr:400,d:'Nigerian cyber-crime syndicate with muscle.'},
   {id:'g38',n:'Tehran Shadow Corps',e:'🇮🇷',ml:28,strength:200,tier:1,reward:30000,xpr:700,d:'Revolutionary Guard gone rogue.'},
   {id:'g39',n:'Marseille Corsicans',e:'🇫🇷',ml:35,strength:280,tier:2,reward:50000,xpr:1000,d:'French Connection reborn.'},
@@ -1311,11 +1315,11 @@ function doContract(name){
   if(G.energy<ct.ec){toast(`Need ${ct.ec} energy!`,'r');return;}
   if(G.stamina<ct.sc){toast(`Need ${ct.sc} stamina!`,'r');return;}
   G.energy-=ct.ec;G.stamina-=ct.sc;
-  let diffMult={easy:.85,med:.7,hard:.55,elite:.45}[ct.diff]||.7;if(activeEventObj&&(activeEventObj.effect==='easyMode'))diffMult=Math.max(.1,diffMult-0.20);
+  let diffMult={easy:.85,med:.7,medium:.65,hard:.55,elite:.45,insane:.35,suicidal:.20}[ct.diff]||.7;if(activeEventObj&&(activeEventObj.effect==='easyMode'))diffMult=Math.max(.1,diffMult-0.20);
   const win=Math.random()>diffMult;
   if(win){
     let cash=ct.cb+(Math.floor(Math.random()*ct.cb*.25));if(G.blackMarketBuys&&G.blackMarketBuys['bm_blackmail'])cash=Math.floor(cash*1.15);
-    if(G.blackMarketBuys['bm03'])cash=Math.floor(cash*1.1);
+    if(G.blackMarketBuys&&G.blackMarketBuys['bm03'])cash=Math.floor(cash*1.1);
     G.cash+=cash;G.totalEarned+=cash;G.contractsDone++;
     const xp=Math.round(ct.cx*G.xpMult*G.pBonuses.xpMult);gainXP(xp);
     G.respect+=Math.floor(ct.cx/5)+10;
@@ -1436,55 +1440,55 @@ function highlow(guess,bet){
 // BOSSES DATA
 // ══════════════════════════════════════════
 const BOSSES = [
-  {id:'boss01',n:'Fat Tony Marchetti',city:'New York',ml:8,maxHP:2000,atk:45,def:20,reward:25000,xpr:1740,d:'The neighbourhood boss. Old school, well connected.'},
-  {id:'boss02',n:'Al "Ironside" Capelli',city:'Chicago',ml:20,maxHP:8000,atk:50,def:55,reward:80000,xpr:6795,d:'Runs the whole Chicago outfit with an iron fist.'},
-  {id:'boss03',n:'Carlos El Tiburón',city:'Miami',ml:40,maxHP:25000,atk:110,def:130,reward:320000,xpr:18780,d:'The shark of Miami — half the cocaine in Florida.'},
-  {id:'boss04',n:'Viktor Krasnov',city:'Moscow',ml:80,maxHP:100000,atk:310,def:50,reward:640000,xpr:49225,d:'Ex-KGB, current Bratva overlord. Thought he was untouchable.'},
-  {id:'boss05',n:'The Dragon',city:'Hong Kong',ml:150,maxHP:50000,atk:660,def:100,reward:1200000,xpr:116700,d:'Last surviving founder of the original Triad network.'},
-  {id:'boss06',n:'Sheikh Al-Ghaib',city:'Dubai',ml:250,maxHP:200000,atk:1160,def:250,reward:2000000,xpr:238700,d:'Oil money, weapons, connections to every government on earth.'},
-  {id:'boss07',n:'Il Padrino Eterno',city:'Palermo',ml:500,maxHP:2000000,atk:2400,def:500,reward:4000000,xpr:592160,d:'Eight hundred years of Sicilian crime bloodline ends here.'},
-  {id:'boss08',n:'THE FINAL BOSS',city:'The Void',ml:1200,maxHP:10000000,atk:5900,def:2000,reward:10000000,xpr:2018300,d:'The shadow that has always controlled everything. Until now.'},
+  {id:'boss01',n:'Fat Tony Marchetti',city:'New York',ml:8,maxHP:2040,atk:68,def:47,reward:25000,xpr:1740,d:'The neighbourhood boss. Old school, well connected.'},
+  {id:'boss02',n:'Al "Ironside" Capelli',city:'Chicago',ml:20,maxHP:8000,atk:152,def:106,reward:80000,xpr:6795,d:'Runs the whole Chicago outfit with an iron fist.'},
+  {id:'boss03',n:'Carlos El Tiburón',city:'Miami',ml:40,maxHP:25000,atk:312,def:218,reward:320000,xpr:18780,d:'The shark of Miami — half the cocaine in Florida.'},
+  {id:'boss04',n:'Viktor Krasnov',city:'Moscow',ml:80,maxHP:100000,atk:700,def:489,reward:640000,xpr:49225,d:'Ex-KGB, current Bratva overlord. Thought he was untouchable.'},
+  {id:'boss05',n:'The Dragon',city:'Hong Kong',ml:150,maxHP:50000,atk:1300,def:909,reward:1200000,xpr:116700,d:'Last surviving founder of the original Triad network.'},
+  {id:'boss06',n:'Sheikh Al-Ghaib',city:'Dubai',ml:250,maxHP:200000,atk:1900,def:1330,reward:2000000,xpr:238700,d:'Oil money, weapons, connections to every government on earth.'},
+  {id:'boss07',n:'Il Padrino Eterno',city:'Palermo',ml:500,maxHP:2000000,atk:2900,def:2029,reward:4000000,xpr:592160,d:'Eight hundred years of Sicilian crime bloodline ends here.'},
+  {id:'boss08',n:'THE FINAL BOSS',city:'The Void',ml:1200,maxHP:10000000,atk:5900,def:4130,reward:10000000,xpr:2018300,d:'The shadow that has always controlled everything. Until now.'},
 
   // ── MID-GAME BOSSES ──
-  {id:'boss09',n:'The Butcher of Brooklyn',city:'New York',ml:55,maxHP:40000,atk:150,def:120,reward:500000,xpr:30000,d:'Runs a meat processing plant. Not all the meat is beef.'},
-  {id:'boss10',n:'Mama Lucia',city:'Italy',ml:65,maxHP:60000,atk:180,def:160,reward:750000,xpr:45000,d:'Grandmotherly face. Kills with kindness. And arsenic.'},
-  {id:'boss11',n:'The Surgeon',city:'London',ml:75,maxHP:80000,atk:220,def:180,reward:1000000,xpr:60000,d:'Former Royal Army doctor. Now he operates on people who owe money.'},
-  {id:'boss12',n:'El Fantasma',city:'Mexico City',ml:85,maxHP:100000,atk:260,def:200,reward:1500000,xpr:80000,d:'Ghost of the cartel. Nobody has seen his face and lived.'},
-  {id:'boss13',n:'Iron Yuri',city:'Moscow',ml:95,maxHP:130000,atk:300,def:240,reward:2000000,xpr:100000,d:'Ex-KGB. Runs Russias arms trade from a bunker under the Kremlin.'},
+  {id:'boss09',n:'The Butcher of Brooklyn',city:'New York',ml:55,maxHP:40000,atk:450,def:315,reward:500000,xpr:30000,d:'Runs a meat processing plant. Not all the meat is beef.'},
+  {id:'boss10',n:'Mama Lucia',city:'Italy',ml:65,maxHP:60000,atk:550,def:385,reward:750000,xpr:45000,d:'Grandmotherly face. Kills with kindness. And arsenic.'},
+  {id:'boss11',n:'The Surgeon',city:'London',ml:75,maxHP:80000,atk:650,def:454,reward:1000000,xpr:60000,d:'Former Royal Army doctor. Now he operates on people who owe money.'},
+  {id:'boss12',n:'El Fantasma',city:'Mexico City',ml:85,maxHP:100000,atk:750,def:525,reward:1500000,xpr:80000,d:'Ghost of the cartel. Nobody has seen his face and lived.'},
+  {id:'boss13',n:'Iron Yuri',city:'Moscow',ml:95,maxHP:130000,atk:850,def:595,reward:2000000,xpr:100000,d:'Ex-KGB. Runs Russias arms trade from a bunker under the Kremlin.'},
   // ── LATE GAME BOSSES ──
-  {id:'boss14',n:'The Dragon of Hong Kong',city:'Hong Kong',ml:120,maxHP:180000,atk:400,def:320,reward:3500000,xpr:150000,d:'Triad supreme leader. Controls every port in Southeast Asia.'},
-  {id:'boss15',n:'Baron Von Death',city:'Berlin',ml:150,maxHP:250000,atk:500,def:400,reward:5000000,xpr:200000,d:'German industrialist who sells weapons to every side of every war.'},
-  {id:'boss16',n:'The Pharaoh',city:'Dubai',ml:180,maxHP:350000,atk:600,def:500,reward:8000000,xpr:300000,d:'Oil money, blood diamonds, and an army of mercenaries.'},
-  {id:'boss17',n:'Shogun Matsuda',city:'Tokyo',ml:200,maxHP:500000,atk:750,def:600,reward:12000000,xpr:400000,d:'The last true Shogun. Yakuza, tech, politics. He owns Japan.'},
+  {id:'boss14',n:'The Dragon of Hong Kong',city:'Hong Kong',ml:120,maxHP:180000,atk:1060,def:742,reward:3500000,xpr:150000,d:'Triad supreme leader. Controls every port in Southeast Asia.'},
+  {id:'boss15',n:'Baron Von Death',city:'Berlin',ml:150,maxHP:250000,atk:1300,def:909,reward:5000000,xpr:200000,d:'German industrialist who sells weapons to every side of every war.'},
+  {id:'boss16',n:'The Pharaoh',city:'Dubai',ml:180,maxHP:350000,atk:1540,def:1078,reward:8000000,xpr:300000,d:'Oil money, blood diamonds, and an army of mercenaries.'},
+  {id:'boss17',n:'Shogun Matsuda',city:'Tokyo',ml:200,maxHP:500000,atk:1700,def:1190,reward:12000000,xpr:400000,d:'The last true Shogun. Yakuza, tech, politics. He owns Japan.'},
   // ── ENDGAME BOSSES ──
-  {id:'boss18',n:'The Archbishop',city:'Italy',ml:250,maxHP:750000,atk:900,def:750,reward:20000000,xpr:600000,d:'Vatican black ops. Gods wrath made flesh.'},
-  {id:'boss19',n:'The Oligarch',city:'Moscow',ml:300,maxHP:1000000,atk:1100,def:900,reward:35000000,xpr:800000,d:'Owns three countries. Has his own military. Answers to nobody.'},
-  {id:'boss20',n:'The Grandmaster',city:'London',ml:400,maxHP:1500000,atk:1400,def:1100,reward:50000000,xpr:1000000,d:'Chessmaster of global crime. Every move calculated 50 years ahead.'},
-  {id:'boss21',n:'The Shadow King',city:'Bangkok',ml:500,maxHP:2000000,atk:1800,def:1400,reward:80000000,xpr:1500000,d:'Controls the Golden Triangle. An army of 50,000.'},
-  {id:'boss22',n:'OMEGA Prime',city:'Singapore',ml:700,maxHP:3000000,atk:2500,def:2000,reward:150000000,xpr:2500000,d:'AI-enhanced human. Cybernetic implants. The future of crime.'},
-  {id:'boss23',n:'The Eternal Don',city:'New York',ml:1000,maxHP:5000000,atk:4000,def:3000,reward:300000000,xpr:5000000,d:'Has ruled the underworld for 200 years. Nobody knows how.'},
+  {id:'boss18',n:'The Archbishop',city:'Italy',ml:250,maxHP:750000,atk:1900,def:1330,reward:20000000,xpr:600000,d:'Vatican black ops. Gods wrath made flesh.'},
+  {id:'boss19',n:'The Oligarch',city:'Moscow',ml:300,maxHP:1000000,atk:2100,def:1470,reward:35000000,xpr:800000,d:'Owns three countries. Has his own military. Answers to nobody.'},
+  {id:'boss20',n:'The Grandmaster',city:'London',ml:400,maxHP:1500000,atk:2500,def:1750,reward:50000000,xpr:1000000,d:'Chessmaster of global crime. Every move calculated 50 years ahead.'},
+  {id:'boss21',n:'The Shadow King',city:'Bangkok',ml:500,maxHP:2000000,atk:2900,def:2029,reward:80000000,xpr:1500000,d:'Controls the Golden Triangle. An army of 50,000.'},
+  {id:'boss22',n:'OMEGA Prime',city:'Singapore',ml:700,maxHP:3000000,atk:3500,def:2450,reward:150000000,xpr:2500000,d:'AI-enhanced human. Cybernetic implants. The future of crime.'},
+  {id:'boss23',n:'The Eternal Don',city:'New York',ml:1000,maxHP:5000000,atk:4400,def:3080,reward:300000000,xpr:5000000,d:'Has ruled the underworld for 200 years. Nobody knows how.'},
   {id:'boss24',n:'God Emperor of Crime',city:'New York',ml:1200,maxHP:8000000,atk:6000,def:5000,reward:500000000,xpr:8000000,d:'The final boss. Every criminal empire on Earth answers to this one person. Defeat them and you are the undisputed ruler of the underworld.'},
   {id:'boss25',n:'Your Own Legacy',city:'New York',ml:1400,maxHP:10000000,atk:8000,def:6000,reward:1000000000,xpr:15000000,d:'The hardest enemy is yourself. The version of you that already won. Beat your own legend.'},
 
-  {id:'boss26',n:'The Butcher of Bogotá',city:'Brazil',ml:30,maxHP:15000,atk:85,def:35,reward:80000,xpr:5000,d:'Chainsaw enthusiast. Former cartel cleaner.'},
-  {id:'boss27',n:'Lady Serpent',city:'Cuba',ml:45,maxHP:30000,atk:140,def:55,reward:150000,xpr:10000,d:'Runs the Caribbean drug routes with an iron fist and a venomous smile.'},
-  {id:'boss28',n:'The Accountant',city:'Las Vegas',ml:60,maxHP:50000,atk:170,def:70,reward:250000,xpr:18000,d:'Counts cards. Counts bodies. Counts your days.'},
-  {id:'boss29',n:'Black Mamba',city:'Nairobi',ml:90,maxHP:90000,atk:280,def:100,reward:500000,xpr:30000,d:'Fastest killer on the continent. Named for the snake, not the basketball player.'},
-  {id:'boss30',n:'The Professor',city:'Paris',ml:110,maxHP:140000,atk:360,def:130,reward:800000,xpr:50000,d:'Orchestrates heists from a lecture hall at the Sorbonne.'},
-  {id:'boss31',n:'Colonel Nightmare',city:'Berlin',ml:130,maxHP:200000,atk:440,def:170,reward:1200000,xpr:70000,d:'Former Stasi. Knows every interrogation method invented. And some he created.'},
-  {id:'boss32',n:'The Sultan of Sin',city:'Istanbul',ml:160,maxHP:300000,atk:550,def:220,reward:2000000,xpr:100000,d:'Controls every vice in the Eastern Mediterranean.'},
-  {id:'boss33',n:'Jade Empress',city:'Singapore',ml:190,maxHP:400000,atk:680,def:280,reward:3000000,xpr:140000,d:'Triad royalty. Commands an army of 50,000.'},
-  {id:'boss34',n:'The Ghost of Wall Street',city:'New York',ml:220,maxHP:550000,atk:800,def:350,reward:5000000,xpr:180000,d:'Crashed three economies for profit. Now he wants yours.'},
-  {id:'boss35',n:'Warlord Kagan',city:'Moscow',ml:280,maxHP:800000,atk:1000,def:450,reward:8000000,xpr:220000,d:'Former KGB. Current nightmare. Commands a private army.'},
-  {id:'boss36',n:'The Puppet Master',city:'London',ml:350,maxHP:1200000,atk:1300,def:550,reward:12000000,xpr:280000,d:'Every leader in Europe owes him. Time to collect.'},
-  {id:'boss37',n:'Sun Tzu Reborn',city:'Hong Kong',ml:420,maxHP:1600000,atk:1600,def:700,reward:18000000,xpr:350000,d:'Reads The Art of War for breakfast. Writes new chapters at dinner.'},
-  {id:'boss38',n:'The Void Walker',city:'Tokyo',ml:550,maxHP:2500000,atk:2100,def:900,reward:30000000,xpr:450000,d:'Moves between shadows. Kills without sound. Exists between realities.'},
-  {id:'boss39',n:'Ozymandias',city:'Dubai',ml:650,maxHP:3500000,atk:2700,def:1100,reward:50000000,xpr:600000,d:'Look upon my works, ye mighty, and despair.'},
-  {id:'boss40',n:'The One Who Remains',city:'Italy',ml:800,maxHP:5000000,atk:3500,def:1500,reward:80000000,xpr:800000,d:'Outlived every empire. Built three of his own. Still standing.'},
-  {id:'boss41',n:'ALPHA',city:'Singapore',ml:1000,maxHP:7000000,atk:4500,def:2000,reward:120000000,xpr:1000000,d:'The first AI-enhanced criminal. Part human, part algorithm, all danger.'},
-  {id:'boss42',n:'The Last Emperor',city:'New York',ml:1100,maxHP:8500000,atk:5500,def:2500,reward:200000000,xpr:1500000,d:'He unified every crime family. To beat him, you must become him.'},
-  {id:'boss43',n:'Death Itself',city:'The Void',ml:1300,maxHP:12000000,atk:7000,def:3500,reward:500000000,xpr:3000000,d:'Not a metaphor. Not a nickname. You know what this is.'},
-  {id:'boss44',n:'Your Reflection',city:'The Void',ml:1450,maxHP:15000000,atk:9000,def:4500,reward:1000000000,xpr:5000000,d:'The final boss is always yourself. Your stats mirrored. Your sins returned.'},
+  {id:'boss26',n:'The Butcher of Bogotá',city:'Brazil',ml:30,maxHP:15000,atk:232,def:162,reward:80000,xpr:5000,d:'Chainsaw enthusiast. Former cartel cleaner.'},
+  {id:'boss27',n:'Lady Serpent',city:'Cuba',ml:45,maxHP:30000,atk:352,def:246,reward:150000,xpr:10000,d:'Runs the Caribbean drug routes with an iron fist and a venomous smile.'},
+  {id:'boss28',n:'The Accountant',city:'Las Vegas',ml:60,maxHP:50000,atk:500,def:350,reward:250000,xpr:18000,d:'Counts cards. Counts bodies. Counts your days.'},
+  {id:'boss29',n:'Black Mamba',city:'Nairobi',ml:90,maxHP:90000,atk:800,def:560,reward:500000,xpr:30000,d:'Fastest killer on the continent. Named for the snake, not the basketball player.'},
+  {id:'boss30',n:'The Professor',city:'Paris',ml:110,maxHP:140000,atk:980,def:686,reward:800000,xpr:50000,d:'Orchestrates heists from a lecture hall at the Sorbonne.'},
+  {id:'boss31',n:'Colonel Nightmare',city:'Berlin',ml:130,maxHP:200000,atk:1140,def:798,reward:1200000,xpr:70000,d:'Former Stasi. Knows every interrogation method invented. And some he created.'},
+  {id:'boss32',n:'The Sultan of Sin',city:'Istanbul',ml:160,maxHP:300000,atk:1380,def:965,reward:2000000,xpr:100000,d:'Controls every vice in the Eastern Mediterranean.'},
+  {id:'boss33',n:'Jade Empress',city:'Singapore',ml:190,maxHP:400000,atk:1620,def:1134,reward:3000000,xpr:140000,d:'Triad royalty. Commands an army of 50,000.'},
+  {id:'boss34',n:'The Ghost of Wall Street',city:'New York',ml:220,maxHP:550000,atk:1780,def:1246,reward:5000000,xpr:180000,d:'Crashed three economies for profit. Now he wants yours.'},
+  {id:'boss35',n:'Warlord Kagan',city:'Moscow',ml:280,maxHP:800000,atk:2020,def:1414,reward:8000000,xpr:220000,d:'Former KGB. Current nightmare. Commands a private army.'},
+  {id:'boss36',n:'The Puppet Master',city:'London',ml:350,maxHP:1200000,atk:2300,def:1610,reward:12000000,xpr:280000,d:'Every leader in Europe owes him. Time to collect.'},
+  {id:'boss37',n:'Sun Tzu Reborn',city:'Hong Kong',ml:420,maxHP:1600000,atk:2580,def:1805,reward:18000000,xpr:350000,d:'Reads The Art of War for breakfast. Writes new chapters at dinner.'},
+  {id:'boss38',n:'The Void Walker',city:'Tokyo',ml:550,maxHP:2500000,atk:3050,def:2135,reward:30000000,xpr:450000,d:'Moves between shadows. Kills without sound. Exists between realities.'},
+  {id:'boss39',n:'Ozymandias',city:'Dubai',ml:650,maxHP:3500000,atk:3350,def:2345,reward:50000000,xpr:600000,d:'Look upon my works, ye mighty, and despair.'},
+  {id:'boss40',n:'The One Who Remains',city:'Italy',ml:800,maxHP:5000000,atk:3800,def:2660,reward:80000000,xpr:800000,d:'Outlived every empire. Built three of his own. Still standing.'},
+  {id:'boss41',n:'ALPHA',city:'Singapore',ml:1000,maxHP:7000000,atk:4500,def:3150,reward:120000000,xpr:1000000,d:'The first AI-enhanced criminal. Part human, part algorithm, all danger.'},
+  {id:'boss42',n:'The Last Emperor',city:'New York',ml:1100,maxHP:8500000,atk:5500,def:3849,reward:200000000,xpr:1500000,d:'He unified every crime family. To beat him, you must become him.'},
+  {id:'boss43',n:'Death Itself',city:'The Void',ml:1300,maxHP:12000000,atk:7000,def:4900,reward:500000000,xpr:3000000,d:'Not a metaphor. Not a nickname. You know what this is.'},
+  {id:'boss44',n:'Your Reflection',city:'The Void',ml:1450,maxHP:15000000,atk:9000,def:6300,reward:1000000000,xpr:5000000,d:'The final boss is always yourself. Your stats mirrored. Your sins returned.'},
 ];
 
 // ══════════════════════════════════════════
@@ -4169,8 +4173,8 @@ function spendSP(s){
   if(s==='energy'){G.maxEnergy+=6;G.energy=Math.min(G.energy+6,G.maxEnergy);}
   else if(s==='stamina'){G.maxStamina+=4;G.stamina=Math.min(G.stamina+4,G.maxStamina);}
   else if(s==='health'){G.maxHealth+=25;G.health=Math.min(G.health+25,G.maxHealth);}
-  else if(s==='attack'){G.attack+=4;G.baseAttack+=4;}
-  else if(s==='defense'){G.defense+=4;G.baseDef+=4;}
+  else if(s==='attack'){G.attack+=1;G.baseAttack+=1;}
+  else if(s==='defense'){G.defense+=1;G.baseDef+=1;}
   updateAll();save();
 }
 function healPlayer(){
