@@ -403,7 +403,7 @@ function buildHitlist(c){
   const totalKills=(G.hitlistKills||0);
   const totalEarned=(G.hitlistEarned||0);
 
-  let html=`<div class="panel"><div class="ph"><h2>🏹 HITLIST</h2><span class="psub">Collect bounties. High risk, massive reward. ${HITLIST.length} targets.</span></div><div class="pb">`;
+  let html=`<div class="panel"><div class="ph"><h2>🏹 HITLIST</h2><span class="psub">Collect bounties. High risk, massive reward. ${Object.keys(G.hitlistDone||{}).length}/${HITLIST.length} completed.</span></div><div class="pb">`;
   // Stats
   html+=`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px;">
     <div style="background:var(--surface2);border:1px solid var(--border);padding:8px;text-align:center"><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--crimson)">${totalKills}</div><div style="font-size:8px;color:var(--text-dim);font-family:'Cutive Mono',monospace">BOUNTIES COLLECTED</div></div>
@@ -417,15 +417,16 @@ function buildHitlist(c){
     html+=`<div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.12em;padding:5px 0;margin-top:8px;border-bottom:1px solid var(--border);color:${tc}">▸ ${tier.toUpperCase()}</div>`;
     for(const t of targets){
       const locked=G.level<(t.ml||1);
+      const done=G.hitlistDone&&G.hitlistDone[t.n];
       const winChance=Math.max(15,Math.min(85,75-(t.st*1.5)));
-      html+=`<div style="background:var(--surface2);border:1px solid var(--border);padding:10px;margin-bottom:4px;display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:10px;transition:all .12s;opacity:${locked?.35:1}" ${!locked?'onmouseover="this.style.borderColor=\'var(--crimson)\'" onmouseout="this.style.borderColor=\'var(--border)\'"':''}>
+      html+=`<div style="background:var(--surface2);border:1px solid ${done?'rgba(76,175,80,.4)':'var(--border)'};padding:10px;margin-bottom:4px;display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:10px;transition:all .12s;opacity:${locked?.35:done?.6:1}" ${!locked&&!done?'onmouseover="this.style.borderColor=\'var(--crimson)\'" onmouseout="this.style.borderColor=\'var(--border)\'"':''}>
         <div>
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:15px;">${t.n}</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:15px;">${done?'✅ ':''} ${t.n}</div>
           <div style="font-size:10px;color:var(--text-dim);font-family:'Special Elite',serif;margin-top:1px;">${t.d}</div>
-          <div style="font-size:9px;color:var(--text-dim);font-family:'Cutive Mono',monospace;margin-top:3px;">${t.st} 💪 · ~${winChance}% success${t.loot?' · 🎁 Loot':''}${locked?' · 🔒 Lv'+t.ml:''}</div>
+          <div style="font-size:9px;color:var(--text-dim);font-family:'Cutive Mono',monospace;margin-top:3px;">${t.st} 💪 · ~${winChance}% success${t.loot?' · 🎁 Loot':''}${locked?' · 🔒 Lv'+t.ml:''}${done?' · COLLECTED':''}</div>
         </div>
-        <div style="font-family:'Cutive Mono',monospace;color:var(--bright-gold);font-size:13px;text-align:right;">$${fmtCash(t.b)}</div>
-        ${locked?`<div style="font-size:10px;color:var(--text-dim);font-family:'Bebas Neue',sans-serif;">LV ${t.ml}</div>`:
+        <div style="font-family:'Cutive Mono',monospace;color:${done?'var(--bright-green)':'var(--bright-gold)'};font-size:13px;text-align:right;">${done?'DONE':'$'+fmtCash(t.b)}</div>
+        ${done?'<div style="font-size:16px;color:var(--bright-green)">✅</div>':locked?`<div style="font-size:10px;color:var(--text-dim);font-family:'Bebas Neue',sans-serif;">LV ${t.ml}</div>`:
           `<button class="djb" onclick="collectBounty('${t.n.replace(/'/g,"\\'")}')" ${G.stamina>=t.st?'':'disabled'}>COLLECT</button>`}
       </div>`;
     }
@@ -436,6 +437,8 @@ function buildHitlist(c){
 
 function collectBounty(name){
   const t=HITLIST.find(x=>x.n===name);if(!t)return;
+  if(!G.hitlistDone)G.hitlistDone={};
+  if(G.hitlistDone[name]){toast('Already collected this bounty!','r');return;}
   if(G.stamina<t.st){toast(`Need ${t.st} stamina!`,'r');return;}
   if(G.level<(t.ml||1)){toast('Level too low!','r');return;}
   G.stamina-=t.st;
@@ -447,9 +450,9 @@ function collectBounty(name){
     if(!G.hitlistKills)G.hitlistKills=0;G.hitlistKills++;
     if(!G.hitlistEarned)G.hitlistEarned=0;G.hitlistEarned+=cash;
     gainXP(Math.floor(cash/3000));
+    G.hitlistDone[name]=true; // Mark as permanently completed
     addLog(`💀 BOUNTY: $${fmtCash(cash)} on ${t.n}`,'gold');
     toast(`Bounty collected! $${fmtCash(cash)}`,'gold');
-    // Loot drop
     if(t.loot&&Math.random()<.35){addLoot(t.loot);}
   }else{
     const dmg=t.st*10+Math.floor(Math.random()*30);
