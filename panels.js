@@ -4189,9 +4189,9 @@ function doOp(id){
 function spendSP(s){
   if(G.skillPoints<=0){toast('No skill points!','r');return;}
   G.skillPoints--;
-  if(s==='energy'){G.maxEnergy+=6;G.energy=Math.min(G.energy+6,G.maxEnergy);}
-  else if(s==='stamina'){G.maxStamina+=4;G.stamina=Math.min(G.stamina+4,G.maxStamina);}
-  else if(s==='health'){G.maxHealth+=25;G.health=Math.min(G.health+25,G.maxHealth);}
+  if(s==='energy'){G.maxEnergy+=2;G.energy=Math.min(G.energy+2,G.maxEnergy);}
+  else if(s==='stamina'){G.maxStamina+=1;G.stamina=Math.min(G.stamina+1,G.maxStamina);}
+  else if(s==='health'){G.maxHealth+=5;G.health=Math.min(G.health+5,G.maxHealth);}
   else if(s==='attack'){G.attack+=1;G.baseAttack+=1;}
   else if(s==='defense'){G.defense+=1;G.baseDef+=1;}
   updateAll();save();
