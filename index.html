@@ -83,146 +83,256 @@ const WARMUPS={lower:["BW Squat ×10","Leg Swings ×10 ea","Hip Circles ×10 ea"
   bike:["Easy Spin 3min","Leg Swings ×8 ea","Hip Circles ×8 ea","BW Squat ×8"],
   full:["Jumping Jacks ×20","BW Squat ×10","Push-Up ×8","Hip Circles ×8 ea","Arm Circles ×10 ea"]};
 
-// ══ 110+ ACHIEVEMENTS ══
+// ══ 125 ACHIEVEMENTS — BUILT FOR YEARS, NOT MONTHS ══
+// Realistic at 5-6 sessions/wk with vacations, sick days, and life.
+// Sessions: ~260/yr · Miles: ~1,500/yr · Calories: ~100K/yr · Volume: ~750K/yr · Hours: ~250/yr
 const ACH_CATS=["GRIND","IRON","CARDIO","BODY","STREAK","LIFE","🦖 JURASSIC","⭐ STAR WARS","🎮 HALO","🎬 CULTURE","👑 LEGEND"];
 const MILES=[
+  // ══ GRIND — SESSION COUNT + CONSISTENCY ══ (20)
   {id:"g1",n:"First Blood",d:"Complete first workout",c:"GRIND",i:"⚡",req:s=>s.total>=1},
-  {id:"g2",n:"Five Alive",d:"5 sessions",c:"GRIND",i:"🔥",req:s=>s.total>=5},
-  {id:"g3",n:"Ten Down",d:"10 sessions",c:"GRIND",i:"🔥",req:s=>s.total>=10},
-  {id:"g4",n:"Quarter Century",d:"25 sessions",c:"GRIND",i:"💪",req:s=>s.total>=25},
-  {id:"g5",n:"Half Century",d:"50 sessions",c:"GRIND",i:"💪",req:s=>s.total>=50},
-  {id:"g6",n:"Centurion",d:"100 sessions",c:"GRIND",i:"🏆",req:s=>s.total>=100},
-  {id:"g7",n:"150 Strong",d:"150 sessions",c:"GRIND",i:"🏆",req:s=>s.total>=150},
-  {id:"g8",n:"Two Hundred",d:"200 sessions",c:"GRIND",i:"🏆",req:s=>s.total>=200},
-  {id:"g9",n:"300",d:"Spartan number",c:"GRIND",i:"🏆",req:s=>s.total>=300},
-  {id:"g10",n:"Year Of Iron",d:"365 sessions",c:"GRIND",i:"👑",req:s=>s.total>=365},
-  {id:"g11",n:"Perfect Week",d:"6/6 sessions",c:"GRIND",i:"✅",req:s=>s.perfectWeeks>=1},
-  {id:"g12",n:"Perfect Month",d:"4 perfect weeks",c:"GRIND",i:"✅",req:s=>s.perfectWeeks>=4},
-  {id:"g13",n:"Machine",d:"10 perfect weeks",c:"GRIND",i:"⚙",req:s=>s.perfectWeeks>=10},
-  {id:"g14",n:"Clockwork",d:"25 perfect weeks",c:"GRIND",i:"💎",req:s=>s.perfectWeeks>=25},
-  {id:"g15",n:"10 Hours",d:"10 hours trained",c:"GRIND",i:"⏱",req:s=>s.totalHrs>=10},
-  {id:"g16",n:"50 Hours",d:"50 hours",c:"GRIND",i:"⏱",req:s=>s.totalHrs>=50},
-  {id:"g17",n:"100 Hours",d:"100 hours in the rack",c:"GRIND",i:"⏱",req:s=>s.totalHrs>=100},
-  {id:"g18",n:"250 Hours",d:"10+ full days of work",c:"GRIND",i:"⏱",req:s=>s.totalHrs>=250},
-  {id:"i1",n:"PR Rookie",d:"First PR",c:"IRON",i:"🏅",req:s=>s.prCount>=1},
+  {id:"g2",n:"Getting Started",d:"5 sessions",c:"GRIND",i:"🔥",req:s=>s.total>=5},
+  {id:"g3",n:"Double Digits",d:"10 sessions",c:"GRIND",i:"🔥",req:s=>s.total>=10},
+  {id:"g4",n:"Quarter Century",d:"25 sessions (~1 month)",c:"GRIND",i:"💪",req:s=>s.total>=25},
+  {id:"g5",n:"Fifty",d:"50 sessions (~2 months)",c:"GRIND",i:"💪",req:s=>s.total>=50},
+  {id:"g6",n:"Triple Digits",d:"100 sessions (~4 months)",c:"GRIND",i:"🏆",req:s=>s.total>=100},
+  {id:"g7",n:"Two Hundred",d:"200 sessions (~9 months)",c:"GRIND",i:"🏆",req:s=>s.total>=200},
+  {id:"g8",n:"Year One",d:"275 sessions (~1 year at 5/wk)",c:"GRIND",i:"🏆",req:s=>s.total>=275},
+  {id:"g9",n:"Five Hundred",d:"500 sessions (~2 years)",c:"GRIND",i:"👑",req:s=>s.total>=500},
+  {id:"g10",n:"Seven Fifty",d:"750 sessions (~3 years)",c:"GRIND",i:"👑",req:s=>s.total>=750},
+  {id:"g11",n:"One Thousand",d:"1,000 sessions",c:"GRIND",i:"👑",req:s=>s.total>=1000},
+  {id:"g12",n:"Perfect Week",d:"First 6/6 week",c:"GRIND",i:"✅",req:s=>s.perfectWeeks>=1},
+  {id:"g13",n:"Perfect Month",d:"4 perfect weeks total",c:"GRIND",i:"✅",req:s=>s.perfectWeeks>=4},
+  {id:"g14",n:"Machine",d:"10 perfect weeks",c:"GRIND",i:"⚙",req:s=>s.perfectWeeks>=10},
+  {id:"g15",n:"Clockwork",d:"25 perfect weeks",c:"GRIND",i:"⚙",req:s=>s.perfectWeeks>=25},
+  {id:"g16",n:"Relentless",d:"50 perfect weeks (~1 yr)",c:"GRIND",i:"💎",req:s=>s.perfectWeeks>=50},
+  {id:"g17",n:"10 Hours",d:"10 hours trained",c:"GRIND",i:"⏱",req:s=>s.totalHrs>=10},
+  {id:"g18",n:"50 Hours",d:"50 hours",c:"GRIND",i:"⏱",req:s=>s.totalHrs>=50},
+  {id:"g19",n:"100 Hours",d:"100 hours in the rack",c:"GRIND",i:"⏱",req:s=>s.totalHrs>=100},
+  {id:"g20",n:"500 Hours",d:"500 hours (~2 years)",c:"GRIND",i:"⏱",req:s=>s.totalHrs>=500},
+
+  // ══ IRON — STRENGTH + VOLUME ══ (33)
+  {id:"i1",n:"PR Rookie",d:"Set first PR",c:"IRON",i:"🏅",req:s=>s.prCount>=1},
   {id:"i2",n:"PR Hunter",d:"5 PRs",c:"IRON",i:"🏅",req:s=>s.prCount>=5},
   {id:"i3",n:"PR Machine",d:"10 PRs",c:"IRON",i:"🏅",req:s=>s.prCount>=10},
   {id:"i4",n:"Record Breaker",d:"20 PRs",c:"IRON",i:"💀",req:s=>s.prCount>=20},
   {id:"i5",n:"PR Obsessed",d:"30 PRs",c:"IRON",i:"💀",req:s=>s.prCount>=30},
-  {id:"i6",n:"Plate Club",d:"Squat 135",c:"IRON",i:"🔩",req:s=>s.squatMax>=135},
-  {id:"i7",n:"Squat 185",d:"Big squat energy",c:"IRON",i:"🔩",req:s=>s.squatMax>=185},
-  {id:"i8",n:"Two Plates",d:"Squat 225",c:"IRON",i:"🔩",req:s=>s.squatMax>=225},
-  {id:"i9",n:"Squat King",d:"Squat 275 — max the rack",c:"IRON",i:"👑",req:s=>s.squatMax>=275},
-  {id:"i10",n:"Bench Opener",d:"Bench 135",c:"IRON",i:"🔩",req:s=>s.benchMax>=135},
-  {id:"i11",n:"Bench 155",d:"Getting heavy",c:"IRON",i:"🔩",req:s=>s.benchMax>=155},
-  {id:"i12",n:"Bench 185",d:"Big bench",c:"IRON",i:"🔩",req:s=>s.benchMax>=185},
+  {id:"i6",n:"PR Collector",d:"40 PRs (multi-year grind)",c:"IRON",i:"💀",req:s=>s.prCount>=40},
+  {id:"i7",n:"Plate Club",d:"Squat 135",c:"IRON",i:"🔩",req:s=>s.squatMax>=135},
+  {id:"i8",n:"Squat 185",d:"Big squat energy",c:"IRON",i:"🔩",req:s=>s.squatMax>=185},
+  {id:"i9",n:"Two Plates",d:"Squat 225",c:"IRON",i:"🔩",req:s=>s.squatMax>=225},
+  {id:"i10",n:"Squat King",d:"Squat 275 — maxed out",c:"IRON",i:"👑",req:s=>s.squatMax>=275},
+  {id:"i11",n:"Bench Opener",d:"Bench 135",c:"IRON",i:"🔩",req:s=>s.benchMax>=135},
+  {id:"i12",n:"Bench 185",d:"Serious pressing",c:"IRON",i:"🔩",req:s=>s.benchMax>=185},
   {id:"i13",n:"Two Plate Bench",d:"Bench 225",c:"IRON",i:"👑",req:s=>s.benchMax>=225},
   {id:"i14",n:"Press 95",d:"OHP 95",c:"IRON",i:"🔩",req:s=>s.ohpMax>=95},
   {id:"i15",n:"Overhead King",d:"OHP 135",c:"IRON",i:"👑",req:s=>s.ohpMax>=135},
   {id:"i16",n:"Row 135",d:"Barbell Row 135",c:"IRON",i:"🔩",req:s=>s.rowMax>=135},
   {id:"i17",n:"Strong Back",d:"Row 185",c:"IRON",i:"🔩",req:s=>s.rowMax>=185},
-  {id:"i18",n:"RDL 185",d:"Posterior chain power",c:"IRON",i:"🔩",req:s=>s.rdlMax>=185},
-  {id:"i19",n:"Deadlift King",d:"RDL 225",c:"IRON",i:"👑",req:s=>s.rdlMax>=225},
-  {id:"i20",n:"Beast Mode",d:"50 strength sessions",c:"IRON",i:"💪",req:s=>s.strSess>=50},
-  {id:"i21",n:"100K Volume",d:"100,000 lbs lifted",c:"IRON",i:"📊",req:s=>s.totalVol>=100000},
-  {id:"i22",n:"Half Million",d:"500K lbs total",c:"IRON",i:"📊",req:s=>s.totalVol>=500000},
-  {id:"i23",n:"Million Pound Club",d:"1,000,000 lbs",c:"IRON",i:"💎",req:s=>s.totalVol>=1000000},
-  {id:"i24",n:"Two Million",d:"2M lbs — absurd",c:"IRON",i:"💎",req:s=>s.totalVol>=2000000},
+  {id:"i18",n:"RDL 185",d:"Posterior chain",c:"IRON",i:"🔩",req:s=>s.rdlMax>=185},
+  {id:"i19",n:"Beast Mode",d:"50 strength sessions",c:"IRON",i:"💪",req:s=>s.strSess>=50},
+  {id:"i20",n:"Iron Vet",d:"200 strength sessions (~2 yrs)",c:"IRON",i:"💪",req:s=>s.strSess>=200},
+  {id:"i21",n:"25K Volume",d:"25,000 lbs — first month",c:"IRON",i:"📊",req:s=>s.totalVol>=25000},
+  {id:"i22",n:"50K Volume",d:"50,000 lbs",c:"IRON",i:"📊",req:s=>s.totalVol>=50000},
+  {id:"i23",n:"100K Volume",d:"100,000 lbs lifted",c:"IRON",i:"📊",req:s=>s.totalVol>=100000},
+  {id:"i24",n:"250K Volume",d:"250K lbs (~3-4 months)",c:"IRON",i:"📊",req:s=>s.totalVol>=250000},
+  {id:"i25",n:"Half Million",d:"500K lbs (~6-8 months)",c:"IRON",i:"📊",req:s=>s.totalVol>=500000},
+  {id:"i26",n:"750K Volume",d:"750K lbs (~1 year)",c:"IRON",i:"💎",req:s=>s.totalVol>=750000},
+  {id:"i27",n:"Million Pound Club",d:"1M lbs",c:"IRON",i:"💎",req:s=>s.totalVol>=1000000},
+  {id:"i28",n:"1.5 Million",d:"1.5M lbs (~1.5-2 years)",c:"IRON",i:"💎",req:s=>s.totalVol>=1500000},
+  {id:"i29",n:"Two Million",d:"2M lbs (~2-3 years)",c:"IRON",i:"💎",req:s=>s.totalVol>=2000000},
+  {id:"i30",n:"Three Million",d:"3M lbs",c:"IRON",i:"👑",req:s=>s.totalVol>=3000000},
+  {id:"i31",n:"Five Million",d:"5M lbs (~4-5 years)",c:"IRON",i:"👑",req:s=>s.totalVol>=5000000},
+  {id:"i32",n:"7.5 Million",d:"7.5M lbs",c:"IRON",i:"👑",req:s=>s.totalVol>=7500000},
+  {id:"i33",n:"Ten Million Pounds",d:"10M lbs. Unfathomable.",c:"IRON",i:"👑",req:s=>s.totalVol>=10000000},
+
+  // ══ CARDIO — RIDES + MILES + CALORIES ══ (29)
   {id:"c1",n:"First Ride",d:"First bike session",c:"CARDIO",i:"🚴",req:s=>s.bikeSess>=1},
   {id:"c2",n:"Cyclist",d:"10 rides",c:"CARDIO",i:"🚴",req:s=>s.bikeSess>=10},
   {id:"c3",n:"Road Warrior",d:"25 rides",c:"CARDIO",i:"🚴",req:s=>s.bikeSess>=25},
   {id:"c4",n:"Spin King",d:"50 rides",c:"CARDIO",i:"🚴",req:s=>s.bikeSess>=50},
-  {id:"c5",n:"100 Rides",d:"Triple digit",c:"CARDIO",i:"🚴",req:s=>s.bikeSess>=100},
-  {id:"c6",n:"10 Miles",d:"10 total miles",c:"CARDIO",i:"📍",req:s=>s.mi>=10},
-  {id:"c7",n:"25 Miles",d:"Quarter century ride",c:"CARDIO",i:"📍",req:s=>s.mi>=25},
-  {id:"c8",n:"50 Miles",d:"Fifty miles",c:"CARDIO",i:"📍",req:s=>s.mi>=50},
-  {id:"c9",n:"Century Ride",d:"100 miles",c:"CARDIO",i:"📍",req:s=>s.mi>=100},
-  {id:"c10",n:"Double Century",d:"200 miles",c:"CARDIO",i:"📍",req:s=>s.mi>=200},
-  {id:"c11",n:"300 Miles",d:"Long road",c:"CARDIO",i:"📍",req:s=>s.mi>=300},
-  {id:"c12",n:"500 Club",d:"500 miles",c:"CARDIO",i:"🏆",req:s=>s.mi>=500},
-  {id:"c13",n:"1K Cal",d:"1,000 cal burned",c:"CARDIO",i:"🔥",req:s=>s.cal>=1000},
-  {id:"c14",n:"5K Cal",d:"5,000 cal",c:"CARDIO",i:"🔥",req:s=>s.cal>=5000},
-  {id:"c15",n:"10K Cal",d:"10,000 cal",c:"CARDIO",i:"🔥",req:s=>s.cal>=10000},
-  {id:"c16",n:"25K Cal",d:"25,000 cal",c:"CARDIO",i:"🔥",req:s=>s.cal>=25000},
-  {id:"c17",n:"50K Cal",d:"50K calories",c:"CARDIO",i:"☢",req:s=>s.cal>=50000},
-  {id:"c18",n:"Supernova",d:"100K calories",c:"CARDIO",i:"☀",req:s=>s.cal>=100000},
+  {id:"c5",n:"100 Rides",d:"Triple digits",c:"CARDIO",i:"🚴",req:s=>s.bikeSess>=100},
+  {id:"c6",n:"200 Rides",d:"~18 months of riding",c:"CARDIO",i:"🚴",req:s=>s.bikeSess>=200},
+  {id:"c7",n:"25 Miles",d:"Getting rolling",c:"CARDIO",i:"📍",req:s=>s.mi>=25},
+  {id:"c8",n:"50 Miles",d:"First fifty",c:"CARDIO",i:"📍",req:s=>s.mi>=50},
+  {id:"c9",n:"Century Ride",d:"100 total miles",c:"CARDIO",i:"📍",req:s=>s.mi>=100},
+  {id:"c10",n:"250 Miles",d:"~2 months",c:"CARDIO",i:"📍",req:s=>s.mi>=250},
+  {id:"c11",n:"500 Miles",d:"~4 months",c:"CARDIO",i:"📍",req:s=>s.mi>=500},
+  {id:"c12",n:"750 Miles",d:"~6 months",c:"CARDIO",i:"📍",req:s=>s.mi>=750},
+  {id:"c13",n:"1,000 Miles",d:"~8 months",c:"CARDIO",i:"🏆",req:s=>s.mi>=1000},
+  {id:"c14",n:"1,500 Miles",d:"~1 year of riding",c:"CARDIO",i:"🏆",req:s=>s.mi>=1500},
+  {id:"c15",n:"2,000 Miles",d:"~18 months",c:"CARDIO",i:"🏆",req:s=>s.mi>=2000},
+  {id:"c16",n:"3,000 Miles",d:"~2 years",c:"CARDIO",i:"🏆",req:s=>s.mi>=3000},
+  {id:"c17",n:"5,000 Miles",d:"~3+ years",c:"CARDIO",i:"👑",req:s=>s.mi>=5000},
+  {id:"c18",n:"7,500 Miles",d:"~5 years",c:"CARDIO",i:"👑",req:s=>s.mi>=7500},
+  {id:"c19",n:"10,000 Miles",d:"Legendary distance",c:"CARDIO",i:"👑",req:s=>s.mi>=10000},
+  {id:"c20",n:"1K Calories",d:"First thousand burned",c:"CARDIO",i:"🔥",req:s=>s.cal>=1000},
+  {id:"c21",n:"5K Calories",d:"5,000 cal (~2 weeks)",c:"CARDIO",i:"🔥",req:s=>s.cal>=5000},
+  {id:"c22",n:"10K Calories",d:"10K cal (~1 month)",c:"CARDIO",i:"🔥",req:s=>s.cal>=10000},
+  {id:"c23",n:"25K Calories",d:"25K cal (~3 months)",c:"CARDIO",i:"🔥",req:s=>s.cal>=25000},
+  {id:"c24",n:"50K Calories",d:"50K cal (~6 months)",c:"CARDIO",i:"🔥",req:s=>s.cal>=50000},
+  {id:"c25",n:"100K Calories",d:"100K cal (~1 year)",c:"CARDIO",i:"☢",req:s=>s.cal>=100000},
+  {id:"c26",n:"150K Calories",d:"150K (~1.5 years)",c:"CARDIO",i:"☢",req:s=>s.cal>=150000},
+  {id:"c27",n:"250K Calories",d:"250K (~2.5 years)",c:"CARDIO",i:"☢",req:s=>s.cal>=250000},
+  {id:"c28",n:"500K Calories",d:"500K — half a million",c:"CARDIO",i:"☀",req:s=>s.cal>=500000},
+  {id:"c29",n:"1M Calories",d:"1,000,000 cal. Furnace.",c:"CARDIO",i:"☀",req:s=>s.cal>=1000000},
+
+  // ══ BODY — WEIGHT + MEASUREMENTS + RECOMP ══ (22)
   {id:"b1",n:"First Pound",d:"Lost 1 lb",c:"BODY",i:"⬇",req:s=>s.wLost>=1},
   {id:"b2",n:"Five Down",d:"Lost 5 lbs",c:"BODY",i:"⬇",req:s=>s.wLost>=5},
   {id:"b3",n:"Double Digits",d:"Lost 10 lbs",c:"BODY",i:"⬇",req:s=>s.wLost>=10},
-  {id:"b4",n:"Fifteen",d:"Lost 15 lbs",c:"BODY",i:"⬇",req:s=>s.wLost>=15},
-  {id:"b5",n:"Twenty",d:"Lost 20 lbs",c:"BODY",i:"⬇",req:s=>s.wLost>=20},
-  {id:"b6",n:"Target Acquired",d:"Hit 185 lbs",c:"BODY",i:"🎯",req:s=>s.wLost>=25},
-  {id:"b7",n:"Under 200",d:"Below 200",c:"BODY",i:"⚖",req:s=>s.wLost>=10},
-  {id:"b8",n:"Measured Up",d:"Log measurements",c:"BODY",i:"📏",req:s=>s.measCount>=1},
-  {id:"b9",n:"Tracking Pro",d:"10 measurement entries",c:"BODY",i:"📏",req:s=>s.measCount>=10},
+  {id:"b4",n:"Under 200",d:"Below 200 lbs",c:"BODY",i:"⚖",req:s=>s.wLost>=10},
+  {id:"b5",n:"Fifteen",d:"Lost 15 lbs",c:"BODY",i:"⬇",req:s=>s.wLost>=15},
+  {id:"b6",n:"Twenty",d:"Lost 20 lbs",c:"BODY",i:"⬇",req:s=>s.wLost>=20},
+  {id:"b7",n:"Target Acquired",d:"Hit 185 lbs",c:"BODY",i:"🎯",req:s=>s.wLost>=25},
+  {id:"b8",n:"First Weigh-In",d:"Log first weight entry",c:"BODY",i:"⚖",req:s=>s.weightEntries>=1},
+  {id:"b9",n:"Weekly Weigher",d:"7 weight entries",c:"BODY",i:"⚖",req:s=>s.weightEntries>=7},
+  {id:"b10",n:"Monthly Tracker",d:"30 weight entries",c:"BODY",i:"⚖",req:s=>s.weightEntries>=30},
+  {id:"b11",n:"100 Weigh-Ins",d:"100 weight entries (~3 months daily)",c:"BODY",i:"⚖",req:s=>s.weightEntries>=100},
+  {id:"b12",n:"365 Weigh-Ins",d:"A full year of daily tracking",c:"BODY",i:"⚖",req:s=>s.weightEntries>=365},
+  {id:"b13",n:"Measured Up",d:"Log body measurements",c:"BODY",i:"📏",req:s=>s.measCount>=1},
+  {id:"b14",n:"Tracking Pro",d:"10 measurement entries",c:"BODY",i:"📏",req:s=>s.measCount>=10},
+  {id:"b15",n:"Long Game",d:"25 measurements (~6 months)",c:"BODY",i:"📏",req:s=>s.measCount>=25},
+  {id:"b16",n:"50 Measurements",d:"50 entries (~1 year biweekly)",c:"BODY",i:"📏",req:s=>s.measCount>=50},
+  {id:"b17",n:"Stronger AND Lighter",d:"Any PR over 135 while under 200 lbs",c:"BODY",i:"💪",req:s=>s.wLost>=10&&s.anyPR135},
+  {id:"b18",n:"Recomp King",d:"At 185 with any PR over 200",c:"BODY",i:"👑",req:s=>s.wLost>=25&&s.anyPR200},
+  {id:"b19",n:"Still At 185",d:"Target weight + 500 sessions",c:"BODY",i:"🎯",req:s=>s.wLost>=25&&s.total>=500},
+  {id:"b20",n:"Lifetime Maintainer",d:"Target weight + 750 sessions",c:"BODY",i:"🎯",req:s=>s.wLost>=25&&s.total>=750},
+  {id:"b21",n:"Size Gains",d:"Log arms measurement + 200 strength sessions",c:"BODY",i:"💪",req:s=>s.measCount>=1&&s.strSess>=200},
+  {id:"b22",n:"Complete Transformation",d:"Lost 25lbs + 100 measurements + 500 sessions",c:"BODY",i:"🌟",req:s=>s.wLost>=25&&s.measCount>=100&&s.total>=500},
+
+  // ══ STREAK — REALISTIC ══ (8)
   {id:"s1",n:"Three-Peat",d:"3-day streak",c:"STREAK",i:"🔗",req:s=>s.maxStreak>=3},
   {id:"s2",n:"Work Week",d:"5-day streak",c:"STREAK",i:"🔗",req:s=>s.maxStreak>=5},
-  {id:"s3",n:"Full Send",d:"7-day streak",c:"STREAK",i:"🔗",req:s=>s.maxStreak>=7},
-  {id:"s4",n:"Two Weeks",d:"14 days",c:"STREAK",i:"⛓",req:s=>s.maxStreak>=14},
-  {id:"s5",n:"Twenty One",d:"21 days — habit formed",c:"STREAK",i:"⛓",req:s=>s.maxStreak>=21},
-  {id:"s6",n:"Thirty Days",d:"30-day streak",c:"STREAK",i:"⛓",req:s=>s.maxStreak>=30},
-  {id:"s7",n:"Iron Will",d:"60-day streak",c:"STREAK",i:"💎",req:s=>s.maxStreak>=60},
-  {id:"s8",n:"Unbreakable",d:"90-day streak",c:"STREAK",i:"💎",req:s=>s.maxStreak>=90},
-  {id:"l1",n:"Hydrated",d:"8+ glasses today",c:"LIFE",i:"💧",req:s=>s.waterToday>=8},
-  {id:"l2",n:"Pain Cave",d:"Rate a workout 5/5",c:"LIFE",i:"😤",req:s=>s.rated5>=1},
-  {id:"l3",n:"Masochist",d:"10 workouts rated 5/5",c:"LIFE",i:"😤",req:s=>s.rated5>=10},
-  {id:"l4",n:"Embrace Suck",d:"25 workouts rated 4+",c:"LIFE",i:"🫠",req:s=>s.rated4p>=25},
-  {id:"l5",n:"Note Taker",d:"Notes on 10 sessions",c:"LIFE",i:"📝",req:s=>s.notesSess>=10},
-  {id:"l6",n:"Journalist",d:"Notes on 50 sessions",c:"LIFE",i:"📝",req:s=>s.notesSess>=50},
-  {id:"l7",n:"Comeback Kid",d:"Train after 3+ day break",c:"LIFE",i:"🔄",req:s=>s.comebacks>=1},
-  {id:"l8",n:"Phoenix",d:"Come back 5 times",c:"LIFE",i:"🔄",req:s=>s.comebacks>=5},
-  {id:"l9",n:"Fully Loaded",d:"Weight+water+workout+notes in 1 day",c:"LIFE",i:"✨",req:s=>s.fullyOp},
-  {id:"jp1",n:"Life Finds A Way",d:"Return after a break",c:"🦖 JURASSIC",i:"🦕",req:s=>s.comebacks>=1},
-  {id:"jp2",n:"Clever Girl",d:"15 PRs",c:"🦖 JURASSIC",i:"🦖",req:s=>s.prCount>=15},
-  {id:"jp3",n:"Spare No Expense",d:"100 sessions — all in",c:"🦖 JURASSIC",i:"💰",req:s=>s.total>=100},
-  {id:"jp4",n:"Hold Onto Your Butts",d:"Squat+Bench both 185+",c:"🦖 JURASSIC",i:"🍑",req:s=>s.squatMax>=185&&s.benchMax>=185},
-  {id:"jp5",n:"Must Go Faster",d:"Burn 25K cal",c:"🦖 JURASSIC",i:"🏃",req:s=>s.cal>=25000},
-  {id:"jp6",n:"Nature Selected",d:"40 sessions survived",c:"🦖 JURASSIC",i:"🧬",req:s=>s.total>=40},
+  {id:"s3",n:"Full Send",d:"7-day streak (~8 calendar days)",c:"STREAK",i:"🔗",req:s=>s.maxStreak>=7},
+  {id:"s4",n:"Two Weeks",d:"14-day streak (~2.5 weeks)",c:"STREAK",i:"⛓",req:s=>s.maxStreak>=14},
+  {id:"s5",n:"Twenty One",d:"21 days — habit locked in",c:"STREAK",i:"⛓",req:s=>s.maxStreak>=21},
+  {id:"s6",n:"Thirty Days",d:"30 training days (~5 wks)",c:"STREAK",i:"⛓",req:s=>s.maxStreak>=30},
+  {id:"s7",n:"Forty Five",d:"45 days — absolute discipline",c:"STREAK",i:"💎",req:s=>s.maxStreak>=45},
+  {id:"s8",n:"Sixty",d:"60 training days (~10 weeks). Insane.",c:"STREAK",i:"💎",req:s=>s.maxStreak>=60},
+
+  // ══ LIFE — MISC ══ (16)
+  {id:"l1",n:"Hydrated",d:"8+ glasses of water today",c:"LIFE",i:"💧",req:s=>s.waterToday>=8},
+  {id:"l2",n:"Overhydrated",d:"12+ glasses of water today",c:"LIFE",i:"💧",req:s=>s.waterToday>=12},
+  {id:"l3",n:"Pain Cave",d:"Rate a workout 5/5",c:"LIFE",i:"😤",req:s=>s.rated5>=1},
+  {id:"l4",n:"Masochist",d:"10 workouts rated 5/5",c:"LIFE",i:"😤",req:s=>s.rated5>=10},
+  {id:"l5",n:"Glutton For Pain",d:"25 workouts rated 5/5",c:"LIFE",i:"😤",req:s=>s.rated5>=25},
+  {id:"l6",n:"Embrace Suck",d:"25 workouts rated 4+",c:"LIFE",i:"🫠",req:s=>s.rated4p>=25},
+  {id:"l7",n:"100 Hard Ones",d:"100 workouts rated 4+",c:"LIFE",i:"🫠",req:s=>s.rated4p>=100},
+  {id:"l8",n:"Note Taker",d:"Notes on 10 sessions",c:"LIFE",i:"📝",req:s=>s.notesSess>=10},
+  {id:"l9",n:"Journalist",d:"Notes on 50 sessions",c:"LIFE",i:"📝",req:s=>s.notesSess>=50},
+  {id:"l10",n:"Archivist",d:"Notes on 200 sessions",c:"LIFE",i:"📝",req:s=>s.notesSess>=200},
+  {id:"l11",n:"Comeback Kid",d:"Train after 3+ day break",c:"LIFE",i:"🔄",req:s=>s.comebacks>=1},
+  {id:"l12",n:"Phoenix",d:"Come back 5 times. Life happens.",c:"LIFE",i:"🔄",req:s=>s.comebacks>=5},
+  {id:"l13",n:"Unkillable",d:"Come back 15 times over the years",c:"LIFE",i:"🔄",req:s=>s.comebacks>=15},
+  {id:"l14",n:"Fully Loaded",d:"Weight+water+workout+notes in 1 day",c:"LIFE",i:"✨",req:s=>s.fullyOp},
+  {id:"l15",n:"Morning Person",d:"25 sessions logged (building the AM habit)",c:"LIFE",i:"🌅",req:s=>s.total>=25},
+  {id:"l16",n:"No Excuses",d:"Train on 3+ holidays/vacations (comebacks)",c:"LIFE",i:"🔒",req:s=>s.comebacks>=3&&s.total>=100},
+
+  // ══ 🦖 JURASSIC PARK ══ (20)
+  {id:"jp1",n:"Welcome To Jurassic Park",d:"Complete first workout. The tour begins.",c:"🦖 JURASSIC",i:"🦕",req:s=>s.total>=1},
+  {id:"jp2",n:"Life Finds A Way",d:"Come back after a 3+ day break",c:"🦖 JURASSIC",i:"🧬",req:s=>s.comebacks>=1},
+  {id:"jp3",n:"Clever Girl",d:"15 PRs — you outsmarted the program",c:"🦖 JURASSIC",i:"🦖",req:s=>s.prCount>=15},
+  {id:"jp4",n:"Spare No Expense",d:"100 sessions — fully committed",c:"🦖 JURASSIC",i:"💰",req:s=>s.total>=100},
+  {id:"jp5",n:"Hold Onto Your Butts",d:"Squat + Bench both over 185",c:"🦖 JURASSIC",i:"🍑",req:s=>s.squatMax>=185&&s.benchMax>=185},
+  {id:"jp6",n:"Must Go Faster",d:"Burn 50K calories",c:"🦖 JURASSIC",i:"🏃",req:s=>s.cal>=50000},
+  {id:"jp7",n:"Nature Selected",d:"Survive 40 sessions",c:"🦖 JURASSIC",i:"🧬",req:s=>s.total>=40},
+  {id:"jp8",n:"Dino DNA",d:"500 sessions. Fossilized dedication.",c:"🦖 JURASSIC",i:"🧪",req:s=>s.total>=500},
+  {id:"jp9",n:"Shoot Her!",d:"Rate 5 workouts at 5/5 difficulty",c:"🦖 JURASSIC",i:"💥",req:s=>s.rated5>=5},
+  {id:"jp10",n:"They Move In Herds",d:"5,000 miles. Migration distance.",c:"🦖 JURASSIC",i:"🦕",req:s=>s.mi>=5000},
+  {id:"jp11",n:"It's A UNIX System",d:"Export your data. You know this.",c:"🦖 JURASSIC",i:"💻",req:s=>s.total>=50},
+  {id:"jp12",n:"We Need More Teeth",d:"Squat 225 — bring bigger weight",c:"🦖 JURASSIC",i:"🦷",req:s=>s.squatMax>=225},
+  {id:"jp13",n:"When You Gotta Go",d:"3 comebacks. You gotta go back.",c:"🦖 JURASSIC",i:"🚽",req:s=>s.comebacks>=3},
+  {id:"jp14",n:"That Is One Big Pile",d:"1 million lbs total volume",c:"🦖 JURASSIC",i:"💩",req:s=>s.totalVol>=1000000},
+  {id:"jp15",n:"Objects In Mirror",d:"30-day streak. Closer than they appear.",c:"🦖 JURASSIC",i:"🪞",req:s=>s.maxStreak>=30},
+  {id:"jp16",n:"You Did It",d:"Hit target weight 185. You crazy SOB.",c:"🦖 JURASSIC",i:"🥚",req:s=>s.wLost>=25},
+  {id:"jp17",n:"Don't Go Into The Long Grass",d:"200 bike sessions",c:"🦖 JURASSIC",i:"🌿",req:s=>s.bikeSess>=200},
+  {id:"jp18",n:"Ooh Ahh",d:"Set 10 PRs. Ooh ahh, that's how it starts.",c:"🦖 JURASSIC",i:"😮",req:s=>s.prCount>=10},
+  {id:"jp19",n:"Running And Screaming",d:"Then later: 250K calories burned",c:"🦖 JURASSIC",i:"😱",req:s=>s.cal>=250000},
+  {id:"jp20",n:"65 Million Years",d:"1,000 sessions. Extinction-proof.",c:"🦖 JURASSIC",i:"☄",req:s=>s.total>=1000},
+
+  // ══ ⭐ STAR WARS ══ (16)
   {id:"sw1",n:"The Force Awakens",d:"Begin training",c:"⭐ STAR WARS",i:"⚔",req:s=>s.total>=1},
-  {id:"sw2",n:"Do Or Do Not",d:"30-day streak",c:"⭐ STAR WARS",i:"🟢",req:s=>s.maxStreak>=30},
-  {id:"sw3",n:"This Is The Way",d:"10 perfect weeks",c:"⭐ STAR WARS",i:"🪖",req:s=>s.perfectWeeks>=10},
-  {id:"sw4",n:"I Have The High Ground",d:"Any PR over 200 lbs",c:"⭐ STAR WARS",i:"⛰",req:s=>s.anyPR200},
-  {id:"sw5",n:"Fully Operational",d:"All systems logged in 1 day",c:"⭐ STAR WARS",i:"💫",req:s=>s.fullyOp},
-  {id:"sw6",n:"I Am Your Father",d:"Squat 185+",c:"⭐ STAR WARS",i:"😮",req:s=>s.squatMax>=185},
-  {id:"sw7",n:"The Senate",d:"OHP 135",c:"⭐ STAR WARS",i:"⚡",req:s=>s.ohpMax>=135},
-  {id:"sw8",n:"Path Of The Jedi",d:"200 sessions",c:"⭐ STAR WARS",i:"🌌",req:s=>s.total>=200},
-  {id:"sw9",n:"Wakanda Forever",d:"30-day streak",c:"⭐ STAR WARS",i:"🙅",req:s=>s.maxStreak>=30},
-  {id:"h1",n:"Spartan",d:"100 sessions",c:"🎮 HALO",i:"🛡",req:s=>s.total>=100},
+  {id:"sw2",n:"A New Hope",d:"10 sessions — the journey begins",c:"⭐ STAR WARS",i:"🌅",req:s=>s.total>=10},
+  {id:"sw3",n:"Do Or Do Not",d:"21-day streak. There is no try.",c:"⭐ STAR WARS",i:"🟢",req:s=>s.maxStreak>=21},
+  {id:"sw4",n:"This Is The Way",d:"10 perfect weeks",c:"⭐ STAR WARS",i:"🪖",req:s=>s.perfectWeeks>=10},
+  {id:"sw5",n:"I Have The High Ground",d:"Any PR over 200 lbs",c:"⭐ STAR WARS",i:"⛰",req:s=>s.anyPR200},
+  {id:"sw6",n:"Fully Operational",d:"All systems logged in 1 day",c:"⭐ STAR WARS",i:"💫",req:s=>s.fullyOp},
+  {id:"sw7",n:"I Am Your Father",d:"Squat 185+",c:"⭐ STAR WARS",i:"😮",req:s=>s.squatMax>=185},
+  {id:"sw8",n:"The Senate",d:"OHP 135 — unlimited power",c:"⭐ STAR WARS",i:"⚡",req:s=>s.ohpMax>=135},
+  {id:"sw9",n:"Path Of The Jedi",d:"200 sessions",c:"⭐ STAR WARS",i:"🌌",req:s=>s.total>=200},
+  {id:"sw10",n:"Master Of The Force",d:"500 sessions",c:"⭐ STAR WARS",i:"🔮",req:s=>s.total>=500},
+  {id:"sw11",n:"Use The Force",d:"50 sessions — trust the process",c:"⭐ STAR WARS",i:"✋",req:s=>s.total>=50},
+  {id:"sw12",n:"Never Tell Me The Odds",d:"Come back after 5+ breaks",c:"⭐ STAR WARS",i:"🎲",req:s=>s.comebacks>=5},
+  {id:"sw13",n:"I Know",d:"Hit 185 lbs. We all knew you would.",c:"⭐ STAR WARS",i:"😏",req:s=>s.wLost>=25},
+  {id:"sw14",n:"Strong With The Force",d:"Squat + Bench + OHP all over 135",c:"⭐ STAR WARS",i:"💪",req:s=>s.squatMax>=135&&s.benchMax>=135&&s.ohpMax>=95},
+  {id:"sw15",n:"The Dark Side",d:"30 workouts rated 5/5. Suffering builds power.",c:"⭐ STAR WARS",i:"🔴",req:s=>s.rated5>=30},
+  {id:"sw16",n:"There Is Another",d:"750 sessions. Sequel trilogy.",c:"⭐ STAR WARS",i:"🌠",req:s=>s.total>=750},
+
+  // ══ 🎮 HALO ══ (18)
+  {id:"h1",n:"Spartan",d:"100 sessions — basic training complete",c:"🎮 HALO",i:"🛡",req:s=>s.total>=100},
   {id:"h2",n:"Master Chief",d:"Unlock 50 achievements",c:"🎮 HALO",i:"⚡",req:s=>s.unlocked>=50},
-  {id:"h3",n:"Legendary",d:"365 sessions",c:"🎮 HALO",i:"💀",req:s=>s.total>=365},
+  {id:"h3",n:"Legendary",d:"500 sessions (~2 years)",c:"🎮 HALO",i:"💀",req:s=>s.total>=500},
   {id:"h4",n:"Double Kill",d:"10 PRs",c:"🎮 HALO",i:"💥",req:s=>s.prCount>=10},
-  {id:"h5",n:"Running Riot",d:"15-day streak",c:"🎮 HALO",i:"🔥",req:s=>s.maxStreak>=15},
-  {id:"h6",n:"Overkill",d:"20 sessions rated 4+",c:"🎮 HALO",i:"☠",req:s=>s.rated4p>=20},
-  {id:"h7",n:"Killtacular",d:"25 PRs",c:"🎮 HALO",i:"💥",req:s=>s.prCount>=25},
-  {id:"h8",n:"Killimanjaro",d:"30 PRs",c:"🎮 HALO",i:"🏔",req:s=>s.prCount>=30},
-  {id:"h9",n:"Unfrigginbelievable",d:"60-day streak",c:"🎮 HALO",i:"🤯",req:s=>s.maxStreak>=60},
-  {id:"h10",n:"Demon",d:"Burn 50K cal",c:"🎮 HALO",i:"👹",req:s=>s.cal>=50000},
-  {id:"h11",n:"Reclaimer",d:"Hit 185 lbs",c:"🎮 HALO",i:"🔵",req:s=>s.wLost>=25},
-  {id:"cu1",n:"The Terminator",d:"200 sessions — can't stop",c:"🎬 CULTURE",i:"🤖",req:s=>s.total>=200},
-  {id:"cu2",n:"Rocky",d:"4 perfect weeks",c:"🎬 CULTURE",i:"🥊",req:s=>s.perfectWeeks>=4},
+  {id:"h5",n:"Triple Kill",d:"15 PRs",c:"🎮 HALO",i:"💥",req:s=>s.prCount>=15},
+  {id:"h6",n:"Running Riot",d:"14-day streak",c:"🎮 HALO",i:"🔥",req:s=>s.maxStreak>=14},
+  {id:"h7",n:"Overkill",d:"20 sessions rated 4+",c:"🎮 HALO",i:"☠",req:s=>s.rated4p>=20},
+  {id:"h8",n:"Killtacular",d:"25 PRs",c:"🎮 HALO",i:"💥",req:s=>s.prCount>=25},
+  {id:"h9",n:"Killimanjaro",d:"30 PRs",c:"🎮 HALO",i:"🏔",req:s=>s.prCount>=30},
+  {id:"h10",n:"Killtrocity",d:"35 PRs",c:"🎮 HALO",i:"💥",req:s=>s.prCount>=35},
+  {id:"h11",n:"Killpocalypse",d:"40 PRs",c:"🎮 HALO",i:"💥",req:s=>s.prCount>=40},
+  {id:"h12",n:"Unfrigginbelievable",d:"45-day streak",c:"🎮 HALO",i:"🤯",req:s=>s.maxStreak>=45},
+  {id:"h13",n:"Demon",d:"100K calories burned",c:"🎮 HALO",i:"👹",req:s=>s.cal>=100000},
+  {id:"h14",n:"Reclaimer",d:"Hit 185 lbs",c:"🎮 HALO",i:"🔵",req:s=>s.wLost>=25},
+  {id:"h15",n:"LASO",d:"1,000 sessions. Legendary All Skulls On.",c:"🎮 HALO",i:"💀",req:s=>s.total>=1000},
+  {id:"h16",n:"Warthog Run",d:"2,000 miles on the bike",c:"🎮 HALO",i:"🚗",req:s=>s.mi>=2000},
+  {id:"h17",n:"Orbital Drop",d:"Lost 20 lbs — dropped from orbit",c:"🎮 HALO",i:"☄",req:s=>s.wLost>=20},
+  {id:"h18",n:"Firefight",d:"50 workouts rated 5/5. Endless waves.",c:"🎮 HALO",i:"🔥",req:s=>s.rated5>=50},
+
+  // ══ 🎬 CULTURE ══ (30)
+  {id:"cu1",n:"The Terminator",d:"200 sessions — can't be stopped",c:"🎬 CULTURE",i:"🤖",req:s=>s.total>=200},
+  {id:"cu2",n:"Rocky",d:"4 perfect weeks — training montage",c:"🎬 CULTURE",i:"🥊",req:s=>s.perfectWeeks>=4},
   {id:"cu3",n:"One Does Not Simply",d:"50 sessions into Mordor",c:"🎬 CULTURE",i:"💍",req:s=>s.total>=50},
-  {id:"cu4",n:"I Am Iron Man",d:"1M lbs volume",c:"🎬 CULTURE",i:"🦾",req:s=>s.totalVol>=1000000},
-  {id:"cu5",n:"Winter Soldier",d:"150 sessions through the cold",c:"🎬 CULTURE",i:"❄",req:s=>s.total>=150},
-  {id:"cu6",n:"Ride Eternal",d:"500 miles",c:"🎬 CULTURE",i:"🏍",req:s=>s.mi>=500},
+  {id:"cu4",n:"I Am Iron Man",d:"1M lbs total volume",c:"🎬 CULTURE",i:"🦾",req:s=>s.totalVol>=1000000},
+  {id:"cu5",n:"Winter Soldier",d:"275 sessions (1 year+)",c:"🎬 CULTURE",i:"❄",req:s=>s.total>=275},
+  {id:"cu6",n:"Ride Eternal",d:"2,000 miles. Shiny and chrome.",c:"🎬 CULTURE",i:"🏍",req:s=>s.mi>=2000},
   {id:"cu7",n:"King Kong",d:"Squat 225 + Bench 185",c:"🎬 CULTURE",i:"🦍",req:s=>s.squatMax>=225&&s.benchMax>=185},
-  {id:"cu8",n:"John Wick",d:"20 PRs — focus",c:"🎬 CULTURE",i:"🔫",req:s=>s.prCount>=20},
-  {id:"cu9",n:"Bane",d:"250 hours — adopted the gym",c:"🎬 CULTURE",i:"😈",req:s=>s.totalHrs>=250},
+  {id:"cu8",n:"John Wick",d:"20 PRs — focus and commitment",c:"🎬 CULTURE",i:"🔫",req:s=>s.prCount>=20},
+  {id:"cu9",n:"Bane",d:"500 hours. You adopted the gym.",c:"🎬 CULTURE",i:"😈",req:s=>s.totalHrs>=500},
   {id:"cu10",n:"Neo",d:"Break through 200 lbs BW",c:"🎬 CULTURE",i:"🕶",req:s=>s.wLost>=10},
   {id:"cu11",n:"It's Over 9000",d:"9,000 calories burned",c:"🎬 CULTURE",i:"💥",req:s=>s.cal>=9000},
-  {id:"cu12",n:"To Infinity",d:"50 sessions",c:"🎬 CULTURE",i:"🚀",req:s=>s.total>=50},
-  {id:"cu13",n:"I'll Be Back",d:"3 comebacks after breaks",c:"🎬 CULTURE",i:"🤖",req:s=>s.comebacks>=3},
+  {id:"cu12",n:"To Infinity",d:"50 sessions and beyond",c:"🎬 CULTURE",i:"🚀",req:s=>s.total>=50},
+  {id:"cu13",n:"I'll Be Back",d:"3 comebacks. Life happens.",c:"🎬 CULTURE",i:"🤖",req:s=>s.comebacks>=3},
   {id:"cu14",n:"Get To The Choppa",d:"100 bike sessions",c:"🎬 CULTURE",i:"🚁",req:s=>s.bikeSess>=100},
   {id:"cu15",n:"Say Hello",d:"First 200+ lb lift",c:"🎬 CULTURE",i:"👋",req:s=>s.anyPR200},
-  {id:"cu16",n:"Witness Me",d:"50-day streak",c:"🎬 CULTURE",i:"🔥",req:s=>s.maxStreak>=50},
-  {id:"cu17",n:"Hulk Smash",d:"Squat+Bench+Row all 135+",c:"🎬 CULTURE",i:"💚",req:s=>s.squatMax>=135&&s.benchMax>=135&&s.rowMax>=135},
-  {id:"cu18",n:"Dark Souls",d:"5 workouts rated 5/5",c:"🎬 CULTURE",i:"💀",req:s=>s.rated5>=5},
-  {id:"L1",n:"The 1%",d:"Unlock 70 achievements",c:"👑 LEGEND",i:"👑",req:s=>s.unlocked>=70},
-  {id:"L2",n:"Apex Predator",d:"Squat 275+Bench 225+200 sessions",c:"👑 LEGEND",i:"🦁",req:s=>s.squatMax>=275&&s.benchMax>=225&&s.total>=200},
-  {id:"L3",n:"No Days Off",d:"90-day streak",c:"👑 LEGEND",i:"💎",req:s=>s.maxStreak>=90},
-  {id:"L4",n:"Grandville's Finest",d:"300+ sessions",c:"👑 LEGEND",i:"🏛",req:s=>s.total>=300},
-  {id:"L5",n:"Complete Package",d:"SQ225+BP185+OHP135+ROW185+Lost 25lbs",c:"👑 LEGEND",i:"🌟",req:s=>s.squatMax>=225&&s.benchMax>=185&&s.ohpMax>=135&&s.rowMax>=185&&s.wLost>=25},
-  {id:"L6",n:"Henderson Protocol",d:"365 sess+185lbs+1M vol",c:"👑 LEGEND",i:"⭐",req:s=>s.total>=365&&s.wLost>=25&&s.totalVol>=1000000},
-  {id:"L7",n:"GOAT",d:"Unlock 90 achievements",c:"👑 LEGEND",i:"🐐",req:s=>s.unlocked>=90},
+  {id:"cu16",n:"Hulk Smash",d:"SQ+BP+ROW all 135+",c:"🎬 CULTURE",i:"💚",req:s=>s.squatMax>=135&&s.benchMax>=135&&s.rowMax>=135},
+  {id:"cu17",n:"Dark Souls",d:"5 workouts rated 5/5",c:"🎬 CULTURE",i:"💀",req:s=>s.rated5>=5},
+  {id:"cu18",n:"Frodo's Journey",d:"5,000 miles. There and back again.",c:"🎬 CULTURE",i:"🗡",req:s=>s.mi>=5000},
+  {id:"cu19",n:"Witness Me",d:"45-day streak. Witnessed.",c:"🎬 CULTURE",i:"🔥",req:s=>s.maxStreak>=45},
+  {id:"cu20",n:"You Shall Not Pass",d:"Hold weight at 185 for 200+ sessions",c:"🎬 CULTURE",i:"🧙",req:s=>s.wLost>=25&&s.total>=200},
+  {id:"cu21",n:"Wakanda Forever",d:"21-day streak — for Wakanda",c:"🎬 CULTURE",i:"🙅",req:s=>s.maxStreak>=21},
+  {id:"cu22",n:"I Am Groot",d:"Just 1 session. Simple. Effective.",c:"🎬 CULTURE",i:"🌱",req:s=>s.total>=1},
+  {id:"cu23",n:"Training Day",d:"Log every metric in one session",c:"🎬 CULTURE",i:"🎬",req:s=>s.fullyOp},
+  {id:"cu24",n:"Creed",d:"10 perfect weeks — earned not given",c:"🎬 CULTURE",i:"🥊",req:s=>s.perfectWeeks>=10},
+  {id:"cu25",n:"Are You Not Entertained",d:"500 sessions. Maximus.",c:"🎬 CULTURE",i:"⚔",req:s=>s.total>=500},
+  {id:"cu26",n:"Avengers Assemble",d:"All 4 big lifts over 135",c:"🎬 CULTURE",i:"🛡",req:s=>s.squatMax>=135&&s.benchMax>=135&&s.ohpMax>=95&&s.rowMax>=135},
+  {id:"cu27",n:"Infinity Gauntlet",d:"5M lbs total volume — all the stones",c:"🎬 CULTURE",i:"🧤",req:s=>s.totalVol>=5000000},
+  {id:"cu28",n:"Run Forrest Run",d:"1,000 miles on the bike",c:"🎬 CULTURE",i:"🏃",req:s=>s.mi>=1000},
+  {id:"cu29",n:"By Order",d:"100 sessions. By order of the Peaky Blinders.",c:"🎬 CULTURE",i:"🎩",req:s=>s.total>=100},
+  {id:"cu30",n:"The Dude Abides",d:"Come back after 10 breaks. Still here.",c:"🎬 CULTURE",i:"🎳",req:s=>s.comebacks>=10},
+
+  // ══ 👑 LEGEND — LONG-TERM ELITE ══ (12)
+  {id:"L1",n:"The 1%",d:"Unlock 80 achievements",c:"👑 LEGEND",i:"👑",req:s=>s.unlocked>=80},
+  {id:"L2",n:"Apex Predator",d:"SQ275+BP225+200 sessions",c:"👑 LEGEND",i:"🦁",req:s=>s.squatMax>=275&&s.benchMax>=225&&s.total>=200},
+  {id:"L3",n:"Grandville's Finest",d:"500+ sessions (~2 years)",c:"👑 LEGEND",i:"🏛",req:s=>s.total>=500},
+  {id:"L4",n:"Complete Package",d:"SQ225+BP185+OHP135+ROW185+185lbs",c:"👑 LEGEND",i:"🌟",req:s=>s.squatMax>=225&&s.benchMax>=185&&s.ohpMax>=135&&s.rowMax>=185&&s.wLost>=25},
+  {id:"L5",n:"Henderson Protocol",d:"500 sess + target weight + 3M vol",c:"👑 LEGEND",i:"⭐",req:s=>s.total>=500&&s.wLost>=25&&s.totalVol>=3000000},
+  {id:"L6",n:"Thousand Club",d:"1,000 sessions. Years of work.",c:"👑 LEGEND",i:"💎",req:s=>s.total>=1000},
+  {id:"L7",n:"Ten Million Pounds",d:"10M lbs total volume",c:"👑 LEGEND",i:"💎",req:s=>s.totalVol>=10000000},
+  {id:"L8",n:"10K Miles",d:"10,000 miles on the bike",c:"👑 LEGEND",i:"💎",req:s=>s.mi>=10000},
+  {id:"L9",n:"Million Calorie Club",d:"1M calories burned",c:"👑 LEGEND",i:"☀",req:s=>s.cal>=1000000},
+  {id:"L10",n:"Decade Strong",d:"750 sessions + 5M vol + 5K miles",c:"👑 LEGEND",i:"⭐",req:s=>s.total>=750&&s.totalVol>=5000000&&s.mi>=5000},
+  {id:"L11",n:"Immortal",d:"1,000 sessions + 10M vol + 10K miles",c:"👑 LEGEND",i:"💎",req:s=>s.total>=1000&&s.totalVol>=10000000&&s.mi>=10000},
+  {id:"L12",n:"GOAT",d:"Unlock 120 achievements",c:"👑 LEGEND",i:"🐐",req:s=>s.unlocked>=120},
 ];
 
 // ══ WORKOUT ENGINE ══
@@ -346,6 +456,10 @@ function SvgBar({data,dk,color,height=80}){
 // ══ MAIN APP ══
 function App(){
   const[tab,setTab]=useState("home");
+  const[navHist,setNavHist]=useState([]);
+  const[plateCalcInput,setPlateCalcInput]=useState("");
+  const navTo=(t,sub)=>{setNavHist(p=>[...p.slice(-10),{tab,statsTab,profileTab}]);setTab(t);if(sub)setStatsTab(sub)};
+  const navBack=()=>{if(!navHist.length)return;const prev=navHist[navHist.length-1];setNavHist(p=>p.slice(0,-1));setTab(prev.tab);setStatsTab(prev.statsTab||"overview");setProfileTab(prev.profileTab||"weight")};
   const[data,setData]=useState(()=>LS.get("hv9")||{sessions:{},weight:[],measurements:[],water:{},prs:{}});
   const[selDate,setSelDate]=useState(dS(new Date()));
   const[calM,setCalM]=useState(new Date().getMonth());
@@ -408,6 +522,8 @@ function App(){
     const prMax=kw=>{let m=0;Object.entries(data.prs||{}).forEach(([n,p])=>{if(n.toLowerCase().includes(kw)&&p.w>m)m=p.w});return m};
     const squatMax=prMax("squat"),benchMax=prMax("bench"),ohpMax=prMax("ohp")||prMax("overhead"),rowMax=prMax("row"),rdlMax=prMax("rdl");
     const anyPR200=Object.values(data.prs||{}).some(p=>p.w>=200);
+    const anyPR135=Object.values(data.prs||{}).some(p=>p.w>=135);
+    const weightEntries=data.weight.length;
     let comebacks=0;sorted.forEach((k,i)=>{if(i>0&&dB(sorted[i-1],k)>=3)comebacks++});
     const fullyOp=!!(data.sessions?.[todayStr]?.done&&(data.water?.[todayStr]||0)>=1&&data.weight.some(e=>e.d===todayStr)&&data.sessions?.[todayStr]?.notes);
     const measCount=(data.measurements||[]).length;const totalHrs=Math.round(dur/60);
@@ -415,7 +531,7 @@ function App(){
       twCal,twMi:Math.round(twMi),lwCal,lwMi:Math.round(lwMi),waterToday:data.water?.[todayStr]||0,
       wLost:Math.max(0,210-lastW),prCount:Object.keys(data.prs||{}).length,
       strSess,bikeSess,circSess,totalVol,perfectWeeks,rated5,rated4p,notesSess,
-      squatMax,benchMax,ohpMax,rowMax,rdlMax,anyPR200,comebacks,fullyOp,measCount,totalHrs,unlocked:0};
+      squatMax,benchMax,ohpMax,rowMax,rdlMax,anyPR200,anyPR135,weightEntries,comebacks,fullyOp,measCount,totalHrs,unlocked:0};
     ps.unlocked=MILES.filter(m=>m.req(ps)).length;return ps;
   },[data]);
 
@@ -466,7 +582,10 @@ function App(){
     {/* HEADER */}
     <div style={{padding:"14px 16px 10px",background:`linear-gradient(180deg,${T.s1},${T.bg})`}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-        <div style={{fontFamily:"'Bebas Neue'",fontSize:22,color:T.acc,letterSpacing:6}}>HENDERSON<span style={{color:T.s3}}>.SYS</span></div>
+        <div style={{display:"flex",alignItems:"center",gap:8}}>
+          {navHist.length>0&&<button onClick={navBack} style={{background:T.s2,border:"none",borderRadius:16,width:32,height:32,cursor:"pointer",color:T.sub,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16}}>←</button>}
+          <div style={{fontFamily:"'Bebas Neue'",fontSize:22,color:T.acc,letterSpacing:6}}>HENDERSON<span style={{color:T.s3}}>.SYS</span></div>
+        </div>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
           <div style={{fontSize:9,color:T.dim,textAlign:"right"}}>{gP(todayStr).n}<br/>{now.toLocaleDateString("en-US",{month:"short",day:"numeric"})}</div>
           <div style={{width:34,height:34,borderRadius:17,background:T.s2,display:"flex",alignItems:"center",justifyContent:"center",
@@ -494,7 +613,7 @@ function App(){
             <Num style={{fontSize:22,color:c}}>{v}</Num><div style={{fontSize:9,color:T.dim}}>{l} {u}</div></Card>)}
       </div>
 
-      <Card style={{cursor:"pointer",border:`1px solid ${TC[getWorkout(todayStr).type]}22`}} onClick={()=>{setSelDate(todayStr);setTab("train")}}>
+      <Card style={{cursor:"pointer",border:`1px solid ${TC[getWorkout(todayStr).type]}22`}} onClick={()=>{setSelDate(todayStr);navTo("train")}}>
         <Lbl style={{color:TC[getWorkout(todayStr).type],marginBottom:2}}>Today</Lbl>
         <div style={{fontSize:15,fontWeight:700}}>{getWorkout(todayStr).label}</div>
         <div style={{display:"flex",gap:4,marginTop:4}}>{getWorkout(todayStr).dur>0&&<Pill>⏱ {getWorkout(todayStr).dur}m</Pill>}
@@ -648,16 +767,104 @@ function App(){
       </Card>
     </>})()}
 
+    {/* ═══ CALENDAR ═══ */}
+    {tab==="calendar"&&<>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+        <button onClick={()=>{if(calM===0){setCalM(11);setCalY(calY-1)}else setCalM(calM-1)}} style={{background:T.s2,border:"none",borderRadius:20,width:34,height:34,cursor:"pointer",color:T.sub,display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>‹</button>
+        <span style={{fontFamily:"'Bebas Neue'",fontSize:18,letterSpacing:3}}>{new Date(calY,calM).toLocaleDateString("en-US",{month:"long",year:"numeric"}).toUpperCase()}</span>
+        <button onClick={()=>{if(calM===11){setCalM(0);setCalY(calY+1)}else setCalM(calM+1)}} style={{background:T.s2,border:"none",borderRadius:20,width:34,height:34,cursor:"pointer",color:T.sub,display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>›</button>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:3,marginBottom:3}}>
+        {DAYS.map(d=><div key={d} style={{textAlign:"center",fontSize:10,color:T.dim,fontWeight:600}}>{d[0]}</div>)}</div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:3,marginBottom:12}}>
+        {(()=>{const f=new Date(calY,calM,1),sd=f.getDay(),dim=new Date(calY,calM+1,0).getDate();
+          const cells=[];for(let i=0;i<sd;i++)cells.push(null);for(let d=1;d<=dim;d++)cells.push(new Date(calY,calM,d));
+          return cells.map((cell,i)=>{if(!cell)return <div key={i}/>;const ds=dS(cell),wo=getWorkout(ds),dn=data.sessions?.[ds]?.done,it=ds===todayStr;
+            return <button key={i} onClick={()=>{setSelDate(ds);setTab("train")}} style={{padding:4,background:dn?TC[wo.type]+"22":T.s1,
+              border:it?`2px solid ${T.acc}`:`1px solid ${T.s3}`,borderRadius:8,cursor:"pointer",textAlign:"center",minHeight:40}}>
+              <span style={{fontSize:11,fontWeight:it?700:400,color:it?T.acc:dn?T.txt:T.sub}}>{cell.getDate()}</span>
+              {dn&&<div style={{width:5,height:5,borderRadius:3,background:TC[wo.type],margin:"2px auto 0"}}/>}
+            </button>})})()}</div>
+      {/* Legend */}
+      <div style={{display:"flex",gap:10,justifyContent:"center",marginBottom:14}}>
+        {[["Strength",T.acc],["Bike",T.blue],["Circuit",T.yel],["Rest",T.dim]].map(([l,c])=>
+          <div key={l} style={{display:"flex",alignItems:"center",gap:4}}>
+            <div style={{width:8,height:8,borderRadius:4,background:c}}/><span style={{fontSize:9,color:T.sub}}>{l}</span></div>)}
+      </div>
+      {/* Phase Roadmap */}
+      <Card><Lbl>📍 Phase Roadmap</Lbl>
+        {PHASES.map(p=>{const total=dB(p.st,p.en),elapsed=Math.max(0,dB(p.st,todayStr));
+          const prog=Math.min(100,(elapsed/total)*100);const active=gP(todayStr).id===p.id;
+          return <div key={p.id} style={{marginBottom:10}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <div style={{display:"flex",alignItems:"center",gap:6}}>
+                {active&&<div style={{width:6,height:6,borderRadius:3,background:p.c}}/>}
+                <span style={{fontSize:13,fontWeight:700,color:active?p.c:T.sub}}>{p.n}</span></div>
+              <span style={{fontSize:9,color:T.dim}}>{dP(p.st).toLocaleDateString("en-US",{month:"short",day:"numeric"})} — {dP(p.en).toLocaleDateString("en-US",{month:"short",day:"numeric"})}</span>
+            </div>
+            <div style={{fontSize:10,color:T.dim,marginTop:2}}>{p.s}</div>
+            <div style={{height:4,background:T.s3,borderRadius:2,marginTop:4,overflow:"hidden"}}>
+              <div style={{height:"100%",background:p.c,borderRadius:2,width:`${prog}%`,transition:"width .5s"}}/></div>
+          </div>})}
+      </Card>
+      {/* Key Dates */}
+      <Card><Lbl>🗓️ Key Dates</Lbl>
+        {[["May 25","Memorial Day Weekend","⛰"],["Jul 4","July 4th","★"],["Aug 21","185 lb Target","🎯"],["Dec 25","Christmas","🎄"],["Apr 5, 2027","1 Year Complete","👑"]].map(([d,l,ic],i)=>{
+          const days=Math.max(0,dB(todayStr,d.includes("2027")?"2027-04-05":d==="May 25"?"2026-05-25":d==="Jul 4"?"2026-07-04":d==="Aug 21"?"2026-08-21":"2026-12-25"));
+          const past=days===0;
+          return <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"5px 0",borderBottom:`1px solid ${T.s3}`}}>
+            <div style={{display:"flex",alignItems:"center",gap:6}}>
+              <span style={{fontSize:14}}>{ic}</span><span style={{fontSize:11,color:past?T.dim:T.txt}}>{l}</span></div>
+            <span style={{fontFamily:"'Bebas Neue'",fontSize:13,color:past?T.grn:days<=14?T.red:T.txt}}>{past?"PASSED":`${days}d`}</span>
+          </div>})}
+      </Card>
+    </>}
+
     {/* ═══ STATS ═══ */}
     {tab==="stats"&&<>
       <div style={{display:"flex",gap:3,marginBottom:10,flexWrap:"wrap"}}>
-        {["overview","prs","calendar"].map(t=><button key={t} onClick={()=>setStatsTab(t)}
+        {["overview","prs","calendar","tools"].map(t=><button key={t} onClick={()=>setStatsTab(t)}
           style={{padding:"5px 10px",borderRadius:20,border:"none",cursor:"pointer",fontSize:10,fontWeight:600,
             background:statsTab===t?T.acc+"22":T.s2,color:statsTab===t?T.acc:T.sub}}>{t.toUpperCase()}</button>)}
       </div>
       {statsTab==="overview"&&<>
-        <Card><Lbl>📈 Weight Trend</Lbl><SvgLine data={weightChart} dk="w" color={T.acc} height={100}/></Card>
+        <Card><Lbl>📈 Weight Trend</Lbl><SvgLine data={weightChart} dk="w" color={T.acc} height={100}/>
+          {data.weight.length>=4&&(()=>{const r=data.weight.slice(-4);const rate=((r[0].w-r[r.length-1].w)/Math.max(1,dB(r[0].d,r[r.length-1].d))*7);
+            const daysLeft=rate>0?Math.round((lastW-185)/rate*7):999;
+            return <div style={{marginTop:8,padding:8,background:T.s2,borderRadius:8,display:"flex",justifyContent:"space-between"}}>
+              <div><div style={{fontSize:9,color:T.dim}}>Rate</div><div style={{fontSize:12,fontWeight:600,color:rate>0?T.grn:T.red}}>{rate.toFixed(1)} lbs/wk</div></div>
+              <div style={{textAlign:"right"}}><div style={{fontSize:9,color:T.dim}}>ETA 185</div><div style={{fontSize:12,fontWeight:600,color:T.acc}}>{lastW<=185?"DONE!":daysLeft<365?`${daysLeft} days`:"—"}</div></div>
+            </div>})()}
+        </Card>
         <Card><Lbl>🔥 Weekly Calories</Lbl><SvgBar data={weeklyChart} dk="cal" color={T.blue} height={80}/></Card>
+        {/* 365-Day Heatmap */}
+        <Card><Lbl>📅 365-Day Map</Lbl>
+          <div style={{display:"flex",flexWrap:"wrap",gap:1}}>
+            {(()=>{const start=new Date("2026-04-05"),cells=[];
+              for(let i=0;i<365;i++){const d=new Date(start);d.setDate(start.getDate()+i);const ds=dS(d),wo=getWorkout(ds);
+                cells.push(<div key={i} style={{width:4.5,height:4.5,borderRadius:0.5,
+                  background:data.sessions?.[ds]?.done?(TC[wo.type]||T.grn):wo.type==="rest"?"#15151A":"#1A1A23",
+                  opacity:data.sessions?.[ds]?.done?1:.3}} title={ds}/>)}return cells})()}
+          </div>
+          <div style={{display:"flex",gap:8,marginTop:6,justifyContent:"center"}}>
+            {[["STR",T.acc],["BIKE",T.blue],["CIR",T.yel]].map(([l,c])=>
+              <div key={l} style={{display:"flex",alignItems:"center",gap:3}}><div style={{width:6,height:6,background:c,borderRadius:1}}/><span style={{fontSize:7,color:T.dim}}>{l}</span></div>)}
+          </div>
+        </Card>
+        {/* Workout Feed */}
+        <Card><Lbl>📋 Recent Sessions</Lbl>
+          {(()=>{const recent=Object.entries(data.sessions||{}).filter(([,s])=>s?.done).sort(([a],[b])=>b.localeCompare(a)).slice(0,8);
+            return recent.length===0?<div style={{color:T.dim,fontSize:11,textAlign:"center",padding:12}}>No sessions yet</div>:
+              recent.map(([ds,sess])=>{const wo=getWorkout(ds);const setCount=sess.sets?Object.values(sess.sets).reduce((a,s)=>a+s.filter(Boolean).length,0):0;
+                return <div key={ds} onClick={()=>{setSelDate(ds);navTo("train")}} style={{display:"flex",justifyContent:"space-between",alignItems:"center",
+                  padding:"6px 0",borderBottom:`1px solid ${T.s3}`,cursor:"pointer"}}>
+                  <div><div style={{fontSize:11,fontWeight:600,color:TC[wo.type]||T.txt}}>{wo.label}</div>
+                    <div style={{fontSize:9,color:T.dim}}>{dP(ds).toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"})}</div></div>
+                  <div style={{textAlign:"right"}}>
+                    {setCount>0&&<div style={{fontSize:9,color:T.sub}}>{setCount} sets</div>}
+                    {sess.rating&&<div style={{fontSize:9,color:T.yel}}>{"★".repeat(sess.rating)}</div>}
+                  </div></div>})})()}
+        </Card>
         <Card><Lbl>📊 Career</Lbl>
           {[["Sessions",stats.total],["Calories",`${(stats.cal/1000).toFixed(1)}K`],["Miles",stats.mi],["Streak",`${stats.streak}d`],
             ["Max Streak",`${stats.maxStreak}d`],["TDEE",`${tdee}/day`],["Lost",`${stats.wLost.toFixed(1)} lbs`],["PRs",stats.prCount],
@@ -690,6 +897,51 @@ function App(){
                 <span style={{fontSize:10,fontWeight:it?700:400,color:it?T.acc:dn?T.txt:T.sub}}>{cell.getDate()}</span>
                 {dn&&<div style={{width:4,height:4,borderRadius:2,background:TC[wo.type],margin:"1px auto 0"}}/>}
               </button>})})()}</div>
+      </>}
+      {statsTab==="tools"&&<>
+        {/* Plate Calculator */}
+        <Card><Lbl>🔩 Plate Calculator</Lbl>
+          <div style={{fontSize:11,color:T.dim,marginBottom:8}}>Enter target barbell weight. Shows plates per side.</div>
+          <div style={{display:"flex",gap:6,marginBottom:10}}>
+            <input value={plateCalcInput} onChange={e=>setPlateCalcInput(e.target.value)} placeholder="135" type="number"
+              style={{flex:1,padding:10,background:T.s2,border:`1px solid ${T.bdr}`,borderRadius:8,color:T.acc,fontFamily:"'Bebas Neue'",fontSize:22,textAlign:"center",outline:"none"}}/>
+            <div style={{fontSize:10,color:T.dim,display:"flex",alignItems:"center"}}>lbs</div>
+          </div>
+          {(()=>{const target=parseFloat(plateCalcInput)||0;if(target<45)return <div style={{color:T.dim,fontSize:11,textAlign:"center"}}>Min: 45 lbs (empty bar)</div>;
+            const nearest=bbS(target);const perSide=(nearest-45)/2;let rem=perSide;const plates=[];
+            [45,35,25,10].forEach(p=>{const count=Math.floor(rem/p);if(count>0){plates.push(`${count}×${p}`);rem-=count*p}});
+            return <div style={{background:T.s2,borderRadius:8,padding:12,textAlign:"center"}}>
+              <div style={{fontFamily:"'Bebas Neue'",fontSize:28,color:T.acc}}>{nearest} lbs</div>
+              {nearest!==target&&<div style={{fontSize:9,color:T.yel,marginTop:2}}>Snapped from {target} to nearest loadable</div>}
+              <div style={{fontSize:13,color:T.txt,marginTop:8,fontWeight:600}}>{plates.length>0?`Each side: ${plates.join(" + ")}`:"Empty bar"}</div>
+              <div style={{fontSize:10,color:T.dim,marginTop:4}}>Bar (45) + {perSide}×2 = {nearest}</div>
+              <div style={{display:"flex",justifyContent:"center",gap:4,marginTop:10}}>
+                {[45,35,25,10].map(p=>{const needed=plates.some(pl=>pl.includes(`×${p}`));
+                  return <div key={p} style={{width:36,height:36,borderRadius:18,display:"flex",alignItems:"center",justifyContent:"center",
+                    fontSize:11,fontWeight:700,background:needed?T.acc+"33":T.s3,color:needed?T.acc:T.dim,
+                    border:`2px solid ${needed?T.acc:T.s3}`}}>{p}</div>})}
+              </div>
+            </div>})()}
+        </Card>
+        {/* 1RM Calculator */}
+        <Card><Lbl>📐 Estimated 1RM</Lbl>
+          <div style={{fontSize:11,color:T.dim,marginBottom:6}}>Your top estimated 1RMs from logged sets (Brzycki formula):</div>
+          {Object.keys(data.prs||{}).length===0?<div style={{color:T.dim,fontSize:11,textAlign:"center",padding:8}}>Log sets to see 1RM estimates</div>:
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
+            {Object.entries(data.prs).sort(([,a],[,b])=>b.e1rm-a.e1rm).slice(0,8).map(([n,pr])=>
+              <div key={n} style={{background:T.s2,borderRadius:8,padding:8,textAlign:"center"}}>
+                <div style={{fontSize:10,color:T.sub,fontWeight:600}}>{n.replace("Barbell ","BB ")}</div>
+                <div style={{fontFamily:"'Bebas Neue'",fontSize:22,color:T.yel}}>{pr.e1rm}</div>
+                <div style={{fontSize:8,color:T.dim}}>from {pr.w}×{pr.r}</div></div>)}
+          </div>}
+        </Card>
+        {/* Available Plate Combos */}
+        <Card><Lbl>📋 All Loadable Weights</Lbl>
+          <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
+            {BB_W.map(w=><span key={w} style={{fontSize:11,padding:"4px 8px",borderRadius:6,background:T.s2,color:T.txt,fontWeight:500}}>{w}</span>)}
+          </div>
+          <div style={{fontSize:9,color:T.dim,marginTop:6}}>Bar: 45 · Plates: 2×45, 2×35, 2×25, 2×10 · Max: 275</div>
+        </Card>
       </>}
     </>}
 
@@ -750,7 +1002,7 @@ function App(){
     {/* NAV */}
     <div style={{position:"fixed",bottom:10,left:14,right:14,background:T.s1,borderRadius:20,padding:"6px 0",
       display:"flex",justifyContent:"space-around",boxShadow:"0 -4px 30px rgba(0,0,0,.5)",border:`1px solid ${T.s3}`,zIndex:20}}>
-      {[{id:"home",i:"🏠"},{id:"train",i:"💪"},{id:"stats",i:"📊"},{id:"profile",i:"👤"}].map(t=>
+      {[{id:"home",i:"🏠"},{id:"train",i:"💪"},{id:"calendar",i:"📅"},{id:"stats",i:"📊"},{id:"profile",i:"👤"}].map(t=>
         <button key={t.id} onClick={()=>setTab(t.id)} style={{background:"none",border:"none",cursor:"pointer",display:"flex",flexDirection:"column",
           alignItems:"center",gap:1,color:tab===t.id?T.acc:T.dim,padding:"6px 14px",fontSize:18}}>
           <span>{t.i}</span><span style={{fontSize:8,fontWeight:tab===t.id?700:500}}>{t.id}</span>
