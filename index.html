@@ -691,6 +691,8 @@ function App(){
   const[navHist,setNavHist]=useState([]);
   const[showOnboard,setShowOnboard]=useState(()=>!LS.get("hv9_onboarded"));
   const[onboardW,setOnboardW]=useState("210");
+  const[achPopup,setAchPopup]=useState(null);
+  const prevUnlocked=useRef(null);
   const navTo=(t,sub)=>{setNavHist(p=>[...p.slice(-10),{tab,statsTab,profileTab}]);setTab(t);if(sub)setStatsTab(sub)};
   const navBack=()=>{if(!navHist.length)return;const prev=navHist[navHist.length-1];setNavHist(p=>p.slice(0,-1));setTab(prev.tab);setStatsTab(prev.statsTab||"overview");setProfileTab(prev.profileTab||"weight")};
   const[data,setData]=useState(()=>LS.get("hv9")||{sessions:{},weight:[],measurements:[],water:{},prs:{},sleep:{},food:{},supps:{}});
@@ -707,7 +709,9 @@ function App(){
   const[workoutTimer,setWorkoutTimer]=useState(0);
   const[workoutActive,setWorkoutActive]=useState(false);
   const[notes,setNotes]=useState("");
-  const[profileTab,setProfileTab]=useState("weight");
+  const[profileTab,setProfileTab]=useState("me");
+  const[profile,setProfile]=useState(()=>LS.get("hv9_profile")||{name:"",age:"",height:"",goal:"",whyTrain:"",injuries:"",startDate:"2026-04-05"});
+  const saveProfile=(p)=>{setProfile(p);LS.set("hv9_profile",p)};
   const[statsTab,setStatsTab]=useState("overview");
   const[showWarmup,setShowWarmup]=useState(false);
   const[measInput,setMeasInput]=useState({waist:"",chest:"",arms:"",neck:"",thighs:"",bf:"",muscle:""});
@@ -789,6 +793,13 @@ function App(){
     return Object.values(wks).slice(-16)},[data.sessions]);
   const weightChart=useMemo(()=>data.weight.slice(-30).map(e=>({d:dP(e.d).toLocaleDateString("en-US",{month:"short",day:"numeric"}),w:e.w})),[data.weight]);
   const unlockedMS=useMemo(()=>MILES.filter(m=>m.req(stats)),[stats]);
+  // Achievement popup detection
+  useEffect(()=>{
+    if(prevUnlocked.current===null){prevUnlocked.current=new Set(unlockedMS.map(m=>m.id));return}
+    const prev=prevUnlocked.current;const newOnes=unlockedMS.filter(m=>!prev.has(m.id));
+    if(newOnes.length>0){setAchPopup(newOnes[0]);setTimeout(()=>setAchPopup(null),4000)}
+    prevUnlocked.current=new Set(unlockedMS.map(m=>m.id));
+  },[unlockedMS]);
   const weeklySummary=useMemo(()=>{const ws=new Date(now);ws.setDate(now.getDate()-now.getDay());
     const days=[];for(let i=0;i<7;i++){const d=new Date(ws);d.setDate(ws.getDate()+i);days.push(dS(d))}
     const done=days.filter(d=>data.sessions?.[d]?.done);const types={strength:0,bike:0,circuit:0};
@@ -888,6 +899,19 @@ function App(){
     </div>}
 
     {/* HEADER */}
+
+    {/* Achievement Unlock Popup */}
+    {achPopup&&<div onClick={()=>setAchPopup(null)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,.85)",zIndex:99,
+      display:"flex",alignItems:"center",justifyContent:"center",padding:24,animation:"fadeUp .3s",cursor:"pointer"}}>
+      <div style={{textAlign:"center",maxWidth:300}}>
+        <div style={{fontSize:64,marginBottom:8}}>{achPopup.i}</div>
+        <div style={{fontFamily:"'Bebas Neue'",fontSize:28,color:T.acc,letterSpacing:3}}>{achPopup.n}</div>
+        <div style={{fontSize:12,color:T.sub,marginTop:6,lineHeight:1.6}}>{achPopup.d}</div>
+        <div style={{marginTop:12,display:"inline-block",padding:"4px 16px",borderRadius:20,background:T.acc+"22",
+          fontSize:10,color:T.acc,fontWeight:700,letterSpacing:2}}>{achPopup.c}</div>
+        <div style={{fontSize:10,color:T.dim,marginTop:16}}>TAP TO DISMISS</div>
+      </div>
+    </div>}
     <div style={{padding:"14px 16px 10px",background:`linear-gradient(180deg,${T.s1},${T.bg})`}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
@@ -920,6 +944,46 @@ function App(){
           <Card key={i} style={{textAlign:"center",padding:10,marginBottom:0}}>
             <Num style={{fontSize:22,color:c}}>{v}</Num><div style={{fontSize:9,color:T.dim}}>{l} {u}</div></Card>)}
       </div>
+
+      {/* Empty state — first time user */}
+      {stats.total===0&&<Card style={{background:T.acc+"11",border:`1px dashed ${T.acc}44`,textAlign:"center",padding:16}}>
+        <div style={{fontSize:14,fontWeight:700,color:T.acc,marginBottom:4}}>Ready to start?</div>
+        <div style={{fontSize:11,color:T.sub,lineHeight:1.6,marginBottom:10}}>Your first workout is programmed and waiting. Tap below — every exercise has a full how-to guide built in.</div>
+        <button onClick={()=>{setSelDate(todayStr);navTo("train")}} style={{padding:"10px 24px",border:"none",borderRadius:8,background:T.acc,color:"#000",fontFamily:"'Bebas Neue'",fontSize:14,letterSpacing:2,cursor:"pointer"}}>START FIRST SESSION →</button>
+      </Card>}
+
+      {/* Streak nudge */}
+      {stats.streak>0&&stats.streak>=stats.maxStreak-2&&stats.streak<stats.maxStreak&&<Card style={{padding:10,background:T.yel+"11",border:`1px solid ${T.yel}33`}}>
+        <div style={{fontSize:11,color:T.yel,fontWeight:600}}>🔥 {stats.maxStreak-stats.streak} day{stats.maxStreak-stats.streak!==1?"s":""} from your streak record of {stats.maxStreak}!</div>
+      </Card>}
+      {stats.streak>0&&stats.streak===stats.maxStreak&&stats.maxStreak>=5&&<Card style={{padding:10,background:T.grn+"11",border:`1px solid ${T.grn}33`}}>
+        <div style={{fontSize:11,color:T.grn,fontWeight:600}}>🔥 AT your all-time streak — {stats.maxStreak} days! Keep building.</div>
+      </Card>}
+
+      {/* Weight feedback */}
+      {data.weight.length>=2&&<Card style={{padding:10}}>
+        <div style={{fontSize:11,color:T.sub}}>{(()=>{
+          const weekW=data.weight.filter(e=>{const dd=dP(e.d);const ago=new Date(now);ago.setDate(ago.getDate()-7);return dd>=ago});
+          if(weekW.length<2)return null;const weekDiff=Math.round((weekW[weekW.length-1].w-weekW[0].w)*10)/10;
+          if(weekDiff<-1.5)return `⚡ Down ${Math.abs(weekDiff)} lbs this week. Aggressive — make sure you're hitting protein.`;
+          if(weekDiff<0)return `📉 Down ${Math.abs(weekDiff)} lbs this week. On pace.`;
+          if(weekDiff===0)return `⚖ Holding steady this week. Weight fluctuates — trust the process.`;
+          if(weekDiff<=1)return `📊 Up ${weekDiff} lbs this week. Could be water/sodium. Don't overreact.`;
+          return `⬆ Up ${weekDiff} lbs this week. Check your food log.`;
+        })()}</div>
+      </Card>}
+
+      {/* Daily completion score */}
+      {stats.total>0&&<Card style={{padding:10}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+          <span style={{fontSize:11,color:T.sub}}>Today's checklist</span>
+          <span style={{fontSize:11,fontWeight:700,color:(()=>{const c=[data.sessions?.[todayStr]?.done,data.weight.some(e=>e.d===todayStr),(data.water?.[todayStr]||0)>=1,data.food?.[todayStr]?.length>0].filter(Boolean).length;return c>=4?T.grn:c>=2?T.yel:T.dim})()}}>{[data.sessions?.[todayStr]?.done,data.weight.some(e=>e.d===todayStr),(data.water?.[todayStr]||0)>=1,data.food?.[todayStr]?.length>0].filter(Boolean).length}/4</span>
+        </div>
+        <div style={{display:"flex",gap:6,marginTop:4}}>
+          {[["Train",data.sessions?.[todayStr]?.done],["Weigh",data.weight.some(e=>e.d===todayStr)],["Water",(data.water?.[todayStr]||0)>=1],["Food",data.food?.[todayStr]?.length>0]].map(([l,ok])=>
+            <div key={l} style={{fontSize:9,padding:"2px 6px",borderRadius:10,background:ok?T.grn+"22":T.s3,color:ok?T.grn:T.dim,fontWeight:600}}>{ok?"✓":""} {l}</div>)}
+        </div>
+      </Card>}
 
       <Card style={{cursor:"pointer",border:`1px solid ${TC[getWorkout(todayStr).type]}22`}} onClick={()=>{setSelDate(todayStr);navTo("train")}}>
         <Lbl style={{color:TC[getWorkout(todayStr).type],marginBottom:2}}>Today</Lbl>
@@ -1334,9 +1398,56 @@ function App(){
     {/* ═══ PROFILE ═══ */}
     {tab==="profile"&&<>
       <div style={{display:"flex",gap:3,marginBottom:10,flexWrap:"wrap"}}>
-        {["weight","body","food","sleep","gear","backup"].map(t=><button key={t} onClick={()=>setProfileTab(t)}
+        {["me","weight","body","food","sleep","gear","backup"].map(t=><button key={t} onClick={()=>setProfileTab(t)}
           style={{padding:"5px 10px",borderRadius:20,border:"none",cursor:"pointer",fontSize:10,fontWeight:600,
             background:profileTab===t?T.acc+"22":T.s2,color:profileTab===t?T.acc:T.sub}}>{t.toUpperCase()}</button>)}</div>
+
+      {/* ME — Personal Profile */}
+      {profileTab==="me"&&<>
+        <Card><Lbl>👤 About Me</Lbl>
+          {[["name","Name","text","Jake Henderson"],["age","Age","number","30"],["height","Height (inches)","number","70"]].map(([k,l,t,ph])=>
+            <div key={k} style={{marginBottom:8}}>
+              <div style={{fontSize:9,color:T.dim,marginBottom:2}}>{l}</div>
+              <input defaultValue={profile[k]} onBlur={e=>saveProfile({...profile,[k]:e.target.value})} placeholder={ph} type={t}
+                style={{width:"100%",padding:8,background:T.s2,border:`1px solid ${T.bdr}`,borderRadius:8,color:T.txt,fontSize:12,outline:"none"}}/>
+            </div>)}
+        </Card>
+
+        <Card><Lbl>🎯 Goals & Motivation</Lbl>
+          <div style={{marginBottom:8}}>
+            <div style={{fontSize:9,color:T.dim,marginBottom:2}}>Target Weight</div>
+            <input defaultValue={profile.targetWeight||"185"} onBlur={e=>saveProfile({...profile,targetWeight:e.target.value})} placeholder="185" type="number"
+              style={{width:"100%",padding:8,background:T.s2,border:`1px solid ${T.bdr}`,borderRadius:8,color:T.acc,fontSize:12,fontWeight:600,outline:"none"}}/>
+          </div>
+          <div style={{marginBottom:8}}>
+            <div style={{fontSize:9,color:T.dim,marginBottom:2}}>Why are you training?</div>
+            <textarea defaultValue={profile.whyTrain} onBlur={e=>saveProfile({...profile,whyTrain:e.target.value})} placeholder="Get stronger, feel better, look better, live longer..."
+              rows={3} style={{width:"100%",padding:8,background:T.s2,border:`1px solid ${T.bdr}`,borderRadius:8,color:T.txt,fontSize:11,resize:"none",outline:"none"}}/>
+          </div>
+          <div style={{marginBottom:8}}>
+            <div style={{fontSize:9,color:T.dim,marginBottom:2}}>Known injuries / limitations</div>
+            <textarea defaultValue={profile.injuries} onBlur={e=>saveProfile({...profile,injuries:e.target.value})} placeholder="Bad knees, ankle instability, shoulder issues..."
+              rows={2} style={{width:"100%",padding:8,background:T.s2,border:`1px solid ${T.bdr}`,borderRadius:8,color:T.txt,fontSize:11,resize:"none",outline:"none"}}/>
+          </div>
+        </Card>
+
+        <Card><Lbl>📊 Career Summary</Lbl>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+            {[["Sessions",stats.total],["PRs Set",stats.prCount],["Total Hours",stats.totalHrs],["Total Volume",`${(stats.totalVol/1000000).toFixed(1)}M lbs`],
+              ["Miles Ridden",stats.mi],["Calories Burned",stats.cal.toLocaleString()],["Best Streak",`${stats.maxStreak} days`],["Perfect Weeks",stats.perfectWeeks],
+              ["Weigh-Ins",stats.weightEntries],["Achievements",`${stats.unlocked}/${MILES.length}`],["Training Year",`Y${tYear(todayStr)}`],["Current Phase",gP(todayStr).n]
+            ].map(([l,v],i)=><div key={i} style={{padding:"6px 8px",background:T.s2,borderRadius:6}}>
+              <div style={{fontSize:9,color:T.dim}}>{l}</div>
+              <div style={{fontSize:13,fontWeight:700,color:T.txt}}>{v}</div>
+            </div>)}
+          </div>
+        </Card>
+
+        <Card><Lbl>📅 Training Started</Lbl>
+          <div style={{fontSize:13,color:T.sub}}>{new Date(profile.startDate).toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"})}</div>
+          <div style={{fontSize:10,color:T.dim,marginTop:2}}>{Math.floor((new Date()-new Date(profile.startDate))/(864e5))} days ago</div>
+        </Card>
+      </>}
 
       {/* WEIGHT */}
       {profileTab==="weight"&&<>
