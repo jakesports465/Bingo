@@ -44,6 +44,8 @@ if('serviceWorker' in navigator){
   `],{type:'text/javascript'}));
   navigator.serviceWorker.register(sw).catch(()=>{});
 }
+// Request persistent storage so browser never auto-evicts data
+if(navigator.storage&&navigator.storage.persist){navigator.storage.persist().then(p=>{if(p)console.log('Storage persisted')})}
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
@@ -71,11 +73,22 @@ const PHASES=[
 const DAYS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const MUSCLES=["Quads","Glutes","Hamstrings","Calves","Chest","Back","Shoulders","Biceps","Triceps","Core","Cardio","Grip"];
 const dS=d=>d.toISOString().split("T")[0],dP=s=>new Date(s+"T12:00:00"),dB=(a,b)=>Math.ceil((new Date(b)-new Date(a))/864e5);
-const gP=ds=>{const d=dP(ds);for(const p of PHASES)if(d>=new Date(p.st)&&d<=new Date(p.en+"T23:59:59"))return p;return d<new Date(PHASES[0].st)?PHASES[0]:PHASES[3]};
+const gP=ds=>{const d=dP(ds);
+  // Year 1 exact dates
+  for(const p of PHASES)if(d>=new Date(p.st)&&d<=new Date(p.en+"T23:59:59"))return p;
+  if(d<new Date(PHASES[0].st))return PHASES[0];
+  // Year 2+: cycle by calendar month/day
+  const m=d.getMonth(),dy=d.getDate();
+  if((m===3&&dy>=5)||(m===4&&dy<=25))return PHASES[0]; // Apr 5 - May 25: BASECAMP
+  if((m===4&&dy>=26)||m===5||m===6||(m===7&&dy<=21))return PHASES[1]; // May 26 - Aug 21: CUT
+  if((m===7&&dy>=22)||m===8||m===9||(m===10&&dy<=14))return PHASES[2]; // Aug 22 - Nov 14: BUILD
+  return PHASES[3]; // Nov 15 - Apr 4: SUSTAIN
+};
+const tYear=ds=>{const d=dP(ds),s=new Date("2026-04-05");return Math.max(1,Math.floor((d-s)/(365.25*864e5))+1)};
 const wS=(ds,r)=>Math.max(0,Math.floor((dP(ds)-new Date(r))/6048e5));
-const BB_W=[45,65,95,115,135,155,165,185,205,225,255,275];
+const BB_W=[45,65,75,85,95,115,125,135,145,155,165,175,185,195,205,215,225,235,245,255,275,285,305,325];
 const bbS=t=>{let b=45;for(const w of BB_W)if(w<=t)b=w;return b};
-const bbP=(s,wk,c=275,r=10)=>bbS(Math.min(c,s+Math.floor(wk/2)*r));
+const bbP=(s,wk,c=325,r=10)=>bbS(Math.min(c,s+Math.floor(wk/2)*r));
 const sn=w=>Math.round(w/2.5)*2.5,dbP=(b,wk,c=52.5)=>sn(Math.min(c,b+Math.floor(wk/2)*2.5));
 
 const WARMUPS={lower:["BW Squat ×10","Leg Swings ×10 ea","Hip Circles ×10 ea","Glute Bridge ×10","Walking Lunge ×6 ea"],
@@ -120,7 +133,8 @@ const MILES=[
   {id:"i7",n:"Plate Club",d:"Squat 135",c:"IRON",i:"🔩",req:s=>s.squatMax>=135},
   {id:"i8",n:"Squat 185",d:"Big squat energy",c:"IRON",i:"🔩",req:s=>s.squatMax>=185},
   {id:"i9",n:"Two Plates",d:"Squat 225",c:"IRON",i:"🔩",req:s=>s.squatMax>=225},
-  {id:"i10",n:"Squat King",d:"Squat 275 — maxed out",c:"IRON",i:"👑",req:s=>s.squatMax>=275},
+  {id:"i10",n:"Squat King",d:"Squat 275",c:"IRON",i:"🔩",req:s=>s.squatMax>=275},
+  {id:"i10b",n:"Squat God",d:"Squat 325 — every plate on the bar",c:"IRON",i:"👑",req:s=>s.squatMax>=325},
   {id:"i11",n:"Bench Opener",d:"Bench 135",c:"IRON",i:"🔩",req:s=>s.benchMax>=135},
   {id:"i12",n:"Bench 185",d:"Serious pressing",c:"IRON",i:"🔩",req:s=>s.benchMax>=185},
   {id:"i13",n:"Two Plate Bench",d:"Bench 225",c:"IRON",i:"👑",req:s=>s.benchMax>=225},
@@ -336,86 +350,208 @@ const MILES=[
 ];
 
 // ══ WORKOUT ENGINE ══
-function E(n,s,r,w,rest,note,muscle){return{n,s:String(s),r,w:String(w),rest:rest||60,note:note||"",muscle:muscle||""}}
+function E(n,s,r,w,rest,note,muscle,subs){return{n,s:String(s),r,w:String(w),rest:rest||60,note:note||"",muscle:muscle||"",subs:subs||""}}
+// Plate breakdown for display
+function plateSplit(lbs){const v=parseInt(lbs);if(isNaN(v)||v<45)return"";if(v===45)return"empty bar";
+  const ps=(v-45)/2;let r=ps,out=[];[45,35,25,15,10,10].forEach(p=>{if(r>=p){out.push(p);r-=p}});
+  return out.length?out.map(p=>p+"lb").join("+")+" ea":""}
+// Food macro targets
+function macroTargets(wt,phase){
+  const bmr=Math.round(88.362+(13.397*wt/2.205)+(4.799*178)-(5.677*30));
+  const tdee=Math.round(bmr*1.55);
+  const targets={1:{cal:tdee,pro:Math.round(wt*.9),note:"Maintenance — fuel endurance"},
+    2:{cal:tdee-300,pro:Math.round(wt*1),note:"Deficit — prioritize protein"},
+    3:{cal:tdee+100,pro:Math.round(wt*1),note:"Slight surplus — fuel muscle growth"},
+    4:{cal:tdee,pro:Math.round(wt*.9),note:"Maintenance — sustain"}};
+  const t=targets[phase]||targets[4];t.carb=Math.round((t.cal*.4)/4);t.fat=Math.round((t.cal*.3)/9);return t}
+
 function getWorkout(ds){
   const ph=gP(ds),dow=dP(ds).getDay(),wk=wS(ds,ph.st),tw=wS(ds,"2026-04-05");
   const dl=wk>0&&wk%4===3,dm=dl?.85:1;
-  const BB=(st,cap,rate=10)=>{const v=bbP(st,tw,cap,rate);return Math.round(v*dm/5)*5||bbS(v*dm)};
+  const dlSets=(base)=>dl?Math.max(2,base-1):base; // deload: reduce sets by 1, min 2
+  const BB=(st,cap,rate=10)=>{const v=bbP(st,tw,cap,rate);return Math.max(45,Math.round(v*dm/5)*5)};
   const DB=(b,c)=>sn(dbP(b,tw,c)*dm);
   if(dow===0)return{type:"rest",label:"REST DAY",dur:0,cal:0,mi:0,ph,dl,muscles:[],warmup:"full",
     ex:[E("Rest or light walk","—","—","—",0,"Hydrate. Sleep 7+ hrs.")]};
-  const P=ph.id>=3?2:ph.id;
-  const W={1:{
-    1:{type:"strength",label:"LOWER BODY",dur:55,cal:380,mi:0,muscles:["Quads","Glutes","Hamstrings","Calves"],warmup:"lower",ex:[
-      E("Barbell Back Squat",4,"10",BB(115,185),90,"Below parallel. Brace.","Quads"),
-      E("Barbell RDL",3,"10",BB(95,155),75,"Hinge. Bar close to legs.","Hamstrings"),
-      E("Bulgarian Split Squat",3,"12 ea",`${DB(20,40)} ea`,60,"Rear foot bench.","Quads"),
-      E("Cable Pull-Through",3,"15","moderate",45,"Hinge & squeeze.","Glutes"),
-      E("SL Calf Raise",3,"15 ea",`${DB(20,35)}`,30,"Full ROM.","Calves"),
-      E("Wall Sit",3,"60s",dl?"BW":`${DB(15,30)} lap`,45,"Breathe.","Quads")]},
+
+  // ══════════════════════════════════════════════
+  // PHASE 1: BASECAMP — Cardio/Endurance/Legs
+  // Learn barbell. Build aerobic base. Prep for Memorial Day.
+  // ══════════════════════════════════════════════
+  const P1={
+    1:{type:"strength",label:"LOWER BODY — ENDURANCE",dur:55,cal:380,mi:0,muscles:["Quads","Glutes","Hamstrings","Calves"],warmup:"lower",ex:[
+      E("Barbell Back Squat",dlSets(4),"10",BB(115,185),90,"Below parallel. Brace core.","Quads","Goblet Squat / Leg Press"),
+      E("Barbell RDL",dlSets(3),"10",BB(95,155),75,"Hinge at hips. Bar close to legs.","Hamstrings","DB RDL / Cable Pull-Through"),
+      E("Bulgarian Split Squat",dlSets(3),"12 ea",`${DB(20,40)} ea`,60,"Rear foot on bench. Upright.","Quads","Reverse Lunge"),
+      E("Cable Pull-Through",dlSets(3),"15","moderate",45,"Hinge & squeeze glutes hard.","Glutes","Hip Thrust"),
+      E("Cable Kickback (ankle strap)",3,"12 ea","light-mod",30,"Ankle strap on cable. Squeeze glute at top.","Glutes","Banded Kickback"),
+      E("SL Calf Raise",3,"15 ea",`${DB(20,35)}`,30,"Full ROM on bench edge.","Calves","Seated Calf Raise")]},
     2:{type:"bike",label:"BIKE — INTERVALS",dur:38+wk*2,cal:420+wk*15,mi:10+wk,muscles:["Cardio","Quads"],warmup:"bike",ex:[
-      E("Warm-Up",1,"5 min","—",0,"Nasal breathing"),
-      E("Sprints A","1",`${8+Math.min(wk,3)}×${30+Math.min(wk*3,15)}s/${60-Math.min(wk*5,20)}s`,"—",0,"Max effort"),
-      E("Recovery",1,"4 min","—",0,"Box breathing"),
-      E("Sprints B",1,`${6+Math.min(wk,2)}×45s/45s`,"—",0,"RPE 8-9"),
-      E("Cool-Down",1,"5 min","—",0,"")]},
+      E("Warm-Up",1,"5 min","—",0,"Nasal breathing only."),
+      E("Sprint Block A",1,`${8+Math.min(wk,3)}×${30+Math.min(wk*3,15)}s/${60-Math.min(wk*5,20)}s`,"—",0,"ALL OUT effort each round."),
+      E("Recovery Bridge",1,"4 min","—",0,"Easy spin. Box breathing 4-4-4-4."),
+      E("Sprint Block B",1,`${6+Math.min(wk,2)}×45s/45s`,"—",0,"RPE 8-9. Stay seated."),
+      E("Cool-Down",1,"5 min","—",0,"Easy spin. Deep breathing.")]},
     3:{type:"strength",label:"UPPER + CORE",dur:52,cal:330,mi:0,muscles:["Chest","Back","Shoulders","Core"],warmup:"upper",ex:[
-      E("Barbell Bench Press",3,"10",BB(95,155),90,"Full ROM.","Chest"),
-      E("Barbell Row",3,"10",BB(95,135),75,"Pull to belt.","Back"),
-      E("Barbell OHP",3,"10",BB(65,115,5),90,"Strict.","Shoulders"),
-      E("Pull-Up (rack)",3,"max","BW",90,"Chin over bar.","Back"),
-      E("Cable Face Pull",3,"15","light-mod",45,"Rope to ears.","Shoulders"),
-      E("Dead Bug",3,"10 ea","BW",30,"Full exhale.","Core"),
-      E("Plank",3,"60s","loaded",45,"","Core")]},
+      E("Barbell Bench Press",dlSets(3),"10",BB(95,155),90,"Controlled descent. Full ROM.","Chest","DB Floor Press"),
+      E("Barbell Row",dlSets(3),"10",BB(95,135),75,"45° hinge. Pull to belt line.","Back","DB Row / Cable Row"),
+      E("Barbell OHP",dlSets(3),"10",BB(65,115,5),90,"Strict press. No leg drive.","Shoulders","DB Seated Press"),
+      E("Pull-Up (rack)",dlSets(3),"max","BW",90,"Full hang → chin over bar.","Back","Band-Assisted / Lat Pulldown"),
+      E("Cable Face Pull",3,"15","light-mod",45,"Rope attachment. Pull to ears.","Shoulders","Band Pull-Apart"),
+      E("Ab Roller",3,"8-12","BW",45,"Kneel on mat. Roll out slow, squeeze back. Core killer.","Core","Dead Bug"),
+      E("Weighted Plank",3,dl?"45s":"60s","loaded",45,"Don't sag. Squeeze everything.","Core","Side Plank")]},
     4:{type:"bike",label:"BIKE — TEMPO",dur:35+wk*3,cal:320+wk*20,mi:12+wk,muscles:["Cardio"],warmup:"bike",ex:[
-      E("Warm-Up",1,"5 min","—",0,"Nasal breathing"),
-      E("Tempo",1,`${25+Math.min(wk*3,18)} min`,"—",0,"RPE 7. No coasting."),
-      E("Cool-Down",1,"5 min","—",0,"")]},
-    5:{type:"strength",label:"LOWER — POWER",dur:55,cal:400,mi:0,muscles:["Quads","Glutes","Core","Grip"],warmup:"lower",ex:[
-      E("Barbell Back Squat",4,"8",BB(135,205),90,"Heavier than Mon.","Quads"),
-      E("Farmer Carry",4,`${75+Math.min(wk*10,40)}s`,`${DB(40,52.5)} ea`,60,"Grip hard.","Grip"),
-      E("Cable Low Row",3,"12","moderate",60,"Pull to waist.","Back"),
-      E("BB Hip Thrust",3,"15",BB(95,155),60,"Bar across hips.","Glutes"),
-      E("Backpack Walk",2,`${6+Math.min(wk,3)} min`,`${30+Math.min(wk*3,20)} lbs`,90,"","Cardio"),
-      E("Goblet Squat Hold",3,"45s",`${DB(30,45)}`,45,"Bottom.","Quads")]},
+      E("Warm-Up",1,"5 min","—",0,"Nasal breathing first 10 min total."),
+      E("Tempo Block",1,`${25+Math.min(wk*3,18)} min`,"—",0,"RPE 7/10. Talking is hard. No coasting."),
+      E("Cool-Down",1,"5 min","—",0,"Easy spin.")]},
+    5:{type:"strength",label:"LOWER — POWER + CARRY",dur:58,cal:400,mi:0,muscles:["Quads","Glutes","Core","Grip"],warmup:"lower",ex:[
+      E("Barbell Back Squat",dlSets(4),"8",BB(135,205),90,"Heavier than Monday. Explosive up.","Quads","DB Front Squat"),
+      E("Landmine Rotation",3,"10 ea","45-65",45,"Rotate from hip to opposite shoulder. Golf power.","Core","Cable Woodchop"),
+      E("Farmer Carry",dlSets(4),`${75+Math.min(wk*10,40)}s`,`${DB(40,52.5)} ea`,60,"Shoulders packed. Grip hard.","Grip","Suitcase Carry"),
+      E("BB Hip Thrust",dlSets(3),"15",BB(95,155),60,"Shoulders on bench. Bar on hips. Squeeze.","Glutes","DB Hip Thrust"),
+      E("Backpack Walk",2,`${6+Math.min(wk,3)} min`,`${30+Math.min(wk*3,20)} lbs`,90,"Stairs if available. Upright posture.","Cardio",""),
+      E("Landmine Press (SL)",3,"8 ea","45-65",45,"Staggered stance. Press up and out.","Shoulders","DB OH Press")]},
     6:{type:"bike",label:"BIKE — LONG Z2",dur:45+wk*5,cal:380+wk*30,mi:14+wk*1.5,muscles:["Cardio"],warmup:"bike",ex:[
-      E("Zone 2 Ride",1,`${45+Math.min(wk*5,25)} min`,"—",0,"RPE 5-6. Nasal breathing.")]}
-  },2:{
+      E("Zone 2 Ride",1,`${45+Math.min(wk*5,25)} min`,"—",0,"RPE 5-6. Nasal breathing. If you can't nose-breathe, back off.")]}
+  };
+
+  // ══════════════════════════════════════════════
+  // PHASE 2: CUT — Fat Loss + Strength Build
+  // Heavy barbell compounds. High calorie burn. DB/cable accessories.
+  // ══════════════════════════════════════════════
+  const P2={
     1:{type:"strength",label:"LOWER — HEAVY",dur:58,cal:400,mi:0,muscles:["Quads","Glutes","Hamstrings","Calves"],warmup:"lower",ex:[
-      E("Barbell Back Squat",4,`${8-Math.min(Math.floor(wk/4),2)}`,BB(155,255),120,"Heavy. Brace.","Quads"),
-      E("Barbell RDL",4,"8",BB(135,225),90,"Slow eccentric.","Hamstrings"),
-      E("Bulgarian Split Squat",3,"8 ea",`${DB(25,45)} ea`,60,"","Quads"),
-      E("BB Hip Thrust",3,"12",BB(115,205),75,"Squeeze top.","Glutes"),
-      E("Cable Pull-Through",3,"12","moderate",45,"","Glutes"),
-      E("Calf Raise",3,"15 ea",`${DB(25,45)}`,30,"","Calves")]},
+      E("Barbell Back Squat",dlSets(4),`${8-Math.min(Math.floor(wk/4),2)}`,BB(155,255),120,"Heavy. Brace hard. Below parallel.","Quads","DB Front Squat"),
+      E("Barbell RDL",dlSets(4),"8",BB(135,225),90,"Slow 3s eccentric. Feel hamstrings.","Hamstrings","DB RDL"),
+      E("Bulgarian Split Squat",dlSets(3),"8 ea",`${DB(25,45)} ea`,60,"Bench rear foot. Max tolerable.","Quads","Reverse Lunge"),
+      E("BB Hip Thrust",dlSets(3),"12",BB(115,205),75,"Bar across hips. Squeeze 2s at top.","Glutes","DB Hip Thrust"),
+      E("Cable Pull-Through",dlSets(3),"12","moderate",45,"Hinge. Squeeze.","Glutes","Banded Pull-Through"),
+      E("Calf Raise",3,"15 ea",`${DB(25,45)}`,30,"Full ROM. Pause at top.","Calves","")]},
     2:{type:"bike",label:"BIKE — HIIT",dur:42,cal:480,mi:12,muscles:["Cardio"],warmup:"bike",ex:[
-      E("Warm-Up",1,"5 min","—",0,""),E("Tabata",1,"12×40s/20s","—",0,"Max"),
-      E("Recovery",1,"3 min","—",0,""),E("Sprints",1,"10×30s/30s","—",0,"RPE 9"),
+      E("Warm-Up",1,"5 min","—",0,"Easy spin."),
+      E("Tabata Block",1,"12×40s/20s","—",0,"Absolute max effort every round."),
+      E("Recovery",1,"3 min","—",0,"Easy spin."),
+      E("Sprint Block",1,"10×30s/30s","—",0,"RPE 9."),
       E("Cool-Down",1,"5 min","—",0,"")]},
     3:{type:"strength",label:"UPPER — BUILD",dur:60,cal:380,mi:0,muscles:["Chest","Back","Shoulders","Biceps","Triceps"],warmup:"upper",ex:[
-      E("BB Bench Press",4,`${8-Math.min(Math.floor(wk/4),2)}`,BB(115,225),90,"Touch chest.","Chest"),
-      E("Barbell Row",4,"8",BB(95,185),75,"Overhand.","Back"),
-      E("BB OHP",3,"8",BB(75,135,5),90,"Strict.","Shoulders"),
-      E("Pull-Up",3,"max","BW",90,"","Back"),
-      E("Incline DB Press",3,"10",`${DB(25,45)} ea`,60,"30°.","Chest"),
-      E("Cable Lat Pulldown",3,"10","moderate",60,"Wide grip.","Back"),
-      E("Cable Curl",3,"12",`${DB(10,25)}`,45,"","Biceps"),
-      E("Cable Pushdown",3,"12",`${DB(10,25)}`,45,"Rope.","Triceps")]},
+      E("BB Bench Press",dlSets(4),`${8-Math.min(Math.floor(wk/4),2)}`,BB(115,225),90,"Full ROM. Touch chest.","Chest","DB Bench Press"),
+      E("Barbell Row",dlSets(4),"8",BB(95,185),75,"Overhand grip. Pull to belt.","Back","DB Row"),
+      E("BB OHP",dlSets(3),"8",BB(75,135,5),90,"Strict press. Seated if ceiling low.","Shoulders","DB Press"),
+      E("Pull-Up",dlSets(3),"max","BW",90,"Full dead hang. No kipping.","Back","Lat Pulldown"),
+      E("Incline DB Press",dlSets(3),"10",`${DB(25,45)} ea`,60,"Bench at 30°.","Chest","Cable Fly"),
+      E("Cable Lat Pulldown",dlSets(3),"10","moderate",60,"Wide grip. Squeeze lats.","Back","Band Pulldown"),
+      E("Cable Curl",3,"12",`${DB(10,25)}`,45,"Straight bar or rope.","Biceps","DB Curl"),
+      E("Cable Pushdown",3,"12",`${DB(10,25)}`,45,"Rope attachment.","Triceps","DB Skull Crusher")]},
     4:{type:"bike",label:"BIKE — TEMPO+",dur:50+Math.min(wk*2,15),cal:420+wk*10,mi:15+wk,muscles:["Cardio"],warmup:"bike",ex:[
-      E("Warm-Up",1,"5 min","—",0,""),E("Tempo",1,`${40+Math.min(wk*2,15)} min`,"—",0,"RPE 7-8"),
+      E("Warm-Up",1,"5 min","—",0,""),
+      E("Tempo Block",1,`${40+Math.min(wk*2,15)} min`,"—",0,"RPE 7-8. Steady cadence. No coasting."),
       E("Cool-Down",1,"5 min","—",0,"")]},
-    5:{type:"circuit",label:"FULL BODY CIRCUIT",dur:50,cal:430,mi:0,muscles:["Quads","Chest","Back","Glutes","Core"],warmup:"full",ex:[
-      E("— 4 ROUNDS · 90s REST —","—","—","—",0,""),
-      E("BB Front Squat",4,"8",BB(95,155),0,"","Quads"),
-      E("Push-Up (bench)",4,"12-15","BW",0,"Feet elevated.","Chest"),
-      E("Cable Row",4,"12","moderate",0,"","Back"),
-      E("BB Hip Thrust",4,"10",BB(95,155),0,"","Glutes"),
-      E("Farmer Carry",4,"60s",`${DB(40,52.5)} ea`,0,"","Grip"),
-      E("Hanging Knee Raise",4,"12","BW",90,"Rack bar.","Core")]},
+    5:{type:"circuit",label:"FULL BODY + LANDMINE",dur:52,cal:440,mi:0,muscles:["Quads","Chest","Back","Glutes","Core"],warmup:"full",ex:[
+      E("— 4 ROUNDS · 90s REST —","—","—","—",0,"Back-to-back. No rest between exercises."),
+      E("BB Front Squat",dlSets(4),"8",BB(95,155),0,"Clean grip or cross-arm.","Quads","Goblet Squat"),
+      E("Push-Up (bench)",dlSets(4),"12-15","BW",0,"Feet elevated on bench.","Chest","Regular Push-Up"),
+      E("Cable Row",dlSets(4),"12","moderate",0,"Standing or seated.","Back","DB Row"),
+      E("BB Hip Thrust",dlSets(4),"10",BB(95,155),0,"Shoulders on bench.","Glutes","DB Hip Thrust"),
+      E("Farmer Carry",dlSets(4),"60s",`${DB(40,52.5)} ea`,0,"Max weight.","Grip",""),
+      E("Hanging Knee Raise",dlSets(4),"12","BW",90,"Rack bar. No swinging.","Core","Dead Bug"),
+      E("— LANDMINE FINISHER —","—","—","—",0,""),
+      E("Landmine Rotation",3,"10 ea","45-65",30,"Hip-to-shoulder arc. Golf swing pattern.","Core","Cable Woodchop"),
+      E("Landmine Squat to Press",2,"8","45-65",45,"Full squat → stand → press. Total body.","Quads","Thruster"),
+      E("Ab Roller",3,"10","BW",30,"Kneeling. Full extension. Use squat pad under knees.","Core","Plank")]},
     6:{type:"bike",label:"BIKE — LONG+SURGE",dur:70+Math.min(wk*3,25),cal:500+wk*15,mi:20+wk,muscles:["Cardio"],warmup:"bike",ex:[
-      E("Z2 + Surges",1,`${70+Math.min(wk*3,25)} min`,"—",0,"Every 20min: 2min surge RPE 7")]}
-  }};
-  return{...(W[P]?.[dow]||{type:"rest",label:"REST",dur:0,cal:0,mi:0,muscles:[],warmup:"full",ex:[]}),ph,dl};
+      E("Z2 + Surges",1,`${70+Math.min(wk*3,25)} min`,"—",0,"RPE 5-6 base. Every 20min: 2min surge to RPE 7, then back down.")]}
+  };
+
+  // ══════════════════════════════════════════════
+  // PHASE 3: BUILD — Hypertrophy at target weight
+  // Higher reps, more isolation, tempo work, push/pull/legs split
+  // ══════════════════════════════════════════════
+  const P3={
+    1:{type:"strength",label:"LEGS — HYPERTROPHY",dur:55,cal:390,mi:0,muscles:["Quads","Glutes","Hamstrings","Calves"],warmup:"lower",ex:[
+      E("Barbell Back Squat (3-1-1)",dlSets(4),"12",BB(155,225),75,"3s down, 1s pause, 1s up. TUT.","Quads","Goblet Squat tempo"),
+      E("Barbell RDL",dlSets(3),"12",BB(115,185),75,"Controlled. Feel the stretch.","Hamstrings","DB RDL"),
+      E("Walking Lunge",dlSets(3),"12 ea",`${DB(25,40)} ea`,60,"Long stride. Stay controlled.","Quads","Reverse Lunge"),
+      E("Leg Curl (cable)",dlSets(3),"15","moderate",45,"Ankle strap. Prone on bench.","Hamstrings","Banded Leg Curl"),
+      E("Sumo Squat",dlSets(3),"15",`${DB(35,52.5)}`,45,"Wide stance. DB hangs between legs.","Glutes","Cable Pull-Through"),
+      E("Cable Hip Abduction (ankle strap)",3,"15 ea","light",30,"Ankle strap. Stand sideways to cable. Abduct out.","Glutes","Banded Walk"),
+      E("Calf Raise (slow neg)",4,"12 ea",`${DB(30,47.5)}`,30,"3s negative on each rep.","Calves","")]},
+    2:{type:"bike",label:"BIKE — PYRAMID",dur:42,cal:420,mi:13,muscles:["Cardio"],warmup:"bike",ex:[
+      E("Warm-Up",1,"5 min","—",0,""),
+      E("Pyramid Intervals",1,"30-45-60-90-60-45-30s","—",0,"RPE 8-9. Match rest to work period."),
+      E("Recovery",1,"3 min","—",0,"Easy spin."),
+      E("Steady State",1,"15 min","—",0,"RPE 6-7. Maintain."),
+      E("Cool-Down",1,"5 min","—",0,"")]},
+    3:{type:"strength",label:"PUSH — CHEST/SHOULDERS/TRI",dur:55,cal:360,mi:0,muscles:["Chest","Shoulders","Triceps"],warmup:"upper",ex:[
+      E("BB Bench Press",dlSets(4),"10",BB(135,205),90,"Controlled tempo. Full ROM.","Chest","DB Bench"),
+      E("Incline DB Press",dlSets(3),"12",`${DB(27.5,45)} ea`,75,"Bench at 30°. Squeeze at top.","Chest","Incline Cable Fly"),
+      E("BB OHP",dlSets(3),"10",BB(75,135,5),75,"Strict. Seated if needed.","Shoulders","DB Press"),
+      E("Dips (rack)",dlSets(3),"max","BW",75,"Lean forward for chest focus.","Chest","Push-Up"),
+      E("Lateral Raise",3,"15",`${DB(7.5,15)} ea`,30,"Slight bend. Control descent.","Shoulders","Cable Lateral"),
+      E("Cable Pushdown",3,"15",`${DB(10,25)}`,30,"Rope. Squeeze at bottom.","Triceps","DB Kickback"),
+      E("Landmine Press (SL)",dlSets(3),"10 ea","45-65",45,"Staggered stance. Push through.","Shoulders","DB Arnold Press")]},
+    4:{type:"bike",label:"BIKE — TEMPO",dur:45,cal:380,mi:14,muscles:["Cardio"],warmup:"bike",ex:[
+      E("Warm-Up",1,"5 min","—",0,""),
+      E("Tempo Block",1,"35 min","—",0,"RPE 7. Steady. Maintain aerobic base."),
+      E("Cool-Down",1,"5 min","—",0,"")]},
+    5:{type:"strength",label:"PULL + POSTERIOR CHAIN",dur:58,cal:380,mi:0,muscles:["Back","Biceps","Hamstrings","Glutes","Core"],warmup:"upper",ex:[
+      E("Pull-Up",dlSets(4),"max (aim 8+)","BW",90,"Full dead hang. Chin over bar.","Back","Lat Pulldown"),
+      E("Barbell Row",dlSets(4),"10",BB(95,185),75,"Both DBs or barbell. Pull to hips.","Back","Cable Row"),
+      E("BB RDL",dlSets(3),"12",BB(115,185),75,"Hinge at hips. Feel hamstrings.","Hamstrings","DB RDL"),
+      E("Incline Curl",3,"12",`${DB(15,25)} ea`,45,"Bench 45°. Full stretch at bottom.","Biceps","Cable Curl"),
+      E("Cable Face Pull",3,"15","light-mod",30,"Rope to ears. External rotation.","Shoulders","Band Pull-Apart"),
+      E("Landmine Meadows Row",dlSets(3),"10 ea","45-65",60,"Perpendicular to bar. Outside hand rows.","Back","DB Row"),
+      E("Ab Roller",3,"10","BW",60,"Kneeling. Full extension. Squeeze back. Use squat pad.","Core","Hanging Knee Raise"),
+      E("Landmine Anti-Rot Hold",3,"20s ea","45",30,"Bar extended. Resist rotation. Core stability.","Core","Pallof Press")]},
+    6:{type:"bike",label:"BIKE — LONG RIDE",dur:70,cal:480,mi:20,muscles:["Cardio"],warmup:"bike",ex:[
+      E("Zone 2 Ride",1,"70 min","—",0,"Steady state. Maintain aerobic base built in Phase 1.")]}
+  };
+
+  // ══════════════════════════════════════════════
+  // PHASE 4: SUSTAIN — Maintenance + Performance
+  // Full body 3x/week. Maintain strength. Reduced volume. Year-round sustainable.
+  // ══════════════════════════════════════════════
+  const P4={
+    1:{type:"strength",label:"FULL BODY A",dur:50,cal:350,mi:0,muscles:["Quads","Chest","Back","Core"],warmup:"full",ex:[
+      E("Barbell Back Squat",dlSets(3),"8",BB(155,255),90,"Maintain working weight. Don't regress.","Quads","DB Front Squat"),
+      E("BB Bench Press",dlSets(3),"8",BB(115,225),90,"Maintain. Full ROM.","Chest","DB Bench"),
+      E("Barbell Row",dlSets(3),"8",BB(95,185),75,"Pull to belt.","Back","Cable Row"),
+      E("Pull-Up",dlSets(3),"max","BW",90,"Maintain rep count.","Back","Lat Pulldown"),
+      E("BB Hip Thrust",dlSets(3),"12",BB(115,205),60,"Maintain glute strength.","Glutes","DB Hip Thrust"),
+      E("Ab Roller",3,dl?"6":"10","BW",30,"Kneeling. Maintain core strength. Use squat pad under knees.","Core","Plank")]},
+    2:{type:"bike",label:"BIKE — INTERVALS",dur:40,cal:400,mi:12,muscles:["Cardio"],warmup:"bike",ex:[
+      E("Warm-Up",1,"5 min","—",0,""),
+      E("Intervals",1,"10×40s/40s","—",0,"RPE 8-9. Maintain fitness."),
+      E("Recovery",1,"3 min","—",0,""),
+      E("Steady State",1,"15 min","—",0,"RPE 6-7."),
+      E("Cool-Down",1,"5 min","—",0,"")]},
+    3:{type:"strength",label:"FULL BODY B",dur:50,cal:350,mi:0,muscles:["Quads","Shoulders","Back","Arms"],warmup:"full",ex:[
+      E("Bulgarian Split Squat",dlSets(3),"10 ea",`${DB(30,45)} ea`,60,"Maintain unilateral strength.","Quads","Reverse Lunge"),
+      E("BB OHP",dlSets(3),"8",BB(75,135,5),90,"Maintain pressing power.","Shoulders","DB Press"),
+      E("Incline DB Press",dlSets(3),"10",`${DB(27.5,45)} ea`,75,"30°. Controlled.","Chest","Cable Fly"),
+      E("Cable Lat Pulldown",dlSets(3),"10","moderate",60,"Wide grip. Full stretch.","Back","Band Pulldown"),
+      E("Dips (rack)",dlSets(3),"max","BW",75,"Maintain bodyweight strength.","Chest","Push-Up"),
+      E("Cable Curl + Pushdown",3,"12 ea",`${DB(10,25)}`,45,"Superset. Curl then pushdown.","Arms","DB Curl + Kickback")]},
+    4:{type:"bike",label:"BIKE — TEMPO",dur:45,cal:380,mi:14,muscles:["Cardio"],warmup:"bike",ex:[
+      E("Warm-Up",1,"5 min","—",0,""),
+      E("Tempo Block",1,"35 min","—",0,"RPE 7. Maintain threshold."),
+      E("Cool-Down",1,"5 min","—",0,"")]},
+    5:{type:"strength",label:"FULL BODY C + LANDMINE",dur:52,cal:400,mi:0,muscles:["Quads","Back","Glutes","Core","Grip"],warmup:"full",ex:[
+      E("— 3 ROUNDS · 90s REST —","—","—","—",0,"Reduced rounds for maintenance."),
+      E("Goblet Squat",3,"12",`${DB(35,52.5)}`,0,"Maintain.","Quads","BB Front Squat"),
+      E("Push-Up (bench)",3,"15","BW",0,"Feet elevated.","Chest",""),
+      E("Pull-Up",3,"max","BW",0,"","Back","Lat Pulldown"),
+      E("BB Hip Thrust",3,"12",BB(95,185),0,"","Glutes","DB Hip Thrust"),
+      E("Farmer Carry",3,"60s",`${DB(40,52.5)} ea`,90,"Maintain grip.","Grip",""),
+      E("— LANDMINE WORK —","—","—","—",0,"Golf maintenance + rotational strength."),
+      E("Landmine Rotation",3,"10 ea","45-65",30,"Hip-to-shoulder. Maintain rotational power.","Core","Cable Woodchop"),
+      E("Landmine RDL to Row",3,"8 ea","45-65",45,"Hinge, row, stand. Posterior chain.","Hamstrings","DB RDL + Row"),
+      E("Landmine Anti-Rot Hold",2,"20s ea","45",30,"Resist rotation. Core stability.","Core","Pallof Press")]},
+    6:{type:"bike",label:"BIKE — LONG RIDE",dur:75,cal:500,mi:22,muscles:["Cardio"],warmup:"bike",ex:[
+      E("Zone 2 Ride",1,"75 min","—",0,"Maintain aerobic base. Steady state.")]}
+  };
+
+  const W={1:P1,2:P2,3:P3,4:P4};
+  return{...(W[ph.id]?.[dow]||{type:"rest",label:"REST",dur:0,cal:0,mi:0,muscles:[],warmup:"full",ex:[]}),ph,dl};
 }
 
 // ══ CALCS ══
@@ -425,7 +561,12 @@ function calcReadiness(d,now){let s=100;
   for(let i=1;i<=3;i++){const dt=new Date(now);dt.setDate(dt.getDate()-i);const k=dS(dt);
     if(d.sessions?.[k]?.done){s-=8;if((d.sessions[k].rating||0)>=4)s-=5;if((d.sessions[k].rating||0)>=5)s-=5}}
   let stk=0;for(let i=1;i<=7;i++){const dt=new Date(now);dt.setDate(dt.getDate()-i);if(d.sessions?.[dS(dt)]?.done)stk++}
-  if(stk>=3&&stk<=5)s+=5;if(stk>=6)s-=10;return Math.max(20,Math.min(100,s))}
+  if(stk>=3&&stk<=5)s+=5;if(stk>=6)s-=10;
+  // Sleep factor
+  const lastSleep=d.sleep?.[dS(now)];
+  if(lastSleep){if(lastSleep.hrs>=7&&lastSleep.q>=4)s+=10;else if(lastSleep.hrs>=6&&lastSleep.q>=3)s+=0;
+    else if(lastSleep.hrs<6)s-=15;else if(lastSleep.q<=2)s-=10}
+  return Math.max(20,Math.min(100,s))}
 function getMR(d,now){const r={};MUSCLES.forEach(m=>r[m]={h:999,s:"fresh"});
   for(let i=0;i<4;i++){const dt=new Date(now);dt.setDate(dt.getDate()-i);const k=dS(dt);
     if(d.sessions?.[k]?.done){const wo=getWorkout(k);(wo.muscles||[]).forEach(m=>{const h=i*24;
@@ -435,8 +576,8 @@ function getMR(d,now){const r={};MUSCLES.forEach(m=>r[m]={h:999,s:"fresh"});
 function SvgLine({data,dk,color,height=80}){
   if(!data||data.length<2)return <div style={{height,display:"flex",alignItems:"center",justifyContent:"center",color:T.dim,fontSize:11}}>Need more data</div>;
   const vals=data.map(d=>d[dk]||0),mn=Math.min(...vals),mx=Math.max(...vals),rng=mx-mn||1;
-  const w=300,h=height;
-  const pts=vals.map((v,i)=>[i/(vals.length-1)*w,h-6-((v-mn)/rng)*(h-12)]);
+  const w=300,h=height,len=Math.max(vals.length,2);
+  const pts=vals.map((v,i)=>[i/(len-1)*w,h-6-((v-mn)/rng)*(h-12)]);
   return <svg viewBox={`0 0 ${w} ${h}`} style={{width:"100%",height}}>
     <polygon points={`0,${h} ${pts.map(p=>p.join(",")).join(" ")} ${w},${h}`} fill={color} opacity="0.12"/>
     <polyline points={pts.map(p=>p.join(",")).join(" ")} fill="none" stroke={color} strokeWidth="2.5" strokeLinejoin="round"/>
@@ -457,10 +598,11 @@ function SvgBar({data,dk,color,height=80}){
 function App(){
   const[tab,setTab]=useState("home");
   const[navHist,setNavHist]=useState([]);
-  const[plateCalcInput,setPlateCalcInput]=useState("");
+  const[showOnboard,setShowOnboard]=useState(()=>!LS.get("hv9_onboarded"));
+  const[onboardW,setOnboardW]=useState("210");
   const navTo=(t,sub)=>{setNavHist(p=>[...p.slice(-10),{tab,statsTab,profileTab}]);setTab(t);if(sub)setStatsTab(sub)};
   const navBack=()=>{if(!navHist.length)return;const prev=navHist[navHist.length-1];setNavHist(p=>p.slice(0,-1));setTab(prev.tab);setStatsTab(prev.statsTab||"overview");setProfileTab(prev.profileTab||"weight")};
-  const[data,setData]=useState(()=>LS.get("hv9")||{sessions:{},weight:[],measurements:[],water:{},prs:{}});
+  const[data,setData]=useState(()=>LS.get("hv9")||{sessions:{},weight:[],measurements:[],water:{},prs:{},sleep:{},food:{},supps:{}});
   const[selDate,setSelDate]=useState(dS(new Date()));
   const[calM,setCalM]=useState(new Date().getMonth());
   const[calY,setCalY]=useState(new Date().getFullYear());
@@ -474,15 +616,23 @@ function App(){
   const[profileTab,setProfileTab]=useState("weight");
   const[statsTab,setStatsTab]=useState("overview");
   const[showWarmup,setShowWarmup]=useState(false);
-  const[exHist,setExHist]=useState(null);
-  const[showExport,setShowExport]=useState(false);
-  const[measInput,setMeasInput]=useState({waist:"",chest:"",arms:""});
+  const[measInput,setMeasInput]=useState({waist:"",chest:"",arms:"",neck:"",thighs:"",bf:"",muscle:""});
+  const[sleepInput,setSleepInput]=useState({hrs:"",q:0});
+  const[foodInput,setFoodInput]=useState({name:"",cal:"",pro:"",carb:"",fat:""});
+  const[plateCalcInput,setPlateCalcInput]=useState("");
   const rR=useRef(null),wR=useRef(null);
 
   const save=useCallback(d=>{LS.set("hv9",d)},[]);
   const upd=useCallback(fn=>{setData(p=>{const n=fn(p);save(n);return n})},[save]);
 
-  useEffect(()=>{if(restTimer>0){rR.current=setInterval(()=>setRestTimer(p=>{if(p<=1){clearInterval(rR.current);return 0}return p-1}),1000);
+  // Timer beep
+  const beep=useCallback(()=>{try{const a=new AudioContext(),o=a.createOscillator(),g=a.createGain();
+    o.connect(g);g.connect(a.destination);o.frequency.value=880;g.gain.value=0.3;o.start();o.stop(a.currentTime+0.15);
+    setTimeout(()=>{const o2=a.createOscillator(),g2=a.createGain();o2.connect(g2);g2.connect(a.destination);
+      o2.frequency.value=1100;g2.gain.value=0.3;o2.start();o2.stop(a.currentTime+0.2)},200);
+    if(navigator.vibrate)navigator.vibrate([200,100,200])}catch{}},[]);
+
+  useEffect(()=>{if(restTimer>0){rR.current=setInterval(()=>setRestTimer(p=>{if(p<=1){clearInterval(rR.current);beep();return 0}return p-1}),1000);
     return()=>clearInterval(rR.current)}},[restTimer>0]);
   useEffect(()=>{if(workoutActive){wR.current=setInterval(()=>setWorkoutTimer(p=>p+1),1000);return()=>clearInterval(wR.current)}},[workoutActive]);
 
@@ -501,9 +651,10 @@ function App(){
   const stats=useMemo(()=>{
     const keys=Object.keys(data.sessions||{}).filter(k=>data.sessions[k]?.done);
     let cal=0,mi=0,dur=0,strSess=0,bikeSess=0,circSess=0,totalVol=0;
-    keys.forEach(k=>{const wo=getWorkout(k);cal+=wo.cal;mi+=wo.mi;dur+=wo.dur;
+    keys.forEach(k=>{const wo=getWorkout(k);const sess=data.sessions[k];
+      cal+=(sess?.calOverride||wo.cal);mi+=(sess?.miOverride||wo.mi);dur+=wo.dur;
       if(wo.type==="strength")strSess++;if(wo.type==="bike")bikeSess++;if(wo.type==="circuit")circSess++;
-      const sess=data.sessions[k];if(sess?.sets)Object.values(sess.sets).forEach(sets=>sets.forEach(([w,r])=>{totalVol+=(w||0)*(r||0)}))});
+      if(sess?.sets)Object.values(sess.sets).forEach(sets=>sets.forEach(([w,r])=>{totalVol+=(w||0)*(r||0)}))});
     let streak=0,maxStreak=0,cur=0;
     for(let i=0;i<120;i++){const d=new Date(now);d.setDate(d.getDate()-i);const k=dS(d);
       if(d.getDay()===0)continue;if(data.sessions?.[k]?.done)streak++;else if(i>0)break}
@@ -527,9 +678,10 @@ function App(){
     let comebacks=0;sorted.forEach((k,i)=>{if(i>0&&dB(sorted[i-1],k)>=3)comebacks++});
     const fullyOp=!!(data.sessions?.[todayStr]?.done&&(data.water?.[todayStr]||0)>=1&&data.weight.some(e=>e.d===todayStr)&&data.sessions?.[todayStr]?.notes);
     const measCount=(data.measurements||[]).length;const totalHrs=Math.round(dur/60);
+    const startW=data.weight.length?data.weight[0].w:210;
     const ps={total:keys.length,cal,mi:Math.round(mi),dur,streak,maxStreak,thisWeek:tw,lastWeek:lw,
       twCal,twMi:Math.round(twMi),lwCal,lwMi:Math.round(lwMi),waterToday:data.water?.[todayStr]||0,
-      wLost:Math.max(0,210-lastW),prCount:Object.keys(data.prs||{}).length,
+      wLost:Math.max(0,startW-lastW),prCount:Object.keys(data.prs||{}).length,
       strSess,bikeSess,circSess,totalVol,perfectWeeks,rated5,rated4p,notesSess,
       squatMax,benchMax,ohpMax,rowMax,rdlMax,anyPR200,anyPR135,weightEntries,comebacks,fullyOp,measCount,totalHrs,unlocked:0};
     ps.unlocked=MILES.filter(m=>m.req(ps)).length;return ps;
@@ -537,14 +689,14 @@ function App(){
 
   const weeklyChart=useMemo(()=>{const wks={};Object.keys(data.sessions||{}).filter(k=>data.sessions[k]?.done).sort().forEach(ds=>{
     const d=dP(ds),ws=new Date(d);ws.setDate(d.getDate()-d.getDay());const wk=dS(ws);
-    if(!wks[wk])wks[wk]={wk,cal:0,mi:0,s:0};const wo=getWorkout(ds);wks[wk].cal+=wo.cal;wks[wk].mi+=wo.mi;wks[wk].s++});
+    if(!wks[wk])wks[wk]={wk,cal:0,mi:0,s:0};const wo=getWorkout(ds);const ss=data.sessions[ds];wks[wk].cal+=(ss?.calOverride||wo.cal);wks[wk].mi+=(ss?.miOverride||wo.mi);wks[wk].s++});
     return Object.values(wks).slice(-16)},[data.sessions]);
   const weightChart=useMemo(()=>data.weight.slice(-30).map(e=>({d:dP(e.d).toLocaleDateString("en-US",{month:"short",day:"numeric"}),w:e.w})),[data.weight]);
   const unlockedMS=useMemo(()=>MILES.filter(m=>m.req(stats)),[stats]);
   const weeklySummary=useMemo(()=>{const ws=new Date(now);ws.setDate(now.getDate()-now.getDay());
     const days=[];for(let i=0;i<7;i++){const d=new Date(ws);d.setDate(ws.getDate()+i);days.push(dS(d))}
     const done=days.filter(d=>data.sessions?.[d]?.done);const types={strength:0,bike:0,circuit:0};
-    let cal=0,mi=0;done.forEach(d=>{const wo=getWorkout(d);types[wo.type]=(types[wo.type]||0)+1;cal+=wo.cal;mi+=wo.mi});
+    let cal=0,mi=0;done.forEach(d=>{const wo=getWorkout(d);const ss=data.sessions?.[d];types[wo.type]=(types[wo.type]||0)+1;cal+=(ss?.calOverride||wo.cal);mi+=(ss?.miOverride||wo.mi)});
     return{done:done.length,types,cal,mi:Math.round(mi)}},[data]);
 
   // Handlers
@@ -562,7 +714,34 @@ function App(){
     upd(p=>({...p,weight:[...p.weight.filter(e=>e.d!==todayStr),{d:todayStr,w:v}].sort((a,b)=>a.d.localeCompare(b.d))}));setWInput("")};
   const adjWater=n=>upd(p=>({...p,water:{...p.water,[todayStr]:Math.max(0,(p.water[todayStr]||0)+n)}}));
   const logMeas=()=>{const m={d:todayStr,...Object.fromEntries(Object.entries(measInput).map(([k,v])=>[k,parseFloat(v)||0]).filter(([,v])=>v>0))};
-    if(Object.keys(m).length>1)upd(p=>({...p,measurements:[...(p.measurements||[]).filter(e=>e.d!==todayStr),m]}));setMeasInput({waist:"",chest:"",arms:""})};
+    if(Object.keys(m).length>1)upd(p=>({...p,measurements:[...(p.measurements||[]).filter(e=>e.d!==todayStr),m]}));setMeasInput({waist:"",chest:"",arms:"",neck:"",thighs:"",bf:"",muscle:""})};
+  const logSleep=()=>{const h=parseFloat(sleepInput.hrs);if(isNaN(h)||h<0||h>16||!sleepInput.q)return;
+    upd(p=>({...p,sleep:{...p.sleep,[todayStr]:{hrs:h,q:sleepInput.q}}}));setSleepInput({hrs:"",q:0})};
+  const addFood=()=>{const c=parseInt(foodInput.cal);if(isNaN(c)||c<=0)return;
+    const entry={n:foodInput.name||"Quick Add",cal:c,pro:parseInt(foodInput.pro)||0,carb:parseInt(foodInput.carb)||0,fat:parseInt(foodInput.fat)||0,t:Date.now()};
+    upd(p=>{const day=p.food?.[todayStr]||[];return{...p,food:{...p.food,[todayStr]:[...day,entry]}}});
+    setFoodInput({name:"",cal:"",pro:"",carb:"",fat:""})};
+  const removeFood=(idx)=>upd(p=>{const day=[...(p.food?.[todayStr]||[])];day.splice(idx,1);return{...p,food:{...p.food,[todayStr]:day}}});
+  const toggleSupp=(key)=>upd(p=>{const day=p.supps?.[todayStr]||{};return{...p,supps:{...p.supps,[todayStr]:{...day,[key]:!day[key]}}}});
+  const undoSet=(exN,si)=>upd(p=>{const sess={...p.sessions[selDate]};if(!sess?.sets?.[exN])return p;
+    const sets=Array.from(sess.sets[exN]);sets[si]=undefined;sess.sets={...sess.sets,[exN]:sets};return{...p,sessions:{...p.sessions,[selDate]:sess}}});
+  const backupData=()=>{const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`henderson-backup-${todayStr}.json`;a.click()};
+  const restoreData=(e)=>{const f=e.target.files?.[0];if(!f)return;const r=new FileReader();
+    r.onload=()=>{try{const d=JSON.parse(r.result);if(d.sessions){setData(d);save(d);alert("Restored!")}else alert("Invalid file")}catch{alert("Error reading file")}};r.readAsText(f)};
+  const resetData=()=>{if(confirm("Delete ALL data? This cannot be undone.")){const d={sessions:{},weight:[],measurements:[],water:{},prs:{},sleep:{},food:{},supps:{}};setData(d);save(d)}};
+  const completeOnboard=()=>{const w=parseFloat(onboardW)||210;
+    upd(p=>({...p,weight:[...p.weight,{d:todayStr,w}]}));LS.set("hv9_onboarded",true);setShowOnboard(false)};
+  const overrideBike=(field,val)=>{const v=parseFloat(val);if(isNaN(v)||v<0)return;
+    upd(p=>({...p,sessions:{...p.sessions,[selDate]:{...p.sessions[selDate],[field]:v}}}))};
+  const lsUsage=useMemo(()=>{try{const s=JSON.stringify(localStorage);return(s.length*2/1024/1024).toFixed(1)}catch{return"?"}},[data]);
+  const todayFood=data.food?.[todayStr]||[];
+  const todayFoodTotals=todayFood.reduce((a,f)=>({cal:a.cal+f.cal,pro:a.pro+f.pro,carb:a.carb+f.carb,fat:a.fat+f.fat}),{cal:0,pro:0,carb:0,fat:0});
+  const todaySleep=data.sleep?.[todayStr];
+  const todaySupps=data.supps?.[todayStr]||{};
+  const navyBF=useMemo(()=>{const m=(data.measurements||[]).slice(-1)[0];if(!m||!m.waist||!m.neck)return null;
+    return Math.max(0,86.01*Math.log10(m.waist-(m.neck||15))-70.041*Math.log10(70)+36.76).toFixed(1)},[data.measurements]);
+  const avgDailyDeficit=stats.total>0?Math.round(stats.cal/Math.max(1,dB("2026-04-05",todayStr))):0;
   const fmtTime=s=>`${Math.floor(s/60)}:${(s%60).toString().padStart(2,"0")}`;
   const navDate=n=>{const d=new Date(dP(selDate));d.setDate(d.getDate()+n);setSelDate(dS(d));setActiveSet(null);setShowWarmup(false)};
   const TC={strength:T.acc,bike:T.blue,circuit:T.yel,rest:T.dim};
@@ -579,6 +758,39 @@ function App(){
   return(
   <div style={{background:T.bg,minHeight:"100vh",color:T.txt,paddingBottom:80}}>
 
+    {/* ONBOARDING */}
+    {showOnboard&&<div style={{position:"fixed",inset:0,background:T.bg,zIndex:100,display:"flex",alignItems:"center",justifyContent:"center",padding:24}}>
+      <div style={{maxWidth:340,width:"100%",textAlign:"center"}}>
+        <div style={{fontFamily:"'Bebas Neue'",fontSize:36,color:T.acc,letterSpacing:8,marginBottom:4}}>HENDERSON</div>
+        <div style={{fontFamily:"'Bebas Neue'",fontSize:14,color:T.s3,letterSpacing:6,marginBottom:24}}>.SYS TRAINING</div>
+        <div style={{fontSize:13,color:T.sub,lineHeight:1.7,marginBottom:20}}>
+          Your personal training system. 4 phases cycling annually — BASECAMP, CUT, BUILD, SUSTAIN. Barbell-first programming with bike cardio, landmine golf work, food tracking, and 225 achievements to unlock over years.
+        </div>
+        <div style={{background:T.s1,borderRadius:12,padding:16,marginBottom:16,textAlign:"left"}}>
+          <div style={{fontSize:11,color:T.sub,fontWeight:600,letterSpacing:1,marginBottom:8}}>YOUR EQUIPMENT</div>
+          {["Power Rack + Cable Pulley","Olympic Barbell + 230 lbs plates","Adjustable DBs 5-52.5 lb","Adjustable Bench","Stationary Bike","Landmine Attachment","Resistance Bands"].map((e,i)=>
+            <div key={i} style={{fontSize:11,color:T.txt,padding:"3px 0",display:"flex",gap:6}}>
+              <span style={{color:T.grn}}>✓</span>{e}</div>)}
+        </div>
+        <div style={{background:T.s1,borderRadius:12,padding:16,marginBottom:20}}>
+          <div style={{fontSize:11,color:T.sub,fontWeight:600,letterSpacing:1,marginBottom:8}}>STARTING WEIGHT</div>
+          <input value={onboardW} onChange={e=>setOnboardW(e.target.value)} type="number" step="0.1"
+            style={{width:"100%",padding:12,background:T.s2,border:`1px solid ${T.bdr}`,borderRadius:8,color:T.acc,
+              fontFamily:"'Bebas Neue'",fontSize:32,textAlign:"center",outline:"none"}}/>
+          <div style={{fontSize:10,color:T.dim,marginTop:4}}>We'll track your cut from here → 185 lbs by Aug 21</div>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:20}}>
+          {PHASES.map(p=><div key={p.id} style={{background:T.s1,borderRadius:8,padding:8,textAlign:"left"}}>
+            <div style={{fontSize:9,color:p.c,fontWeight:700,letterSpacing:1}}>{p.n}</div>
+            <div style={{fontSize:8,color:T.dim}}>{p.s}</div>
+            <div style={{fontSize:7,color:T.dim}}>{dP(p.st).toLocaleDateString("en-US",{month:"short",day:"numeric"})} → {dP(p.en).toLocaleDateString("en-US",{month:"short",day:"numeric"})}</div>
+          </div>)}
+        </div>
+        <button onClick={completeOnboard} style={{width:"100%",padding:16,border:"none",borderRadius:10,cursor:"pointer",
+          fontFamily:"'Bebas Neue'",fontSize:20,letterSpacing:4,background:T.acc,color:"#000"}}>BEGIN TRAINING</button>
+      </div>
+    </div>}
+
     {/* HEADER */}
     <div style={{padding:"14px 16px 10px",background:`linear-gradient(180deg,${T.s1},${T.bg})`}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
@@ -587,7 +799,7 @@ function App(){
           <div style={{fontFamily:"'Bebas Neue'",fontSize:22,color:T.acc,letterSpacing:6}}>HENDERSON<span style={{color:T.s3}}>.SYS</span></div>
         </div>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
-          <div style={{fontSize:9,color:T.dim,textAlign:"right"}}>{gP(todayStr).n}<br/>{now.toLocaleDateString("en-US",{month:"short",day:"numeric"})}</div>
+          <div style={{fontSize:9,color:T.dim,textAlign:"right"}}>Y{tYear(todayStr)} · {gP(todayStr).n}<br/>{now.toLocaleDateString("en-US",{month:"short",day:"numeric"})}</div>
           <div style={{width:34,height:34,borderRadius:17,background:T.s2,display:"flex",alignItems:"center",justifyContent:"center",
             border:`2px solid ${readiness>=70?T.grn:readiness>=40?T.yel:T.red}`}}>
             <span style={{fontFamily:"'Bebas Neue'",fontSize:13,color:readiness>=70?T.grn:readiness>=40?T.yel:T.red}}>{readiness}</span></div></div></div>
@@ -601,7 +813,7 @@ function App(){
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
           <div><Lbl>Weight</Lbl><Num style={{fontSize:42,color:T.acc}}>{lastW}</Num><span style={{fontSize:13,color:T.sub,marginLeft:4}}>lbs</span></div>
           <div style={{textAlign:"right"}}><div style={{fontSize:12,color:pace.c,fontWeight:600}}>{pace.t}</div>
-            <div style={{fontSize:10,color:T.dim}}>→ 185 by Aug 21</div></div></div>
+            <div style={{fontSize:10,color:T.dim}}>{lastW>185?"→ 185 by Aug 21":lastW<=186?"✓ At target — maintain":"→ 185"}</div></div></div>
         <div style={{height:5,background:T.s3,borderRadius:3,marginTop:10,overflow:"hidden"}}>
           <div style={{height:"100%",borderRadius:3,background:`linear-gradient(90deg,${T.acc},${T.grn})`,width:`${Math.min(100,(210-lastW)/25*100)}%`,transition:"width .5s"}}/></div>
       </Card>
@@ -639,6 +851,18 @@ function App(){
         </div>
       </Card>
 
+      {/* Weekly Summary */}
+      {weeklySummary.done>0&&<Card>
+        <div style={{fontSize:11,color:T.sub,lineHeight:1.6}}>
+          <span style={{fontWeight:700,color:T.txt}}>This week:</span> {weeklySummary.done} session{weeklySummary.done!==1?"s":""} 
+          {weeklySummary.types.strength>0&&` · ${weeklySummary.types.strength} strength`}
+          {weeklySummary.types.bike>0&&` · ${weeklySummary.types.bike} bike`}
+          {weeklySummary.types.circuit>0&&` · ${weeklySummary.types.circuit} circuit`}
+          {weeklySummary.cal>0&&` · ~${weeklySummary.cal} cal burned`}
+          {weeklySummary.mi>0&&` · ~${weeklySummary.mi} mi ridden`}
+        </div>
+      </Card>}
+
       <Card><div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
         <span style={{fontSize:12,fontWeight:600}}>💧 Water</span>
         <div style={{display:"flex",alignItems:"center",gap:5}}>
@@ -646,6 +870,55 @@ function App(){
           <Num style={{fontSize:18,color:T.blue}}>{stats.waterToday}</Num>
           <button onClick={()=>adjWater(1)} style={{width:26,height:26,borderRadius:13,background:T.blue+"22",border:"none",cursor:"pointer",color:T.blue,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16}}>+</button>
         </div></div></Card>
+
+      {/* Daily Deficit */}
+      <Card><div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <div><div style={{fontSize:11,fontWeight:600}}>🔥 Daily Deficit</div>
+          <div style={{fontSize:9,color:T.dim}}>Avg from training alone</div></div>
+        <div style={{textAlign:"right"}}><Num style={{fontSize:20,color:T.acc}}>{avgDailyDeficit}</Num>
+          <span style={{fontSize:10,color:T.sub}}> cal/day</span></div>
+      </div></Card>
+
+      {/* Food Summary */}
+      <Card style={{cursor:"pointer"}} onClick={()=>{navTo("profile");setProfileTab("food")}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+          <div><div style={{fontSize:11,fontWeight:600}}>🍽️ Food Today</div>
+            <div style={{fontSize:9,color:T.dim}}>{todayFood.length} items logged</div></div>
+          <div style={{display:"flex",gap:10}}>
+            <div style={{textAlign:"center"}}><Num style={{fontSize:16,color:todayFoodTotals.cal>0?T.acc:T.dim}}>{todayFoodTotals.cal}</Num><div style={{fontSize:7,color:T.dim}}>CAL</div></div>
+            <div style={{textAlign:"center"}}><Num style={{fontSize:16,color:T.blue}}>{todayFoodTotals.pro}</Num><div style={{fontSize:7,color:T.dim}}>PRO</div></div>
+          </div>
+        </div>
+      </Card>
+
+      {/* Sleep */}
+      <Card style={{cursor:"pointer"}} onClick={()=>{navTo("profile");setProfileTab("sleep")}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+          <span style={{fontSize:11,fontWeight:600}}>😴 Sleep</span>
+          {todaySleep?<div style={{display:"flex",gap:8}}>
+            <span style={{fontSize:13,fontWeight:600,color:todaySleep.hrs>=7?T.grn:todaySleep.hrs>=6?T.yel:T.red}}>{todaySleep.hrs}h</span>
+            <span style={{fontSize:11,color:T.yel}}>{"★".repeat(todaySleep.q)}</span></div>
+          :<span style={{fontSize:10,color:T.dim}}>Tap to log →</span>}
+        </div>
+      </Card>
+
+      {/* Supplements */}
+      <Card><div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <span style={{fontSize:11,fontWeight:600}}>💊 Supplements</span>
+        <div style={{display:"flex",gap:4}}>
+          {[["cre","Creatine"],["vit","Vitamin"],["pro","Protein"]].map(([k,l])=>(
+            <button key={k} onClick={()=>toggleSupp(k)} style={{padding:"4px 8px",borderRadius:12,fontSize:9,fontWeight:600,border:"none",cursor:"pointer",
+              background:todaySupps[k]?T.grn+"22":T.s3,color:todaySupps[k]?T.grn:T.dim}}>{todaySupps[k]?"✓ ":""}{l}</button>))}
+        </div>
+      </div></Card>
+
+      {/* Next Workout */}
+      {(()=>{const tmrw=new Date(now);tmrw.setDate(tmrw.getDate()+1);const nw=getWorkout(dS(tmrw));
+        return <Card><div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+          <div><div style={{fontSize:9,color:T.dim}}>TOMORROW</div>
+            <div style={{fontSize:12,fontWeight:600,color:TC[nw.type]||T.txt}}>{nw.label}</div></div>
+          {nw.dur>0&&<Pill>⏱ {nw.dur}m</Pill>}
+        </div></Card>})()}
 
       {/* ACHIEVEMENTS */}
       <Card><Lbl>🏆 Achievements ({unlockedMS.length}/{MILES.length})</Lbl>
@@ -676,7 +949,9 @@ function App(){
         <div style={{textAlign:"center",cursor:!isToday?"pointer":"default"}} onClick={()=>!isToday&&setSelDate(todayStr)}>
           <div style={{fontSize:14,fontWeight:700}}>{dateObj.toLocaleDateString("en-US",{weekday:"long"})}</div>
           <div style={{fontSize:10,color:T.sub}}>{dateObj.toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"})}
-            {isToday&&<span style={{color:T.acc,marginLeft:6}}>● Today</span>}</div></div>
+            {isToday&&<span style={{color:T.acc,marginLeft:6}}>● Today</span>}</div>
+          <div style={{marginTop:3}}><span style={{fontSize:8,padding:"2px 8px",borderRadius:10,background:w.ph.c+"22",color:w.ph.c,fontWeight:700,letterSpacing:1}}>{w.ph.n} — {w.ph.s}</span>
+            {w.dl&&<span style={{fontSize:8,padding:"2px 6px",borderRadius:10,background:T.yel+"22",color:T.yel,fontWeight:700,marginLeft:4}}>DELOAD</span>}</div></div>
         <button onClick={()=>navDate(1)} style={{background:T.s2,border:"none",borderRadius:20,width:34,height:34,cursor:"pointer",color:T.sub,display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>›</button>
       </div>
 
@@ -717,6 +992,7 @@ function App(){
           const ns=parseInt(e.s)||0,logged=session?.sets?.[e.n]||[],prev=prevWO?.sets?.[e.n]||[];
           const isAct=activeSet===e.n,pW=parseFloat(e.w)||0,pR=parseInt(e.r)||0;
           const isBB=e.n.includes("BB")||e.n.includes("Barbell");
+          const plates=isBB?plateSplit(e.w):"";
           return <div key={i} style={{borderTop:`1px solid ${T.s3}`}}>
             <div onClick={()=>setActiveSet(isAct?null:e.n)} style={{padding:"8px 14px",cursor:"pointer",background:isAct?T.s2:"transparent"}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
@@ -725,7 +1001,9 @@ function App(){
                     {isBB&&<span style={{fontSize:7,padding:"1px 4px",borderRadius:3,background:T.acc+"22",color:T.acc,fontWeight:700}}>BB</span>}
                     <span style={{fontSize:12,fontWeight:600,color:done?"#555":T.txt}}>{e.n}</span></div>
                   {e.note&&<div style={{fontSize:9,color:T.dim,marginTop:1}}>{e.note}</div>}
+                  {plates&&<div style={{fontSize:8,color:T.acc,marginTop:1,opacity:.7}}>🔩 {plates}</div>}
                   {prev.length>0&&<div style={{fontSize:9,color:T.dim,marginTop:1}}>Last: {prev.filter(Boolean).map(([w,r])=>`${w}×${r}`).join(", ")}</div>}
+                  {isAct&&e.subs&&<div style={{fontSize:8,color:T.blue,marginTop:2}}>↔ Swap: {e.subs}</div>}
                 </div>
                 <div style={{textAlign:"right"}}><div style={{fontFamily:"'Bebas Neue'",fontSize:14,color:TC[w.type]}}>{e.s}×{e.r}</div>
                   {e.w!=="—"&&<div style={{fontSize:9,color:T.dim}}>{e.w} lb</div>}</div></div>
@@ -736,7 +1014,7 @@ function App(){
               {Array.from({length:ns}).map((_,si)=>{const lg=logged[si];const ik=`${e.n}-${si}`;
                 return <div key={si} style={{display:"flex",alignItems:"center",gap:4,marginBottom:3}}>
                   <span style={{fontSize:9,color:T.dim,width:24}}>S{si+1}</span>
-                  {lg?<><Pill color={T.grn+"22"} text={T.grn}>{lg[0]}×{lg[1]} ✓</Pill>
+                  {lg?<><span onClick={ev=>{ev.stopPropagation();if(confirm("Undo this set?"))undoSet(e.n,si)}} style={{cursor:"pointer"}}><Pill color={T.grn+"22"} text={T.grn}>{lg[0]}×{lg[1]} ✓</Pill></span>
                     {data.prs?.[e.n]?.d===selDate&&data.prs[e.n].w===lg[0]&&<Pill color={T.yel+"22"} text={T.yel}>PR!</Pill>}</>
                   :<><input placeholder={`${pW||""}`} value={setInputs[ik+"w"]||""} onChange={ev=>setSetInputs(p=>({...p,[ik+"w"]:ev.target.value}))}
                       type="number" style={{width:48,padding:"5px",background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.acc,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}/>
@@ -751,6 +1029,18 @@ function App(){
             </div>}
           </div>})}
         {w.type!=="rest"&&<div style={{padding:12,borderTop:`1px solid ${T.s3}`,background:T.s2}}>
+          {w.type==="bike"&&<div style={{display:"flex",gap:8,marginBottom:8}}>
+            <div style={{flex:1}}>
+              <div style={{fontSize:8,color:T.dim,marginBottom:2}}>Actual Calories</div>
+              <input value={session?.calOverride||""} onChange={e=>overrideBike("calOverride",e.target.value)} placeholder={`est ~${w.cal}`} type="number"
+                style={{width:"100%",padding:6,background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.acc,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}/>
+            </div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:8,color:T.dim,marginBottom:2}}>Actual Miles</div>
+              <input value={session?.miOverride||""} onChange={e=>overrideBike("miOverride",e.target.value)} placeholder={`est ~${w.mi}`} type="number" step="0.1"
+                style={{width:"100%",padding:6,background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.blue,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}/>
+            </div>
+          </div>}
           <Btn onClick={toggleDone} style={{background:done?T.grn:T.acc,marginBottom:6}}>{done?"✓ COMPLETED":"MARK COMPLETE"}</Btn>
           <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:3}}>
             <span style={{fontSize:9,color:T.dim,marginRight:4}}>Difficulty:</span>
@@ -823,7 +1113,7 @@ function App(){
     {/* ═══ STATS ═══ */}
     {tab==="stats"&&<>
       <div style={{display:"flex",gap:3,marginBottom:10,flexWrap:"wrap"}}>
-        {["overview","prs","calendar","tools"].map(t=><button key={t} onClick={()=>setStatsTab(t)}
+        {["overview","prs","tools"].map(t=><button key={t} onClick={()=>setStatsTab(t)}
           style={{padding:"5px 10px",borderRadius:20,border:"none",cursor:"pointer",fontSize:10,fontWeight:600,
             background:statsTab===t?T.acc+"22":T.s2,color:statsTab===t?T.acc:T.sub}}>{t.toUpperCase()}</button>)}
       </div>
@@ -837,18 +1127,27 @@ function App(){
             </div>})()}
         </Card>
         <Card><Lbl>🔥 Weekly Calories</Lbl><SvgBar data={weeklyChart} dk="cal" color={T.blue} height={80}/></Card>
-        {/* 365-Day Heatmap */}
-        <Card><Lbl>📅 365-Day Map</Lbl>
-          <div style={{display:"flex",flexWrap:"wrap",gap:1}}>
-            {(()=>{const start=new Date("2026-04-05"),cells=[];
-              for(let i=0;i<365;i++){const d=new Date(start);d.setDate(start.getDate()+i);const ds=dS(d),wo=getWorkout(ds);
-                cells.push(<div key={i} style={{width:4.5,height:4.5,borderRadius:0.5,
-                  background:data.sessions?.[ds]?.done?(TC[wo.type]||T.grn):wo.type==="rest"?"#15151A":"#1A1A23",
-                  opacity:data.sessions?.[ds]?.done?1:.3}} title={ds}/>)}return cells})()}
+        {/* 365-Day Heatmap — weekly grid */}
+        <Card><Lbl>📅 Year Map</Lbl>
+          <div style={{overflowX:"auto",paddingBottom:4}}>
+            <div style={{display:"flex",gap:1,minWidth:540}}>
+              {(()=>{const start=new Date("2026-04-05"),weeks=[];
+                for(let w=0;w<53;w++){const wk=[];for(let d=0;d<7;d++){
+                  const idx=w*7+d;if(idx>=365){wk.push(null);continue}
+                  const dt=new Date(start);dt.setDate(start.getDate()+idx);wk.push(dS(dt))}weeks.push(wk)}
+                return weeks.map((wk,wi)=><div key={wi} style={{display:"flex",flexDirection:"column",gap:1}}>
+                  {wk.map((ds,di)=>{if(!ds)return <div key={di} style={{width:9,height:9}}/>;
+                    const wo=getWorkout(ds),dn=data.sessions?.[ds]?.done;
+                    return <div key={di} style={{width:9,height:9,borderRadius:1.5,
+                      background:dn?(TC[wo.type]||T.grn):wo.type==="rest"?"#15151A":"#1A1A22",
+                      opacity:dn?1:.25,cursor:"pointer"}} onClick={()=>{setSelDate(ds);navTo("train")}} title={ds}/>})}
+                </div>)})()}
+            </div>
           </div>
-          <div style={{display:"flex",gap:8,marginTop:6,justifyContent:"center"}}>
-            {[["STR",T.acc],["BIKE",T.blue],["CIR",T.yel]].map(([l,c])=>
-              <div key={l} style={{display:"flex",alignItems:"center",gap:3}}><div style={{width:6,height:6,background:c,borderRadius:1}}/><span style={{fontSize:7,color:T.dim}}>{l}</span></div>)}
+          <div style={{display:"flex",gap:2,marginTop:2}}>
+            <span style={{fontSize:7,color:T.dim,marginRight:4}}>Apr→</span>
+            {[["STR",T.acc],["BIKE",T.blue],["CIR",T.yel],["REST","#15151A"]].map(([l,c])=>
+              <div key={l} style={{display:"flex",alignItems:"center",gap:2}}><div style={{width:7,height:7,background:c,borderRadius:1.5,border:l==="REST"?`1px solid ${T.s3}`:"none"}}/><span style={{fontSize:7,color:T.dim}}>{l}</span></div>)}
           </div>
         </Card>
         {/* Workout Feed */}
@@ -880,24 +1179,6 @@ function App(){
               <div style={{fontSize:9,color:T.dim}}>{dP(pr.d).toLocaleDateString("en-US",{month:"short",day:"numeric"})}</div></div>
             <div style={{textAlign:"right"}}><div style={{fontFamily:"'Bebas Neue'",fontSize:16,color:T.yel}}>{pr.w}×{pr.r}</div>
               <div style={{fontSize:8,color:T.dim}}>1RM: {pr.e1rm}</div></div></div>)}</Card>}
-      {statsTab==="calendar"&&<>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-          <button onClick={()=>{if(calM===0){setCalM(11);setCalY(calY-1)}else setCalM(calM-1)}} style={{background:T.s2,border:"none",borderRadius:20,width:30,height:30,cursor:"pointer",color:T.sub,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16}}>‹</button>
-          <span style={{fontFamily:"'Bebas Neue'",fontSize:15,letterSpacing:3}}>{new Date(calY,calM).toLocaleDateString("en-US",{month:"long",year:"numeric"}).toUpperCase()}</span>
-          <button onClick={()=>{if(calM===11){setCalM(0);setCalY(calY+1)}else setCalM(calM+1)}} style={{background:T.s2,border:"none",borderRadius:20,width:30,height:30,cursor:"pointer",color:T.sub,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16}}>›</button>
-        </div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:2,marginBottom:2}}>
-          {DAYS.map(d=><div key={d} style={{textAlign:"center",fontSize:9,color:T.dim,fontWeight:600}}>{d[0]}</div>)}</div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:2}}>
-          {(()=>{const f=new Date(calY,calM,1),sd=f.getDay(),dim=new Date(calY,calM+1,0).getDate();
-            const cells=[];for(let i=0;i<sd;i++)cells.push(null);for(let d=1;d<=dim;d++)cells.push(new Date(calY,calM,d));
-            return cells.map((cell,i)=>{if(!cell)return <div key={i}/>;const ds=dS(cell),wo=getWorkout(ds),dn=data.sessions?.[ds]?.done,it=ds===todayStr;
-              return <button key={i} onClick={()=>{setSelDate(ds);setTab("train")}} style={{padding:3,background:dn?TC[wo.type]+"22":T.s1,
-                border:it?`2px solid ${T.acc}`:`1px solid ${T.s3}`,borderRadius:8,cursor:"pointer",textAlign:"center",minHeight:34}}>
-                <span style={{fontSize:10,fontWeight:it?700:400,color:it?T.acc:dn?T.txt:T.sub}}>{cell.getDate()}</span>
-                {dn&&<div style={{width:4,height:4,borderRadius:2,background:TC[wo.type],margin:"1px auto 0"}}/>}
-              </button>})})()}</div>
-      </>}
       {statsTab==="tools"&&<>
         {/* Plate Calculator */}
         <Card><Lbl>🔩 Plate Calculator</Lbl>
@@ -909,16 +1190,17 @@ function App(){
           </div>
           {(()=>{const target=parseFloat(plateCalcInput)||0;if(target<45)return <div style={{color:T.dim,fontSize:11,textAlign:"center"}}>Min: 45 lbs (empty bar)</div>;
             const nearest=bbS(target);const perSide=(nearest-45)/2;let rem=perSide;const plates=[];
-            [45,35,25,10].forEach(p=>{const count=Math.floor(rem/p);if(count>0){plates.push(`${count}×${p}`);rem-=count*p}});
+            [45,35,25,15,10,10].forEach(p=>{if(rem>=p){plates.push(p);rem-=p}});
+            const plateStr=plates.length>0?plates.map(p=>p+"lb").join(" + "):"";
             return <div style={{background:T.s2,borderRadius:8,padding:12,textAlign:"center"}}>
               <div style={{fontFamily:"'Bebas Neue'",fontSize:28,color:T.acc}}>{nearest} lbs</div>
               {nearest!==target&&<div style={{fontSize:9,color:T.yel,marginTop:2}}>Snapped from {target} to nearest loadable</div>}
-              <div style={{fontSize:13,color:T.txt,marginTop:8,fontWeight:600}}>{plates.length>0?`Each side: ${plates.join(" + ")}`:"Empty bar"}</div>
+              <div style={{fontSize:13,color:T.txt,marginTop:8,fontWeight:600}}>{plateStr?`Each side: ${plateStr}`:"Empty bar"}</div>
               <div style={{fontSize:10,color:T.dim,marginTop:4}}>Bar (45) + {perSide}×2 = {nearest}</div>
               <div style={{display:"flex",justifyContent:"center",gap:4,marginTop:10}}>
-                {[45,35,25,10].map(p=>{const needed=plates.some(pl=>pl.includes(`×${p}`));
-                  return <div key={p} style={{width:36,height:36,borderRadius:18,display:"flex",alignItems:"center",justifyContent:"center",
-                    fontSize:11,fontWeight:700,background:needed?T.acc+"33":T.s3,color:needed?T.acc:T.dim,
+                {[45,35,25,15,10].map(p=>{const needed=plates.includes(p);
+                  return <div key={p} style={{width:34,height:34,borderRadius:17,display:"flex",alignItems:"center",justifyContent:"center",
+                    fontSize:10,fontWeight:700,background:needed?T.acc+"33":T.s3,color:needed?T.acc:T.dim,
                     border:`2px solid ${needed?T.acc:T.s3}`}}>{p}</div>})}
               </div>
             </div>})()}
@@ -940,17 +1222,19 @@ function App(){
           <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
             {BB_W.map(w=><span key={w} style={{fontSize:11,padding:"4px 8px",borderRadius:6,background:T.s2,color:T.txt,fontWeight:500}}>{w}</span>)}
           </div>
-          <div style={{fontSize:9,color:T.dim,marginTop:6}}>Bar: 45 · Plates: 2×45, 2×35, 2×25, 2×10 · Max: 275</div>
+          <div style={{fontSize:9,color:T.dim,marginTop:6}}>Bar: 45 · Plates: 2×45, 2×35, 2×25, 2×15, 4×10 · Max: 325</div>
         </Card>
       </>}
     </>}
 
     {/* ═══ PROFILE ═══ */}
     {tab==="profile"&&<>
-      <div style={{display:"flex",gap:3,marginBottom:10}}>
-        {["weight","body","gear"].map(t=><button key={t} onClick={()=>setProfileTab(t)}
-          style={{padding:"6px 12px",borderRadius:20,border:"none",cursor:"pointer",fontSize:10,fontWeight:600,
+      <div style={{display:"flex",gap:3,marginBottom:10,flexWrap:"wrap"}}>
+        {["weight","body","food","sleep","gear","backup"].map(t=><button key={t} onClick={()=>setProfileTab(t)}
+          style={{padding:"5px 10px",borderRadius:20,border:"none",cursor:"pointer",fontSize:10,fontWeight:600,
             background:profileTab===t?T.acc+"22":T.s2,color:profileTab===t?T.acc:T.sub}}>{t.toUpperCase()}</button>)}</div>
+
+      {/* WEIGHT */}
       {profileTab==="weight"&&<>
         <Card><Lbl>⚖️ Log Weigh-In</Lbl><div style={{display:"flex",gap:6}}>
           <input value={wInput} onChange={e=>setWInput(e.target.value)} placeholder="210.0" type="number" step="0.1"
@@ -958,7 +1242,7 @@ function App(){
               fontFamily:"'Bebas Neue'",fontSize:22,textAlign:"center",outline:"none"}}
             onKeyDown={e=>e.key==="Enter"&&logWeight()}/>
           <Btn onClick={logWeight} style={{width:"auto",padding:"10px 18px"}}>LOG</Btn></div></Card>
-        <Card><Lbl>History</Lbl>
+        <Card><Lbl>Trend</Lbl>
           <SvgLine data={weightChart} dk="w" color={T.acc} height={100}/>
           {[...data.weight].reverse().slice(0,10).map((e,i)=>{const prev=[...data.weight].reverse()[i+1];const diff=prev?e.w-prev.w:0;
             return <div key={e.d} style={{display:"flex",justifyContent:"space-between",padding:"5px 0",borderBottom:`1px solid ${T.s3}`}}>
@@ -967,34 +1251,237 @@ function App(){
                 {diff!==0&&<span style={{fontSize:9,color:diff<0?T.grn:T.red,fontWeight:600}}>{diff>0?"+":""}{diff.toFixed(1)}</span>}
                 <span style={{fontFamily:"'Bebas Neue'",fontSize:15}}>{e.w}</span></div></div>})}</Card>
       </>}
+
+      {/* BODY MEASUREMENTS */}
       {profileTab==="body"&&<>
-        <Card><Lbl>📏 Measurements</Lbl>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,marginBottom:8}}>
-            {[["waist","Waist"],["chest","Chest"],["arms","Arms"]].map(([k,l])=>
-              <div key={k}><div style={{fontSize:9,color:T.dim,marginBottom:2}}>{l} (in)</div>
+        <Card><Lbl>📏 Body Measurements</Lbl>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,marginBottom:6}}>
+            {[["waist","Waist (in)"],["chest","Chest (in)"],["arms","Arms (in)"],["neck","Neck (in)"],["thighs","Thighs (in)"],["bf","Body Fat %"],["muscle","Muscle Mass"]].map(([k,l])=>
+              <div key={k}><div style={{fontSize:8,color:T.dim,marginBottom:2}}>{l}</div>
                 <input value={measInput[k]} onChange={e=>setMeasInput(p=>({...p,[k]:e.target.value}))} placeholder="—" type="number" step="0.25"
-                  style={{width:"100%",padding:7,background:T.s2,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.txt,fontSize:13,fontWeight:600,textAlign:"center",outline:"none"}}/></div>)}</div>
-          <Btn onClick={logMeas} style={{fontSize:11}}>LOG</Btn></Card>
+                  style={{width:"100%",padding:6,background:T.s2,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.txt,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}/></div>)}</div>
+          <Btn onClick={logMeas} style={{fontSize:11}}>LOG MEASUREMENTS</Btn>
+        </Card>
+        {navyBF&&<Card><Lbl>📐 Est. Body Fat (Navy Method)</Lbl>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+            <div style={{fontSize:11,color:T.sub}}>Based on waist & neck measurements</div>
+            <Num style={{fontSize:24,color:T.acc}}>{navyBF}%</Num></div>
+        </Card>}
         {(data.measurements||[]).length>0&&<Card><Lbl>History</Lbl>
           {[...(data.measurements||[])].reverse().slice(0,8).map((m,i)=>
-            <div key={i} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:`1px solid ${T.s3}`,fontSize:10}}>
-              <span style={{color:T.sub}}>{dP(m.d).toLocaleDateString("en-US",{month:"short",day:"numeric"})}</span>
-              <div style={{display:"flex",gap:6}}>{m.waist>0&&<span>W:{m.waist}"</span>}{m.chest>0&&<span>C:{m.chest}"</span>}{m.arms>0&&<span>A:{m.arms}"</span>}</div></div>)}</Card>}
+            <div key={i} style={{padding:"4px 0",borderBottom:`1px solid ${T.s3}`,fontSize:10}}>
+              <div style={{color:T.sub,marginBottom:2}}>{dP(m.d).toLocaleDateString("en-US",{month:"short",day:"numeric"})}</div>
+              <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+                {m.waist>0&&<span>Waist:{m.waist}"</span>}{m.chest>0&&<span>Chest:{m.chest}"</span>}
+                {m.arms>0&&<span>Arms:{m.arms}"</span>}{m.neck>0&&<span>Neck:{m.neck}"</span>}
+                {m.thighs>0&&<span>Thighs:{m.thighs}"</span>}{m.bf>0&&<span>BF:{m.bf}%</span>}
+                {m.muscle>0&&<span>Muscle:{m.muscle}</span>}
+              </div></div>)}</Card>}
       </>}
+
+      {/* FOOD TRACKER */}
+      {profileTab==="food"&&<>
+        <Card><Lbl>🍽️ Log Food</Lbl>
+          <input value={foodInput.name} onChange={e=>setFoodInput(p=>({...p,name:e.target.value}))} placeholder="Item name (optional)"
+            style={{width:"100%",padding:8,background:T.s2,border:`1px solid ${T.bdr}`,borderRadius:8,color:T.txt,fontSize:12,outline:"none",marginBottom:6}}/>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:4,marginBottom:8}}>
+            {[["cal","Calories*"],["pro","Protein (g)"],["carb","Carbs (g)"],["fat","Fat (g)"]].map(([k,l])=>
+              <div key={k}><div style={{fontSize:7,color:T.dim,marginBottom:2}}>{l}</div>
+                <input value={foodInput[k]} onChange={e=>setFoodInput(p=>({...p,[k]:e.target.value}))} placeholder="0" type="number"
+                  style={{width:"100%",padding:6,background:T.s2,border:`1px solid ${T.bdr}`,borderRadius:6,color:k==="cal"?T.acc:T.txt,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}
+                  onKeyDown={e=>e.key==="Enter"&&addFood()}/></div>)}</div>
+          <Btn onClick={addFood} style={{fontSize:11}}>ADD FOOD</Btn>
+        </Card>
+
+        {/* Daily Totals + Targets */}
+        <Card>
+          {(()=>{const tgt=macroTargets(lastW,gP(todayStr).id);return<>
+          <Lbl>Today vs Target</Lbl>
+          <div style={{fontSize:9,color:T.dim,marginBottom:8}}>{tgt.note} · TDEE-based</div>
+          {[["Calories",todayFoodTotals.cal,tgt.cal,T.acc,""],["Protein",todayFoodTotals.pro,tgt.pro,T.blue,"g"],
+            ["Carbs",todayFoodTotals.carb,tgt.carb,T.yel,"g"],["Fat",todayFoodTotals.fat,tgt.fat,T.red,"g"]
+          ].map(([l,cur,goal,c,u])=><div key={l} style={{marginBottom:6}}>
+            <div style={{display:"flex",justifyContent:"space-between",fontSize:10}}>
+              <span style={{color:T.sub}}>{l}</span>
+              <span><span style={{fontWeight:700,color:cur>goal*1.1?T.red:cur>=goal*.8?T.grn:T.txt}}>{cur}</span>
+                <span style={{color:T.dim}}>/{goal}{u}</span></span></div>
+            <div style={{height:4,background:T.s3,borderRadius:2,marginTop:2,overflow:"hidden"}}>
+              <div style={{height:"100%",borderRadius:2,background:cur>goal*1.1?T.red:c,width:`${Math.min(100,cur/goal*100)}%`,transition:"width .3s"}}/></div>
+          </div>)}
+          </>})()}
+          {/* Macro bar */}
+          {todayFoodTotals.cal>0&&<div style={{display:"flex",height:6,borderRadius:3,overflow:"hidden",marginTop:8}}>
+            {todayFoodTotals.pro>0&&<div style={{flex:todayFoodTotals.pro*4,background:T.blue}}/>}
+            {todayFoodTotals.carb>0&&<div style={{flex:todayFoodTotals.carb*4,background:T.yel}}/>}
+            {todayFoodTotals.fat>0&&<div style={{flex:todayFoodTotals.fat*9,background:T.red}}/>}
+          </div>}
+          {todayFoodTotals.cal>0&&<div style={{display:"flex",justifyContent:"center",gap:8,marginTop:4}}>
+            {[["Pro",T.blue,Math.round(todayFoodTotals.pro*4/todayFoodTotals.cal*100)],
+              ["Carb",T.yel,Math.round(todayFoodTotals.carb*4/todayFoodTotals.cal*100)],
+              ["Fat",T.red,Math.round(todayFoodTotals.fat*9/todayFoodTotals.cal*100)]
+            ].map(([l,c,p])=><div key={l} style={{display:"flex",alignItems:"center",gap:3}}>
+              <div style={{width:6,height:6,borderRadius:3,background:c}}/><span style={{fontSize:8,color:T.dim}}>{l} {p||0}%</span></div>)}
+          </div>}
+        </Card>
+
+        {/* Food List */}
+        {todayFood.length>0&&<Card><Lbl>Items</Lbl>
+          {todayFood.map((f,i)=>
+            <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"5px 0",borderBottom:`1px solid ${T.s3}`}}>
+              <div>
+                <div style={{fontSize:11,fontWeight:600}}>{f.n}</div>
+                <div style={{fontSize:9,color:T.dim}}>{f.pro}p · {f.carb}c · {f.fat}f</div></div>
+              <div style={{display:"flex",alignItems:"center",gap:8}}>
+                <Num style={{fontSize:14,color:T.acc}}>{f.cal}</Num>
+                <button onClick={()=>removeFood(i)} style={{background:T.s3,border:"none",borderRadius:10,width:20,height:20,cursor:"pointer",
+                  color:T.red,fontSize:12,display:"flex",alignItems:"center",justifyContent:"center"}}>×</button>
+              </div></div>)}
+        </Card>}
+
+        {/* Recent Days */}
+        <Card><Lbl>Recent Days</Lbl>
+          {Object.entries(data.food||{}).sort(([a],[b])=>b.localeCompare(a)).slice(0,7).map(([day,items])=>{
+            const t=items.reduce((a,f)=>({c:a.c+f.cal,p:a.p+f.pro}),{c:0,p:0});
+            return <div key={day} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:`1px solid ${T.s3}`}}>
+              <span style={{fontSize:10,color:T.sub}}>{dP(day).toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"})}</span>
+              <div style={{display:"flex",gap:8}}>
+                <span style={{fontSize:10,fontWeight:600,color:T.acc}}>{t.c} cal</span>
+                <span style={{fontSize:10,color:T.blue}}>{t.p}g pro</span>
+              </div></div>})}
+        </Card>
+        {/* Weekly Average */}
+        {Object.keys(data.food||{}).length>=3&&<Card><Lbl>📊 7-Day Average</Lbl>
+          {(()=>{const days=Object.entries(data.food||{}).sort(([a],[b])=>b.localeCompare(a)).slice(0,7);
+            const n=days.length;if(n===0)return null;
+            const avg=days.reduce((a,[,items])=>{const t=items.reduce((x,f)=>({c:x.c+f.cal,p:x.p+f.pro,cb:x.cb+f.carb,ft:x.ft+f.fat}),{c:0,p:0,cb:0,ft:0});
+              return{c:a.c+t.c,p:a.p+t.p,cb:a.cb+t.cb,ft:a.ft+t.ft}},{c:0,p:0,cb:0,ft:0});
+            const tgt=macroTargets(lastW,gP(todayStr).id);
+            return <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:6,textAlign:"center"}}>
+              {[["Cal",Math.round(avg.c/n),tgt.cal,T.acc],["Pro",Math.round(avg.p/n),tgt.pro,T.blue],
+                ["Carb",Math.round(avg.cb/n),tgt.carb,T.yel],["Fat",Math.round(avg.ft/n),tgt.fat,T.red]
+              ].map(([l,v,g,c])=><div key={l}>
+                <Num style={{fontSize:18,color:v>g*1.1?T.red:v>=g*.8?T.grn:c}}>{v}</Num>
+                <div style={{fontSize:7,color:T.dim}}>{l} avg</div>
+                <div style={{fontSize:7,color:T.dim}}>/{g}</div>
+              </div>)}
+            </div>})()}
+        </Card>}
+      </>}
+
+      {/* SLEEP */}
+      {profileTab==="sleep"&&<>
+        <Card><Lbl>😴 Log Sleep</Lbl>
+          <div style={{display:"flex",gap:8,alignItems:"flex-end",marginBottom:8}}>
+            <div style={{flex:1}}>
+              <div style={{fontSize:9,color:T.dim,marginBottom:2}}>Hours</div>
+              <input value={sleepInput.hrs} onChange={e=>setSleepInput(p=>({...p,hrs:e.target.value}))} placeholder="7.5" type="number" step="0.5"
+                style={{width:"100%",padding:8,background:T.s2,border:`1px solid ${T.bdr}`,borderRadius:8,color:T.acc,fontFamily:"'Bebas Neue'",fontSize:22,textAlign:"center",outline:"none"}}/>
+            </div>
+            <div>
+              <div style={{fontSize:9,color:T.dim,marginBottom:2}}>Quality</div>
+              <div style={{display:"flex",gap:3}}>
+                {[1,2,3,4,5].map(v=><button key={v} onClick={()=>setSleepInput(p=>({...p,q:v}))}
+                  style={{width:26,height:26,borderRadius:13,border:`1px solid ${sleepInput.q>=v?T.yel:T.bdr}`,
+                    background:sleepInput.q>=v?T.yel+"22":"transparent",color:sleepInput.q>=v?T.yel:T.dim,
+                    fontSize:10,fontWeight:600,cursor:"pointer"}}>{"★"}</button>)}
+              </div>
+            </div>
+          </div>
+          <Btn onClick={logSleep} style={{fontSize:11}}>LOG SLEEP</Btn>
+          <div style={{fontSize:9,color:T.dim,marginTop:6,textAlign:"center"}}>7+ hrs & 4+ stars = readiness boost. Under 6 hrs = readiness penalty.</div>
+        </Card>
+
+        {/* Sleep History */}
+        <Card><Lbl>History</Lbl>
+          {Object.keys(data.sleep||{}).length===0?<div style={{color:T.dim,fontSize:11,textAlign:"center",padding:10}}>No sleep data yet</div>:
+          Object.entries(data.sleep).sort(([a],[b])=>b.localeCompare(a)).slice(0,14).map(([day,s])=>
+            <div key={day} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:`1px solid ${T.s3}`}}>
+              <span style={{fontSize:10,color:T.sub}}>{dP(day).toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"})}</span>
+              <div style={{display:"flex",gap:8,alignItems:"center"}}>
+                <span style={{fontSize:12,fontWeight:600,color:s.hrs>=7?T.grn:s.hrs>=6?T.yel:T.red}}>{s.hrs}h</span>
+                <span style={{fontSize:10,color:T.yel}}>{"★".repeat(s.q)}</span>
+              </div></div>)}
+        </Card>
+
+        {/* Sleep chart — hours bars + quality dots */}
+        {Object.keys(data.sleep||{}).length>=3&&<Card><Lbl>Sleep Trend</Lbl>
+          {(()=>{const entries=Object.entries(data.sleep).sort(([a],[b])=>a.localeCompare(b)).slice(-14);
+            const maxH=Math.max(...entries.map(([,s])=>s.hrs),9);
+            return <div style={{display:"flex",alignItems:"flex-end",gap:2,height:90}}>
+              {entries.map(([d,s],i)=>{const hPct=s.hrs/maxH*100;const qColor=[T.red,T.red,T.yel,T.yel,T.grn,T.grn][s.q]||T.dim;
+                return <div key={i} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",height:"100%",justifyContent:"flex-end"}}>
+                  <div style={{width:5,height:5,borderRadius:5,background:qColor,marginBottom:2}} title={`Q:${s.q}`}/>
+                  <div style={{width:"80%",height:`${hPct}%`,background:s.hrs>=7?T.grn+"66":s.hrs>=6?T.yel+"66":T.red+"66",borderRadius:"3px 3px 0 0",minHeight:4}}/>
+                  <div style={{fontSize:6,color:T.dim,marginTop:2}}>{s.hrs}</div>
+                </div>})}
+            </div>})()}
+          <div style={{display:"flex",justifyContent:"center",gap:8,marginTop:6}}>
+            {[["Bar = hours",T.grn],["Dot = quality",T.yel]].map(([l,c])=>
+              <div key={l} style={{display:"flex",alignItems:"center",gap:3}}><div style={{width:6,height:6,borderRadius:3,background:c}}/><span style={{fontSize:7,color:T.dim}}>{l}</span></div>)}
+          </div>
+        </Card>}
+      </>}
+
+      {/* GEAR */}
       {profileTab==="gear"&&<Card><Lbl>🏋️ Equipment</Lbl>
-        {[["Power Rack + Cable Pulley","Squats, pull-ups, lat pulldown, rows, face pulls, pushdowns"],
-          ["Olympic Barbell (45 lb)","Back squat, bench, OHP, rows, RDL, hip thrust"],
-          ["Plates: 2×45, 2×35, 2×25, 2×10","230 lbs total · Max load: 275 lbs"],
-          ["Adjustable DBs (5-52.5 lb)","Accessories, isolation, carries"],
-          ["Adjustable Bench (8-pos)","Incline, flat, decline, support"],
-          ["Magnetic Stationary Bike","Intervals, tempo, long rides"],
-          ["Resistance Bands (5-125 lb)","Assistance, mobility, resistance"],
-          ["Landmine Attachment","Rotational golf work, presses, rows"],
-          ["Smart Scale (Etekcity)","Body weight + composition"],
-          ["Floor Mats (24 sq ft)","Impact protection"]
+        {[["Power Rack + Cable Pulley (D1002)","1200 lb capacity. Squats, bench, pull-ups, lat pulldown, cable rows, face pulls, pushdowns, cable curls, cable kickbacks, cable woodchops"],
+          ["Fitvids Olympic Barbell (7ft, 45 lb)","700 lb capacity. Back squat, bench, OHP, rows, RDL, hip thrust"],
+          ["Fitvids Bumper Plates (280 lbs)","2×45, 2×35, 2×25, 2×15, 4×10 · Max bar load: 325 lbs · 24 loadable weights"],
+          ["Moveta Adjustable DBs (5-52.5 lb)","15-in-1 dial adjust. Presses, rows, curls, carries, lunges, lateral raises"],
+          ["NicePeople Adjustable Bench","660 lb capacity · 8 positions. Flat, incline 15-75°, decline. Foldable."],
+          ["YPOO Magnetic Stationary Bike","Bluetooth app · 330 lb capacity. Intervals, tempo, Z2 rides, HIIT"],
+          ["Jamestry Resistance Bands (5-125 lb)","5 levels. Pull-up assist, band pull-aparts, banded walks, mobility, warm-ups"],
+          ["Landmine Attachment","Rack-mounted. Rotations, presses, Meadows rows, anti-rotation holds, squat-to-press"],
+          ["Eocnrhe Weight Plate Tree","300 lb capacity. Organizes all plates + barbell storage post"],
+          ["Vinsguir Ab Roller Wheel","Ab rollouts — one of the best core exercises. Kneeling and standing progressions"],
+          ["DMoose Ankle Straps","Cable kickbacks, cable leg extensions, cable hip abductions, cable hamstring curls"],
+          ["Bodyprox Knee Wraps (2-pack)","Joint support for heavy squats, leg press, lunges. Wrap tighter as weight increases"],
+          ["Beast Rage Lifting Wrist Straps","Grip support for heavy RDLs, rows, farmer carries, shrugs. Use when grip fails before target muscle"],
+          ["Power Guidance Squat Pad","Bar pad for hip thrusts, front squats, lunges. Protects neck/hips on heavy barbell work"],
+          ["Etekcity Smart Scale","Bluetooth · Body weight, BMI, body fat %, muscle mass. Syncs to phone app"],
+          ["ProsourceFit Floor Mats (24 sq ft)","½ inch EVA foam · 6 tiles. Impact protection under rack + floor work area"]
         ].map(([n,d],i)=><div key={i} style={{padding:"6px 0",borderBottom:`1px solid ${T.s3}`}}>
           <div style={{display:"flex",alignItems:"center",gap:5}}><div style={{width:5,height:5,borderRadius:3,background:T.grn}}/><span style={{fontSize:11,fontWeight:600}}>{n}</span></div>
           <div style={{fontSize:9,color:T.dim,marginLeft:10,marginTop:1}}>{d}</div></div>)}</Card>}
+
+      {/* BACKUP / RESTORE */}
+      {profileTab==="backup"&&<>
+        <Card><Lbl>💾 Backup Data</Lbl>
+          <div style={{fontSize:11,color:T.sub,marginBottom:8}}>Download a full JSON backup of all your data — sessions, sets, PRs, weight, measurements, food, sleep, everything.</div>
+          <Btn onClick={backupData}>DOWNLOAD JSON BACKUP</Btn>
+          <button onClick={()=>{let t=`HENDERSON.SYS EXPORT — ${new Date().toLocaleString()}\n\n`;
+            t+=`WEIGHT (${data.weight.length} entries):\n`;data.weight.forEach(e=>t+=`${e.d}: ${e.w}\n`);
+            t+=`\nSESSIONS (${Object.keys(data.sessions||{}).filter(k=>data.sessions[k]?.done).length} completed):\n`;
+            Object.entries(data.sessions||{}).sort().forEach(([d,s])=>{if(s.done){t+=`${d}: ${getWorkout(d).label}${s.rating?` (${s.rating}/5)`:""}${s.notes?` — ${s.notes}`:""}\n`;
+              if(s.sets)Object.entries(s.sets).forEach(([ex,sets])=>t+=`  ${ex}: ${sets.filter(Boolean).map(([w,r])=>`${w}×${r}`).join(", ")}\n`)}});
+            t+=`\nPRs:\n`;Object.entries(data.prs||{}).sort(([,a],[,b])=>b.e1rm-a.e1rm).forEach(([n,p])=>t+=`${n}: ${p.w}×${p.r} (1RM: ${p.e1rm}) on ${p.d}\n`);
+            navigator.clipboard.writeText(t).then(()=>alert("Copied to clipboard!")).catch(()=>{const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand("copy");document.body.removeChild(ta);alert("Copied!")})}}
+            style={{width:"100%",padding:10,marginTop:6,border:`1px dashed ${T.bdr}`,borderRadius:8,background:"transparent",cursor:"pointer",color:T.sub,fontSize:11,fontWeight:600}}>
+            📋 COPY AS TEXT TO CLIPBOARD</button>
+        </Card>
+        <Card><Lbl>📂 Restore Data</Lbl>
+          <div style={{fontSize:11,color:T.sub,marginBottom:8}}>Upload a previously downloaded backup file to restore all data. This will overwrite current data.</div>
+          <label style={{display:"block",width:"100%",padding:13,borderRadius:8,background:T.s2,border:`1px dashed ${T.bdr}`,
+            textAlign:"center",cursor:"pointer",fontSize:12,fontWeight:600,color:T.sub}}>
+            TAP TO SELECT BACKUP FILE
+            <input type="file" accept=".json" onChange={restoreData} style={{display:"none"}}/>
+          </label>
+        </Card>
+        <Card><Lbl style={{color:T.red}}>⚠️ Reset All Data</Lbl>
+          <div style={{fontSize:11,color:T.sub,marginBottom:8}}>Permanently delete all tracked data. This cannot be undone. Download a backup first.</div>
+          <Btn onClick={resetData} style={{background:T.red}}>RESET EVERYTHING</Btn>
+        </Card>
+        <Card><Lbl>📦 Storage Usage</Lbl>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+            <div style={{fontSize:11,color:T.sub}}>localStorage used</div>
+            <div style={{fontSize:13,fontWeight:700,color:parseFloat(lsUsage)>4?T.red:parseFloat(lsUsage)>2?T.yel:T.grn}}>{lsUsage} MB / ~5 MB</div>
+          </div>
+          <div style={{height:6,background:T.s3,borderRadius:3,marginTop:6,overflow:"hidden"}}>
+            <div style={{height:"100%",borderRadius:3,background:parseFloat(lsUsage)>4?T.red:parseFloat(lsUsage)>2?T.yel:T.grn,
+              width:`${Math.min(100,parseFloat(lsUsage)/5*100)}%`}}/></div>
+          {parseFloat(lsUsage)>3&&<div style={{fontSize:9,color:T.yel,marginTop:4}}>⚠ Storage getting full. Download a backup and consider clearing old food data.</div>}
+        </Card>
+      </>}
     </>}
 
     </div>
