@@ -99,7 +99,7 @@ const WARMUPS={lower:["BW Squat ×10","Leg Swings ×10 ea","Hip Circles ×10 ea"
 // ══ 125 ACHIEVEMENTS — BUILT FOR YEARS, NOT MONTHS ══
 // Realistic at 5-6 sessions/wk with vacations, sick days, and life.
 // Sessions: ~260/yr · Miles: ~1,500/yr · Calories: ~100K/yr · Volume: ~750K/yr · Hours: ~250/yr
-const ACH_CATS=["GRIND","IRON","CARDIO","BODY","STREAK","LIFE","🦖 JURASSIC","⭐ STAR WARS","🎮 HALO","🎬 CULTURE","👑 LEGEND"];
+const ACH_CATS=["GRIND","IRON","CARDIO","BODY","STREAK","LIFE","🦖 JURASSIC","⭐ STAR WARS","🎮 HALO","🎬 CULTURE","🏟️ SPORTS","👑 LEGEND"];
 const MILES=[
   // ══ GRIND — SESSION COUNT + CONSISTENCY ══ (20)
   {id:"g1",n:"First Blood",d:"Complete first workout",c:"GRIND",i:"⚡",req:s=>s.total>=1},
@@ -334,8 +334,54 @@ const MILES=[
   {id:"cu29",n:"By Order",d:"100 sessions. By order of the Peaky Blinders.",c:"🎬 CULTURE",i:"🎩",req:s=>s.total>=100},
   {id:"cu30",n:"The Dude Abides",d:"Come back after 10 breaks. Still here.",c:"🎬 CULTURE",i:"🎳",req:s=>s.comebacks>=10},
 
+  // ══ 🏟️ SPORTS CINEMA ══ (40)
+  // Rocky, Rudy, Hoosiers, Field of Dreams, Karate Kid, Happy Gilmore, Caddyshack,
+  // Remember the Titans, Miracle, Any Given Sunday, Warrior, Dodgeball, Major League,
+  // Sandlot, Moneyball, Coach Carter, Space Jam, Talladega Nights, Invincible, Creed,
+  // A League of Their Own, Cinderella Man, The Natural, Tin Cup, Bull Durham
+  {id:"sp1",n:"Yo Adrian",d:"Set your first PR. You did it!",c:"🏟️ SPORTS",i:"🥊",req:s=>s.prCount>=1},
+  {id:"sp2",n:"Go The Distance",d:"30-day streak. All 15 rounds.",c:"🏟️ SPORTS",i:"🥊",req:s=>s.maxStreak>=30},
+  {id:"sp3",n:"Eye Of The Tiger",d:"10 workouts rated 5/5. Savage.",c:"🏟️ SPORTS",i:"🐯",req:s=>s.rated5>=10},
+  {id:"sp4",n:"Italian Stallion",d:"200 sessions. South Philly toughness.",c:"🏟️ SPORTS",i:"🇮🇹",req:s=>s.total>=200},
+  {id:"sp5",n:"There Is No Tomorrow",d:"45-day streak. Leave it all in the gym.",c:"🏟️ SPORTS",i:"🥊",req:s=>s.maxStreak>=45},
+  {id:"sp6",n:"If I Can Change",d:"Lost 25 lbs. And you can change.",c:"🏟️ SPORTS",i:"🥊",req:s=>s.wLost>=25},
+  {id:"sp7",n:"One More Round",d:"Come back after 5 breaks. Keep getting up.",c:"🏟️ SPORTS",i:"🥊",req:s=>s.comebacks>=5},
+  {id:"sp8",n:"Creed",d:"100 sessions. Legacy built, not inherited.",c:"🏟️ SPORTS",i:"🥊",req:s=>s.total>=100},
+  {id:"sp9",n:"Rudy! Rudy!",d:"50 sessions. Heart over size. Every time.",c:"🏟️ SPORTS",i:"🏈",req:s=>s.total>=50},
+  {id:"sp10",n:"Five Foot Nothin",d:"First 25 sessions. Nobody believed you.",c:"🏟️ SPORTS",i:"🏈",req:s=>s.total>=25},
+  {id:"sp11",n:"If You Build It",d:"Complete first workout. They will come.",c:"🏟️ SPORTS",i:"⚾",req:s=>s.total>=1},
+  {id:"sp12",n:"Is This Heaven",d:"No. It's Grandville. 500 sessions.",c:"🏟️ SPORTS",i:"⚾",req:s=>s.total>=500},
+  {id:"sp13",n:"Wax On Wax Off",d:"25 perfect weeks. Discipline is everything.",c:"🏟️ SPORTS",i:"🥋",req:s=>s.perfectWeeks>=25},
+  {id:"sp14",n:"Sweep The Leg",d:"Squat 225. No mercy.",c:"🏟️ SPORTS",i:"🥋",req:s=>s.squatMax>=225},
+  {id:"sp15",n:"Inches",d:"Fight for every rep. 100 sessions rated 4+.",c:"🏟️ SPORTS",i:"🏈",req:s=>s.rated4p>=100},
+  {id:"sp16",n:"Do You Believe",d:"Hit every target: 185 lbs + SQ225 + 200 sessions.",c:"🏟️ SPORTS",i:"🏒",req:s=>s.wLost>=25&&s.squatMax>=225&&s.total>=200},
+  {id:"sp17",n:"Be The Ball",d:"500 miles on the bike. Total focus.",c:"🏟️ SPORTS",i:"⛳",req:s=>s.mi>=500},
+  {id:"sp18",n:"Cinderella Story",d:"10 PRs. Nobody saw you coming.",c:"🏟️ SPORTS",i:"⛳",req:s=>s.prCount>=10},
+  {id:"sp19",n:"The Price Is Wrong",d:"Squat 275. Aggressive energy.",c:"🏟️ SPORTS",i:"⛳",req:s=>s.squatMax>=275},
+  {id:"sp20",n:"Tin Cup",d:"1,000 miles. Full send, no laying up.",c:"🏟️ SPORTS",i:"⛳",req:s=>s.mi>=1000},
+  {id:"sp21",n:"Just A Bit Outside",d:"20 PRs. Dialing it in.",c:"🏟️ SPORTS",i:"⚾",req:s=>s.prCount>=20},
+  {id:"sp22",n:"No Crying",d:"15 workouts rated 5/5. Tough it out.",c:"🏟️ SPORTS",i:"⚾",req:s=>s.rated5>=15},
+  {id:"sp23",n:"You're Killing Me",d:"Burn 50K calories. Exhausting.",c:"🏟️ SPORTS",i:"⚾",req:s=>s.cal>=50000},
+  {id:"sp24",n:"Heroes Get Remembered",d:"But legends never die. 750 sessions.",c:"🏟️ SPORTS",i:"⚾",req:s=>s.total>=750},
+  {id:"sp25",n:"Our Deepest Fear",d:"Bench 185. Your power is limitless.",c:"🏟️ SPORTS",i:"🏀",req:s=>s.benchMax>=185},
+  {id:"sp26",n:"Left Side Strong Side",d:"All big lifts over 135. Balanced.",c:"🏟️ SPORTS",i:"🏈",req:s=>s.squatMax>=135&&s.benchMax>=135&&s.rowMax>=135&&s.ohpMax>=95},
+  {id:"sp27",n:"Adapt Or Die",d:"Come back 10 times. You keep adapting.",c:"🏟️ SPORTS",i:"⚾",req:s=>s.comebacks>=10},
+  {id:"sp28",n:"I Wanna Go Fast",d:"100 bike sessions. Shake and bake.",c:"🏟️ SPORTS",i:"🏎",req:s=>s.bikeSess>=100},
+  {id:"sp29",n:"Welcome To The Jam",d:"275 sessions. Year 1 complete.",c:"🏟️ SPORTS",i:"🏀",req:s=>s.total>=275},
+  {id:"sp30",n:"Dodge A Wrench",d:"50 workouts rated 4+. If you can dodge...",c:"🏟️ SPORTS",i:"🔴",req:s=>s.rated4p>=50},
+  {id:"sp31",n:"Invincible",d:"14-day streak. Heart of a walk-on.",c:"🏟️ SPORTS",i:"🏈",req:s=>s.maxStreak>=14},
+  {id:"sp32",n:"I'm Not Done",d:"3 comebacks. Warrior mentality.",c:"🏟️ SPORTS",i:"🥋",req:s=>s.comebacks>=3},
+  {id:"sp33",n:"The Natural",d:"First 200+ lb PR. Born for this.",c:"🏟️ SPORTS",i:"⚾",req:s=>s.anyPR200},
+  {id:"sp34",n:"Cinderella Man",d:"500 sessions through everything life throws.",c:"🏟️ SPORTS",i:"🥊",req:s=>s.total>=500},
+  {id:"sp35",n:"Remember The Titans",d:"1,000 sessions. Never forget what built you.",c:"🏟️ SPORTS",i:"🏈",req:s=>s.total>=1000},
+  {id:"sp36",n:"Mighty Ducks",d:"21-day streak. Flying V formation.",c:"🏟️ SPORTS",i:"🏒",req:s=>s.maxStreak>=21},
+  {id:"sp37",n:"Clear Eyes Full Hearts",d:"10 perfect weeks. Can't lose.",c:"🏟️ SPORTS",i:"🏈",req:s=>s.perfectWeeks>=10},
+  {id:"sp38",n:"Hit The Bull",d:"Burn 100K calories. Crash Davis style.",c:"🏟️ SPORTS",i:"⚾",req:s=>s.cal>=100000},
+  {id:"sp39",n:"Round 15",d:"Squat+Bench+OHP+Row all over 185. Championship round.",c:"🏟️ SPORTS",i:"🥊",req:s=>s.squatMax>=185&&s.benchMax>=185&&s.ohpMax>=135&&s.rowMax>=185},
+  {id:"sp40",n:"We Are Marshall",d:"Come back after 7 breaks. Always rebuild.",c:"🏟️ SPORTS",i:"🏈",req:s=>s.comebacks>=7},
+
   // ══ 👑 LEGEND — LONG-TERM ELITE ══ (12)
-  {id:"L1",n:"The 1%",d:"Unlock 80 achievements",c:"👑 LEGEND",i:"👑",req:s=>s.unlocked>=80},
+  {id:"L1",n:"The 1%",d:"Unlock 100 achievements",c:"👑 LEGEND",i:"👑",req:s=>s.unlocked>=100},
   {id:"L2",n:"Apex Predator",d:"SQ275+BP225+200 sessions",c:"👑 LEGEND",i:"🦁",req:s=>s.squatMax>=275&&s.benchMax>=225&&s.total>=200},
   {id:"L3",n:"Grandville's Finest",d:"500+ sessions (~2 years)",c:"👑 LEGEND",i:"🏛",req:s=>s.total>=500},
   {id:"L4",n:"Complete Package",d:"SQ225+BP185+OHP135+ROW185+185lbs",c:"👑 LEGEND",i:"🌟",req:s=>s.squatMax>=225&&s.benchMax>=185&&s.ohpMax>=135&&s.rowMax>=185&&s.wLost>=25},
@@ -346,7 +392,7 @@ const MILES=[
   {id:"L9",n:"Million Calorie Club",d:"1M calories burned",c:"👑 LEGEND",i:"☀",req:s=>s.cal>=1000000},
   {id:"L10",n:"Decade Strong",d:"750 sessions + 5M vol + 5K miles",c:"👑 LEGEND",i:"⭐",req:s=>s.total>=750&&s.totalVol>=5000000&&s.mi>=5000},
   {id:"L11",n:"Immortal",d:"1,000 sessions + 10M vol + 10K miles",c:"👑 LEGEND",i:"💎",req:s=>s.total>=1000&&s.totalVol>=10000000&&s.mi>=10000},
-  {id:"L12",n:"GOAT",d:"Unlock 120 achievements",c:"👑 LEGEND",i:"🐐",req:s=>s.unlocked>=120},
+  {id:"L12",n:"GOAT",d:"Unlock 150 achievements",c:"👑 LEGEND",i:"🐐",req:s=>s.unlocked>=150},
 ];
 
 // ══ WORKOUT ENGINE ══
