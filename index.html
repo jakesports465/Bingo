@@ -699,7 +699,10 @@ function App(){
   const[calY,setCalY]=useState(new Date().getFullYear());
   const[wInput,setWInput]=useState("");
   const[activeSet,setActiveSet]=useState(null);
+  const siRef=useRef({});
   const[setInputs,setSetInputs]=useState({});
+  const updateSI=(k,v)=>{siRef.current[k]=v};
+  const getSI=(k)=>siRef.current[k]||"";
   const[restTimer,setRestTimer]=useState(0);
   const[workoutTimer,setWorkoutTimer]=useState(0);
   const[workoutActive,setWorkoutActive]=useState(false);
@@ -710,6 +713,8 @@ function App(){
   const[measInput,setMeasInput]=useState({waist:"",chest:"",arms:"",neck:"",thighs:"",bf:"",muscle:""});
   const[sleepInput,setSleepInput]=useState({hrs:"",q:0});
   const[foodInput,setFoodInput]=useState({name:"",cal:"",pro:"",carb:"",fat:""});
+  const foodRef=useRef({name:"",cal:"",pro:"",carb:"",fat:""});
+  const[foodKey,setFoodKey]=useState(0);
   const[plateCalcInput,setPlateCalcInput]=useState("");
   const rR=useRef(null),wR=useRef(null);
 
@@ -808,10 +813,10 @@ function App(){
     if(Object.keys(m).length>1)upd(p=>({...p,measurements:[...(p.measurements||[]).filter(e=>e.d!==todayStr),m]}));setMeasInput({waist:"",chest:"",arms:"",neck:"",thighs:"",bf:"",muscle:""})};
   const logSleep=()=>{const h=parseFloat(sleepInput.hrs);if(isNaN(h)||h<0||h>16||!sleepInput.q)return;
     upd(p=>({...p,sleep:{...p.sleep,[todayStr]:{hrs:h,q:sleepInput.q}}}));setSleepInput({hrs:"",q:0})};
-  const addFood=()=>{const c=parseInt(foodInput.cal);if(isNaN(c)||c<=0)return;
-    const entry={n:foodInput.name||"Quick Add",cal:c,pro:parseInt(foodInput.pro)||0,carb:parseInt(foodInput.carb)||0,fat:parseInt(foodInput.fat)||0,t:Date.now()};
+  const addFood=()=>{const f=foodRef.current;const c=parseInt(f.cal);if(isNaN(c)||c<=0)return;
+    const entry={n:f.name||"Quick Add",cal:c,pro:parseInt(f.pro)||0,carb:parseInt(f.carb)||0,fat:parseInt(f.fat)||0,t:Date.now()};
     upd(p=>{const day=p.food?.[todayStr]||[];return{...p,food:{...p.food,[todayStr]:[...day,entry]}}});
-    setFoodInput({name:"",cal:"",pro:"",carb:"",fat:""})};
+    foodRef.current={name:"",cal:"",pro:"",carb:"",fat:""};setFoodKey(k=>k+1)};
   const removeFood=(idx)=>upd(p=>{const day=[...(p.food?.[todayStr]||[])];day.splice(idx,1);return{...p,food:{...p.food,[todayStr]:day}}});
   const toggleSupp=(key)=>upd(p=>{const day=p.supps?.[todayStr]||{};return{...p,supps:{...p.supps,[todayStr]:{...day,[key]:!day[key]}}}});
   const undoSet=(exN,si)=>upd(p=>{const sess={...p.sessions[selDate]};if(!sess?.sets?.[exN])return p;
@@ -1115,13 +1120,13 @@ function App(){
                   <span style={{fontSize:9,color:T.dim,width:24}}>S{si+1}</span>
                   {lg?<><span onClick={ev=>{ev.stopPropagation();if(confirm("Undo this set?"))undoSet(e.n,si)}} style={{cursor:"pointer"}}><Pill color={T.grn+"22"} text={T.grn}>{lg[0]}×{lg[1]} ✓</Pill></span>
                     {data.prs?.[e.n]?.d===selDate&&data.prs[e.n].w===lg[0]&&<Pill color={T.yel+"22"} text={T.yel}>PR!</Pill>}</>
-                  :<><input placeholder={`${pW||""}`} value={setInputs[ik+"w"]||""} onChange={ev=>setSetInputs(p=>({...p,[ik+"w"]:ev.target.value}))}
-                      type="number" style={{width:48,padding:"5px",background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.acc,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}/>
+                  :<><input placeholder={`${pW||""}`} defaultValue="" onInput={ev=>updateSI(ik+"w",ev.target.value)}
+                      type="number" inputMode="decimal" style={{width:48,padding:"5px",background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.acc,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}/>
                     <span style={{color:T.dim,fontSize:10}}>×</span>
-                    <input placeholder={`${pR||""}`} value={setInputs[ik+"r"]||""} onChange={ev=>setSetInputs(p=>({...p,[ik+"r"]:ev.target.value}))}
-                      type="number" style={{width:36,padding:"5px",background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.txt,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}
-                      onKeyDown={ev=>{if(ev.key==="Enter"){logSet(e.n,si,setInputs[ik+"w"]||pW,setInputs[ik+"r"]||pR);setSetInputs(p=>{const n={...p};delete n[ik+"w"];delete n[ik+"r"];return n})}}}/>
-                    <button onClick={()=>{logSet(e.n,si,setInputs[ik+"w"]||pW,setInputs[ik+"r"]||pR);setSetInputs(p=>{const n={...p};delete n[ik+"w"];delete n[ik+"r"];return n})}}
+                    <input placeholder={`${pR||""}`} defaultValue="" onInput={ev=>updateSI(ik+"r",ev.target.value)}
+                      type="number" inputMode="numeric" style={{width:36,padding:"5px",background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.txt,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}
+                      onKeyDown={ev=>{if(ev.key==="Enter"){logSet(e.n,si,getSI(ik+"w")||pW,getSI(ik+"r")||pR);delete siRef.current[ik+"w"];delete siRef.current[ik+"r"]}}}/>
+                    <button onClick={()=>{logSet(e.n,si,getSI(ik+"w")||pW,getSI(ik+"r")||pR);delete siRef.current[ik+"w"];delete siRef.current[ik+"r"]}}
                       style={{padding:"5px 8px",borderRadius:6,background:T.acc,border:"none",cursor:"pointer",color:"#000",fontSize:9,fontWeight:700}}>LOG</button></>}
                 </div>})}
               <div style={{fontSize:8,color:T.dim,marginTop:2}}>Rest: {e.rest}s</div>
@@ -1380,13 +1385,13 @@ function App(){
 
       {/* FOOD TRACKER */}
       {profileTab==="food"&&<>
-        <Card><Lbl>🍽️ Log Food</Lbl>
-          <input value={foodInput.name} onChange={e=>setFoodInput(p=>({...p,name:e.target.value}))} placeholder="Item name (optional)"
+        <Card key={`food-${foodKey}`}><Lbl>🍽️ Log Food</Lbl>
+          <input defaultValue="" onInput={e=>{foodRef.current.name=e.target.value}} placeholder="Item name (optional)"
             style={{width:"100%",padding:8,background:T.s2,border:`1px solid ${T.bdr}`,borderRadius:8,color:T.txt,fontSize:12,outline:"none",marginBottom:6}}/>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:4,marginBottom:8}}>
             {[["cal","Calories*"],["pro","Protein (g)"],["carb","Carbs (g)"],["fat","Fat (g)"]].map(([k,l])=>
               <div key={k}><div style={{fontSize:7,color:T.dim,marginBottom:2}}>{l}</div>
-                <input value={foodInput[k]} onChange={e=>setFoodInput(p=>({...p,[k]:e.target.value}))} placeholder="0" type="number"
+                <input defaultValue="" onInput={e=>{foodRef.current[k]=e.target.value}} placeholder="0" type="number" inputMode="decimal"
                   style={{width:"100%",padding:6,background:T.s2,border:`1px solid ${T.bdr}`,borderRadius:6,color:k==="cal"?T.acc:T.txt,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}
                   onKeyDown={e=>e.key==="Enter"&&addFood()}/></div>)}</div>
           <Btn onClick={addFood} style={{fontSize:11}}>ADD FOOD</Btn>
