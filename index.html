@@ -116,6 +116,89 @@ const getDailyQuests=(ds)=>{const seed=[...ds].reduce((a,c)=>a+c.charCodeAt(0),0
   const shuffled=[...QUEST_POOL].sort((a,b)=>(a.id.charCodeAt(1)*seed+a.id.charCodeAt(2))%100-(b.id.charCodeAt(1)*seed+b.id.charCodeAt(2))%100);
   return shuffled.slice(0,3)};
 
+// ══ REST DAY QUOTES — from achievement movie universes ══
+const REST_QUOTES=[
+  {q:"It ain't about how hard you hit. It's about how hard you can get hit and keep moving forward.",s:"Rocky Balboa"},
+  {q:"Life finds a way.",s:"Dr. Ian Malcolm"},
+  {q:"Do or do not. There is no try.",s:"Yoda"},
+  {q:"I need a weapon.",s:"Master Chief"},
+  {q:"Every champion was once a contender who refused to give up.",s:"Rocky"},
+  {q:"Your scientists were so preoccupied with whether they could, they didn't stop to think if they should.",s:"Dr. Ian Malcolm"},
+  {q:"The Force will be with you. Always.",s:"Obi-Wan Kenobi"},
+  {q:"I'll be back.",s:"The Terminator"},
+  {q:"Nobody is gonna hit as hard as life. But it ain't about how hard you hit.",s:"Rocky Balboa"},
+  {q:"Rudy! Rudy! Rudy!",s:"The Crowd"},
+  {q:"Pain heals. Chicks dig scars. Glory lasts forever.",s:"Shane Falco, The Replacements"},
+  {q:"Clear eyes. Full hearts. Can't lose.",s:"Coach Taylor"},
+  {q:"You're gonna eat lightning and you're gonna crap thunder!",s:"Mickey, Rocky"},
+  {q:"Rest is not idleness. It is the pause that makes the music.",s:"Training wisdom"},
+  {q:"Today is a rest day. Tomorrow you come back stronger. That's how it works.",s:"HENDERSON.SYS"},
+  {q:"The body rebuilds on rest days. The mind rebuilds too. Let it.",s:"HENDERSON.SYS"},
+  {q:"On any given Sunday, you're gonna win or you're gonna lose. The point is: can you win or lose like a man?",s:"Tony D'Amato, Any Given Sunday"},
+  {q:"Five foot nothin, hundred and nothin. And hardly a speck of athletic ability.",s:"Rudy"},
+  {q:"Yo Adrian, I did it!",s:"Rocky"},
+  {q:"It's not the size of the dog in the fight. It's the size of the fight in the dog.",s:"Mark Twain"},
+];
+const getRestQuote=(ds)=>{const seed=[...ds].reduce((a,c)=>a+c.charCodeAt(0),0);return REST_QUOTES[seed%REST_QUOTES.length]};
+
+// ══ QUICK FOOD PRESETS ══
+const QUICK_FOODS=[
+  // Protein sources
+  {n:"Protein Shake",cal:150,pro:30,carb:5,fat:2},
+  {n:"Chicken Breast (6oz)",cal:280,pro:52,carb:0,fat:6},
+  {n:"Chicken Thigh (6oz)",cal:330,pro:42,carb:0,fat:16},
+  {n:"Ground Beef 80/20 (6oz)",cal:430,pro:40,carb:0,fat:28},
+  {n:"Ground Turkey (6oz)",cal:300,pro:42,carb:0,fat:14},
+  {n:"Salmon Fillet (6oz)",cal:350,pro:40,carb:0,fat:20},
+  {n:"Tuna Can (5oz)",cal:120,pro:28,carb:0,fat:1},
+  {n:"2 Eggs",cal:140,pro:12,carb:1,fat:10},
+  {n:"3 Eggs",cal:210,pro:18,carb:1,fat:15},
+  {n:"4 Eggs",cal:280,pro:24,carb:2,fat:20},
+  {n:"Greek Yogurt",cal:130,pro:17,carb:6,fat:4},
+  {n:"Cottage Cheese (1 cup)",cal:220,pro:25,carb:8,fat:10},
+  {n:"Beef Jerky (1oz)",cal:80,pro:13,carb:3,fat:1},
+  {n:"Turkey Deli Meat (4oz)",cal:120,pro:20,carb:2,fat:3},
+  {n:"Steak 8oz",cal:480,pro:56,carb:0,fat:28},
+  // Carb sources
+  {n:"Rice (1 cup)",cal:210,pro:4,carb:45,fat:0},
+  {n:"Rice (2 cups)",cal:420,pro:8,carb:90,fat:0},
+  {n:"Pasta (2oz dry)",cal:200,pro:7,carb:42,fat:1},
+  {n:"Bread (2 slices)",cal:160,pro:6,carb:28,fat:2},
+  {n:"Potato (medium)",cal:160,pro:4,carb:37,fat:0},
+  {n:"Sweet Potato",cal:100,pro:2,carb:24,fat:0},
+  {n:"Oatmeal (1 cup)",cal:300,pro:10,carb:54,fat:5},
+  {n:"Banana",cal:105,pro:1,carb:27,fat:0},
+  {n:"Apple",cal:95,pro:0,carb:25,fat:0},
+  {n:"Tortilla (large flour)",cal:210,pro:5,carb:36,fat:5},
+  // Fats / snacks
+  {n:"Peanut Butter (2 tbsp)",cal:190,pro:7,carb:7,fat:16},
+  {n:"Almonds (1oz)",cal:160,pro:6,carb:6,fat:14},
+  {n:"Avocado (half)",cal:160,pro:2,carb:9,fat:15},
+  {n:"Cheese Slice",cal:110,pro:7,carb:1,fat:9},
+  {n:"String Cheese",cal:80,pro:7,carb:1,fat:5},
+  // Drinks
+  {n:"Can of Coke",cal:140,pro:0,carb:39,fat:0},
+  {n:"Coke Zero",cal:0,pro:0,carb:0,fat:0},
+  {n:"Miller Lite",cal:96,pro:1,carb:3,fat:0},
+  {n:"Miller Lite x3",cal:288,pro:3,carb:9,fat:0},
+  {n:"Whole Milk (1 cup)",cal:150,pro:8,carb:12,fat:8},
+  {n:"Coffee w/ Cream",cal:50,pro:1,carb:1,fat:5},
+  {n:"Orange Juice (8oz)",cal:110,pro:2,carb:26,fat:0},
+  // Fast food / common meals
+  {n:"Big Mac",cal:550,pro:25,carb:45,fat:30},
+  {n:"McChicken",cal:400,pro:14,carb:39,fat:22},
+  {n:"Chick-fil-A Sandwich",cal:440,pro:28,carb:40,fat:19},
+  {n:"Chick-fil-A Nuggets (8)",cal:250,pro:27,carb:11,fat:11},
+  {n:"Chipotle Burrito Bowl",cal:665,pro:40,carb:55,fat:24},
+  {n:"Pizza Slice (cheese)",cal:270,pro:12,carb:34,fat:10},
+  {n:"KFC 2-Piece",cal:490,pro:36,carb:16,fat:30},
+  {n:"KFC 3-Piece",cal:740,pro:54,carb:24,fat:46},
+  {n:"Subway 6in Turkey",cal:280,pro:18,carb:46,fat:3},
+  {n:"Taco Bell Burrito",cal:380,pro:15,carb:44,fat:16},
+  {n:"Wendy's Baconator",cal:940,pro:57,carb:38,fat:62},
+  {n:"Five Guys Burger",cal:840,pro:40,carb:39,fat:55},
+];
+
 // ══ DATA ══
 const PHASES=[
   {id:1,n:"BASECAMP",s:"Cardio·Endurance",st:"2026-04-05",en:"2026-05-25",c:T.acc},
@@ -767,6 +850,10 @@ function App(){
   const[profileTab,setProfileTab]=useState("me");
   const[profile,setProfile]=useState(()=>LS.get("hv9_profile")||{name:"",age:"",height:"",goal:"",whyTrain:"",injuries:"",startDate:"2026-04-05"});
   const saveProfile=(p)=>{setProfile(p);LS.set("hv9_profile",p)};
+  const[customFoods,setCustomFoods]=useState(()=>LS.get("hv9_foods")||[]);
+  const addCustomFood=(f)=>{const nf=[...customFoods,f];setCustomFoods(nf);LS.set("hv9_foods",nf)};
+  const removeCustomFood=(i)=>{const nf=customFoods.filter((_,j)=>j!==i);setCustomFoods(nf);LS.set("hv9_foods",nf)};
+  const[showFoodSave,setShowFoodSave]=useState(false);
   const[statsTab,setStatsTab]=useState("overview");
   const[showWarmup,setShowWarmup]=useState(false);
   const measRef=useRef({waist:"",chest:"",arms:"",neck:"",thighs:"",bf:"",muscle:""});
@@ -923,7 +1010,13 @@ function App(){
       if(!prev||e1rm>prev.e1rm)return{...p,sessions:{...p.sessions,[selDate]:sess},prs:{...p.prs,[exN]:{w:wt,r:rp,e1rm,d:selDate}}}}
     return{...p,sessions:{...p.sessions,[selDate]:sess}}});
     const ex=workout.ex.find(e=>e.n===exN);const rest=parseInt(ex?.rest)||60;if(rest>0)setRestTimer(rest)};
-  const toggleDone=()=>upd(p=>({...p,sessions:{...p.sessions,[selDate]:{...p.sessions[selDate],done:!(p.sessions[selDate]?.done)}}}));
+  const toggleDone=()=>{const wasDone=data.sessions?.[selDate]?.done;
+    upd(p=>({...p,sessions:{...p.sessions,[selDate]:{...p.sessions[selDate],done:!wasDone}}}));
+    if(!wasDone){try{navigator.vibrate?.([100,50,100,50,200])}catch{}
+      try{const a=new(window.AudioContext||window.webkitAudioContext)();const o=a.createOscillator();const g=a.createGain();
+        o.connect(g);g.connect(a.destination);o.frequency.value=880;g.gain.value=0.15;o.start();
+        setTimeout(()=>{o.frequency.value=1100},100);setTimeout(()=>{o.frequency.value=1320},200);
+        setTimeout(()=>{g.gain.value=0;o.stop()},400)}catch{}}};
   const rateDay=v=>upd(p=>({...p,sessions:{...p.sessions,[selDate]:{...p.sessions[selDate],rating:v}}}));
   const saveNotes=()=>{const n=notesRef.current;if(!n)return;upd(p=>({...p,sessions:{...p.sessions,[selDate]:{...p.sessions[selDate],notes:n}}}));notesRef.current=""};
   const logWeight=()=>{const v=parseFloat(wInputRef.current);if(isNaN(v)||v<100||v>400)return;
@@ -933,9 +1026,11 @@ function App(){
     if(Object.keys(m).length>1)upd(p=>({...p,measurements:[...(p.measurements||[]).filter(e=>e.d!==todayStr),m]}));measRef.current={waist:"",chest:"",arms:"",neck:"",thighs:"",bf:"",muscle:""};setMeasKey(k=>k+1)};
   const logSleep=()=>{const h=parseFloat(sleepRef.current.hrs);if(isNaN(h)||h<0||h>16||!sleepRef.current.q)return;
     upd(p=>({...p,sleep:{...p.sleep,[todayStr]:{hrs:h,q:sleepRef.current.q}}}));sleepRef.current={hrs:"",q:0};setSleepKey(k=>k+1)};
+  const lastFoodRef=useRef(null);
   const addFood=()=>{const f=foodRef.current;const c=parseInt(f.cal);if(isNaN(c)||c<=0)return;
     const entry={n:f.name||"Quick Add",cal:c,pro:parseInt(f.pro)||0,carb:parseInt(f.carb)||0,fat:parseInt(f.fat)||0,t:Date.now()};
     upd(p=>{const day=p.food?.[todayStr]||[];return{...p,food:{...p.food,[todayStr]:[...day,entry]}}});
+    if(f.name&&f.name!=="Quick Add"){lastFoodRef.current={n:f.name,cal:c,pro:parseInt(f.pro)||0,carb:parseInt(f.carb)||0,fat:parseInt(f.fat)||0};setShowFoodSave(true);setTimeout(()=>setShowFoodSave(false),5000)}
     foodRef.current={name:"",cal:"",pro:"",carb:"",fat:""};setFoodKey(k=>k+1)};
   const removeFood=(idx)=>upd(p=>{const day=[...(p.food?.[todayStr]||[])];day.splice(idx,1);return{...p,food:{...p.food,[todayStr]:day}}});
   const toggleSupp=(key)=>upd(p=>{const day=p.supps?.[todayStr]||{};return{...p,supps:{...p.supps,[todayStr]:{...day,[key]:!day[key]}}}});
@@ -1166,12 +1261,68 @@ function App(){
         </div>
       </Card>}
 
+      {/* Phase Countdown */}
+      {(()=>{const ph=gP(todayStr);const phases=[...PHASES];
+        // Find next phase transition
+        const curIdx=phases.findIndex(p=>p.id===ph.id);const nextPh=phases[(curIdx+1)%4];
+        const m=now.getMonth(),dy=now.getDate();
+        // Calculate days to next phase by month/day
+        const nextDates=[[3,5,"BASECAMP"],[4,26,"CUT"],[7,22,"BUILD"],[10,15,"SUSTAIN"]];
+        let daysToNext=null,nextName="";
+        for(const[nm,nd,nn]of nextDates){
+          const target=new Date(now.getFullYear(),nm,nd);if(target<=now)target.setFullYear(target.getFullYear()+1);
+          const diff=Math.round((target-now)/864e5);
+          if(daysToNext===null||diff<daysToNext){daysToNext=diff;nextName=nn}}
+        return daysToNext>0&&daysToNext<=60?<Card style={{padding:8,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+          <span style={{fontSize:10,color:T.sub}}>Next phase: <span style={{fontWeight:700,color:T.txt}}>{nextName}</span></span>
+          <span style={{fontFamily:"'Bebas Neue'",fontSize:16,color:T.acc}}>{daysToNext}d</span>
+        </Card>:null})()}
+
+      {/* Latest PR */}
+      {Object.keys(data.prs||{}).length>0&&(()=>{
+        const latest=Object.entries(data.prs).sort(([,a],[,b])=>b.d.localeCompare(a.d))[0];
+        const daysSince=Math.round((now-dP(latest[1].d))/864e5);
+        return daysSince<=14?<Card style={{padding:10,background:T.yel+"08",border:`1px solid ${T.yel}22`}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+            <div><div style={{fontSize:9,color:T.yel,fontWeight:700}}>LATEST PR</div>
+              <div style={{fontSize:12,fontWeight:700,color:T.txt}}>{latest[0]}</div>
+              <div style={{fontSize:9,color:T.dim}}>{daysSince===0?"Today":daysSince===1?"Yesterday":`${daysSince} days ago`}</div></div>
+            <div style={{textAlign:"right"}}>
+              <div style={{fontFamily:"'Bebas Neue'",fontSize:22,color:T.yel}}>{latest[1].w}×{latest[1].r}</div>
+              <div style={{fontSize:9,color:T.dim}}>1RM: {latest[1].e1rm}</div></div>
+          </div>
+        </Card>:null})()}
+
+      {/* Time Since Last Workout */}
+      {stats.total>0&&!data.sessions?.[todayStr]?.done&&(()=>{
+        const lastDate=Object.keys(data.sessions||{}).filter(k=>data.sessions[k]?.done).sort().pop();
+        if(!lastDate)return null;const daysSince=Math.round((now-dP(lastDate))/864e5);
+        return daysSince>=2?<Card style={{padding:8,textAlign:"center"}}>
+          <div style={{fontSize:10,color:daysSince>=4?T.red:daysSince>=3?T.yel:T.sub}}>
+            {daysSince>=4?"⚠ ":""}Last workout was {daysSince} day{daysSince!==1?"s":""} ago{daysSince>=4?". Get back in there.":daysSince>=3?". Don't let momentum slip.":"."}</div>
+        </Card>:null})()}
+
       <Card style={{cursor:"pointer",border:`1px solid ${TC[getWorkout(todayStr).type]}22`}} onClick={()=>{setSelDate(todayStr);navTo("train")}}>
         <Lbl style={{color:TC[getWorkout(todayStr).type],marginBottom:2}}>Today</Lbl>
         <div style={{fontSize:15,fontWeight:700}}>{getWorkout(todayStr).label}</div>
         <div style={{display:"flex",gap:4,marginTop:4}}>{getWorkout(todayStr).dur>0&&<Pill>⏱ {getWorkout(todayStr).dur}m</Pill>}
           {getWorkout(todayStr).cal>0&&<Pill>🔥 ~{getWorkout(todayStr).cal}</Pill>}</div>
         <div style={{fontSize:9,color:T.acc,marginTop:6}}>TAP TO VIEW →</div>
+      </Card>
+
+      {/* Upcoming Week */}
+      <Card style={{padding:10}}>
+        <Lbl style={{marginBottom:4}}>📅 This Week</Lbl>
+        <div style={{display:"flex",gap:3}}>
+          {[0,1,2,3,4,5,6].map(i=>{const d=new Date(now);d.setDate(d.getDate()-d.getDay()+i);const ds=dS(d);
+            const wo=getWorkout(ds);const dn=data.sessions?.[ds]?.done;const isT=ds===todayStr;
+            return <div key={i} onClick={()=>{setSelDate(ds);navTo("train")}} style={{flex:1,textAlign:"center",padding:"4px 0",borderRadius:6,
+              cursor:"pointer",background:isT?T.acc+"22":dn?T.grn+"11":"transparent",border:isT?`1px solid ${T.acc}44`:"1px solid transparent"}}>
+              <div style={{fontSize:8,color:isT?T.acc:T.dim}}>{["S","M","T","W","T","F","S"][i]}</div>
+              <div style={{width:6,height:6,borderRadius:3,margin:"3px auto",background:dn?(TC[wo.type]||T.grn):wo.type==="rest"?"#333":T.s3}}/>
+              <div style={{fontSize:7,color:dn?T.grn:T.dim}}>{wo.type==="rest"?"R":wo.type==="bike"?"🚴":wo.type==="circuit"?"⚡":"🏋"}</div>
+            </div>})}
+        </div>
       </Card>
 
       <Card><Lbl>🧬 Muscle Recovery</Lbl>
@@ -1338,9 +1489,14 @@ function App(){
         <div style={{padding:"12px 14px",background:done?T.grn+"08":"transparent"}}>
           <Pill color={TC[w.type]+"22"} text={TC[w.type]}>{w.type.toUpperCase()}</Pill>
           <div style={{fontSize:17,fontWeight:700,marginTop:4}}>{w.label}</div>
+          {w.type!=="rest"&&<div style={{fontSize:9,color:T.dim,marginTop:2}}>BW: {lastW} lbs</div>}
           <div style={{display:"flex",gap:4,marginTop:4,flexWrap:"wrap"}}>
             {w.dur>0&&<Pill>⏱ {w.dur}m</Pill>}{w.cal>0&&<Pill>🔥 ~{w.cal}</Pill>}
             {w.mi>0&&<Pill>📍 ~{w.mi}mi</Pill>}{w.dl&&<Pill color={T.yel+"22"} text={T.yel}>DELOAD</Pill>}</div>
+          {w.type==="rest"&&(()=>{const rq=getRestQuote(selDate);return <div style={{marginTop:12,padding:12,background:T.s2,borderRadius:8,borderLeft:`3px solid ${T.acc}`}}>
+            <div style={{fontSize:12,color:T.sub,fontStyle:"italic",lineHeight:1.6}}>"{rq.q}"</div>
+            <div style={{fontSize:10,color:T.acc,marginTop:6,textAlign:"right"}}>— {rq.s}</div>
+          </div>})()}
         </div>
         {w.ex.map((e,i)=>{
           if(e.s==="—"&&e.r==="—"&&e.n.startsWith("—"))return <div key={i} style={{padding:"6px 14px",background:T.s2,fontSize:10,color:T.yel,fontWeight:600,textAlign:"center"}}>{e.n.replace(/—/g,"").trim()}</div>;
@@ -1753,6 +1909,48 @@ function App(){
                   style={{width:"100%",padding:6,background:T.s2,border:`1px solid ${T.bdr}`,borderRadius:6,color:k==="cal"?T.acc:T.txt,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}
                   onKeyDown={e=>e.key==="Enter"&&addFood()}/></div>)}</div>
           <Btn onClick={addFood} style={{fontSize:11}}>ADD FOOD</Btn>
+
+          {/* Save as preset prompt */}
+          {showFoodSave&&lastFoodRef.current&&<div style={{marginTop:6,padding:8,background:T.grn+"11",border:`1px solid ${T.grn}33`,borderRadius:8,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+            <span style={{fontSize:10,color:T.grn}}>Save "{lastFoodRef.current.n}" as quick button?</span>
+            <button onClick={()=>{addCustomFood(lastFoodRef.current);setShowFoodSave(false)}}
+              style={{padding:"4px 10px",borderRadius:6,background:T.grn,border:"none",cursor:"pointer",color:"#000",fontSize:9,fontWeight:700}}>SAVE</button>
+          </div>}
+
+          {/* Custom presets — your saved foods */}
+          {customFoods.length>0&&<div style={{marginTop:8}}>
+            <div style={{fontSize:9,color:T.acc,fontWeight:700,marginBottom:4}}>⭐ MY FOODS</div>
+            <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
+              {customFoods.map((f,i)=><div key={`c-${i}`} style={{display:"flex",alignItems:"center",gap:0}}>
+                <button onClick={()=>{upd(p=>{const day=p.food?.[todayStr]||[];return{...p,food:{...p.food,[todayStr]:[...day,{n:f.n,cal:f.cal,pro:f.pro,carb:f.carb,fat:f.fat,t:Date.now()}]}}})}}
+                  style={{padding:"4px 8px",borderRadius:"6px 0 0 6px",background:T.acc+"22",border:`1px solid ${T.acc}44`,borderRight:"none",cursor:"pointer",color:T.acc,fontSize:9,fontWeight:600}}>
+                  {f.n} <span style={{opacity:.7}}>{f.cal}</span></button>
+                <button onClick={()=>{if(confirm(`Remove "${f.n}" from quick foods?`))removeCustomFood(i)}}
+                  style={{padding:"4px 5px",borderRadius:"0 6px 6px 0",background:T.s3,border:`1px solid ${T.acc}44`,cursor:"pointer",color:T.red,fontSize:8}}>×</button>
+              </div>)}
+            </div>
+          </div>}
+
+          {/* Built-in presets by category */}
+          {(()=>{const cats=[
+            ["🥩 Protein",QUICK_FOODS.filter(f=>f.pro>=10&&f.carb<10)],
+            ["🍚 Carbs",QUICK_FOODS.filter(f=>f.carb>=20&&f.pro<10)],
+            ["🥜 Fats/Snacks",QUICK_FOODS.filter(f=>f.fat>=5&&f.pro<10&&f.carb<20)],
+            ["🥤 Drinks",QUICK_FOODS.filter(f=>["Can of Coke","Coke Zero","Miller Lite","Miller Lite x3","Whole Milk (1 cup)","Coffee w/ Cream","Orange Juice (8oz)"].includes(f.n))],
+            ["🍔 Fast Food",QUICK_FOODS.filter(f=>["Big Mac","McChicken","Chick-fil-A Sandwich","Chick-fil-A Nuggets (8)","Chipotle Burrito Bowl","Pizza Slice (cheese)","KFC 2-Piece","KFC 3-Piece","Subway 6in Turkey","Taco Bell Burrito","Wendy's Baconator","Five Guys Burger"].includes(f.n))],
+          ];
+          return <div style={{marginTop:8}}>
+            <div style={{fontSize:9,color:T.dim,marginBottom:4}}>Quick Add:</div>
+            {cats.map(([label,items])=>items.length>0&&<div key={label} style={{marginBottom:6}}>
+              <div style={{fontSize:8,color:T.sub,fontWeight:600,marginBottom:3}}>{label}</div>
+              <div style={{display:"flex",flexWrap:"wrap",gap:3}}>
+                {items.map(f=><button key={f.n} onClick={()=>{
+                  upd(p=>{const day=p.food?.[todayStr]||[];return{...p,food:{...p.food,[todayStr]:[...day,{n:f.n,cal:f.cal,pro:f.pro,carb:f.carb,fat:f.fat,t:Date.now()}]}}})}}
+                  style={{padding:"3px 6px",borderRadius:5,background:T.s2,border:`1px solid ${T.bdr}`,cursor:"pointer",color:T.sub,fontSize:8}}>
+                  {f.n} <span style={{color:T.acc}}>{f.cal}</span></button>)}
+              </div>
+            </div>)}
+          </div>})()}
         </Card>
 
         {/* Daily Totals + Targets */}
