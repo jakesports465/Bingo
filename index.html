@@ -143,29 +143,44 @@ const getRestQuote=(ds)=>{const seed=[...ds].reduce((a,c)=>a+c.charCodeAt(0),0);
 
 // ══ QUICK FOOD PRESETS ══
 const QUICK_FOODS=[
-
-  // Meals (your real life system)
-  {n:"Cafeteria Normal",cal:700,pro:40,carb:80,fat:25},
-  {n:"Cafeteria Heavy",cal:950,pro:50,carb:110,fat:40},
-  {n:"Cafeteria Pizza Day",cal:800,pro:30,carb:90,fat:30},
-
-  {n:"Dinner - Chicken Meal",cal:600,pro:50,carb:50,fat:15},
-  {n:"Dinner - Steak/Beef Meal",cal:800,pro:55,carb:40,fat:35},
-  {n:"Dinner - Pizza Night",cal:900,pro:40,carb:100,fat:40},
-
-  // Snacks
-  {n:"Snack - Light",cal:150,pro:3,carb:28,fat:4},
-  {n:"Snack - Heavy",cal:300,pro:6,carb:50,fat:10},
-  {n:"Snack - Protein",cal:120,pro:12,carb:3,fat:5},
-
+  // Protein sources
+  {n:"Protein Shake",cal:150,pro:30,carb:5,fat:2},
+  {n:"Chicken Breast (6oz)",cal:280,pro:52,carb:0,fat:6},
+  {n:"Chicken Thigh (6oz)",cal:330,pro:42,carb:0,fat:16},
+  {n:"Ground Beef 80/20 (6oz)",cal:430,pro:40,carb:0,fat:28},
+  {n:"Salmon Fillet (6oz)",cal:350,pro:40,carb:0,fat:20},
+  {n:"Tuna Can (5oz)",cal:120,pro:28,carb:0,fat:1},
+  {n:"2 Eggs",cal:140,pro:12,carb:1,fat:10},
+  {n:"3 Eggs",cal:210,pro:18,carb:1,fat:15},
+  {n:"4 Eggs",cal:280,pro:24,carb:2,fat:20},
+  {n:"Beef Jerky (1oz)",cal:80,pro:13,carb:3,fat:1},
+  {n:"Steak 8oz",cal:480,pro:56,carb:0,fat:28},
+  // Carb sources
+  {n:"Rice (1 cup)",cal:210,pro:4,carb:45,fat:0},
+  {n:"Rice (2 cups)",cal:420,pro:8,carb:90,fat:0},
+  {n:"Pasta (2oz dry)",cal:200,pro:7,carb:42,fat:1},
+  {n:"Bread (2 slices)",cal:160,pro:6,carb:28,fat:2},
+  {n:"Potato (medium)",cal:160,pro:4,carb:37,fat:0},
+  {n:"Banana",cal:105,pro:1,carb:27,fat:0},
+  {n:"Tortilla (large flour)",cal:210,pro:5,carb:36,fat:5},
+  // Fats / snacks
+  {n:"Peanut Butter (2 tbsp)",cal:190,pro:7,carb:7,fat:16},
+  {n:"Cheese Slice",cal:110,pro:7,carb:1,fat:9},
+  {n:"String Cheese",cal:80,pro:7,carb:1,fat:5},
   // Drinks
   {n:"Miller Lite",cal:96,pro:1,carb:3,fat:0},
   {n:"Miller Lite x3",cal:288,pro:3,carb:9,fat:0},
-  {n:"Miller Lite x5",cal:480,pro:5,carb:15,fat:0},
-
-  {n:"Soda (Zero)",cal:0,pro:0,carb:0,fat:0},
-  {n:"Soda (Regular)",cal:150,pro:0,carb:39,fat:0},
-
+  {n:"Coffee w/ Cream",cal:50,pro:1,carb:1,fat:5},
+  // Fast food / common meals
+  {n:"McChicken",cal:400,pro:14,carb:39,fat:22},
+  {n:"Chick-fil-A Sandwich",cal:440,pro:28,carb:40,fat:19},
+  {n:"Chick-fil-A Nuggets (8)",cal:250,pro:27,carb:11,fat:11},
+  {n:"Chipotle Burrito Bowl",cal:665,pro:40,carb:55,fat:24},
+  {n:"Pizza Slice (cheese)",cal:270,pro:12,carb:34,fat:10},
+  {n:"KFC 2-Piece",cal:490,pro:36,carb:16,fat:30},
+  {n:"KFC 3-Piece",cal:740,pro:54,carb:24,fat:46},
+  {n:"Subway 6in Turkey",cal:280,pro:18,carb:46,fat:3},
+  {n:"Taco Bell Burrito",cal:380,pro:15,carb:44,fat:16},
 ];
 
 // ══ DATA ══
