@@ -141,25 +141,24 @@ const REST_QUOTES=[
 ];
 const getRestQuote=(ds)=>{const seed=[...ds].reduce((a,c)=>a+c.charCodeAt(0),0);return REST_QUOTES[seed%REST_QUOTES.length]};
 
-// ══ JAKE PRESET FOOD SYSTEM ══
+// ══ QUICK FOOD PRESETS ══
 const QUICK_FOODS=[
 
-  // 🍽️ CAFETERIA LUNCH
+  // Meals (your real life system)
   {n:"Cafeteria Normal",cal:700,pro:40,carb:80,fat:25},
   {n:"Cafeteria Heavy",cal:950,pro:50,carb:110,fat:40},
   {n:"Cafeteria Pizza Day",cal:800,pro:30,carb:90,fat:30},
 
-  // 🍽️ DINNER
   {n:"Dinner - Chicken Meal",cal:600,pro:50,carb:50,fat:15},
   {n:"Dinner - Steak/Beef Meal",cal:800,pro:55,carb:40,fat:35},
   {n:"Dinner - Pizza Night",cal:900,pro:40,carb:100,fat:40},
 
-  // 🍿 SNACKS
+  // Snacks
   {n:"Snack - Light",cal:150,pro:3,carb:28,fat:4},
   {n:"Snack - Heavy",cal:300,pro:6,carb:50,fat:10},
   {n:"Snack - Protein",cal:120,pro:12,carb:3,fat:5},
 
-  // 🍺 DRINKS (TRACK THESE EXACTLY)
+  // Drinks
   {n:"Miller Lite",cal:96,pro:1,carb:3,fat:0},
   {n:"Miller Lite x3",cal:288,pro:3,carb:9,fat:0},
   {n:"Miller Lite x5",cal:480,pro:5,carb:15,fat:0},
