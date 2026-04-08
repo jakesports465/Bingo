@@ -64,6 +64,58 @@ const T={bg:"#111117",s1:"#191A23",s2:"#21222E",s3:"#2A2C3A",bdr:"#2E3044",
   acc:"#F97316",blue:"#3B82F6",grn:"#10B981",yel:"#EAB308",red:"#EF4444",
   txt:"#EAEBF0",sub:"#8B8FA3",dim:"#4B4F63",rad:10};
 
+// ══ XP + LEVEL SYSTEM ══
+// XP to reach level N = N*100. Cumulative = N*(N+1)*50
+// ~Level 10 in 1 month, ~Level 25 in 6 months, ~Level 50 in 2 years, ~Level 100 in 8 years
+const XP_ACTIONS={workout:100,logFood:10,logWeight:15,logSleep:15,hitProtein:25,water8:10,rateSess:5,setPR:50,perfectDay:50,quest:15};
+const xpForLevel=n=>n*100;
+const xpCumulative=n=>n*(n+1)*50;
+const levelFromXP=xp=>{let lv=0;let total=0;while(total+xpForLevel(lv+1)<=xp){lv++;total+=xpForLevel(lv)}return{lv,cur:xp-total,need:xpForLevel(lv+1)}};
+const TITLES=[
+  [1,"ROOKIE"],[5,"NOVICE"],[10,"REGULAR"],[15,"CONSISTENT"],[20,"DEDICATED"],
+  [25,"DISCIPLINED"],[30,"COMMITTED"],[35,"HARDENED"],[40,"SEASONED"],[45,"ADVANCED"],
+  [50,"VETERAN"],[60,"WARRIOR"],[70,"ELITE"],[80,"BEAST"],[90,"MASTER"],[100,"LEGEND"]
+];
+const titleForLevel=lv=>{let t="ROOKIE";for(const[l,n]of TITLES)if(lv>=l)t=n;return t};
+
+// ══ DAILY QUESTS — life/health adjacent, not workout-specific ══
+const QUEST_POOL=[
+  {id:"q1",t:"Stand up and stretch for 2 minutes",xp:15},
+  {id:"q2",t:"Take a 10-minute walk outside",xp:15},
+  {id:"q3",t:"No phone for 30 minutes straight",xp:15},
+  {id:"q4",t:"Read something for 15 minutes",xp:15},
+  {id:"q5",t:"Cold water first thing in the morning",xp:15},
+  {id:"q6",t:"In bed before 11pm tonight",xp:15},
+  {id:"q7",t:"Text someone you haven't talked to in a while",xp:15},
+  {id:"q8",t:"Foam roll for 5 minutes",xp:15},
+  {id:"q9",t:"Listen to a full album start to finish",xp:15},
+  {id:"q10",t:"Take the stairs today — no elevator",xp:15},
+  {id:"q11",t:"Sit in silence for 5 minutes. No screen.",xp:15},
+  {id:"q12",t:"Clean or organize one thing in your house",xp:15},
+  {id:"q13",t:"Cook something instead of ordering out",xp:15},
+  {id:"q14",t:"No soda today",xp:15},
+  {id:"q15",t:"Write down 3 things that went well today",xp:15},
+  {id:"q16",t:"Spend 10 minutes outside without your phone",xp:15},
+  {id:"q17",t:"Do 20 push-ups at some random point today",xp:15},
+  {id:"q18",t:"Eat a meal with no screen in front of you",xp:15},
+  {id:"q19",t:"Drink a full glass of water before coffee",xp:15},
+  {id:"q20",t:"Set out tomorrow's workout clothes tonight",xp:15},
+  {id:"q21",t:"Take a cold shower — or end hot shower cold 30s",xp:15},
+  {id:"q22",t:"Call someone instead of texting",xp:15},
+  {id:"q23",t:"No fast food today",xp:15},
+  {id:"q24",t:"Go outside within 30 min of waking up",xp:15},
+  {id:"q25",t:"Compliment someone genuinely today",xp:15},
+  {id:"q26",t:"Pick up something heavy around the house 10 times",xp:15},
+  {id:"q27",t:"Floss. Just do it.",xp:15},
+  {id:"q28",t:"Plan tomorrow before you go to bed",xp:15},
+  {id:"q29",t:"Eat a vegetable. Any vegetable.",xp:15},
+  {id:"q30",t:"Walk around the block. That's it.",xp:15},
+];
+// Deterministic daily quests from date seed — 3 per day, always same for given date
+const getDailyQuests=(ds)=>{const seed=[...ds].reduce((a,c)=>a+c.charCodeAt(0),0);
+  const shuffled=[...QUEST_POOL].sort((a,b)=>(a.id.charCodeAt(1)*seed+a.id.charCodeAt(2))%100-(b.id.charCodeAt(1)*seed+b.id.charCodeAt(2))%100);
+  return shuffled.slice(0,3)};
+
 // ══ DATA ══
 const PHASES=[
   {id:1,n:"BASECAMP",s:"Cardio·Endurance",st:"2026-04-05",en:"2026-05-25",c:T.acc},
@@ -695,11 +747,14 @@ function App(){
   const prevUnlocked=useRef(null);
   const navTo=(t,sub)=>{setNavHist(p=>[...p.slice(-10),{tab,statsTab,profileTab}]);setTab(t);if(sub)setStatsTab(sub)};
   const navBack=()=>{if(!navHist.length)return;const prev=navHist[navHist.length-1];setNavHist(p=>p.slice(0,-1));setTab(prev.tab);setStatsTab(prev.statsTab||"overview");setProfileTab(prev.profileTab||"weight")};
-  const[data,setData]=useState(()=>LS.get("hv9")||{sessions:{},weight:[],measurements:[],water:{},prs:{},sleep:{},food:{},supps:{}});
+  const[data,setData]=useState(()=>LS.get("hv9")||{sessions:{},weight:[],measurements:[],water:{},prs:{},sleep:{},food:{},supps:{},quests:{},freezes:0,freezeUsed:{}});
+  const[lvPopup,setLvPopup]=useState(null);
+  const prevLv=useRef(null);
   const[selDate,setSelDate]=useState(dS(new Date()));
   const[calM,setCalM]=useState(new Date().getMonth());
   const[calY,setCalY]=useState(new Date().getFullYear());
-  const[wInput,setWInput]=useState("");
+  const wInputRef=useRef("");
+  const[wInputKey,setWInputKey]=useState(0);
   const[activeSet,setActiveSet]=useState(null);
   const siRef=useRef({});
   const[setInputs,setSetInputs]=useState({});
@@ -708,18 +763,21 @@ function App(){
   const[restTimer,setRestTimer]=useState(0);
   const[workoutTimer,setWorkoutTimer]=useState(0);
   const[workoutActive,setWorkoutActive]=useState(false);
-  const[notes,setNotes]=useState("");
+  const notesRef=useRef("");
   const[profileTab,setProfileTab]=useState("me");
   const[profile,setProfile]=useState(()=>LS.get("hv9_profile")||{name:"",age:"",height:"",goal:"",whyTrain:"",injuries:"",startDate:"2026-04-05"});
   const saveProfile=(p)=>{setProfile(p);LS.set("hv9_profile",p)};
   const[statsTab,setStatsTab]=useState("overview");
   const[showWarmup,setShowWarmup]=useState(false);
-  const[measInput,setMeasInput]=useState({waist:"",chest:"",arms:"",neck:"",thighs:"",bf:"",muscle:""});
-  const[sleepInput,setSleepInput]=useState({hrs:"",q:0});
+  const measRef=useRef({waist:"",chest:"",arms:"",neck:"",thighs:"",bf:"",muscle:""});
+  const[measKey,setMeasKey]=useState(0);
+  const sleepRef=useRef({hrs:"",q:0});
+  const[sleepKey,setSleepKey]=useState(0);
   const[foodInput,setFoodInput]=useState({name:"",cal:"",pro:"",carb:"",fat:""});
   const foodRef=useRef({name:"",cal:"",pro:"",carb:"",fat:""});
   const[foodKey,setFoodKey]=useState(0);
   const[plateCalcInput,setPlateCalcInput]=useState("");
+  const plateRef=useRef("");
   const rR=useRef(null),wR=useRef(null);
 
   const save=useCallback(d=>{LS.set("hv9",d)},[]);
@@ -756,8 +814,12 @@ function App(){
       if(wo.type==="strength")strSess++;if(wo.type==="bike")bikeSess++;if(wo.type==="circuit")circSess++;
       if(sess?.sets)Object.values(sess.sets).forEach(sets=>sets.forEach(([w,r])=>{totalVol+=(w||0)*(r||0)}))});
     let streak=0,maxStreak=0,cur=0;
+    // Streak with freeze support
     for(let i=0;i<120;i++){const d=new Date(now);d.setDate(d.getDate()-i);const k=dS(d);
-      if(d.getDay()===0)continue;if(data.sessions?.[k]?.done)streak++;else if(i>0)break}
+      if(d.getDay()===0)continue;
+      if(data.sessions?.[k]?.done)streak++;
+      else if(data.freezeUsed?.[k])streak++; // freeze saved this day
+      else if(i>0)break}
     const sorted=[...keys].sort();sorted.forEach((ds,i)=>{if(i===0)cur=1;else cur=dB(sorted[i-1],ds)<=2?cur+1:1;maxStreak=Math.max(maxStreak,cur)});
     const ws=new Date(now);ws.setDate(now.getDate()-now.getDay());
     let tw=0,twCal=0,twMi=0,lw=0,lwCal=0,lwMi=0;
@@ -779,11 +841,25 @@ function App(){
     const fullyOp=!!(data.sessions?.[todayStr]?.done&&(data.water?.[todayStr]||0)>=1&&data.weight.some(e=>e.d===todayStr)&&data.sessions?.[todayStr]?.notes);
     const measCount=(data.measurements||[]).length;const totalHrs=Math.round(dur/60);
     const startW=data.weight.length?data.weight[0].w:210;
+    // XP calculation — every tracked action earns XP
+    let xp=0;
+    xp+=keys.length*XP_ACTIONS.workout;
+    xp+=Object.keys(data.prs||{}).length*XP_ACTIONS.setPR;
+    xp+=data.weight.length*XP_ACTIONS.logWeight;
+    xp+=Object.keys(data.sleep||{}).length*XP_ACTIONS.logSleep;
+    Object.entries(data.food||{}).forEach(([day,items])=>{xp+=items.length*XP_ACTIONS.logFood});
+    Object.values(data.water||{}).forEach(w=>{if(w>=8)xp+=XP_ACTIONS.water8});
+    keys.forEach(k=>{if(data.sessions[k]?.rating)xp+=XP_ACTIONS.rateSess});
+    Object.keys(data.quests||{}).forEach(d=>{const q=data.quests[d];if(q){const done=Object.values(q).filter(Boolean).length;xp+=done*XP_ACTIONS.quest;if(done>=3)xp+=XP_ACTIONS.perfectDay}});
+    const lvInfo=levelFromXP(xp);
+    // Streak freeze earning: every 7-day streak earns a freeze, max bank 2
+    const freezesEarned=Math.floor(streak/7);const freezesAvail=Math.min(2,Math.max(0,(data.freezes||0)+freezesEarned-(Object.keys(data.freezeUsed||{}).length)));
     const ps={total:keys.length,cal,mi:Math.round(mi),dur,streak,maxStreak,thisWeek:tw,lastWeek:lw,
       twCal,twMi:Math.round(twMi),lwCal,lwMi:Math.round(lwMi),waterToday:data.water?.[todayStr]||0,
       wLost:Math.max(0,startW-lastW),prCount:Object.keys(data.prs||{}).length,
       strSess,bikeSess,circSess,totalVol,perfectWeeks,rated5,rated4p,notesSess,
-      squatMax,benchMax,ohpMax,rowMax,rdlMax,anyPR200,anyPR135,weightEntries,comebacks,fullyOp,measCount,totalHrs,unlocked:0};
+      squatMax,benchMax,ohpMax,rowMax,rdlMax,anyPR200,anyPR135,weightEntries,comebacks,fullyOp,measCount,totalHrs,
+      xp,lv:lvInfo.lv,lvCur:lvInfo.cur,lvNeed:lvInfo.need,title:titleForLevel(lvInfo.lv),freezesAvail,unlocked:0};
     ps.unlocked=MILES.filter(m=>m.req(ps)).length;return ps;
   },[data]);
 
@@ -800,11 +876,44 @@ function App(){
     if(newOnes.length>0){setAchPopup(newOnes[0]);setTimeout(()=>setAchPopup(null),4000)}
     prevUnlocked.current=new Set(unlockedMS.map(m=>m.id));
   },[unlockedMS]);
+  // Level-up detection
+  useEffect(()=>{
+    if(prevLv.current===null){prevLv.current=stats.lv;return}
+    if(stats.lv>prevLv.current){const newTitle=titleForLevel(stats.lv);const oldTitle=titleForLevel(prevLv.current);
+      setLvPopup({lv:stats.lv,title:newTitle,newTitle:newTitle!==oldTitle?newTitle:null});
+      setTimeout(()=>setLvPopup(null),3500)}
+    prevLv.current=stats.lv;
+  },[stats.lv]);
+  // Quest completion toggle
+  const toggleQuest=(qid)=>upd(p=>{const dayQ=p.quests?.[todayStr]||{};return{...p,quests:{...p.quests,[todayStr]:{...dayQ,[qid]:!dayQ[qid]}}}});
+  const todayQuests=getDailyQuests(todayStr);
+  const questsDone=(data.quests?.[todayStr])||{};
+  const questsDoneCount=todayQuests.filter(q=>questsDone[q.id]).length;
+  // Use streak freeze
+  const useFreeze=(dateStr)=>{if((data.freezes||0)+(Math.floor(stats.streak/7))-(Object.keys(data.freezeUsed||{}).length)<=0)return;
+    upd(p=>({...p,freezeUsed:{...p.freezeUsed,[dateStr]:true}}))};
   const weeklySummary=useMemo(()=>{const ws=new Date(now);ws.setDate(now.getDate()-now.getDay());
     const days=[];for(let i=0;i<7;i++){const d=new Date(ws);d.setDate(ws.getDate()+i);days.push(dS(d))}
     const done=days.filter(d=>data.sessions?.[d]?.done);const types={strength:0,bike:0,circuit:0};
     let cal=0,mi=0;done.forEach(d=>{const wo=getWorkout(d);const ss=data.sessions?.[d];types[wo.type]=(types[wo.type]||0)+1;cal+=(ss?.calOverride||wo.cal);mi+=(ss?.miOverride||wo.mi)});
-    return{done:done.length,types,cal,mi:Math.round(mi)}},[data]);
+    // Report card data
+    const weekPRs=Object.entries(data.prs||{}).filter(([,p])=>days.includes(p.d)).length;
+    const weekWeights=data.weight.filter(e=>days.includes(e.d));
+    const weightChange=weekWeights.length>=2?Math.round((weekWeights[weekWeights.length-1].w-weekWeights[0].w)*10)/10:0;
+    const questDays=days.filter(d=>{const q=data.quests?.[d];return q&&Object.values(q).filter(Boolean).length>=3}).length;
+    const foodDays=days.filter(d=>(data.food?.[d]||[]).length>0).length;
+    const waterDays=days.filter(d=>(data.water?.[d]||0)>=8).length;
+    // Grade: score out of 100
+    let score=0;
+    score+=Math.min(50,done.length/6*50); // sessions: 50 pts max
+    score+=Math.min(15,foodDays/7*15); // food logging: 15 pts
+    score+=Math.min(10,waterDays/7*10); // water: 10 pts
+    score+=Math.min(10,questDays/7*10); // quests: 10 pts
+    score+=Math.min(10,weekWeights.length>=3?10:weekWeights.length>=1?5:0); // weigh-ins: 10 pts
+    score+=Math.min(5,weekPRs>=1?5:0); // PR bonus: 5 pts
+    const grade=score>=93?"A+":score>=85?"A":score>=80?"A-":score>=75?"B+":score>=68?"B":score>=62?"B-":score>=55?"C+":score>=48?"C":score>=40?"C-":score>=30?"D":score>=20?"D-":"F";
+    const gradeColor=score>=80?T.grn:score>=60?T.yel:score>=40?T.acc:T.red;
+    return{done:done.length,types,cal,mi:Math.round(mi),weekPRs,weightChange,questDays,foodDays,waterDays,score:Math.round(score),grade,gradeColor}},[data]);
 
   // Handlers
   const logSet=(exN,si,w,r)=>{upd(p=>{const sess={...p.sessions[selDate]||{},done:true,sets:{...(p.sessions[selDate]?.sets||{})}};
@@ -816,14 +925,14 @@ function App(){
     const ex=workout.ex.find(e=>e.n===exN);const rest=parseInt(ex?.rest)||60;if(rest>0)setRestTimer(rest)};
   const toggleDone=()=>upd(p=>({...p,sessions:{...p.sessions,[selDate]:{...p.sessions[selDate],done:!(p.sessions[selDate]?.done)}}}));
   const rateDay=v=>upd(p=>({...p,sessions:{...p.sessions,[selDate]:{...p.sessions[selDate],rating:v}}}));
-  const saveNotes=()=>{upd(p=>({...p,sessions:{...p.sessions,[selDate]:{...p.sessions[selDate],notes}}}));setNotes("")};
-  const logWeight=()=>{const v=parseFloat(wInput);if(isNaN(v)||v<100||v>400)return;
-    upd(p=>({...p,weight:[...p.weight.filter(e=>e.d!==todayStr),{d:todayStr,w:v}].sort((a,b)=>a.d.localeCompare(b.d))}));setWInput("")};
+  const saveNotes=()=>{const n=notesRef.current;if(!n)return;upd(p=>({...p,sessions:{...p.sessions,[selDate]:{...p.sessions[selDate],notes:n}}}));notesRef.current=""};
+  const logWeight=()=>{const v=parseFloat(wInputRef.current);if(isNaN(v)||v<100||v>400)return;
+    upd(p=>({...p,weight:[...p.weight.filter(e=>e.d!==todayStr),{d:todayStr,w:v}].sort((a,b)=>a.d.localeCompare(b.d))}));wInputRef.current="";setWInputKey(k=>k+1)};
   const adjWater=n=>upd(p=>({...p,water:{...p.water,[todayStr]:Math.max(0,(p.water[todayStr]||0)+n)}}));
-  const logMeas=()=>{const m={d:todayStr,...Object.fromEntries(Object.entries(measInput).map(([k,v])=>[k,parseFloat(v)||0]).filter(([,v])=>v>0))};
-    if(Object.keys(m).length>1)upd(p=>({...p,measurements:[...(p.measurements||[]).filter(e=>e.d!==todayStr),m]}));setMeasInput({waist:"",chest:"",arms:"",neck:"",thighs:"",bf:"",muscle:""})};
-  const logSleep=()=>{const h=parseFloat(sleepInput.hrs);if(isNaN(h)||h<0||h>16||!sleepInput.q)return;
-    upd(p=>({...p,sleep:{...p.sleep,[todayStr]:{hrs:h,q:sleepInput.q}}}));setSleepInput({hrs:"",q:0})};
+  const logMeas=()=>{const m={d:todayStr,...Object.fromEntries(Object.entries(measRef.current).map(([k,v])=>[k,parseFloat(v)||0]).filter(([,v])=>v>0))};
+    if(Object.keys(m).length>1)upd(p=>({...p,measurements:[...(p.measurements||[]).filter(e=>e.d!==todayStr),m]}));measRef.current={waist:"",chest:"",arms:"",neck:"",thighs:"",bf:"",muscle:""};setMeasKey(k=>k+1)};
+  const logSleep=()=>{const h=parseFloat(sleepRef.current.hrs);if(isNaN(h)||h<0||h>16||!sleepRef.current.q)return;
+    upd(p=>({...p,sleep:{...p.sleep,[todayStr]:{hrs:h,q:sleepRef.current.q}}}));sleepRef.current={hrs:"",q:0};setSleepKey(k=>k+1)};
   const addFood=()=>{const f=foodRef.current;const c=parseInt(f.cal);if(isNaN(c)||c<=0)return;
     const entry={n:f.name||"Quick Add",cal:c,pro:parseInt(f.pro)||0,carb:parseInt(f.carb)||0,fat:parseInt(f.fat)||0,t:Date.now()};
     upd(p=>{const day=p.food?.[todayStr]||[];return{...p,food:{...p.food,[todayStr]:[...day,entry]}}});
@@ -898,20 +1007,45 @@ function App(){
       </div>
     </div>}
 
-    {/* HEADER */}
-
-    {/* Achievement Unlock Popup */}
-    {achPopup&&<div onClick={()=>setAchPopup(null)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,.85)",zIndex:99,
+    {/* Level Up Popup */}
+    {lvPopup&&<div onClick={()=>setLvPopup(null)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,.9)",zIndex:98,
       display:"flex",alignItems:"center",justifyContent:"center",padding:24,animation:"fadeUp .3s",cursor:"pointer"}}>
       <div style={{textAlign:"center",maxWidth:300}}>
-        <div style={{fontSize:64,marginBottom:8}}>{achPopup.i}</div>
-        <div style={{fontFamily:"'Bebas Neue'",fontSize:28,color:T.acc,letterSpacing:3}}>{achPopup.n}</div>
-        <div style={{fontSize:12,color:T.sub,marginTop:6,lineHeight:1.6}}>{achPopup.d}</div>
-        <div style={{marginTop:12,display:"inline-block",padding:"4px 16px",borderRadius:20,background:T.acc+"22",
-          fontSize:10,color:T.acc,fontWeight:700,letterSpacing:2}}>{achPopup.c}</div>
+        <div style={{fontFamily:"'Bebas Neue'",fontSize:64,color:T.acc}}>LV{lvPopup.lv}</div>
+        {lvPopup.newTitle&&<div style={{fontFamily:"'Bebas Neue'",fontSize:20,color:T.yel,letterSpacing:4,marginTop:4}}>NEW RANK: {lvPopup.newTitle}</div>}
+        <div style={{fontSize:12,color:T.sub,marginTop:8}}>Keep showing up.</div>
         <div style={{fontSize:10,color:T.dim,marginTop:16}}>TAP TO DISMISS</div>
       </div>
     </div>}
+
+    {/* Achievement Unlock Popup — themed per category */}
+    {achPopup&&(()=>{const CAT_THEME={
+      "GRIND":{bg:"rgba(249,115,22,.12)",accent:T.acc,glow:T.acc,label:"GRIND UNLOCKED"},
+      "IRON":{bg:"rgba(139,143,163,.12)",accent:"#A0A4B8",glow:"#A0A4B8",label:"IRON FORGED"},
+      "CARDIO":{bg:"rgba(59,130,246,.12)",accent:T.blue,glow:T.blue,label:"CARDIO EARNED"},
+      "BODY":{bg:"rgba(16,185,129,.12)",accent:T.grn,glow:T.grn,label:"BODY MILESTONE"},
+      "STREAK":{bg:"rgba(249,115,22,.15)",accent:T.acc,glow:T.yel,label:"STREAK FIRE"},
+      "LIFE":{bg:"rgba(234,179,8,.1)",accent:T.yel,glow:T.yel,label:"LIFE UNLOCKED"},
+      "🦖 JURASSIC":{bg:"rgba(16,185,129,.15)",accent:"#22C55E",glow:"#22C55E",label:"🦖 JURASSIC UNLOCKED"},
+      "⭐ STAR WARS":{bg:"rgba(234,179,8,.12)",accent:"#FBBF24",glow:"#FBBF24",label:"⭐ THE FORCE IS STRONG"},
+      "🎮 HALO":{bg:"rgba(99,102,241,.15)",accent:"#818CF8",glow:"#6366F1",label:"🎮 MEDAL EARNED"},
+      "🎬 CULTURE":{bg:"rgba(236,72,153,.12)",accent:"#EC4899",glow:"#EC4899",label:"🎬 ICONIC"},
+      "🏟️ SPORTS":{bg:"rgba(239,68,68,.12)",accent:"#EF4444",glow:"#F87171",label:"🏟️ HALL OF FAME"},
+      "👑 LEGEND":{bg:"rgba(234,179,8,.2)",accent:"#FFD700",glow:"#FFD700",label:"👑 LEGENDARY"}
+    };const theme=CAT_THEME[achPopup.c]||CAT_THEME["GRIND"];
+    return <div onClick={()=>setAchPopup(null)} style={{position:"fixed",inset:0,
+      background:`radial-gradient(circle at center,${theme.bg},rgba(0,0,0,.92))`,zIndex:99,
+      display:"flex",alignItems:"center",justifyContent:"center",padding:24,animation:"fadeUp .3s",cursor:"pointer"}}>
+      <div style={{textAlign:"center",maxWidth:320}}>
+        <div style={{fontSize:72,marginBottom:8,filter:`drop-shadow(0 0 20px ${theme.glow})`}}>{achPopup.i}</div>
+        <div style={{fontFamily:"'Bebas Neue'",fontSize:32,color:theme.accent,letterSpacing:4,textShadow:`0 0 30px ${theme.glow}44`}}>{achPopup.n}</div>
+        <div style={{fontSize:12,color:T.sub,marginTop:8,lineHeight:1.6}}>{achPopup.d}</div>
+        <div style={{marginTop:14,display:"inline-block",padding:"5px 20px",borderRadius:20,
+          background:theme.accent+"22",border:`1px solid ${theme.accent}44`,
+          fontSize:10,color:theme.accent,fontWeight:700,letterSpacing:2}}>{theme.label}</div>
+        <div style={{fontSize:9,color:T.dim,marginTop:16,letterSpacing:1}}>TAP TO DISMISS</div>
+      </div>
+    </div>})()}
     <div style={{padding:"14px 16px 10px",background:`linear-gradient(180deg,${T.s1},${T.bg})`}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
@@ -919,7 +1053,9 @@ function App(){
           <div style={{fontFamily:"'Bebas Neue'",fontSize:22,color:T.acc,letterSpacing:6}}>HENDERSON<span style={{color:T.s3}}>.SYS</span></div>
         </div>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
-          <div style={{fontSize:9,color:T.dim,textAlign:"right"}}>Y{tYear(todayStr)} · {gP(todayStr).n}<br/>{now.toLocaleDateString("en-US",{month:"short",day:"numeric"})}</div>
+          <div style={{fontSize:9,color:T.dim,textAlign:"right"}}>
+            <span style={{color:T.acc,fontWeight:700}}>LV{stats.lv}</span> · <span style={{color:T.yel,fontSize:8}}>{stats.title}</span>
+            <br/>Y{tYear(todayStr)} · {gP(todayStr).n} · {now.toLocaleDateString("en-US",{month:"short",day:"numeric"})}</div>
           <div style={{width:34,height:34,borderRadius:17,background:T.s2,display:"flex",alignItems:"center",justifyContent:"center",
             border:`2px solid ${readiness>=70?T.grn:readiness>=40?T.yel:T.red}`}}>
             <span style={{fontFamily:"'Bebas Neue'",fontSize:13,color:readiness>=70?T.grn:readiness>=40?T.yel:T.red}}>{readiness}</span></div></div></div>
@@ -944,6 +1080,51 @@ function App(){
           <Card key={i} style={{textAlign:"center",padding:10,marginBottom:0}}>
             <Num style={{fontSize:22,color:c}}>{v}</Num><div style={{fontSize:9,color:T.dim}}>{l} {u}</div></Card>)}
       </div>
+
+      {/* XP + Level Bar */}
+      <Card style={{padding:10}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
+          <div style={{display:"flex",alignItems:"center",gap:6}}>
+            <span style={{fontFamily:"'Bebas Neue'",fontSize:18,color:T.acc}}>LV{stats.lv}</span>
+            <span style={{fontSize:9,color:T.yel,fontWeight:700,letterSpacing:1}}>{stats.title}</span>
+          </div>
+          <span style={{fontSize:9,color:T.dim}}>{stats.lvCur}/{stats.lvNeed} XP</span>
+        </div>
+        <div style={{height:6,background:T.s3,borderRadius:3,overflow:"hidden"}}>
+          <div style={{height:"100%",borderRadius:3,background:`linear-gradient(90deg,${T.acc},${T.yel})`,width:`${Math.min(100,stats.lvCur/stats.lvNeed*100)}%`,transition:"width .3s"}}/></div>
+        <div style={{display:"flex",justifyContent:"space-between",marginTop:4}}>
+          <span style={{fontSize:8,color:T.dim}}>{stats.xp.toLocaleString()} total XP</span>
+          <span style={{fontSize:8,color:T.dim}}>Next: LV{stats.lv+1}{titleForLevel(stats.lv+1)!==stats.title?` · ${titleForLevel(stats.lv+1)}`:""}</span>
+        </div>
+      </Card>
+
+      {/* Streak Freeze */}
+      {stats.streak>=3&&<Card style={{padding:8,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <div style={{display:"flex",alignItems:"center",gap:6}}>
+          <span style={{fontSize:14}}>🧊</span>
+          <div><div style={{fontSize:11,fontWeight:600,color:T.txt}}>Streak Freezes</div>
+            <div style={{fontSize:9,color:T.dim}}>Earned every 7-day streak. Auto-saves 1 missed day.</div></div>
+        </div>
+        <div style={{display:"flex",gap:3}}>
+          {[0,1].map(i=><div key={i} style={{width:12,height:12,borderRadius:6,background:i<stats.freezesAvail?T.blue:T.s3,border:`1px solid ${i<stats.freezesAvail?T.blue:T.s3}`}}/>)}
+        </div>
+      </Card>}
+
+      {/* Daily Quests */}
+      <Card>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+          <Lbl style={{marginBottom:0}}>⚡ Daily Quests</Lbl>
+          <span style={{fontSize:10,color:questsDoneCount>=3?T.grn:T.dim,fontWeight:700}}>{questsDoneCount}/3{questsDoneCount>=3?" · PERFECT DAY +50 XP":""}</span>
+        </div>
+        {todayQuests.map(q=>{const done=questsDone[q.id];
+          return <div key={q.id} onClick={()=>toggleQuest(q.id)} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 0",
+            borderBottom:`1px solid ${T.s3}`,cursor:"pointer",opacity:done?.6:1}}>
+            <div style={{width:20,height:20,borderRadius:4,border:`2px solid ${done?T.grn:T.bdr}`,background:done?T.grn+"22":"transparent",
+              display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,color:T.grn,flexShrink:0}}>{done?"✓":""}</div>
+            <div style={{fontSize:11,color:done?T.dim:T.txt,textDecoration:done?"line-through":"none"}}>{q.t}</div>
+            <span style={{fontSize:9,color:T.acc,marginLeft:"auto",flexShrink:0}}>+{q.xp}</span>
+          </div>})}
+      </Card>
 
       {/* Empty state — first time user */}
       {stats.total===0&&<Card style={{background:T.acc+"11",border:`1px dashed ${T.acc}44`,textAlign:"center",padding:16}}>
@@ -1011,15 +1192,29 @@ function App(){
         </div>
       </Card>
 
-      {/* Weekly Summary */}
-      {weeklySummary.done>0&&<Card>
-        <div style={{fontSize:11,color:T.sub,lineHeight:1.6}}>
-          <span style={{fontWeight:700,color:T.txt}}>This week:</span> {weeklySummary.done} session{weeklySummary.done!==1?"s":""} 
-          {weeklySummary.types.strength>0&&` · ${weeklySummary.types.strength} strength`}
-          {weeklySummary.types.bike>0&&` · ${weeklySummary.types.bike} bike`}
-          {weeklySummary.types.circuit>0&&` · ${weeklySummary.types.circuit} circuit`}
-          {weeklySummary.cal>0&&` · ~${weeklySummary.cal} cal burned`}
-          {weeklySummary.mi>0&&` · ~${weeklySummary.mi} mi ridden`}
+      {/* Weekly Report Card */}
+      {(weeklySummary.done>0||weeklySummary.foodDays>0)&&<Card>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+          <Lbl style={{marginBottom:0}}>📋 Weekly Report</Lbl>
+          <div style={{textAlign:"right"}}>
+            <div style={{fontFamily:"'Bebas Neue'",fontSize:32,color:weeklySummary.gradeColor,lineHeight:1}}>{weeklySummary.grade}</div>
+            <div style={{fontSize:8,color:T.dim}}>{weeklySummary.score}/100</div>
+          </div>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,marginBottom:8}}>
+          {[[weeklySummary.done+"/6","Sessions",weeklySummary.done>=5?T.grn:weeklySummary.done>=3?T.yel:T.red],
+            [weeklySummary.foodDays+"/7","Food Logged",weeklySummary.foodDays>=5?T.grn:weeklySummary.foodDays>=3?T.yel:T.dim],
+            [weeklySummary.waterDays+"/7","Water 8+",weeklySummary.waterDays>=5?T.blue:weeklySummary.waterDays>=3?T.yel:T.dim]
+          ].map(([v,l,c],i)=><div key={i} style={{textAlign:"center"}}>
+            <div style={{fontSize:14,fontWeight:700,color:c}}>{v}</div>
+            <div style={{fontSize:8,color:T.dim}}>{l}</div></div>)}
+        </div>
+        <div style={{display:"flex",gap:8,flexWrap:"wrap",fontSize:10,color:T.sub}}>
+          {weeklySummary.cal>0&&<span>🔥 {weeklySummary.cal} cal</span>}
+          {weeklySummary.mi>0&&<span>🚴 {weeklySummary.mi} mi</span>}
+          {weeklySummary.weekPRs>0&&<span>💪 {weeklySummary.weekPRs} PR{weeklySummary.weekPRs!==1?"s":""}</span>}
+          {weeklySummary.weightChange!==0&&<span>{weeklySummary.weightChange<0?"📉":"📈"} {weeklySummary.weightChange>0?"+":""}{weeklySummary.weightChange} lbs</span>}
+          {weeklySummary.questDays>0&&<span>⚡ {weeklySummary.questDays} perfect day{weeklySummary.questDays!==1?"s":""}</span>}
         </div>
       </Card>}
 
@@ -1163,6 +1358,15 @@ function App(){
                   {e.note&&<div style={{fontSize:9,color:T.dim,marginTop:1}}>{e.note}</div>}
                   {plates&&<div style={{fontSize:8,color:T.acc,marginTop:1,opacity:.7}}>🔩 {plates}</div>}
                   {prev.length>0&&<div style={{fontSize:9,color:T.dim,marginTop:1}}>Last: {prev.filter(Boolean).map(([w,r])=>`${w}×${r}`).join(", ")}</div>}
+                  {prev.length>0&&pW>0&&(()=>{const lastBest=Math.max(...prev.filter(Boolean).map(([w])=>parseFloat(w)||0));
+                    const lastReps=prev.filter(Boolean).map(([,r])=>parseInt(r)||0);const prescR=parseInt(e.r)||0;
+                    const allHit=lastReps.every(r=>r>=prescR);
+                    if(lastBest<=0)return null;
+                    const suggest=allHit?Math.round((lastBest+5)/5)*5:lastBest;
+                    const diff=suggest-lastBest;
+                    return diff>0?<div style={{fontSize:9,color:T.grn,marginTop:1}}>↑ Suggested: {suggest} (+{diff})</div>
+                      :<div style={{fontSize:9,color:T.yel,marginTop:1}}>→ Repeat: {suggest} — hit all reps first</div>
+                  })()}
                   {isAct&&e.subs&&<div style={{fontSize:8,color:T.blue,marginTop:2}}>↔ Swap: {e.subs}</div>}
                   {isAct&&EX_GUIDE[e.n]&&<div style={{marginTop:6,padding:8,background:T.s1,borderRadius:6,border:`1px solid ${T.s3}`}}>
                     <div style={{fontSize:10,color:T.acc,fontWeight:700,marginBottom:3}}>HOW TO DO IT</div>
@@ -1200,12 +1404,12 @@ function App(){
           {w.type==="bike"&&<div style={{display:"flex",gap:8,marginBottom:8}}>
             <div style={{flex:1}}>
               <div style={{fontSize:8,color:T.dim,marginBottom:2}}>Actual Calories</div>
-              <input value={session?.calOverride||""} onChange={e=>overrideBike("calOverride",e.target.value)} placeholder={`est ~${w.cal}`} type="number"
+              <input defaultValue={session?.calOverride||""} onBlur={e=>overrideBike("calOverride",e.target.value)} placeholder={`est ~${w.cal}`} type="number" inputMode="decimal"
                 style={{width:"100%",padding:6,background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.acc,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}/>
             </div>
             <div style={{flex:1}}>
               <div style={{fontSize:8,color:T.dim,marginBottom:2}}>Actual Miles</div>
-              <input value={session?.miOverride||""} onChange={e=>overrideBike("miOverride",e.target.value)} placeholder={`est ~${w.mi}`} type="number" step="0.1"
+              <input defaultValue={session?.miOverride||""} onBlur={e=>overrideBike("miOverride",e.target.value)} placeholder={`est ~${w.mi}`} type="number" step="0.1" inputMode="decimal"
                 style={{width:"100%",padding:6,background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.blue,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}/>
             </div>
           </div>}
@@ -1218,10 +1422,10 @@ function App(){
         </div>}
       </Card>
 
-      <Card><Lbl>📝 Notes</Lbl>
-        <textarea value={notes||session?.notes||""} onChange={e=>setNotes(e.target.value)} placeholder="How'd it go..."
+      <Card key={`notes-${selDate}`}><Lbl>📝 Notes</Lbl>
+        <textarea defaultValue={session?.notes||""} onInput={e=>{notesRef.current=e.target.value}}
+          onBlur={()=>{if(notesRef.current!==undefined)saveNotes()}} placeholder="How'd it go..."
           rows={2} style={{width:"100%",padding:8,background:T.s2,border:`1px solid ${T.bdr}`,borderRadius:8,color:T.txt,fontSize:11,resize:"none",outline:"none"}}/>
-        {notes&&notes!==(session?.notes||"")&&<button onClick={saveNotes} style={{marginTop:4,padding:"4px 12px",borderRadius:6,background:T.acc+"22",border:"none",cursor:"pointer",color:T.acc,fontSize:10}}>Save</button>}
       </Card>
     </>})()}
 
@@ -1281,7 +1485,7 @@ function App(){
     {/* ═══ STATS ═══ */}
     {tab==="stats"&&<>
       <div style={{display:"flex",gap:3,marginBottom:10,flexWrap:"wrap"}}>
-        {["overview","prs","tools"].map(t=><button key={t} onClick={()=>setStatsTab(t)}
+        {["overview","prs","progress","tools"].map(t=><button key={t} onClick={()=>setStatsTab(t)}
           style={{padding:"5px 10px",borderRadius:20,border:"none",cursor:"pointer",fontSize:10,fontWeight:600,
             background:statsTab===t?T.acc+"22":T.s2,color:statsTab===t?T.acc:T.sub}}>{t.toUpperCase()}</button>)}
       </div>
@@ -1305,10 +1509,11 @@ function App(){
                   const dt=new Date(start);dt.setDate(start.getDate()+idx);wk.push(dS(dt))}weeks.push(wk)}
                 return weeks.map((wk,wi)=><div key={wi} style={{display:"flex",flexDirection:"column",gap:1}}>
                   {wk.map((ds,di)=>{if(!ds)return <div key={di} style={{width:9,height:9}}/>;
-                    const wo=getWorkout(ds),dn=data.sessions?.[ds]?.done;
+                    const wo=getWorkout(ds),dn=data.sessions?.[ds]?.done,rt=data.sessions?.[ds]?.rating||0;
+                    const intensity=dn?(rt>=5?1:rt>=4?.85:rt>=3?.65:rt>=2?.5:rt>=1?.35:.5):.2;
                     return <div key={di} style={{width:9,height:9,borderRadius:1.5,
                       background:dn?(TC[wo.type]||T.grn):wo.type==="rest"?"#15151A":"#1A1A22",
-                      opacity:dn?1:.25,cursor:"pointer"}} onClick={()=>{setSelDate(ds);navTo("train")}} title={ds}/>})}
+                      opacity:intensity,cursor:"pointer"}} onClick={()=>{setSelDate(ds);navTo("train")}} title={`${ds}${rt?` ★${rt}`:""}`}/>})}
                 </div>)})()}
             </div>
           </div>
@@ -1347,12 +1552,54 @@ function App(){
               <div style={{fontSize:9,color:T.dim}}>{dP(pr.d).toLocaleDateString("en-US",{month:"short",day:"numeric"})}</div></div>
             <div style={{textAlign:"right"}}><div style={{fontFamily:"'Bebas Neue'",fontSize:16,color:T.yel}}>{pr.w}×{pr.r}</div>
               <div style={{fontSize:8,color:T.dim}}>1RM: {pr.e1rm}</div></div></div>)}</Card>}
+
+      {/* PR WALL — Exercise Progression Charts */}
+      {statsTab==="progress"&&<>
+        {Object.keys(data.prs||{}).length===0?<Card><div style={{padding:16,textAlign:"center",color:T.dim,fontSize:11}}>Complete workouts and log sets to see your progression charts here.</div></Card>:
+        (()=>{
+          // Build per-exercise history from all sessions
+          const exHistory={};
+          Object.entries(data.sessions||{}).sort(([a],[b])=>a.localeCompare(b)).forEach(([ds,sess])=>{
+            if(!sess?.sets)return;
+            Object.entries(sess.sets).forEach(([exName,sets])=>{
+              const best=sets.filter(Boolean).reduce((mx,[w,r])=>{const v=parseFloat(w)||0;return v>mx?v:mx},0);
+              if(best>0){if(!exHistory[exName])exHistory[exName]=[];exHistory[exName].push({d:ds,w:best})}
+            })});
+          // Sort exercises by highest weight achieved
+          const sorted=Object.entries(exHistory).filter(([,h])=>h.length>=2).sort(([,a],[,b])=>{
+            const maxA=Math.max(...a.map(e=>e.w)),maxB=Math.max(...b.map(e=>e.w));return maxB-maxA});
+          return sorted.length===0?<Card><div style={{padding:16,textAlign:"center",color:T.dim,fontSize:11}}>Need at least 2 sessions per exercise to show progression.</div></Card>:
+            sorted.map(([name,history])=>{
+              const pr=data.prs?.[name];const mn=Math.min(...history.map(h=>h.w)),mx=Math.max(...history.map(h=>h.w)),rng=mx-mn||1;
+              const pts=history.map((h,i)=>[i/(Math.max(history.length-1,1))*280,70-((h.w-mn)/rng)*58]);
+              return <Card key={name}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
+                  <div style={{fontSize:12,fontWeight:700,color:T.txt}}>{name}</div>
+                  {pr&&<div style={{textAlign:"right"}}>
+                    <div style={{fontFamily:"'Bebas Neue'",fontSize:14,color:T.yel}}>{pr.w}×{pr.r}</div>
+                    <div style={{fontSize:8,color:T.dim}}>1RM: {pr.e1rm}</div></div>}
+                </div>
+                <svg viewBox="0 0 290 78" style={{width:"100%",height:78}}>
+                  <polygon points={`0,74 ${pts.map(p=>p.join(",")).join(" ")} 280,74`} fill={T.acc} opacity="0.1"/>
+                  <polyline points={pts.map(p=>p.join(",")).join(" ")} fill="none" stroke={T.acc} strokeWidth="2" strokeLinejoin="round"/>
+                  {pts.map(([x,y],i)=><circle key={i} cx={x} cy={y} r="3" fill={T.acc}/>)}
+                  <text x="0" y="76" fill={T.dim} fontSize="7">{history[0].w}</text>
+                  <text x="280" y="76" fill={T.grn} fontSize="7" textAnchor="end">{history[history.length-1].w}</text>
+                </svg>
+                <div style={{display:"flex",justifyContent:"space-between",fontSize:8,color:T.dim,marginTop:2}}>
+                  <span>{dP(history[0].d).toLocaleDateString("en-US",{month:"short",day:"numeric"})}</span>
+                  <span style={{color:mx>mn?T.grn:T.dim}}>+{mx-mn} lbs across {history.length} sessions</span>
+                  <span>{dP(history[history.length-1].d).toLocaleDateString("en-US",{month:"short",day:"numeric"})}</span>
+                </div>
+              </Card>})})()}
+      </>}
+
       {statsTab==="tools"&&<>
         {/* Plate Calculator */}
         <Card><Lbl>🔩 Plate Calculator</Lbl>
           <div style={{fontSize:11,color:T.dim,marginBottom:8}}>Enter target barbell weight. Shows plates per side.</div>
           <div style={{display:"flex",gap:6,marginBottom:10}}>
-            <input value={plateCalcInput} onChange={e=>setPlateCalcInput(e.target.value)} placeholder="135" type="number"
+            <input defaultValue="" onBlur={e=>setPlateCalcInput(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"){setPlateCalcInput(e.target.value);e.target.blur()}}} placeholder="135 — tap away to calculate" type="number" inputMode="decimal"
               style={{flex:1,padding:10,background:T.s2,border:`1px solid ${T.bdr}`,borderRadius:8,color:T.acc,fontFamily:"'Bebas Neue'",fontSize:22,textAlign:"center",outline:"none"}}/>
             <div style={{fontSize:10,color:T.dim,display:"flex",alignItems:"center"}}>lbs</div>
           </div>
@@ -1451,8 +1698,8 @@ function App(){
 
       {/* WEIGHT */}
       {profileTab==="weight"&&<>
-        <Card><Lbl>⚖️ Log Weigh-In</Lbl><div style={{display:"flex",gap:6}}>
-          <input value={wInput} onChange={e=>setWInput(e.target.value)} placeholder="210.0" type="number" step="0.1"
+        <Card key={`wi-${wInputKey}`}><Lbl>⚖️ Log Weigh-In</Lbl><div style={{display:"flex",gap:6}}>
+          <input defaultValue="" onInput={e=>{wInputRef.current=e.target.value}} placeholder="210.0" type="number" step="0.1" inputMode="decimal"
             style={{flex:1,padding:10,background:T.s2,border:`1px solid ${T.bdr}`,borderRadius:8,color:T.acc,
               fontFamily:"'Bebas Neue'",fontSize:22,textAlign:"center",outline:"none"}}
             onKeyDown={e=>e.key==="Enter"&&logWeight()}/>
@@ -1469,11 +1716,11 @@ function App(){
 
       {/* BODY MEASUREMENTS */}
       {profileTab==="body"&&<>
-        <Card><Lbl>📏 Body Measurements</Lbl>
+        <Card key={`meas-${measKey}`}><Lbl>📏 Body Measurements</Lbl>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,marginBottom:6}}>
             {[["waist","Waist (in)"],["chest","Chest (in)"],["arms","Arms (in)"],["neck","Neck (in)"],["thighs","Thighs (in)"],["bf","Body Fat %"],["muscle","Muscle Mass"]].map(([k,l])=>
               <div key={k}><div style={{fontSize:8,color:T.dim,marginBottom:2}}>{l}</div>
-                <input value={measInput[k]} onChange={e=>setMeasInput(p=>({...p,[k]:e.target.value}))} placeholder="—" type="number" step="0.25"
+                <input defaultValue="" onInput={e=>{measRef.current[k]=e.target.value}} placeholder="—" type="number" step="0.25" inputMode="decimal"
                   style={{width:"100%",padding:6,background:T.s2,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.txt,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}/></div>)}</div>
           <Btn onClick={logMeas} style={{fontSize:11}}>LOG MEASUREMENTS</Btn>
         </Card>
@@ -1585,19 +1832,19 @@ function App(){
 
       {/* SLEEP */}
       {profileTab==="sleep"&&<>
-        <Card><Lbl>😴 Log Sleep</Lbl>
+        <Card key={`sleep-${sleepKey}`}><Lbl>😴 Log Sleep</Lbl>
           <div style={{display:"flex",gap:8,alignItems:"flex-end",marginBottom:8}}>
             <div style={{flex:1}}>
               <div style={{fontSize:9,color:T.dim,marginBottom:2}}>Hours</div>
-              <input value={sleepInput.hrs} onChange={e=>setSleepInput(p=>({...p,hrs:e.target.value}))} placeholder="7.5" type="number" step="0.5"
+              <input defaultValue="" onInput={e=>{sleepRef.current.hrs=e.target.value}} placeholder="7.5" type="number" step="0.5" inputMode="decimal"
                 style={{width:"100%",padding:8,background:T.s2,border:`1px solid ${T.bdr}`,borderRadius:8,color:T.acc,fontFamily:"'Bebas Neue'",fontSize:22,textAlign:"center",outline:"none"}}/>
             </div>
             <div>
               <div style={{fontSize:9,color:T.dim,marginBottom:2}}>Quality</div>
               <div style={{display:"flex",gap:3}}>
-                {[1,2,3,4,5].map(v=><button key={v} onClick={()=>setSleepInput(p=>({...p,q:v}))}
-                  style={{width:26,height:26,borderRadius:13,border:`1px solid ${sleepInput.q>=v?T.yel:T.bdr}`,
-                    background:sleepInput.q>=v?T.yel+"22":"transparent",color:sleepInput.q>=v?T.yel:T.dim,
+                {[1,2,3,4,5].map(v=><button key={v} onClick={()=>{sleepRef.current.q=v;setSleepKey(k=>k+0.1)}}
+                  style={{width:26,height:26,borderRadius:13,border:`1px solid ${sleepRef.current.q>=v?T.yel:T.bdr}`,
+                    background:sleepRef.current.q>=v?T.yel+"22":"transparent",color:sleepRef.current.q>=v?T.yel:T.dim,
                     fontSize:10,fontWeight:600,cursor:"pointer"}}>{"★"}</button>)}
               </div>
             </div>
