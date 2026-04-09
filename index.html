@@ -857,7 +857,8 @@ function App(){
   const[statsTab,setStatsTab]=useState("overview");
   const[showWarmup,setShowWarmup]=useState(false);
   const[showAddEx,setShowAddEx]=useState(false);
-  const customExRef=useRef({name:"",sets:3,reps:"10",weight:""});
+  const[addExType,setAddExType]=useState("strength");
+  const customExRef=useRef({name:"",sets:3,reps:"10",weight:"",dur:"",cal:"",mi:"",notes:""});
   const measRef=useRef({waist:"",chest:"",arms:"",neck:"",thighs:"",bf:"",muscle:""});
   const[measKey,setMeasKey]=useState(0);
   const sleepRef=useRef({hrs:"",q:0});
@@ -1039,12 +1040,21 @@ function App(){
   const undoSet=(exN,si)=>upd(p=>{const sess={...p.sessions[selDate]};if(!sess?.sets?.[exN])return p;
     const sets=Array.from(sess.sets[exN]);sets[si]=undefined;sess.sets={...sess.sets,[exN]:sets};return{...p,sessions:{...p.sessions,[selDate]:sess}}});
   const addCustomEx=()=>{const c=customExRef.current;if(!c.name||!c.name.trim())return;
-    const ex={n:c.name.trim(),s:parseInt(c.sets)||3,r:c.reps||"10",w:c.weight||"BW"};
-    upd(p=>{const sess=p.sessions[selDate]||{};const customs=[...(sess.customEx||[]),ex];
+    const base={n:c.name.trim(),type:addExType};
+    if(addExType==="strength"){base.s=parseInt(c.sets)||3;base.r=c.reps||"10";base.w=c.weight||"BW"}
+    else if(addExType==="cardio"){base.dur=c.dur||"30";base.cal=parseInt(c.cal)||0;base.mi=parseFloat(c.mi)||0}
+    else{base.dur=c.dur||"";base.notes=c.notes||""}
+    upd(p=>{const sess=p.sessions[selDate]||{};const customs=[...(sess.customEx||[]),base];
       return{...p,sessions:{...p.sessions,[selDate]:{...sess,customEx:customs}}}});
-    customExRef.current={name:"",sets:3,reps:"10",weight:""};setShowAddEx(false)};
+    customExRef.current={name:"",sets:3,reps:"10",weight:"",dur:"",cal:"",mi:"",notes:""};setShowAddEx(false);setAddExType("strength")};
   const removeCustomEx=(idx)=>upd(p=>{const sess={...p.sessions[selDate]};
     const customs=[...(sess.customEx||[])];customs.splice(idx,1);sess.customEx=customs;
+    return{...p,sessions:{...p.sessions,[selDate]:sess}}});
+  // Log cardio custom exercise completion
+  const logCustomCardio=(idx)=>upd(p=>{const sess={...p.sessions[selDate]||{}};
+    const customs=[...(sess.customEx||[])];customs[idx]={...customs[idx],done:true};sess.customEx=customs;
+    // Add cal/mi to session for stats
+    const ce=customs[idx];if(ce.cal)sess.calOverride=(sess.calOverride||0)+ce.cal;if(ce.mi)sess.miOverride=(sess.miOverride||0)+ce.mi;
     return{...p,sessions:{...p.sessions,[selDate]:sess}}});
   const backupData=()=>{const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
     const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`henderson-backup-${todayStr}.json`;a.click()};
@@ -1569,52 +1579,106 @@ function App(){
 
         {/* ═══ CUSTOM EXERCISES ═══ */}
         {(session?.customEx||[]).map((ce,ci)=>{
-          const cLogged=session?.sets?.[ce.n]||[];const cAct=activeSet===`custom-${ce.n}`;
-          return <div key={`ce-${ci}`} style={{borderTop:`1px solid ${T.acc}33`}}>
-            <div onClick={()=>setActiveSet(cAct?null:`custom-${ce.n}`)} style={{padding:"8px 14px",cursor:"pointer",background:cAct?T.s2:"transparent"}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-                <div style={{flex:1}}>
-                  <div style={{display:"flex",alignItems:"center",gap:4}}>
-                    <span style={{fontSize:7,padding:"1px 4px",borderRadius:3,background:T.acc+"22",color:T.acc,fontWeight:700}}>+</span>
-                    <span style={{fontSize:12,fontWeight:600,color:T.txt}}>{ce.n}</span></div>
-                  {cLogged.length>0&&!cAct&&<div style={{display:"flex",gap:3,marginTop:3,flexWrap:"wrap"}}>
-                    {cLogged.filter(Boolean).map(([sw,sr],si)=>sw>0&&<Pill key={si} color={T.grn+"22"} text={T.grn}>{sw}×{sr}</Pill>)}</div>}
-                </div>
-                <div style={{display:"flex",alignItems:"center",gap:6}}>
-                  <div style={{textAlign:"right"}}><div style={{fontFamily:"'Bebas Neue'",fontSize:14,color:T.acc}}>{ce.s}×{ce.r}</div>
-                    {ce.w&&ce.w!=="BW"&&<div style={{fontSize:9,color:T.dim}}>{ce.w} lb</div>}</div>
-                  <button onClick={e=>{e.stopPropagation();if(confirm(`Remove ${ce.n}?`))removeCustomEx(ci)}}
-                    style={{width:18,height:18,borderRadius:9,background:T.s3,border:"none",cursor:"pointer",color:T.red,fontSize:10,display:"flex",alignItems:"center",justifyContent:"center"}}>×</button>
-                </div></div>
-            </div>
-            {cAct&&<div style={{padding:"0 14px 8px",background:T.s2}}>
-              {Array.from({length:parseInt(ce.s)||3}).map((_,si)=>{const lg=cLogged[si];const ik=`${ce.n}-${si}`;
-                const cW=parseFloat(ce.w)||0,cR=parseInt(ce.r)||0;
-                return <div key={si} style={{display:"flex",alignItems:"center",gap:4,marginBottom:3}}>
-                  <span style={{fontSize:9,color:T.dim,width:24}}>S{si+1}</span>
-                  {lg?<span onClick={ev=>{ev.stopPropagation();if(confirm("Undo?"))undoSet(ce.n,si)}} style={{cursor:"pointer"}}><Pill color={T.grn+"22"} text={T.grn}>{lg[0]}×{lg[1]} ✓</Pill></span>
-                  :<><input placeholder={`${cW||""}`} defaultValue="" onInput={ev=>updateSI(ik+"w",ev.target.value)}
-                      type="number" inputMode="decimal" style={{width:48,padding:"5px",background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.acc,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}/>
-                    <span style={{color:T.dim,fontSize:10}}>×</span>
-                    <input placeholder={`${cR||""}`} defaultValue="" onInput={ev=>updateSI(ik+"r",ev.target.value)}
-                      type="number" inputMode="numeric" style={{width:36,padding:"5px",background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.txt,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}
-                      onKeyDown={ev=>{if(ev.key==="Enter"){logSet(ce.n,si,getSI(ik+"w")||cW,getSI(ik+"r")||cR);delete siRef.current[ik+"w"];delete siRef.current[ik+"r"]}}}/>
-                    <button onClick={()=>{logSet(ce.n,si,getSI(ik+"w")||cW,getSI(ik+"r")||cR);delete siRef.current[ik+"w"];delete siRef.current[ik+"r"]}}
-                      style={{padding:"5px 8px",borderRadius:6,background:T.acc,border:"none",cursor:"pointer",color:"#000",fontSize:9,fontWeight:700}}>LOG</button></>}
-                </div>})}
+          const cAct=activeSet===`custom-${ci}-${ce.n}`;
+          // STRENGTH type custom exercise
+          if(!ce.type||ce.type==="strength"){
+            const cLogged=session?.sets?.[ce.n]||[];
+            return <div key={`ce-${ci}`} style={{borderTop:`1px solid ${T.acc}33`}}>
+              <div onClick={()=>setActiveSet(cAct?null:`custom-${ci}-${ce.n}`)} style={{padding:"8px 14px",cursor:"pointer",background:cAct?T.s2:"transparent"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+                  <div style={{flex:1}}>
+                    <div style={{display:"flex",alignItems:"center",gap:4}}>
+                      <span style={{fontSize:7,padding:"1px 4px",borderRadius:3,background:T.acc+"22",color:T.acc,fontWeight:700}}>+</span>
+                      <span style={{fontSize:12,fontWeight:600,color:T.txt}}>{ce.n}</span></div>
+                    {cLogged.length>0&&!cAct&&<div style={{display:"flex",gap:3,marginTop:3,flexWrap:"wrap"}}>
+                      {cLogged.filter(Boolean).map(([sw,sr],si)=>sw>0&&<Pill key={si} color={T.grn+"22"} text={T.grn}>{sw}×{sr}</Pill>)}</div>}
+                  </div>
+                  <div style={{display:"flex",alignItems:"center",gap:6}}>
+                    <div style={{textAlign:"right"}}><div style={{fontFamily:"'Bebas Neue'",fontSize:14,color:T.acc}}>{ce.s}×{ce.r}</div>
+                      {ce.w&&ce.w!=="BW"&&<div style={{fontSize:9,color:T.dim}}>{ce.w} lb</div>}</div>
+                    <button onClick={e=>{e.stopPropagation();if(confirm(`Remove ${ce.n}?`))removeCustomEx(ci)}}
+                      style={{width:18,height:18,borderRadius:9,background:T.s3,border:"none",cursor:"pointer",color:T.red,fontSize:10,display:"flex",alignItems:"center",justifyContent:"center"}}>×</button>
+                  </div></div>
+              </div>
+              {cAct&&<div style={{padding:"0 14px 8px",background:T.s2}}>
+                {Array.from({length:parseInt(ce.s)||3}).map((_,si)=>{const lg=cLogged[si];const ik=`${ce.n}-c${ci}-${si}`;
+                  const cW=parseFloat(ce.w)||0,cR=parseInt(ce.r)||0;
+                  return <div key={si} style={{display:"flex",alignItems:"center",gap:4,marginBottom:3}}>
+                    <span style={{fontSize:9,color:T.dim,width:24}}>S{si+1}</span>
+                    {lg?<span onClick={ev=>{ev.stopPropagation();if(confirm("Undo?"))undoSet(ce.n,si)}} style={{cursor:"pointer"}}><Pill color={T.grn+"22"} text={T.grn}>{lg[0]}×{lg[1]} ✓</Pill></span>
+                    :<><input placeholder={`${cW||""}`} defaultValue="" onInput={ev=>updateSI(ik+"w",ev.target.value)}
+                        type="number" inputMode="decimal" style={{width:48,padding:"5px",background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.acc,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}/>
+                      <span style={{color:T.dim,fontSize:10}}>×</span>
+                      <input placeholder={`${cR||""}`} defaultValue="" onInput={ev=>updateSI(ik+"r",ev.target.value)}
+                        type="number" inputMode="numeric" style={{width:36,padding:"5px",background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.txt,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}
+                        onKeyDown={ev=>{if(ev.key==="Enter"){logSet(ce.n,si,getSI(ik+"w")||cW,getSI(ik+"r")||cR);delete siRef.current[ik+"w"];delete siRef.current[ik+"r"]}}}/>
+                      <button onClick={()=>{logSet(ce.n,si,getSI(ik+"w")||cW,getSI(ik+"r")||cR);delete siRef.current[ik+"w"];delete siRef.current[ik+"r"]}}
+                        style={{padding:"5px 8px",borderRadius:6,background:T.acc,border:"none",cursor:"pointer",color:"#000",fontSize:9,fontWeight:700}}>LOG</button></>}
+                  </div>})}
+              </div>}
             </div>}
-          </div>})}
+          // CARDIO type custom exercise
+          if(ce.type==="cardio"){
+            return <div key={`ce-${ci}`} style={{borderTop:`1px solid ${T.blue}33`,padding:"8px 14px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <div>
+                <div style={{display:"flex",alignItems:"center",gap:4}}>
+                  <span style={{fontSize:7,padding:"1px 4px",borderRadius:3,background:T.blue+"22",color:T.blue,fontWeight:700}}>🚴</span>
+                  <span style={{fontSize:12,fontWeight:600,color:T.txt}}>{ce.n}</span>
+                  {ce.done&&<Pill color={T.grn+"22"} text={T.grn}>✓</Pill>}
+                </div>
+                <div style={{fontSize:9,color:T.dim,marginTop:2,display:"flex",gap:8}}>
+                  {ce.dur&&<span>⏱ {ce.dur} min</span>}
+                  {ce.cal>0&&<span>🔥 {ce.cal} cal</span>}
+                  {ce.mi>0&&<span>📍 {ce.mi} mi</span>}
+                </div>
+              </div>
+              <div style={{display:"flex",gap:4}}>
+                {!ce.done&&<button onClick={()=>logCustomCardio(ci)}
+                  style={{padding:"5px 10px",borderRadius:6,background:T.blue,border:"none",cursor:"pointer",color:"#fff",fontSize:9,fontWeight:700}}>DONE</button>}
+                <button onClick={()=>{if(confirm(`Remove ${ce.n}?`))removeCustomEx(ci)}}
+                  style={{width:18,height:18,borderRadius:9,background:T.s3,border:"none",cursor:"pointer",color:T.red,fontSize:10,display:"flex",alignItems:"center",justifyContent:"center"}}>×</button>
+              </div>
+            </div>}
+          // ACTIVITY type custom exercise
+          if(ce.type==="activity"){
+            return <div key={`ce-${ci}`} style={{borderTop:`1px solid ${T.grn}33`,padding:"8px 14px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <div>
+                <div style={{display:"flex",alignItems:"center",gap:4}}>
+                  <span style={{fontSize:7,padding:"1px 4px",borderRadius:3,background:T.grn+"22",color:T.grn,fontWeight:700}}>⛳</span>
+                  <span style={{fontSize:12,fontWeight:600,color:T.txt}}>{ce.n}</span>
+                </div>
+                <div style={{fontSize:9,color:T.dim,marginTop:2,display:"flex",gap:8}}>
+                  {ce.dur&&<span>⏱ {ce.dur}</span>}
+                  {ce.notes&&<span>{ce.notes}</span>}
+                </div>
+              </div>
+              <button onClick={()=>{if(confirm(`Remove ${ce.n}?`))removeCustomEx(ci)}}
+                style={{width:18,height:18,borderRadius:9,background:T.s3,border:"none",cursor:"pointer",color:T.red,fontSize:10,display:"flex",alignItems:"center",justifyContent:"center"}}>×</button>
+            </div>}
+          return null})}
 
         {/* Add Exercise Button + Form */}
-        {w.type!=="rest"&&<div style={{borderTop:`1px solid ${T.s3}`,padding:"8px 14px"}}>
-          {!showAddEx?<button onClick={()=>setShowAddEx(true)} style={{width:"100%",padding:8,borderRadius:6,
+        <div style={{borderTop:`1px solid ${T.s3}`,padding:"8px 14px"}}>
+          {!showAddEx?<button onClick={()=>setShowAddEx(true)} style={{width:"100%",padding:10,borderRadius:6,
             background:"transparent",border:`1px dashed ${T.acc}44`,cursor:"pointer",color:T.acc,fontSize:11,fontWeight:600}}>
-            + ADD EXERCISE</button>
+            + ADD EXERCISE / CARDIO / ACTIVITY</button>
           :<div style={{background:T.s2,borderRadius:8,padding:10}}>
-            <div style={{fontSize:10,color:T.acc,fontWeight:700,marginBottom:6}}>ADD CUSTOM EXERCISE</div>
-            <input defaultValue="" onInput={e=>{customExRef.current.name=e.target.value}} placeholder="Exercise name"
+            {/* Type selector */}
+            <div style={{display:"flex",gap:4,marginBottom:8}}>
+              {[["strength","🏋 Strength"],["cardio","🚴 Cardio"],["activity","⛳ Activity"]].map(([t,l])=>
+                <button key={t} onClick={()=>setAddExType(t)} style={{flex:1,padding:"6px 4px",borderRadius:6,fontSize:9,fontWeight:700,cursor:"pointer",
+                  background:addExType===t?(t==="strength"?T.acc:t==="cardio"?T.blue:T.grn)+"22":"transparent",
+                  color:addExType===t?(t==="strength"?T.acc:t==="cardio"?T.blue:T.grn):T.dim,
+                  border:`1px solid ${addExType===t?(t==="strength"?T.acc:t==="cardio"?T.blue:T.grn)+"44":T.bdr}`}}>{l}</button>)}
+            </div>
+
+            {/* Name — always shown */}
+            <input defaultValue="" onInput={e=>{customExRef.current.name=e.target.value}}
+              placeholder={addExType==="strength"?"Exercise name (e.g. Bicep Curl)":addExType==="cardio"?"Activity name (e.g. Bike Ride, Run)":"Activity name (e.g. Golf, Hiking, Basketball)"}
               style={{width:"100%",padding:8,background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.txt,fontSize:12,outline:"none",marginBottom:6}}/>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,marginBottom:8}}>
+
+            {/* STRENGTH fields */}
+            {addExType==="strength"&&<div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,marginBottom:8}}>
               <div><div style={{fontSize:8,color:T.dim,marginBottom:2}}>Sets</div>
                 <input defaultValue="3" onInput={e=>{customExRef.current.sets=e.target.value}} type="number" inputMode="numeric"
                   style={{width:"100%",padding:6,background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.txt,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}/></div>
@@ -1624,13 +1688,41 @@ function App(){
               <div><div style={{fontSize:8,color:T.dim,marginBottom:2}}>Weight</div>
                 <input defaultValue="" onInput={e=>{customExRef.current.weight=e.target.value}} placeholder="BW"
                   style={{width:"100%",padding:6,background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.acc,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}/></div>
-            </div>
+            </div>}
+
+            {/* CARDIO fields */}
+            {addExType==="cardio"&&<div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,marginBottom:8}}>
+              <div><div style={{fontSize:8,color:T.dim,marginBottom:2}}>Minutes</div>
+                <input defaultValue="30" onInput={e=>{customExRef.current.dur=e.target.value}} type="number" inputMode="numeric"
+                  style={{width:"100%",padding:6,background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.txt,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}/></div>
+              <div><div style={{fontSize:8,color:T.dim,marginBottom:2}}>Calories</div>
+                <input defaultValue="" onInput={e=>{customExRef.current.cal=e.target.value}} placeholder="0" type="number" inputMode="numeric"
+                  style={{width:"100%",padding:6,background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.acc,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}/></div>
+              <div><div style={{fontSize:8,color:T.dim,marginBottom:2}}>Miles</div>
+                <input defaultValue="" onInput={e=>{customExRef.current.mi=e.target.value}} placeholder="0" type="number" step="0.1" inputMode="decimal"
+                  style={{width:"100%",padding:6,background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.blue,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}/></div>
+            </div>}
+
+            {/* ACTIVITY fields */}
+            {addExType==="activity"&&<div style={{marginBottom:8}}>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:6}}>
+                <div><div style={{fontSize:8,color:T.dim,marginBottom:2}}>Duration</div>
+                  <input defaultValue="" onInput={e=>{customExRef.current.dur=e.target.value}} placeholder="2 hours, 18 holes, etc"
+                    style={{width:"100%",padding:6,background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.txt,fontSize:12,textAlign:"center",outline:"none"}}/></div>
+                <div><div style={{fontSize:8,color:T.dim,marginBottom:2}}>Notes</div>
+                  <input defaultValue="" onInput={e=>{customExRef.current.notes=e.target.value}} placeholder="Shot 92, walked"
+                    style={{width:"100%",padding:6,background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.txt,fontSize:12,textAlign:"center",outline:"none"}}/></div>
+              </div>
+            </div>}
+
             <div style={{display:"flex",gap:6}}>
-              <button onClick={addCustomEx} style={{flex:1,padding:8,borderRadius:6,background:T.acc,border:"none",cursor:"pointer",color:"#000",fontSize:11,fontWeight:700}}>ADD</button>
-              <button onClick={()=>setShowAddEx(false)} style={{padding:"8px 14px",borderRadius:6,background:T.s3,border:"none",cursor:"pointer",color:T.dim,fontSize:11}}>CANCEL</button>
+              <button onClick={addCustomEx} style={{flex:1,padding:8,borderRadius:6,
+                background:addExType==="strength"?T.acc:addExType==="cardio"?T.blue:T.grn,
+                border:"none",cursor:"pointer",color:addExType==="cardio"?"#fff":"#000",fontSize:11,fontWeight:700}}>ADD</button>
+              <button onClick={()=>{setShowAddEx(false);setAddExType("strength")}} style={{padding:"8px 14px",borderRadius:6,background:T.s3,border:"none",cursor:"pointer",color:T.dim,fontSize:11}}>CANCEL</button>
             </div>
           </div>}
-        </div>}
+        </div>
 
         {w.type!=="rest"&&<div style={{padding:12,borderTop:`1px solid ${T.s3}`,background:T.s2}}>
           {w.type==="bike"&&<div style={{display:"flex",gap:8,marginBottom:8}}>
