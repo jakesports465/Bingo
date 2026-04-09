@@ -148,12 +148,16 @@ const QUICK_FOODS=[
   {n:"Chicken Breast (6oz)",cal:280,pro:52,carb:0,fat:6},
   {n:"Chicken Thigh (6oz)",cal:330,pro:42,carb:0,fat:16},
   {n:"Ground Beef 80/20 (6oz)",cal:430,pro:40,carb:0,fat:28},
+  {n:"Ground Turkey (6oz)",cal:300,pro:42,carb:0,fat:14},
   {n:"Salmon Fillet (6oz)",cal:350,pro:40,carb:0,fat:20},
   {n:"Tuna Can (5oz)",cal:120,pro:28,carb:0,fat:1},
   {n:"2 Eggs",cal:140,pro:12,carb:1,fat:10},
   {n:"3 Eggs",cal:210,pro:18,carb:1,fat:15},
   {n:"4 Eggs",cal:280,pro:24,carb:2,fat:20},
+  {n:"Greek Yogurt",cal:130,pro:17,carb:6,fat:4},
+  {n:"Cottage Cheese (1 cup)",cal:220,pro:25,carb:8,fat:10},
   {n:"Beef Jerky (1oz)",cal:80,pro:13,carb:3,fat:1},
+  {n:"Turkey Deli Meat (4oz)",cal:120,pro:20,carb:2,fat:3},
   {n:"Steak 8oz",cal:480,pro:56,carb:0,fat:28},
   // Carb sources
   {n:"Rice (1 cup)",cal:210,pro:4,carb:45,fat:0},
@@ -161,17 +165,27 @@ const QUICK_FOODS=[
   {n:"Pasta (2oz dry)",cal:200,pro:7,carb:42,fat:1},
   {n:"Bread (2 slices)",cal:160,pro:6,carb:28,fat:2},
   {n:"Potato (medium)",cal:160,pro:4,carb:37,fat:0},
+  {n:"Sweet Potato",cal:100,pro:2,carb:24,fat:0},
+  {n:"Oatmeal (1 cup)",cal:300,pro:10,carb:54,fat:5},
   {n:"Banana",cal:105,pro:1,carb:27,fat:0},
+  {n:"Apple",cal:95,pro:0,carb:25,fat:0},
   {n:"Tortilla (large flour)",cal:210,pro:5,carb:36,fat:5},
   // Fats / snacks
   {n:"Peanut Butter (2 tbsp)",cal:190,pro:7,carb:7,fat:16},
+  {n:"Almonds (1oz)",cal:160,pro:6,carb:6,fat:14},
+  {n:"Avocado (half)",cal:160,pro:2,carb:9,fat:15},
   {n:"Cheese Slice",cal:110,pro:7,carb:1,fat:9},
   {n:"String Cheese",cal:80,pro:7,carb:1,fat:5},
   // Drinks
+  {n:"Can of Coke",cal:140,pro:0,carb:39,fat:0},
+  {n:"Coke Zero",cal:0,pro:0,carb:0,fat:0},
   {n:"Miller Lite",cal:96,pro:1,carb:3,fat:0},
   {n:"Miller Lite x3",cal:288,pro:3,carb:9,fat:0},
+  {n:"Whole Milk (1 cup)",cal:150,pro:8,carb:12,fat:8},
   {n:"Coffee w/ Cream",cal:50,pro:1,carb:1,fat:5},
+  {n:"Orange Juice (8oz)",cal:110,pro:2,carb:26,fat:0},
   // Fast food / common meals
+  {n:"Big Mac",cal:550,pro:25,carb:45,fat:30},
   {n:"McChicken",cal:400,pro:14,carb:39,fat:22},
   {n:"Chick-fil-A Sandwich",cal:440,pro:28,carb:40,fat:19},
   {n:"Chick-fil-A Nuggets (8)",cal:250,pro:27,carb:11,fat:11},
@@ -181,6 +195,8 @@ const QUICK_FOODS=[
   {n:"KFC 3-Piece",cal:740,pro:54,carb:24,fat:46},
   {n:"Subway 6in Turkey",cal:280,pro:18,carb:46,fat:3},
   {n:"Taco Bell Burrito",cal:380,pro:15,carb:44,fat:16},
+  {n:"Wendy's Baconator",cal:940,pro:57,carb:38,fat:62},
+  {n:"Five Guys Burger",cal:840,pro:40,carb:39,fat:55},
 ];
 
 // ══ DATA ══
@@ -840,6 +856,8 @@ function App(){
   const[showFoodSave,setShowFoodSave]=useState(false);
   const[statsTab,setStatsTab]=useState("overview");
   const[showWarmup,setShowWarmup]=useState(false);
+  const[showAddEx,setShowAddEx]=useState(false);
+  const customExRef=useRef({name:"",sets:3,reps:"10",weight:""});
   const measRef=useRef({waist:"",chest:"",arms:"",neck:"",thighs:"",bf:"",muscle:""});
   const[measKey,setMeasKey]=useState(0);
   const sleepRef=useRef({hrs:"",q:0});
@@ -1020,6 +1038,14 @@ function App(){
   const toggleSupp=(key)=>upd(p=>{const day=p.supps?.[todayStr]||{};return{...p,supps:{...p.supps,[todayStr]:{...day,[key]:!day[key]}}}});
   const undoSet=(exN,si)=>upd(p=>{const sess={...p.sessions[selDate]};if(!sess?.sets?.[exN])return p;
     const sets=Array.from(sess.sets[exN]);sets[si]=undefined;sess.sets={...sess.sets,[exN]:sets};return{...p,sessions:{...p.sessions,[selDate]:sess}}});
+  const addCustomEx=()=>{const c=customExRef.current;if(!c.name||!c.name.trim())return;
+    const ex={n:c.name.trim(),s:parseInt(c.sets)||3,r:c.reps||"10",w:c.weight||"BW"};
+    upd(p=>{const sess=p.sessions[selDate]||{};const customs=[...(sess.customEx||[]),ex];
+      return{...p,sessions:{...p.sessions,[selDate]:{...sess,customEx:customs}}}});
+    customExRef.current={name:"",sets:3,reps:"10",weight:""};setShowAddEx(false)};
+  const removeCustomEx=(idx)=>upd(p=>{const sess={...p.sessions[selDate]};
+    const customs=[...(sess.customEx||[])];customs.splice(idx,1);sess.customEx=customs;
+    return{...p,sessions:{...p.sessions,[selDate]:sess}}});
   const backupData=()=>{const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
     const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`henderson-backup-${todayStr}.json`;a.click()};
   const restoreData=(e)=>{const f=e.target.files?.[0];if(!f)return;const r=new FileReader();
@@ -1540,6 +1566,72 @@ function App(){
               <div style={{fontSize:8,color:T.dim,marginTop:2}}>Rest: {e.rest}s</div>
             </div>}
           </div>})}
+
+        {/* ═══ CUSTOM EXERCISES ═══ */}
+        {(session?.customEx||[]).map((ce,ci)=>{
+          const cLogged=session?.sets?.[ce.n]||[];const cAct=activeSet===`custom-${ce.n}`;
+          return <div key={`ce-${ci}`} style={{borderTop:`1px solid ${T.acc}33`}}>
+            <div onClick={()=>setActiveSet(cAct?null:`custom-${ce.n}`)} style={{padding:"8px 14px",cursor:"pointer",background:cAct?T.s2:"transparent"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+                <div style={{flex:1}}>
+                  <div style={{display:"flex",alignItems:"center",gap:4}}>
+                    <span style={{fontSize:7,padding:"1px 4px",borderRadius:3,background:T.acc+"22",color:T.acc,fontWeight:700}}>+</span>
+                    <span style={{fontSize:12,fontWeight:600,color:T.txt}}>{ce.n}</span></div>
+                  {cLogged.length>0&&!cAct&&<div style={{display:"flex",gap:3,marginTop:3,flexWrap:"wrap"}}>
+                    {cLogged.filter(Boolean).map(([sw,sr],si)=>sw>0&&<Pill key={si} color={T.grn+"22"} text={T.grn}>{sw}×{sr}</Pill>)}</div>}
+                </div>
+                <div style={{display:"flex",alignItems:"center",gap:6}}>
+                  <div style={{textAlign:"right"}}><div style={{fontFamily:"'Bebas Neue'",fontSize:14,color:T.acc}}>{ce.s}×{ce.r}</div>
+                    {ce.w&&ce.w!=="BW"&&<div style={{fontSize:9,color:T.dim}}>{ce.w} lb</div>}</div>
+                  <button onClick={e=>{e.stopPropagation();if(confirm(`Remove ${ce.n}?`))removeCustomEx(ci)}}
+                    style={{width:18,height:18,borderRadius:9,background:T.s3,border:"none",cursor:"pointer",color:T.red,fontSize:10,display:"flex",alignItems:"center",justifyContent:"center"}}>×</button>
+                </div></div>
+            </div>
+            {cAct&&<div style={{padding:"0 14px 8px",background:T.s2}}>
+              {Array.from({length:parseInt(ce.s)||3}).map((_,si)=>{const lg=cLogged[si];const ik=`${ce.n}-${si}`;
+                const cW=parseFloat(ce.w)||0,cR=parseInt(ce.r)||0;
+                return <div key={si} style={{display:"flex",alignItems:"center",gap:4,marginBottom:3}}>
+                  <span style={{fontSize:9,color:T.dim,width:24}}>S{si+1}</span>
+                  {lg?<span onClick={ev=>{ev.stopPropagation();if(confirm("Undo?"))undoSet(ce.n,si)}} style={{cursor:"pointer"}}><Pill color={T.grn+"22"} text={T.grn}>{lg[0]}×{lg[1]} ✓</Pill></span>
+                  :<><input placeholder={`${cW||""}`} defaultValue="" onInput={ev=>updateSI(ik+"w",ev.target.value)}
+                      type="number" inputMode="decimal" style={{width:48,padding:"5px",background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.acc,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}/>
+                    <span style={{color:T.dim,fontSize:10}}>×</span>
+                    <input placeholder={`${cR||""}`} defaultValue="" onInput={ev=>updateSI(ik+"r",ev.target.value)}
+                      type="number" inputMode="numeric" style={{width:36,padding:"5px",background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.txt,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}
+                      onKeyDown={ev=>{if(ev.key==="Enter"){logSet(ce.n,si,getSI(ik+"w")||cW,getSI(ik+"r")||cR);delete siRef.current[ik+"w"];delete siRef.current[ik+"r"]}}}/>
+                    <button onClick={()=>{logSet(ce.n,si,getSI(ik+"w")||cW,getSI(ik+"r")||cR);delete siRef.current[ik+"w"];delete siRef.current[ik+"r"]}}
+                      style={{padding:"5px 8px",borderRadius:6,background:T.acc,border:"none",cursor:"pointer",color:"#000",fontSize:9,fontWeight:700}}>LOG</button></>}
+                </div>})}
+            </div>}
+          </div>})}
+
+        {/* Add Exercise Button + Form */}
+        {w.type!=="rest"&&<div style={{borderTop:`1px solid ${T.s3}`,padding:"8px 14px"}}>
+          {!showAddEx?<button onClick={()=>setShowAddEx(true)} style={{width:"100%",padding:8,borderRadius:6,
+            background:"transparent",border:`1px dashed ${T.acc}44`,cursor:"pointer",color:T.acc,fontSize:11,fontWeight:600}}>
+            + ADD EXERCISE</button>
+          :<div style={{background:T.s2,borderRadius:8,padding:10}}>
+            <div style={{fontSize:10,color:T.acc,fontWeight:700,marginBottom:6}}>ADD CUSTOM EXERCISE</div>
+            <input defaultValue="" onInput={e=>{customExRef.current.name=e.target.value}} placeholder="Exercise name"
+              style={{width:"100%",padding:8,background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.txt,fontSize:12,outline:"none",marginBottom:6}}/>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,marginBottom:8}}>
+              <div><div style={{fontSize:8,color:T.dim,marginBottom:2}}>Sets</div>
+                <input defaultValue="3" onInput={e=>{customExRef.current.sets=e.target.value}} type="number" inputMode="numeric"
+                  style={{width:"100%",padding:6,background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.txt,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}/></div>
+              <div><div style={{fontSize:8,color:T.dim,marginBottom:2}}>Reps</div>
+                <input defaultValue="10" onInput={e=>{customExRef.current.reps=e.target.value}}
+                  style={{width:"100%",padding:6,background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.txt,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}/></div>
+              <div><div style={{fontSize:8,color:T.dim,marginBottom:2}}>Weight</div>
+                <input defaultValue="" onInput={e=>{customExRef.current.weight=e.target.value}} placeholder="BW"
+                  style={{width:"100%",padding:6,background:T.s1,border:`1px solid ${T.bdr}`,borderRadius:6,color:T.acc,fontSize:12,fontWeight:600,textAlign:"center",outline:"none"}}/></div>
+            </div>
+            <div style={{display:"flex",gap:6}}>
+              <button onClick={addCustomEx} style={{flex:1,padding:8,borderRadius:6,background:T.acc,border:"none",cursor:"pointer",color:"#000",fontSize:11,fontWeight:700}}>ADD</button>
+              <button onClick={()=>setShowAddEx(false)} style={{padding:"8px 14px",borderRadius:6,background:T.s3,border:"none",cursor:"pointer",color:T.dim,fontSize:11}}>CANCEL</button>
+            </div>
+          </div>}
+        </div>}
+
         {w.type!=="rest"&&<div style={{padding:12,borderTop:`1px solid ${T.s3}`,background:T.s2}}>
           {w.type==="bike"&&<div style={{display:"flex",gap:8,marginBottom:8}}>
             <div style={{flex:1}}>
