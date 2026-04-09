@@ -900,7 +900,7 @@ function App(){
     const keys=Object.keys(data.sessions||{}).filter(k=>data.sessions[k]?.done);
     let cal=0,mi=0,dur=0,strSess=0,bikeSess=0,circSess=0,totalVol=0;
     keys.forEach(k=>{const wo=getWorkout(k);const sess=data.sessions[k];
-      cal+=(sess?.calOverride||wo.cal);mi+=(sess?.miOverride||wo.mi);dur+=wo.dur;
+      cal+=(sess?.calOverride||wo.cal)+(sess?.customCal||0);mi+=(sess?.miOverride||wo.mi)+(sess?.customMi||0);dur+=wo.dur;
       if(wo.type==="strength")strSess++;if(wo.type==="bike")bikeSess++;if(wo.type==="circuit")circSess++;
       if(sess?.sets)Object.values(sess.sets).forEach(sets=>sets.forEach(([w,r])=>{totalVol+=(w||0)*(r||0)}))});
     let streak=0,maxStreak=0,cur=0;
@@ -955,7 +955,7 @@ function App(){
 
   const weeklyChart=useMemo(()=>{const wks={};Object.keys(data.sessions||{}).filter(k=>data.sessions[k]?.done).sort().forEach(ds=>{
     const d=dP(ds),ws=new Date(d);ws.setDate(d.getDate()-d.getDay());const wk=dS(ws);
-    if(!wks[wk])wks[wk]={wk,cal:0,mi:0,s:0};const wo=getWorkout(ds);const ss=data.sessions[ds];wks[wk].cal+=(ss?.calOverride||wo.cal);wks[wk].mi+=(ss?.miOverride||wo.mi);wks[wk].s++});
+    if(!wks[wk])wks[wk]={wk,cal:0,mi:0,s:0};const wo=getWorkout(ds);const ss=data.sessions[ds];wks[wk].cal+=(ss?.calOverride||wo.cal)+(ss?.customCal||0);wks[wk].mi+=(ss?.miOverride||wo.mi)+(ss?.customMi||0);wks[wk].s++});
     return Object.values(wks).slice(-16)},[data.sessions]);
   const weightChart=useMemo(()=>data.weight.slice(-30).map(e=>({d:dP(e.d).toLocaleDateString("en-US",{month:"short",day:"numeric"}),w:e.w})),[data.weight]);
   const unlockedMS=useMemo(()=>MILES.filter(m=>m.req(stats)),[stats]);
@@ -985,7 +985,7 @@ function App(){
   const weeklySummary=useMemo(()=>{const ws=new Date(now);ws.setDate(now.getDate()-now.getDay());
     const days=[];for(let i=0;i<7;i++){const d=new Date(ws);d.setDate(ws.getDate()+i);days.push(dS(d))}
     const done=days.filter(d=>data.sessions?.[d]?.done);const types={strength:0,bike:0,circuit:0};
-    let cal=0,mi=0;done.forEach(d=>{const wo=getWorkout(d);const ss=data.sessions?.[d];types[wo.type]=(types[wo.type]||0)+1;cal+=(ss?.calOverride||wo.cal);mi+=(ss?.miOverride||wo.mi)});
+    let cal=0,mi=0;done.forEach(d=>{const wo=getWorkout(d);const ss=data.sessions?.[d];types[wo.type]=(types[wo.type]||0)+1;cal+=(ss?.calOverride||wo.cal)+(ss?.customCal||0);mi+=(ss?.miOverride||wo.mi)+(ss?.customMi||0)});
     // Report card data
     const weekPRs=Object.entries(data.prs||{}).filter(([,p])=>days.includes(p.d)).length;
     const weekWeights=data.weight.filter(e=>days.includes(e.d));
@@ -1053,8 +1053,9 @@ function App(){
   // Log cardio custom exercise completion
   const logCustomCardio=(idx)=>upd(p=>{const sess={...p.sessions[selDate]||{}};
     const customs=[...(sess.customEx||[])];customs[idx]={...customs[idx],done:true};sess.customEx=customs;
-    // Add cal/mi to session for stats
-    const ce=customs[idx];if(ce.cal)sess.calOverride=(sess.calOverride||0)+ce.cal;if(ce.mi)sess.miOverride=(sess.miOverride||0)+ce.mi;
+    const ce=customs[idx];
+    if(ce.cal)sess.customCal=(sess.customCal||0)+parseInt(ce.cal);
+    if(ce.mi)sess.customMi=(sess.customMi||0)+parseFloat(ce.mi);
     return{...p,sessions:{...p.sessions,[selDate]:sess}}});
   const backupData=()=>{const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
     const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`henderson-backup-${todayStr}.json`;a.click()};
