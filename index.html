@@ -887,6 +887,7 @@ function App(){
   const now=new Date(),todayStr=dS(now);
   const workout=useMemo(()=>getWorkout(selDate),[selDate]);
   const lastW=data.weight.length?data.weight[data.weight.length-1].w:210;
+  const sessActive=(s)=>s?.done||(s?.customEx||[]).some(ce=>ce.done||ce.type==="activity")||(s?.sets&&Object.values(s.sets).some(arr=>arr.some(Boolean)));
   const session=data.sessions?.[selDate]||{};
   const isToday=selDate===todayStr;
   const readiness=useMemo(()=>calcReadiness(data,now),[data.sessions]);
@@ -897,27 +898,31 @@ function App(){
 
   // Stats
   const stats=useMemo(()=>{
-    const keys=Object.keys(data.sessions||{}).filter(k=>data.sessions[k]?.done);
+    const keys=Object.keys(data.sessions||{}).filter(k=>sessActive(data.sessions[k]));
     let cal=0,mi=0,dur=0,strSess=0,bikeSess=0,circSess=0,totalVol=0;
     keys.forEach(k=>{const wo=getWorkout(k);const sess=data.sessions[k];
-      cal+=(sess?.calOverride||wo.cal)+(sess?.customCal||0);mi+=(sess?.miOverride||wo.mi)+(sess?.customMi||0);dur+=wo.dur;
-      if(wo.type==="strength")strSess++;if(wo.type==="bike")bikeSess++;if(wo.type==="circuit")circSess++;
-      if(sess?.sets)Object.values(sess.sets).forEach(sets=>sets.forEach(([w,r])=>{totalVol+=(w||0)*(r||0)}))});
+      // Programmed workout stats only if MARK COMPLETE was tapped
+      if(sess?.done){cal+=(sess?.calOverride||wo.cal);mi+=(sess?.miOverride||wo.mi);dur+=wo.dur;
+        if(wo.type==="strength")strSess++;if(wo.type==="bike")bikeSess++;if(wo.type==="circuit")circSess++}
+      // Custom exercise stats always count when individually completed
+      cal+=(sess?.customCal||0);mi+=(sess?.customMi||0);
+      // Volume from ALL logged sets (programmed + custom)
+      if(sess?.sets)Object.values(sess.sets).forEach(sets=>sets.filter(Boolean).forEach(([w,r])=>{totalVol+=(w||0)*(r||0)}))});
     let streak=0,maxStreak=0,cur=0;
-    // Streak with freeze support
+    // Streak with freeze support — counts ANY activity
     for(let i=0;i<120;i++){const d=new Date(now);d.setDate(d.getDate()-i);const k=dS(d);
       if(d.getDay()===0)continue;
-      if(data.sessions?.[k]?.done)streak++;
+      if(sessActive(data.sessions?.[k]))streak++;
       else if(data.freezeUsed?.[k])streak++; // freeze saved this day
       else if(i>0)break}
     const sorted=[...keys].sort();sorted.forEach((ds,i)=>{if(i===0)cur=1;else cur=dB(sorted[i-1],ds)<=2?cur+1:1;maxStreak=Math.max(maxStreak,cur)});
     const ws=new Date(now);ws.setDate(now.getDate()-now.getDay());
     let tw=0,twCal=0,twMi=0,lw=0,lwCal=0,lwMi=0;
     for(let i=0;i<7;i++){let d=new Date(ws);d.setDate(ws.getDate()+i);const k=dS(d);
-      if(data.sessions?.[k]?.done){tw++;const wo=getWorkout(k);twCal+=wo.cal;twMi+=wo.mi}}
+      if(sessActive(data.sessions?.[k])){tw++;const wo=getWorkout(k);twCal+=wo.cal;twMi+=wo.mi}}
     const lws=new Date(ws);lws.setDate(lws.getDate()-7);
     for(let i=0;i<7;i++){let d=new Date(lws);d.setDate(lws.getDate()+i);const k=dS(d);
-      if(data.sessions?.[k]?.done){lw++;const wo=getWorkout(k);lwCal+=wo.cal;lwMi+=wo.mi}}
+      if(sessActive(data.sessions?.[k])){lw++;const wo=getWorkout(k);lwCal+=wo.cal;lwMi+=wo.mi}}
     const weekMap={};keys.forEach(ds=>{const d=dP(ds),w2=new Date(d);w2.setDate(d.getDate()-d.getDay());const wk=dS(w2);weekMap[wk]=(weekMap[wk]||0)+1});
     const perfectWeeks=Object.values(weekMap).filter(v=>v>=6).length;
     let rated5=0,rated4p=0,notesSess=0;
@@ -928,7 +933,7 @@ function App(){
     const anyPR135=Object.values(data.prs||{}).some(p=>p.w>=135);
     const weightEntries=data.weight.length;
     let comebacks=0;sorted.forEach((k,i)=>{if(i>0&&dB(sorted[i-1],k)>=3)comebacks++});
-    const fullyOp=!!(data.sessions?.[todayStr]?.done&&(data.water?.[todayStr]||0)>=1&&data.weight.some(e=>e.d===todayStr)&&data.sessions?.[todayStr]?.notes);
+    const fullyOp=!!(sessActive(data.sessions?.[todayStr])&&(data.water?.[todayStr]||0)>=1&&data.weight.some(e=>e.d===todayStr)&&data.sessions?.[todayStr]?.notes);
     const measCount=(data.measurements||[]).length;const totalHrs=Math.round(dur/60);
     const startW=data.weight.length?data.weight[0].w:210;
     // XP calculation — every tracked action earns XP
@@ -953,9 +958,11 @@ function App(){
     ps.unlocked=MILES.filter(m=>m.req(ps)).length;return ps;
   },[data]);
 
-  const weeklyChart=useMemo(()=>{const wks={};Object.keys(data.sessions||{}).filter(k=>data.sessions[k]?.done).sort().forEach(ds=>{
+  const weeklyChart=useMemo(()=>{const wks={};Object.keys(data.sessions||{}).filter(k=>sessActive(data.sessions[k])).sort().forEach(ds=>{
     const d=dP(ds),ws=new Date(d);ws.setDate(d.getDate()-d.getDay());const wk=dS(ws);
-    if(!wks[wk])wks[wk]={wk,cal:0,mi:0,s:0};const wo=getWorkout(ds);const ss=data.sessions[ds];wks[wk].cal+=(ss?.calOverride||wo.cal)+(ss?.customCal||0);wks[wk].mi+=(ss?.miOverride||wo.mi)+(ss?.customMi||0);wks[wk].s++});
+    if(!wks[wk])wks[wk]={wk,cal:0,mi:0,s:0};const wo=getWorkout(ds);const ss=data.sessions[ds];
+    if(ss?.done){wks[wk].cal+=(ss?.calOverride||wo.cal);wks[wk].mi+=(ss?.miOverride||wo.mi)}
+    wks[wk].cal+=(ss?.customCal||0);wks[wk].mi+=(ss?.customMi||0);wks[wk].s++});
     return Object.values(wks).slice(-16)},[data.sessions]);
   const weightChart=useMemo(()=>data.weight.slice(-30).map(e=>({d:dP(e.d).toLocaleDateString("en-US",{month:"short",day:"numeric"}),w:e.w})),[data.weight]);
   const unlockedMS=useMemo(()=>MILES.filter(m=>m.req(stats)),[stats]);
@@ -984,8 +991,10 @@ function App(){
     upd(p=>({...p,freezeUsed:{...p.freezeUsed,[dateStr]:true}}))};
   const weeklySummary=useMemo(()=>{const ws=new Date(now);ws.setDate(now.getDate()-now.getDay());
     const days=[];for(let i=0;i<7;i++){const d=new Date(ws);d.setDate(ws.getDate()+i);days.push(dS(d))}
-    const done=days.filter(d=>data.sessions?.[d]?.done);const types={strength:0,bike:0,circuit:0};
-    let cal=0,mi=0;done.forEach(d=>{const wo=getWorkout(d);const ss=data.sessions?.[d];types[wo.type]=(types[wo.type]||0)+1;cal+=(ss?.calOverride||wo.cal)+(ss?.customCal||0);mi+=(ss?.miOverride||wo.mi)+(ss?.customMi||0)});
+    const done=days.filter(d=>sessActive(data.sessions?.[d]));const types={strength:0,bike:0,circuit:0};
+    let cal=0,mi=0;done.forEach(d=>{const wo=getWorkout(d);const ss=data.sessions?.[d];
+      if(ss?.done){types[wo.type]=(types[wo.type]||0)+1;cal+=(ss?.calOverride||wo.cal);mi+=(ss?.miOverride||wo.mi)}
+      cal+=(ss?.customCal||0);mi+=(ss?.customMi||0)});
     // Report card data
     const weekPRs=Object.entries(data.prs||{}).filter(([,p])=>days.includes(p.d)).length;
     const weekWeights=data.weight.filter(e=>days.includes(e.d));
@@ -1274,10 +1283,10 @@ function App(){
       {stats.total>0&&<Card style={{padding:10}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
           <span style={{fontSize:11,color:T.sub}}>Today's checklist</span>
-          <span style={{fontSize:11,fontWeight:700,color:(()=>{const c=[data.sessions?.[todayStr]?.done,data.weight.some(e=>e.d===todayStr),(data.water?.[todayStr]||0)>=1,data.food?.[todayStr]?.length>0].filter(Boolean).length;return c>=4?T.grn:c>=2?T.yel:T.dim})()}}>{[data.sessions?.[todayStr]?.done,data.weight.some(e=>e.d===todayStr),(data.water?.[todayStr]||0)>=1,data.food?.[todayStr]?.length>0].filter(Boolean).length}/4</span>
+          <span style={{fontSize:11,fontWeight:700,color:(()=>{const c=[sessActive(data.sessions?.[todayStr]),data.weight.some(e=>e.d===todayStr),(data.water?.[todayStr]||0)>=1,data.food?.[todayStr]?.length>0].filter(Boolean).length;return c>=4?T.grn:c>=2?T.yel:T.dim})()}}>{[data.sessions?.[todayStr]?.done,data.weight.some(e=>e.d===todayStr),(data.water?.[todayStr]||0)>=1,data.food?.[todayStr]?.length>0].filter(Boolean).length}/4</span>
         </div>
         <div style={{display:"flex",gap:6,marginTop:4}}>
-          {[["Train",data.sessions?.[todayStr]?.done],["Weigh",data.weight.some(e=>e.d===todayStr)],["Water",(data.water?.[todayStr]||0)>=1],["Food",data.food?.[todayStr]?.length>0]].map(([l,ok])=>
+          {[["Train",sessActive(data.sessions?.[todayStr])],["Weigh",data.weight.some(e=>e.d===todayStr)],["Water",(data.water?.[todayStr]||0)>=1],["Food",data.food?.[todayStr]?.length>0]].map(([l,ok])=>
             <div key={l} style={{fontSize:9,padding:"2px 6px",borderRadius:10,background:ok?T.grn+"22":T.s3,color:ok?T.grn:T.dim,fontWeight:600}}>{ok?"✓":""} {l}</div>)}
         </div>
       </Card>}
@@ -1315,8 +1324,8 @@ function App(){
         </Card>:null})()}
 
       {/* Time Since Last Workout */}
-      {stats.total>0&&!data.sessions?.[todayStr]?.done&&(()=>{
-        const lastDate=Object.keys(data.sessions||{}).filter(k=>data.sessions[k]?.done).sort().pop();
+      {stats.total>0&&!sessActive(data.sessions?.[todayStr])&&(()=>{
+        const lastDate=Object.keys(data.sessions||{}).filter(k=>sessActive(data.sessions[k])).sort().pop();
         if(!lastDate)return null;const daysSince=Math.round((now-dP(lastDate))/864e5);
         return daysSince>=2?<Card style={{padding:8,textAlign:"center"}}>
           <div style={{fontSize:10,color:daysSince>=4?T.red:daysSince>=3?T.yel:T.sub}}>
@@ -1336,7 +1345,7 @@ function App(){
         <Lbl style={{marginBottom:4}}>📅 This Week</Lbl>
         <div style={{display:"flex",gap:3}}>
           {[0,1,2,3,4,5,6].map(i=>{const d=new Date(now);d.setDate(d.getDate()-d.getDay()+i);const ds=dS(d);
-            const wo=getWorkout(ds);const dn=data.sessions?.[ds]?.done;const isT=ds===todayStr;
+            const wo=getWorkout(ds);const dn=sessActive(data.sessions?.[ds]);const isT=ds===todayStr;
             return <div key={i} onClick={()=>{setSelDate(ds);navTo("train")}} style={{flex:1,textAlign:"center",padding:"4px 0",borderRadius:6,
               cursor:"pointer",background:isT?T.acc+"22":dn?T.grn+"11":"transparent",border:isT?`1px solid ${T.acc}44`:"1px solid transparent"}}>
               <div style={{fontSize:8,color:isT?T.acc:T.dim}}>{["S","M","T","W","T","F","S"][i]}</div>
@@ -1766,7 +1775,7 @@ function App(){
       <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:3,marginBottom:12}}>
         {(()=>{const f=new Date(calY,calM,1),sd=f.getDay(),dim=new Date(calY,calM+1,0).getDate();
           const cells=[];for(let i=0;i<sd;i++)cells.push(null);for(let d=1;d<=dim;d++)cells.push(new Date(calY,calM,d));
-          return cells.map((cell,i)=>{if(!cell)return <div key={i}/>;const ds=dS(cell),wo=getWorkout(ds),dn=data.sessions?.[ds]?.done,it=ds===todayStr;
+          return cells.map((cell,i)=>{if(!cell)return <div key={i}/>;const ds=dS(cell),wo=getWorkout(ds),dn=sessActive(data.sessions?.[ds]),it=ds===todayStr;
             return <button key={i} onClick={()=>{setSelDate(ds);setTab("train")}} style={{padding:4,background:dn?TC[wo.type]+"22":T.s1,
               border:it?`2px solid ${T.acc}`:`1px solid ${T.s3}`,borderRadius:8,cursor:"pointer",textAlign:"center",minHeight:40}}>
               <span style={{fontSize:11,fontWeight:it?700:400,color:it?T.acc:dn?T.txt:T.sub}}>{cell.getDate()}</span>
@@ -1834,7 +1843,7 @@ function App(){
                   const dt=new Date(start);dt.setDate(start.getDate()+idx);wk.push(dS(dt))}weeks.push(wk)}
                 return weeks.map((wk,wi)=><div key={wi} style={{display:"flex",flexDirection:"column",gap:1}}>
                   {wk.map((ds,di)=>{if(!ds)return <div key={di} style={{width:9,height:9}}/>;
-                    const wo=getWorkout(ds),dn=data.sessions?.[ds]?.done,rt=data.sessions?.[ds]?.rating||0;
+                    const wo=getWorkout(ds),dn=sessActive(data.sessions?.[ds]),rt=data.sessions?.[ds]?.rating||0;
                     const intensity=dn?(rt>=5?1:rt>=4?.85:rt>=3?.65:rt>=2?.5:rt>=1?.35:.5):.2;
                     return <div key={di} style={{width:9,height:9,borderRadius:1.5,
                       background:dn?(TC[wo.type]||T.grn):wo.type==="rest"?"#15151A":"#1A1A22",
@@ -2280,7 +2289,7 @@ function App(){
           <Btn onClick={backupData}>DOWNLOAD JSON BACKUP</Btn>
           <button onClick={()=>{let t=`HENDERSON.SYS EXPORT — ${new Date().toLocaleString()}\n\n`;
             t+=`WEIGHT (${data.weight.length} entries):\n`;data.weight.forEach(e=>t+=`${e.d}: ${e.w}\n`);
-            t+=`\nSESSIONS (${Object.keys(data.sessions||{}).filter(k=>data.sessions[k]?.done).length} completed):\n`;
+            t+=`\nSESSIONS (${Object.keys(data.sessions||{}).filter(k=>sessActive(data.sessions[k])).length} completed):\n`;
             Object.entries(data.sessions||{}).sort().forEach(([d,s])=>{if(s.done){t+=`${d}: ${getWorkout(d).label}${s.rating?` (${s.rating}/5)`:""}${s.notes?` — ${s.notes}`:""}\n`;
               if(s.sets)Object.entries(s.sets).forEach(([ex,sets])=>t+=`  ${ex}: ${sets.filter(Boolean).map(([w,r])=>`${w}×${r}`).join(", ")}\n`)}});
             t+=`\nPRs:\n`;Object.entries(data.prs||{}).sort(([,a],[,b])=>b.e1rm-a.e1rm).forEach(([n,p])=>t+=`${n}: ${p.w}×${p.r} (1RM: ${p.e1rm}) on ${p.d}\n`);
