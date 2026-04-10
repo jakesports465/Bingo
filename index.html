@@ -80,36 +80,36 @@ const titleForLevel=lv=>{let t="ROOKIE";for(const[l,n]of TITLES)if(lv>=l)t=n;ret
 
 // ══ DAILY QUESTS — life/health adjacent, not workout-specific ══
 const QUEST_POOL=[
-  {id:"q1",t:"Stand up and stretch for 2 minutes",xp:15},
-  {id:"q2",t:"Take a 10-minute walk outside",xp:15},
-  {id:"q3",t:"No phone for 30 minutes straight",xp:15},
-  {id:"q4",t:"Read something for 15 minutes",xp:15},
-  {id:"q5",t:"Cold water first thing in the morning",xp:15},
-  {id:"q6",t:"In bed before 11pm tonight",xp:15},
-  {id:"q7",t:"Text someone you haven't talked to in a while",xp:15},
-  {id:"q8",t:"Foam roll for 5 minutes",xp:15},
-  {id:"q9",t:"Listen to a full album start to finish",xp:15},
-  {id:"q10",t:"Take the stairs today — no elevator",xp:15},
-  {id:"q11",t:"Sit in silence for 5 minutes. No screen.",xp:15},
-  {id:"q12",t:"Clean or organize one thing in your house",xp:15},
-  {id:"q13",t:"Cook something instead of ordering out",xp:15},
-  {id:"q14",t:"No soda today",xp:15},
-  {id:"q15",t:"Write down 3 things that went well today",xp:15},
-  {id:"q16",t:"Spend 10 minutes outside without your phone",xp:15},
-  {id:"q17",t:"Do 20 push-ups at some random point today",xp:15},
-  {id:"q18",t:"Eat a meal with no screen in front of you",xp:15},
-  {id:"q19",t:"Drink a full glass of water before coffee",xp:15},
-  {id:"q20",t:"Set out tomorrow's workout clothes tonight",xp:15},
-  {id:"q21",t:"Take a cold shower — or end hot shower cold 30s",xp:15},
-  {id:"q22",t:"Call someone instead of texting",xp:15},
-  {id:"q23",t:"No fast food today",xp:15},
-  {id:"q24",t:"Go outside within 30 min of waking up",xp:15},
-  {id:"q25",t:"Compliment someone genuinely today",xp:15},
-  {id:"q26",t:"Pick up something heavy around the house 10 times",xp:15},
-  {id:"q27",t:"Floss. Just do it.",xp:15},
-  {id:"q28",t:"Plan tomorrow before you go to bed",xp:15},
-  {id:"q29",t:"Eat a vegetable. Any vegetable.",xp:15},
-  {id:"q30",t:"Walk around the block. That's it.",xp:15},
+  {id:"q1",t:"Stretch for 5 minutes between tasks",xp:15},
+  {id:"q2",t:"No phone for 30 minutes straight",xp:15},
+  {id:"q3",t:"Read something for 15 minutes",xp:15},
+  {id:"q4",t:"In bed before 11pm tonight",xp:15},
+  {id:"q5",t:"Text someone you haven't talked to in a while",xp:15},
+  {id:"q6",t:"Foam roll for 5 minutes",xp:15},
+  {id:"q7",t:"Listen to a full album start to finish",xp:15},
+  {id:"q8",t:"Sit in silence for 5 minutes. No screen.",xp:15},
+  {id:"q9",t:"Clean or organize one thing in your house",xp:15},
+  {id:"q10",t:"Cook something instead of ordering out",xp:15},
+  {id:"q11",t:"No soda today",xp:15},
+  {id:"q12",t:"Write down 3 things that went well today",xp:15},
+  {id:"q13",t:"Spend 10 minutes outside without your phone",xp:15},
+  {id:"q14",t:"Eat a meal with no screen in front of you",xp:15},
+  {id:"q15",t:"Drink a full glass of water before coffee",xp:15},
+  {id:"q16",t:"Set out tomorrow's workout clothes tonight",xp:15},
+  {id:"q17",t:"Call someone instead of texting",xp:15},
+  {id:"q18",t:"No fast food today",xp:15},
+  {id:"q19",t:"Go outside within 30 min of waking up",xp:15},
+  {id:"q20",t:"Floss. Just do it.",xp:15},
+  {id:"q21",t:"Plan tomorrow before you go to bed",xp:15},
+  {id:"q22",t:"Eat a vegetable. Any vegetable.",xp:15},
+  {id:"q23",t:"Take a 10-minute walk at some point today",xp:15},
+  {id:"q24",t:"Hit your protein target today",xp:15},
+  {id:"q25",t:"Log every single thing you eat today",xp:15},
+  {id:"q26",t:"Drink 8+ glasses of water today",xp:15},
+  {id:"q27",t:"No screen for the last 30 min before bed",xp:15},
+  {id:"q28",t:"Look up one new recipe you'd actually make",xp:15},
+  {id:"q29",t:"Tidy the gym space for 5 minutes",xp:15},
+  {id:"q30",t:"Watch a form video for an exercise you're unsure about",xp:15},
 ];
 // Deterministic daily quests from date seed — 3 per day, always same for given date
 const getDailyQuests=(ds)=>{const seed=[...ds].reduce((a,c)=>a+c.charCodeAt(0),0);
@@ -221,9 +221,9 @@ const gP=ds=>{const d=dP(ds);
 };
 const tYear=ds=>{const d=dP(ds),s=new Date("2026-04-05");return Math.max(1,Math.floor((d-s)/(365.25*864e5))+1)};
 const wS=(ds,r)=>Math.max(0,Math.floor((dP(ds)-new Date(r))/6048e5));
-const BB_W=[45,65,75,85,95,115,125,135,145,155,165,175,185,195,205,215,225,235,245,255,275,285,305,325];
+const BB_W=[45,65,75,85,95,105,115,125,135,145,155,165,175,185,195,205,215,225,235,245,255,265,275,285,295,305,315,325,335,345,355,365,375,385,395,405,415,425,435,445,455,465,475,485,495,505,515,525,535,545,555,565,575,585,605];
 const bbS=t=>{let b=45;for(const w of BB_W)if(w<=t)b=w;return b};
-const bbP=(s,wk,c=325,r=10)=>bbS(Math.min(c,s+Math.floor(wk/2)*r));
+const bbP=(s,wk,c=605,r=10)=>bbS(Math.min(c,s+Math.floor(wk/2)*r));
 const sn=w=>Math.round(w/2.5)*2.5,dbP=(b,wk,c=52.5)=>sn(Math.min(c,b+Math.floor(wk/2)*2.5));
 
 // ══ EXERCISE GUIDE — tap ℹ on any exercise ══
@@ -579,13 +579,15 @@ const MILES=[
 function E(n,s,r,w,rest,note,muscle,subs){return{n,s:String(s),r,w:String(w),rest:rest||60,note:note||"",muscle:muscle||"",subs:subs||""}}
 // Plate breakdown for display
 function plateSplit(lbs){const v=parseInt(lbs);if(isNaN(v)||v<45)return"";if(v===45)return"empty bar";
-  const ps=(v-45)/2;let r=ps,out=[];[45,35,25,15,10,10].forEach(p=>{if(r>=p){out.push(p);r-=p}});
+  const ps=(v-45)/2;let r=ps,out=[];[45,45,35,35,25,25,15,15,10,10,10,10].forEach(p=>{if(r>=p){out.push(p);r-=p}});
   return out.length?out.map(p=>p+"lb").join("+")+" ea":""}
 // Food macro targets
-function macroTargets(wt,phase){
+function macroTargets(wt,phase,weekSessions=0){
   const bmr=Math.round(88.362+(13.397*wt/2.205)+(4.799*178)-(5.677*30));
-  const tdee=Math.round(bmr*1.55);
-  const targets={1:{cal:tdee,pro:Math.round(wt*.9),note:"Maintenance — fuel endurance"},
+  // Activity multiplier scales with actual training: 0 sessions=1.2 (sedentary), 6=1.55
+  const mult=weekSessions>=5?1.55:weekSessions>=3?1.45:weekSessions>=1?1.35:1.2;
+  const tdee=Math.round(bmr*mult);
+  const targets={1:{cal:tdee,pro:Math.round(wt*.9),note:`Maintenance — fuel endurance${weekSessions<3?" (adjusted: not training yet)":""}`},
     2:{cal:tdee-300,pro:Math.round(wt*1),note:"Deficit — prioritize protein"},
     3:{cal:tdee+100,pro:Math.round(wt*1),note:"Slight surplus — fuel muscle growth"},
     4:{cal:tdee,pro:Math.round(wt*.9),note:"Maintenance — sustain"}};
@@ -840,7 +842,6 @@ function App(){
   const[wInputKey,setWInputKey]=useState(0);
   const[activeSet,setActiveSet]=useState(null);
   const siRef=useRef({});
-  const[setInputs,setSetInputs]=useState({});
   const updateSI=(k,v)=>{siRef.current[k]=v};
   const getSI=(k)=>siRef.current[k]||"";
   const[restTimer,setRestTimer]=useState(0);
@@ -863,7 +864,6 @@ function App(){
   const[measKey,setMeasKey]=useState(0);
   const sleepRef=useRef({hrs:"",q:0});
   const[sleepKey,setSleepKey]=useState(0);
-  const[foodInput,setFoodInput]=useState({name:"",cal:"",pro:"",carb:"",fat:""});
   const foodRef=useRef({name:"",cal:"",pro:"",carb:"",fat:""});
   const[foodKey,setFoodKey]=useState(0);
   const[plateCalcInput,setPlateCalcInput]=useState("");
@@ -891,7 +891,6 @@ function App(){
   const session=data.sessions?.[selDate]||{};
   const isToday=selDate===todayStr;
   const readiness=useMemo(()=>calcReadiness(data,now),[data.sessions]);
-  const bmr=calcBMR(lastW),tdee=Math.round(bmr*1.55);
   const muscleRec=useMemo(()=>getMR(data,now),[data.sessions]);
   const prevWO=useMemo(()=>{for(let i=7;i<=365;i+=7){const d=new Date(dP(selDate));d.setDate(d.getDate()-i);
     const k=dS(d);if(data.sessions?.[k]?.sets)return data.sessions[k]}return null},[selDate,data.sessions]);
@@ -957,6 +956,7 @@ function App(){
       xp,lv:lvInfo.lv,lvCur:lvInfo.cur,lvNeed:lvInfo.need,title:titleForLevel(lvInfo.lv),freezesAvail,unlocked:0};
     ps.unlocked=MILES.filter(m=>m.req(ps)).length;return ps;
   },[data]);
+  const bmr=calcBMR(lastW),tdee=Math.round(bmr*(stats.thisWeek>=5?1.55:stats.thisWeek>=3?1.45:stats.thisWeek>=1?1.35:1.2));
 
   const weeklyChart=useMemo(()=>{const wks={};Object.keys(data.sessions||{}).filter(k=>sessActive(data.sessions[k])).sort().forEach(ds=>{
     const d=dP(ds),ws=new Date(d);ws.setDate(d.getDate()-d.getDay());const wk=dS(ws);
@@ -986,9 +986,18 @@ function App(){
   const todayQuests=getDailyQuests(todayStr);
   const questsDone=(data.quests?.[todayStr])||{};
   const questsDoneCount=todayQuests.filter(q=>questsDone[q.id]).length;
-  // Use streak freeze
-  const useFreeze=(dateStr)=>{if((data.freezes||0)+(Math.floor(stats.streak/7))-(Object.keys(data.freezeUsed||{}).length)<=0)return;
+  // Streak freeze — auto-consume for yesterday if missed
+  const useFreeze=(dateStr)=>{if(stats.freezesAvail<=0)return;
     upd(p=>({...p,freezeUsed:{...p.freezeUsed,[dateStr]:true}}))};
+  useEffect(()=>{
+    const yest=new Date(now);yest.setDate(yest.getDate()-1);const yk=dS(yest);
+    if(yest.getDay()===0)return;
+    if(sessActive(data.sessions?.[yk]))return;
+    if(data.freezeUsed?.[yk])return;
+    if(stats.freezesAvail<=0)return;
+    if(stats.streak<=0)return;
+    useFreeze(yk);
+  },[todayStr]);
   const weeklySummary=useMemo(()=>{const ws=new Date(now);ws.setDate(now.getDate()-now.getDay());
     const days=[];for(let i=0;i<7;i++){const d=new Date(ws);d.setDate(ws.getDate()+i);days.push(dS(d))}
     const done=days.filter(d=>sessActive(data.sessions?.[d]));const types={strength:0,bike:0,circuit:0};
@@ -1070,7 +1079,7 @@ function App(){
     const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`henderson-backup-${todayStr}.json`;a.click()};
   const restoreData=(e)=>{const f=e.target.files?.[0];if(!f)return;const r=new FileReader();
     r.onload=()=>{try{const d=JSON.parse(r.result);if(d.sessions){setData(d);save(d);alert("Restored!")}else alert("Invalid file")}catch{alert("Error reading file")}};r.readAsText(f)};
-  const resetData=()=>{if(confirm("Delete ALL data? This cannot be undone.")){const d={sessions:{},weight:[],measurements:[],water:{},prs:{},sleep:{},food:{},supps:{}};setData(d);save(d)}};
+  const resetData=()=>{if(confirm("Delete ALL data? This cannot be undone.")){const d={sessions:{},weight:[],measurements:[],water:{},prs:{},sleep:{},food:{},supps:{},quests:{},freezes:0,freezeUsed:{}};setData(d);save(d)}};
   const completeOnboard=()=>{const w=parseFloat(onboardW)||210;
     upd(p=>({...p,weight:[...p.weight,{d:todayStr,w}]}));LS.set("hv9_onboarded",true);setShowOnboard(false)};
   const overrideBike=(field,val)=>{const v=parseFloat(val);if(isNaN(v)||v<0)return;
@@ -1109,7 +1118,7 @@ function App(){
         </div>
         <div style={{background:T.s1,borderRadius:12,padding:16,marginBottom:16,textAlign:"left"}}>
           <div style={{fontSize:11,color:T.sub,fontWeight:600,letterSpacing:1,marginBottom:8}}>YOUR EQUIPMENT</div>
-          {["Power Rack + Cable Pulley","Olympic Barbell + 230 lbs plates","Adjustable DBs 5-52.5 lb","Adjustable Bench","Stationary Bike","Landmine Attachment","Resistance Bands"].map((e,i)=>
+          {["Power Rack + Cable Pulley","Olympic Barbell + 560 lbs plates","Adjustable DBs 5-52.5 lb","Adjustable Bench","Stationary Bike","Landmine Attachment","Resistance Bands"].map((e,i)=>
             <div key={i} style={{fontSize:11,color:T.txt,padding:"3px 0",display:"flex",gap:6}}>
               <span style={{color:T.grn}}>✓</span>{e}</div>)}
         </div>
@@ -1335,6 +1344,8 @@ function App(){
       <Card style={{cursor:"pointer",border:`1px solid ${TC[getWorkout(todayStr).type]}22`}} onClick={()=>{setSelDate(todayStr);navTo("train")}}>
         <Lbl style={{color:TC[getWorkout(todayStr).type],marginBottom:2}}>Today</Lbl>
         <div style={{fontSize:15,fontWeight:700}}>{getWorkout(todayStr).label}</div>
+        {getWorkout(todayStr).muscles?.length>0&&<div style={{display:"flex",gap:3,marginTop:3,flexWrap:"wrap"}}>
+          {getWorkout(todayStr).muscles.map(m=><span key={m} style={{fontSize:8,padding:"2px 6px",borderRadius:10,background:T.s2,color:T.sub,fontWeight:600}}>{m}</span>)}</div>}
         <div style={{display:"flex",gap:4,marginTop:4}}>{getWorkout(todayStr).dur>0&&<Pill>⏱ {getWorkout(todayStr).dur}m</Pill>}
           {getWorkout(todayStr).cal>0&&<Pill>🔥 ~{getWorkout(todayStr).cal}</Pill>}</div>
         <div style={{fontSize:9,color:T.acc,marginTop:6}}>TAP TO VIEW →</div>
@@ -1519,7 +1530,10 @@ function App(){
         <div style={{padding:"12px 14px",background:done?T.grn+"08":"transparent"}}>
           <Pill color={TC[w.type]+"22"} text={TC[w.type]}>{w.type.toUpperCase()}</Pill>
           <div style={{fontSize:17,fontWeight:700,marginTop:4}}>{w.label}</div>
-          {w.type!=="rest"&&<div style={{fontSize:9,color:T.dim,marginTop:2}}>BW: {lastW} lbs</div>}
+          {w.muscles?.length>0&&<div style={{display:"flex",gap:3,marginTop:4,flexWrap:"wrap"}}>
+            {w.muscles.map(m=><span key={m} style={{fontSize:8,padding:"2px 6px",borderRadius:10,
+              background:m==="Cardio"?T.blue+"22":T.acc+"15",color:m==="Cardio"?T.blue:T.sub,fontWeight:600}}>🎯 {m}</span>)}</div>}
+          {w.type!=="rest"&&<div style={{fontSize:9,color:T.dim,marginTop:3}}>BW: {lastW} lbs</div>}
           <div style={{display:"flex",gap:4,marginTop:4,flexWrap:"wrap"}}>
             {w.dur>0&&<Pill>⏱ {w.dur}m</Pill>}{w.cal>0&&<Pill>🔥 ~{w.cal}</Pill>}
             {w.mi>0&&<Pill>📍 ~{w.mi}mi</Pill>}{w.dl&&<Pill color={T.yel+"22"} text={T.yel}>DELOAD</Pill>}</div>
@@ -1540,7 +1554,8 @@ function App(){
                 <div style={{flex:1}}>
                   <div style={{display:"flex",alignItems:"center",gap:4}}>
                     {isBB&&<span style={{fontSize:7,padding:"1px 4px",borderRadius:3,background:T.acc+"22",color:T.acc,fontWeight:700}}>BB</span>}
-                    <span style={{fontSize:12,fontWeight:600,color:done?"#555":T.txt}}>{e.n}</span></div>
+                    <span style={{fontSize:12,fontWeight:600,color:done?"#555":T.txt}}>{e.n}</span>
+                    {e.muscle&&<span style={{fontSize:7,padding:"1px 4px",borderRadius:3,background:T.s3,color:T.dim}}>{e.muscle}</span>}</div>
                   {e.note&&<div style={{fontSize:9,color:T.dim,marginTop:1}}>{e.note}</div>}
                   {plates&&<div style={{fontSize:8,color:T.acc,marginTop:1,opacity:.7}}>🔩 {plates}</div>}
                   {prev.length>0&&<div style={{fontSize:9,color:T.dim,marginTop:1}}>Last: {prev.filter(Boolean).map(([w,r])=>`${w}×${r}`).join(", ")}</div>}
@@ -1563,12 +1578,14 @@ function App(){
                     <div style={{fontSize:10,color:T.sub,lineHeight:1.6}}>{EX_GUIDE[e.n].avoid}</div>
                   </div>}
                 </div>
-                <div style={{textAlign:"right"}}><div style={{fontFamily:"'Bebas Neue'",fontSize:14,color:TC[w.type]}}>{e.s}×{e.r}</div>
-                  {e.w!=="—"&&<div style={{fontSize:9,color:T.dim}}>{e.w} lb</div>}</div></div>
+                <div style={{textAlign:"right"}}>{e.w==="—"?
+                  <div style={{fontSize:12,color:T.dim}}>{e.r}</div>:
+                  <><div style={{fontFamily:"'Bebas Neue'",fontSize:14,color:TC[w.type]}}>{e.s}×{e.r}</div>
+                  <div style={{fontSize:9,color:T.dim}}>{e.w}{isNaN(parseFloat(e.w))?"":` lb`}</div></>}</div></div>
               {logged.length>0&&!isAct&&<div style={{display:"flex",gap:3,marginTop:3,flexWrap:"wrap"}}>
                 {logged.filter(Boolean).map(([sw,sr],si)=>sw>0&&<Pill key={si} color={T.grn+"22"} text={T.grn}>{sw}×{sr}</Pill>)}</div>}
             </div>
-            {isAct&&ns>0&&<div style={{padding:"0 14px 8px",background:T.s2}}>
+            {isAct&&ns>0&&e.w!=="—"&&<div style={{padding:"0 14px 8px",background:T.s2}}>
               {Array.from({length:ns}).map((_,si)=>{const lg=logged[si];const ik=`${e.n}-${si}`;
                 return <div key={si} style={{display:"flex",alignItems:"center",gap:4,marginBottom:3}}>
                   <span style={{fontSize:9,color:T.dim,width:24}}>S{si+1}</span>
@@ -2133,7 +2150,7 @@ function App(){
 
         {/* Daily Totals + Targets */}
         <Card>
-          {(()=>{const tgt=macroTargets(lastW,gP(todayStr).id);return<>
+          {(()=>{const tgt=macroTargets(lastW,gP(todayStr).id,stats.thisWeek);return<>
           <Lbl>Today vs Target</Lbl>
           <div style={{fontSize:9,color:T.dim,marginBottom:8}}>{tgt.note} · TDEE-based</div>
           {[["Calories",todayFoodTotals.cal,tgt.cal,T.acc,""],["Protein",todayFoodTotals.pro,tgt.pro,T.blue,"g"],
@@ -2193,7 +2210,7 @@ function App(){
             const n=days.length;if(n===0)return null;
             const avg=days.reduce((a,[,items])=>{const t=items.reduce((x,f)=>({c:x.c+f.cal,p:x.p+f.pro,cb:x.cb+f.carb,ft:x.ft+f.fat}),{c:0,p:0,cb:0,ft:0});
               return{c:a.c+t.c,p:a.p+t.p,cb:a.cb+t.cb,ft:a.ft+t.ft}},{c:0,p:0,cb:0,ft:0});
-            const tgt=macroTargets(lastW,gP(todayStr).id);
+            const tgt=macroTargets(lastW,gP(todayStr).id,stats.thisWeek);
             return <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:6,textAlign:"center"}}>
               {[["Cal",Math.round(avg.c/n),tgt.cal,T.acc],["Pro",Math.round(avg.p/n),tgt.pro,T.blue],
                 ["Carb",Math.round(avg.cb/n),tgt.carb,T.yel],["Fat",Math.round(avg.ft/n),tgt.fat,T.red]
@@ -2264,7 +2281,7 @@ function App(){
       {profileTab==="gear"&&<Card><Lbl>🏋️ Equipment</Lbl>
         {[["Power Rack + Cable Pulley (D1002)","1200 lb capacity. Squats, bench, pull-ups, lat pulldown, cable rows, face pulls, pushdowns, cable curls, cable kickbacks, cable woodchops"],
           ["Fitvids Olympic Barbell (7ft, 45 lb)","700 lb capacity. Back squat, bench, OHP, rows, RDL, hip thrust"],
-          ["Fitvids Bumper Plates (280 lbs)","2×45, 2×35, 2×25, 2×15, 4×10 · Max bar load: 325 lbs · 24 loadable weights"],
+          ["Fitvids Bumper Plates (560 lbs)","4×45, 4×35, 4×25, 4×15, 8×10 · Max bar load: 605 lbs · 55 loadable weights"],
           ["Moveta Adjustable DBs (5-52.5 lb)","15-in-1 dial adjust. Presses, rows, curls, carries, lunges, lateral raises"],
           ["NicePeople Adjustable Bench","660 lb capacity · 8 positions. Flat, incline 15-75°, decline. Foldable."],
           ["YPOO Magnetic Stationary Bike","Bluetooth app · 330 lb capacity. Intervals, tempo, Z2 rides, HIIT"],
