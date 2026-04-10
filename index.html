@@ -207,7 +207,7 @@ const PHASES=[
   {id:4,n:"SUSTAIN",s:"Maintain",st:"2026-11-15",en:"2027-04-04",c:T.grn}];
 const DAYS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const MUSCLES=["Quads","Glutes","Hamstrings","Calves","Chest","Back","Shoulders","Biceps","Triceps","Core","Cardio","Grip"];
-const dS=d=>d.toISOString().split("T")[0],dP=s=>new Date(s+"T12:00:00"),dB=(a,b)=>Math.ceil((new Date(b)-new Date(a))/864e5);
+const dS=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`,dP=s=>new Date(s+"T12:00:00"),dB=(a,b)=>Math.ceil((new Date(b)-new Date(a))/864e5);
 const gP=ds=>{const d=dP(ds);
   // Year 1 exact dates
   for(const p of PHASES)if(d>=new Date(p.st)&&d<=new Date(p.en+"T23:59:59"))return p;
