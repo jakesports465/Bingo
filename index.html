@@ -1024,7 +1024,7 @@ function App(){
     return{done:done.length,types,cal,mi:Math.round(mi),weekPRs,weightChange,questDays,foodDays,waterDays,score:Math.round(score),grade,gradeColor}},[data]);
 
   // Handlers
-  const logSet=(exN,si,w,r)=>{upd(p=>{const sess={...p.sessions[selDate]||{},done:true,sets:{...(p.sessions[selDate]?.sets||{})}};
+  const logSet=(exN,si,w,r)=>{upd(p=>{const sess={...p.sessions[selDate]||{},sets:{...(p.sessions[selDate]?.sets||{})}};
     if(!sess.sets[exN])sess.sets[exN]=[];sess.sets[exN]=Array.from(sess.sets[exN]);sess.sets[exN][si]=[parseFloat(w)||0,parseInt(r)||0];
     const wt=parseFloat(w)||0,rp=parseInt(r)||0;
     if(wt>0&&rp>0){const e1rm=calc1RM(wt,rp);const prev=p.prs?.[exN];
@@ -2031,7 +2031,7 @@ function App(){
 
         <Card><Lbl>📊 Career Summary</Lbl>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-            {[["Sessions",stats.total],["PRs Set",stats.prCount],["Total Hours",stats.totalHrs],["Total Volume",`${(stats.totalVol/1000000).toFixed(1)}M lbs`],
+            {[["Sessions",stats.total],["PRs Set",stats.prCount],["Total Hours",stats.totalHrs],["Total Volume",stats.totalVol>=1000000?`${(stats.totalVol/1000000).toFixed(1)}M lbs`:stats.totalVol>=1000?`${(stats.totalVol/1000).toFixed(1)}K lbs`:`${stats.totalVol} lbs`],
               ["Miles Ridden",stats.mi],["Calories Burned",stats.cal.toLocaleString()],["Best Streak",`${stats.maxStreak} days`],["Perfect Weeks",stats.perfectWeeks],
               ["Weigh-Ins",stats.weightEntries],["Achievements",`${stats.unlocked}/${MILES.length}`],["Training Year",`Y${tYear(todayStr)}`],["Current Phase",gP(todayStr).n]
             ].map(([l,v],i)=><div key={i} style={{padding:"6px 8px",background:T.s2,borderRadius:6}}>
