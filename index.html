@@ -599,7 +599,7 @@ function getWorkout(ds){
   const dlSets=(base)=>dl?Math.max(2,base-1):base; // deload: reduce sets by 1, min 2
   const BB=(st,cap,rate=10)=>{const v=bbP(st,tw,cap,rate);return Math.max(45,Math.round(v*dm/5)*5)};
   const DB=(b,c)=>sn(dbP(b,tw,c)*dm);
-  if(dow===4)return{type:"rest",label:"REST DAY",dur:0,cal:0,mi:0,ph,dl,muscles:[],warmup:"full",
+  if(dow===5)return{type:"rest",label:"REST DAY",dur:0,cal:0,mi:0,ph,dl,muscles:[],warmup:"full",
     ex:[E("Rest or light walk","—","—","—",0,"Hydrate. Sleep 7+ hrs.")]};
 
   // ══════════════════════════════════════════════
@@ -628,11 +628,11 @@ function getWorkout(ds){
       E("Cable Face Pull",3,"15","light-mod",45,"Rope attachment. Pull to ears.","Shoulders","Band Pull-Apart"),
       E("Ab Roller",3,"8-12","BW",45,"Kneel on mat. Roll out slow, squeeze back. Core killer.","Core","Dead Bug"),
       E("Weighted Plank",3,dl?"45s":"60s","loaded",45,"Don't sag. Squeeze everything.","Core","Side Plank")]},
-    6:{type:"bike",label:"BIKE — TEMPO",dur:35+wk*3,cal:320+wk*20,mi:12+wk,muscles:["Cardio"],warmup:"bike",ex:[
+    4:{type:"bike",label:"BIKE — TEMPO",dur:35+wk*3,cal:320+wk*20,mi:12+wk,muscles:["Cardio"],warmup:"bike",ex:[
       E("Warm-Up",1,"5 min","—",0,"Nasal breathing first 10 min total."),
       E("Tempo Block",1,`${25+Math.min(wk*3,18)} min`,"—",0,"RPE 7/10. Talking is hard. No coasting."),
       E("Cool-Down",1,"5 min","—",0,"Easy spin.")]},
-    5:{type:"strength",label:"LOWER — POWER + CARRY",dur:58,cal:400,mi:0,muscles:["Quads","Glutes","Core","Grip"],warmup:"lower",ex:[
+    6:{type:"strength",label:"LOWER — POWER + CARRY",dur:58,cal:400,mi:0,muscles:["Quads","Glutes","Core","Grip"],warmup:"lower",ex:[
       E("Barbell Back Squat",dlSets(4),"8",BB(135,205),90,"Heavier than Monday. Explosive up.","Quads","DB Front Squat"),
       E("Landmine Rotation",3,"10 ea","45-65",45,"Rotate from hip to opposite shoulder. Golf power.","Core","Cable Woodchop"),
       E("Farmer Carry",dlSets(4),`${75+Math.min(wk*10,40)}s`,`${DB(40,52.5)} ea`,60,"Shoulders packed. Grip hard.","Grip","Suitcase Carry"),
@@ -670,11 +670,11 @@ function getWorkout(ds){
       E("Cable Lat Pulldown",dlSets(3),"10","moderate",60,"Wide grip. Squeeze lats.","Back","Band Pulldown"),
       E("Cable Curl",3,"12",`${DB(10,25)}`,45,"Straight bar or rope.","Biceps","DB Curl"),
       E("Cable Pushdown",3,"12",`${DB(10,25)}`,45,"Rope attachment.","Triceps","DB Skull Crusher")]},
-    6:{type:"bike",label:"BIKE — TEMPO+",dur:50+Math.min(wk*2,15),cal:420+wk*10,mi:15+wk,muscles:["Cardio"],warmup:"bike",ex:[
+    4:{type:"bike",label:"BIKE — TEMPO+",dur:50+Math.min(wk*2,15),cal:420+wk*10,mi:15+wk,muscles:["Cardio"],warmup:"bike",ex:[
       E("Warm-Up",1,"5 min","—",0,""),
       E("Tempo Block",1,`${40+Math.min(wk*2,15)} min`,"—",0,"RPE 7-8. Steady cadence. No coasting."),
       E("Cool-Down",1,"5 min","—",0,"")]},
-    5:{type:"circuit",label:"FULL BODY + LANDMINE",dur:52,cal:440,mi:0,muscles:["Quads","Chest","Back","Glutes","Core"],warmup:"full",ex:[
+    6:{type:"circuit",label:"FULL BODY + LANDMINE",dur:52,cal:440,mi:0,muscles:["Quads","Chest","Back","Glutes","Core"],warmup:"full",ex:[
       E("— 4 ROUNDS · 90s REST —","—","—","—",0,"Back-to-back. No rest between exercises."),
       E("BB Front Squat",dlSets(4),"8",BB(95,155),0,"Clean grip or cross-arm.","Quads","Goblet Squat"),
       E("Push-Up (bench)",dlSets(4),"12-15","BW",0,"Feet elevated on bench.","Chest","Regular Push-Up"),
@@ -717,11 +717,11 @@ function getWorkout(ds){
       E("Lateral Raise",3,"15",`${DB(7.5,15)} ea`,30,"Slight bend. Control descent.","Shoulders","Cable Lateral"),
       E("Cable Pushdown",3,"15",`${DB(10,25)}`,30,"Rope. Squeeze at bottom.","Triceps","DB Kickback"),
       E("Landmine Press (SL)",dlSets(3),"10 ea","45-65",45,"Staggered stance. Push through.","Shoulders","DB Arnold Press")]},
-    6:{type:"bike",label:"BIKE — TEMPO",dur:45,cal:380,mi:14,muscles:["Cardio"],warmup:"bike",ex:[
+    4:{type:"bike",label:"BIKE — TEMPO",dur:45,cal:380,mi:14,muscles:["Cardio"],warmup:"bike",ex:[
       E("Warm-Up",1,"5 min","—",0,""),
       E("Tempo Block",1,"35 min","—",0,"RPE 7. Steady. Maintain aerobic base."),
       E("Cool-Down",1,"5 min","—",0,"")]},
-    5:{type:"strength",label:"PULL + POSTERIOR CHAIN",dur:58,cal:380,mi:0,muscles:["Back","Biceps","Hamstrings","Glutes","Core"],warmup:"upper",ex:[
+    6:{type:"strength",label:"PULL + POSTERIOR CHAIN",dur:58,cal:380,mi:0,muscles:["Back","Biceps","Hamstrings","Glutes","Core"],warmup:"upper",ex:[
       E("Pull-Up",dlSets(4),"max (aim 8+)","BW",90,"Full dead hang. Chin over bar.","Back","Lat Pulldown"),
       E("Barbell Row",dlSets(4),"10",BB(95,185),75,"Both DBs or barbell. Pull to hips.","Back","Cable Row"),
       E("BB RDL",dlSets(3),"12",BB(115,185),75,"Hinge at hips. Feel hamstrings.","Hamstrings","DB RDL"),
@@ -759,11 +759,11 @@ function getWorkout(ds){
       E("Cable Lat Pulldown",dlSets(3),"10","moderate",60,"Wide grip. Full stretch.","Back","Band Pulldown"),
       E("Dips (rack)",dlSets(3),"max","BW",75,"Maintain bodyweight strength.","Chest","Push-Up"),
       E("Cable Curl + Pushdown",3,"12 ea",`${DB(10,25)}`,45,"Superset. Curl then pushdown.","Arms","DB Curl + Kickback")]},
-    6:{type:"bike",label:"BIKE — TEMPO",dur:45,cal:380,mi:14,muscles:["Cardio"],warmup:"bike",ex:[
+    4:{type:"bike",label:"BIKE — TEMPO",dur:45,cal:380,mi:14,muscles:["Cardio"],warmup:"bike",ex:[
       E("Warm-Up",1,"5 min","—",0,""),
       E("Tempo Block",1,"35 min","—",0,"RPE 7. Maintain threshold."),
       E("Cool-Down",1,"5 min","—",0,"")]},
-    5:{type:"strength",label:"FULL BODY C + LANDMINE",dur:52,cal:400,mi:0,muscles:["Quads","Back","Glutes","Core","Grip"],warmup:"full",ex:[
+    6:{type:"strength",label:"FULL BODY C + LANDMINE",dur:52,cal:400,mi:0,muscles:["Quads","Back","Glutes","Core","Grip"],warmup:"full",ex:[
       E("— 3 ROUNDS · 90s REST —","—","—","—",0,"Reduced rounds for maintenance."),
       E("Goblet Squat",3,"12",`${DB(35,52.5)}`,0,"Maintain.","Quads","BB Front Squat"),
       E("Push-Up (bench)",3,"15","BW",0,"Feet elevated.","Chest",""),
@@ -910,7 +910,7 @@ function App(){
     let streak=0,maxStreak=0,cur=0;
     // Streak with freeze support — counts ANY activity
     for(let i=0;i<120;i++){const d=new Date(now);d.setDate(d.getDate()-i);const k=dS(d);
-      if(d.getDay()===4)continue;
+      if(d.getDay()===5)continue;
       if(sessActive(data.sessions?.[k]))streak++;
       else if(data.freezeUsed?.[k])streak++; // freeze saved this day
       else if(i>0)break}
@@ -991,7 +991,7 @@ function App(){
     upd(p=>({...p,freezeUsed:{...p.freezeUsed,[dateStr]:true}}))};
   useEffect(()=>{
     const yest=new Date(now);yest.setDate(yest.getDate()-1);const yk=dS(yest);
-    if(yest.getDay()===4)return;
+    if(yest.getDay()===5)return;
     if(sessActive(data.sessions?.[yk]))return;
     if(data.freezeUsed?.[yk])return;
     if(stats.freezesAvail<=0)return;
