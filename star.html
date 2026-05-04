@@ -1164,6 +1164,18 @@ body::after {
         </div>
       </div>
 
+      <div class="f2p-wall" id="lockWarning" style="border-color: var(--amber);">
+        <div class="f2p-wall-header">
+          <div class="f2p-wall-icon" style="border-color: var(--amber); color: var(--amber);">⚡</div>
+          <div class="f2p-wall-title" style="color: var(--amber);">⚠ POINT OF NO RETURN ⚠</div>
+        </div>
+        <div class="f2p-wall-body">
+          You're about to start <strong>Knights of the Fallen Empire</strong>. <strong style="color:var(--amber)">CRITICAL:</strong> Once you start KOTFE Chapter 1, your <strong>original class story (Phase 1-3) will be permanently locked</strong> on this character. Any uncompleted class missions cannot be returned to.<br><br>
+          <strong>Make sure Phases 1-3 show 100% before continuing.</strong> If they don't, finish them first.
+        </div>
+        <button class="f2p-wall-cta" id="lockAck" style="background:transparent;color:var(--amber);border-color:var(--amber);">UNDERSTOOD — DISMISS</button>
+      </div>
+
       <div class="f2p-wall" id="f2pWall">
         <div class="f2p-wall-header">
           <div class="f2p-wall-icon">⚠</div>
@@ -1350,6 +1362,24 @@ const PROTOCOL = [
       {id:"m_p6_5", name:"Ship Conversations", tags:["companion"]},
     ]},
   ]},
+  // PHASE 6.5 - VINTAGE SIDE CONTENT
+  { id:"p65", num:"6.5", tier:"sub", name:"Vintage Side Content", levelRange:"Lvl 50-55", subtitle:"Optional // Older Story Threads", sections:[
+    { name:"Macrobinoculars & Seeker Droid", level:"Lvl 50-55", missions:[
+      {id:"m_p65_1", name:"Macrobinocular Mission Chain", tags:["optional"]},
+      {id:"m_p65_2", name:"Seeker Droid Mission Chain", tags:["optional"]},
+    ]},
+    { name:"Section X (HK-51)", level:"Lvl 55", missions:[
+      {id:"m_p65_3", name:"Section X Daily Area Story", tags:["optional"]},
+      {id:"m_p65_4", name:"Theoretika: HK-51 Recruitment", tags:["optional","companion"]},
+    ]},
+    { name:"CZ-198 (Czerka)", level:"Lvl 55", missions:[
+      {id:"m_p65_5", name:"FP: Czerka Corporate Labs (Solo)", tags:["flashpoint","optional"]},
+      {id:"m_p65_6", name:"FP: Czerka Core Meltdown (Solo)", tags:["flashpoint","optional"]},
+    ]},
+    { name:"Oricon (Dread War)", level:"Lvl 55", missions:[
+      {id:"m_p65_7", name:"Oricon Story Chain", tags:["optional"]},
+    ]},
+  ]},
   // PHASE 7
   { id:"p7", num:"07", tier:"sub", name:"Forged Alliances", levelRange:"Lvl 55", subtitle:"Prelude to Shadow of Revan", sections:[
     { name:"Forged Alliances", level:"Solo Mode", missions:[
@@ -1379,18 +1409,18 @@ const PROTOCOL = [
   // PHASE 9
   { id:"p9", num:"09", tier:"sub", name:"Knights of the Fallen Empire", levelRange:"Lvl 60-65", subtitle:"You Become The Outlander", sections:[
     { name:"KOTFE Chapters 1-8", level:"Lvl 60-63", missions:[
-      {id:"m_p9_1", name:"Chapter 1: The Hero of Tython", tags:["chapter"]},
+      {id:"m_p9_1", name:"Chapter 1: The Hunt", tags:["chapter"]},
       {id:"m_p9_2", name:"Chapter 2: A Dream of Empire", tags:["chapter"]},
       {id:"m_p9_3", name:"Chapter 3: Outlander", tags:["chapter"]},
-      {id:"m_p9_4", name:"Chapter 4: The Mandalorian's Hunt", tags:["chapter"]},
-      {id:"m_p9_5", name:"Chapter 5: The Gravestone", tags:["chapter"]},
+      {id:"m_p9_4", name:"Chapter 4: The Gravestone", tags:["chapter"]},
+      {id:"m_p9_5", name:"Chapter 5: From the Grave", tags:["chapter"]},
       {id:"m_p9_6", name:"Chapter 6: Asylum", tags:["chapter"]},
-      {id:"m_p9_7", name:"Chapter 7: The Lady of Sorrow", tags:["chapter"]},
+      {id:"m_p9_7", name:"Chapter 7: The Lady of Sorrows", tags:["chapter"]},
       {id:"m_p9_8", name:"Chapter 8: Taking Flight", tags:["chapter"]},
     ]},
     { name:"KOTFE Chapters 9-16", level:"Lvl 63-65", missions:[
       {id:"m_p9_9", name:"Chapter 9: The Alliance", tags:["chapter"]},
-      {id:"m_p9_10", name:"Chapter 10: Anarchy in Paradise", tags:["chapter"]},
+      {id:"m_p9_10", name:"Chapter 10: Anarchy In Paradise", tags:["chapter"]},
       {id:"m_p9_11", name:"Chapter 11: Disavowed", tags:["chapter"]},
       {id:"m_p9_12", name:"Chapter 12: Visions in the Dark", tags:["chapter"]},
       {id:"m_p9_13", name:"Chapter 13: Profit and Plunder", tags:["chapter"]},
@@ -1398,22 +1428,31 @@ const PROTOCOL = [
       {id:"m_p9_15", name:"Chapter 15: The GEMINI Deception", tags:["chapter"]},
       {id:"m_p9_16", name:"Chapter 16: The Battle of Odessen", tags:["chapter","milestone"]},
     ]},
-    { name:"Alliance", level:"All KOTFE", missions:[
-      {id:"m_p9_17", name:"Alliance Alerts (Companion Recruitment)", tags:["companion"]},
-      {id:"m_p9_18", name:"Base of Operations Conversations", tags:["companion"]},
+    { name:"Star Fortresses // Alliance Recruitment", level:"Between/After Chapters", missions:[
+      {id:"m_p9_sf1", name:"Star Fortress: Voss", tags:["flashpoint"]},
+      {id:"m_p9_sf2", name:"Star Fortress: Belsavis", tags:["flashpoint"]},
+      {id:"m_p9_sf3", name:"Star Fortress: Tatooine", tags:["flashpoint"]},
+      {id:"m_p9_sf4", name:"Star Fortress: Hoth", tags:["flashpoint"]},
+      {id:"m_p9_sf5", name:"Star Fortress: Alderaan", tags:["flashpoint"]},
+      {id:"m_p9_sf6", name:"Star Fortress: Nar Shaddaa", tags:["flashpoint"]},
+      {id:"m_p9_17", name:"Alliance Alerts (Companion Recruitment Chain)", tags:["companion"]},
+      {id:"m_p9_18", name:"Odessen Base of Operations Conversations", tags:["companion"]},
+    ]},
+    { name:"HK-55 Bonus Chapter", level:"After Chapter 16", missions:[
+      {id:"m_p9_hk", name:"Bonus Chapter: A Sense of Sacrifice (HK-55)", tags:["chapter","optional"]},
     ]},
   ]},
   // PHASE 10
   { id:"p10", num:"10", tier:"sub", name:"Knights of the Eternal Throne", levelRange:"Lvl 65-70", subtitle:"The Throne Awaits", sections:[
     { name:"KOTET Chapters", level:"Lvl 65-70", missions:[
-      {id:"m_p10_1", name:"Chapter 1: The Hunt", tags:["chapter"]},
+      {id:"m_p10_1", name:"Chapter 1: Wrath and Ruin", tags:["chapter"]},
       {id:"m_p10_2", name:"Chapter 2: Run for the Shadows", tags:["chapter"]},
-      {id:"m_p10_3", name:"Chapter 3: Bringing Down the Hammer", tags:["chapter"]},
-      {id:"m_p10_4", name:"Chapter 4: Heralds of Victory", tags:["chapter"]},
+      {id:"m_p10_3", name:"Chapter 3: Dark Reunions", tags:["chapter"]},
+      {id:"m_p10_4", name:"Chapter 4: Where Dreams Die", tags:["chapter"]},
       {id:"m_p10_5", name:"Chapter 5: Ascension", tags:["chapter"]},
-      {id:"m_p10_6", name:"Chapter 6: Crisis at the Crown", tags:["chapter"]},
-      {id:"m_p10_7", name:"Chapter 7: On the Brink", tags:["chapter"]},
-      {id:"m_p10_8", name:"Chapter 8: The Beast of Vandin", tags:["chapter"]},
+      {id:"m_p10_6", name:"Chapter 6: The Dragon's Maw", tags:["chapter"]},
+      {id:"m_p10_7", name:"Chapter 7: Into the Void", tags:["chapter"]},
+      {id:"m_p10_8", name:"Chapter 8: End Times", tags:["chapter"]},
       {id:"m_p10_9", name:"Chapter 9: The Eternal Throne", tags:["chapter","milestone"]},
     ]},
   ]},
@@ -1536,6 +1575,9 @@ const ACHIEVEMENTS = [
   { id:"a_lvl10", icon:"⭐", name:"Adept", desc:"Reach Operator Lvl 10", check: s => calcLvl(s.completed.size * XP_PER_MISSION).lvl >= 10 },
   { id:"a_lvl20", icon:"💫", name:"Master", desc:"Reach Operator Lvl 20", check: s => calcLvl(s.completed.size * XP_PER_MISSION).lvl >= 20 },
   { id:"a_lvl30", icon:"☀️", name:"Grandmaster", desc:"Reach Operator Lvl 30", check: s => calcLvl(s.completed.size * XP_PER_MISSION).lvl >= 30 },
+  { id:"a_vintage", icon:"📼", name:"Vintage Operator", desc:"Complete all Phase 6.5 vintage content", check: s => phaseDone(s, "p65") },
+  { id:"a_starfortress", icon:"🌌", name:"Fortress Liberator", desc:"Liberate all 6 Star Fortresses", check: s => ["m_p9_sf1","m_p9_sf2","m_p9_sf3","m_p9_sf4","m_p9_sf5","m_p9_sf6"].every(id => s.completed.has(id)) },
+  { id:"a_hk55", icon:"🤖", name:"A Sense of Sacrifice", desc:"Complete the HK-55 Bonus Chapter", check: s => s.completed.has("m_p9_hk") },
   { id:"a_subscriber", icon:"💳", name:"Subscriber", desc:"Toggle subscriber status on", check: s => s.subscribed === true },
 ];
 
@@ -1578,6 +1620,7 @@ let state = {
   filter: 'all',
   search: '',
   f2pAck: false,
+  lockAck: false,
 };
 
 const STORAGE_KEY = 'swtor-protocol-state';
@@ -1592,6 +1635,7 @@ async function loadState() {
       state.subscribed = !!data.subscribed;
       state.collapsed = new Set(data.collapsed || []);
       state.f2pAck = !!data.f2pAck;
+      state.lockAck = !!data.lockAck;
     }
   } catch (e) {
     // Key doesn't exist or storage unavailable; use defaults
@@ -1606,6 +1650,7 @@ async function saveState() {
       subscribed: state.subscribed,
       collapsed: [...state.collapsed],
       f2pAck: state.f2pAck,
+      lockAck: state.lockAck,
       lastUpdated: Date.now(),
     };
     await window.storage.set(STORAGE_KEY, JSON.stringify(data));
@@ -1776,7 +1821,7 @@ function updateStats() {
   document.getElementById('statPctSub').textContent = `${done} / ${TOTAL_MISSIONS}`;
 
   // Time estimate (rough hours per phase)
-  const hoursPerPhase = [25, 18, 15, 4, 6, 8, 4, 15, 20, 12, 6, 3, 12, 18];
+  const hoursPerPhase = [25, 18, 15, 4, 6, 8, 6, 4, 15, 20, 12, 6, 3, 12, 18];
   let hoursLeft = 0;
   PROTOCOL.forEach((p, idx) => {
     let total = 0, doneCount = 0;
@@ -1836,6 +1881,21 @@ function updateStats() {
     f2pWall.classList.add('active');
   } else {
     f2pWall.classList.remove('active');
+  }
+
+  // Class story lock warning - triggers if any KOTFE work touched but Phases 1-3 not 100%
+  const lockWarning = document.getElementById('lockWarning');
+  const classStoryDone = ['p1','p2','p3'].every(pid => {
+    const p = PROTOCOL.find(x => x.id === pid);
+    return p.sections.every(s => s.missions.every(m => state.completed.has(m.id)));
+  });
+  const kotfeStarted = PROTOCOL.find(p => p.id === 'p9').sections.some(s => s.missions.some(m => state.completed.has(m.id)));
+  // Also trigger if user just hit Phase 6 done and class story isn't (preemptive)
+  const shouldWarn = (kotfeStarted || phase6Done) && !classStoryDone && !state.lockAck;
+  if (shouldWarn) {
+    lockWarning.classList.add('active');
+  } else {
+    lockWarning.classList.remove('active');
   }
 
   // Phase pct bars on header
@@ -1980,6 +2040,12 @@ document.getElementById('f2pAck').addEventListener('click', () => {
   checkAchievements();
 });
 
+document.getElementById('lockAck').addEventListener('click', () => {
+  state.lockAck = true;
+  saveState();
+  updateStats();
+});
+
 document.getElementById('btnReset').addEventListener('click', () => {
   openModal({
     title: 'CONFIRM SYSTEM WIPE',
@@ -1987,7 +2053,7 @@ document.getElementById('btnReset').addEventListener('click', () => {
     actions: [
       { label:'CANCEL', style:'' },
       { label:'WIPE ALL DATA', style:'danger', fn: async () => {
-        state = { completed:new Set(), achievements:new Set(), subscribed:false, collapsed:new Set(), filter:'all', search:'', f2pAck:false };
+        state = { completed:new Set(), achievements:new Set(), subscribed:false, collapsed:new Set(), filter:'all', search:'', f2pAck:false, lockAck:false };
         try { await window.storage.delete(STORAGE_KEY); } catch(e){}
         document.getElementById('searchBox').value = '';
         document.querySelectorAll('.filter-btn').forEach(x => x.classList.toggle('active', x.dataset.filter==='all'));
