@@ -1,0 +1,2118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HENDERSON.SYS // SWTOR PROTOCOL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700;800&family=Major+Mono+Display&family=Audiowide&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-void: #000000;
+  --bg-deep: #050810;
+  --bg-panel: #0a0e18;
+  --bg-elev: #11161f;
+  --border-dim: #1a2030;
+  --border-mid: #2a3548;
+  --border-bright: #3d4d68;
+  --text-dim: #4a5670;
+  --text-mid: #6b7a95;
+  --text-base: #b8c4dc;
+  --text-bright: #e8efff;
+  --jedi-blue: #00d4ff;
+  --jedi-blue-dim: #0a8cb5;
+  --jedi-blue-glow: rgba(0, 212, 255, 0.4);
+  --sith-red: #ff2d4a;
+  --sith-red-dim: #b81e35;
+  --sith-red-glow: rgba(255, 45, 74, 0.4);
+  --amber: #ffb800;
+  --amber-glow: rgba(255, 184, 0, 0.4);
+  --green: #00ff88;
+  --green-dim: #008850;
+  --green-glow: rgba(0, 255, 136, 0.4);
+  --purple: #b675ff;
+  --purple-dim: #6b3fa0;
+  --mono: 'JetBrains Mono', 'Courier New', monospace;
+  --display: 'Major Mono Display', 'Courier New', monospace;
+  --futur: 'Audiowide', 'Major Mono Display', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg-void);
+  color: var(--text-base);
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ================ CRT SCANLINES ================ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 212, 255, 0.025) 0px,
+    rgba(0, 212, 255, 0.025) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: screen;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.4) 100%);
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* ================ NOISE / GRAIN ================ */
+.noise {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9997;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E");
+}
+
+/* ================ STARFIELD ================ */
+.stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+.stars::before, .stars::after {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 60% 70%, rgba(0,212,255,0.5), transparent),
+    radial-gradient(1px 1px at 80% 20%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(2px 2px at 30% 80%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 90% 50%, rgba(182,117,255,0.4), transparent),
+    radial-gradient(1px 1px at 10% 60%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 50% 10%, rgba(255,184,0,0.3), transparent);
+  background-size: 600px 600px;
+  animation: drift 200s linear infinite;
+}
+.stars::after {
+  animation-duration: 400s;
+  animation-direction: reverse;
+  opacity: 0.5;
+}
+@keyframes drift {
+  from { transform: translate(0, 0); }
+  to { transform: translate(-200px, -200px); }
+}
+
+/* ================ BOOT SEQUENCE ================ */
+.boot {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-void);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--mono);
+  color: var(--jedi-blue);
+  padding: 40px;
+  overflow: hidden;
+}
+.boot.done { opacity: 0; pointer-events: none; transition: opacity 0.6s ease-out; }
+.boot-log {
+  width: 100%;
+  max-width: 700px;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.boot-line { opacity: 0; }
+.boot-line.show { animation: bootIn 0.05s forwards; }
+@keyframes bootIn { to { opacity: 1; } }
+.boot-cursor::after {
+  content: '█';
+  animation: blink 1s steps(2) infinite;
+  color: var(--jedi-blue);
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+.boot-logo {
+  font-family: var(--display);
+  font-size: 32px;
+  letter-spacing: 0.1em;
+  margin-bottom: 30px;
+  color: var(--jedi-blue);
+  text-shadow: 0 0 20px var(--jedi-blue-glow);
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .boot-logo { font-size: 20px; }
+  .boot-log { font-size: 10px; }
+}
+
+/* ================ MAIN LAYOUT ================ */
+.app {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+}
+
+/* ================ TOP HEADER ================ */
+.header {
+  border: 1px solid var(--border-mid);
+  background: linear-gradient(180deg, var(--bg-panel) 0%, var(--bg-deep) 100%);
+  padding: 24px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--jedi-blue), transparent);
+  animation: scan 4s ease-in-out infinite;
+}
+@keyframes scan {
+  0%, 100% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+}
+
+.header-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 30px;
+  align-items: center;
+}
+
+@media (max-width: 800px) {
+  .header-grid { grid-template-columns: 1fr; }
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.brand-tag {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+.brand-title {
+  font-family: var(--display);
+  font-size: clamp(20px, 4vw, 36px);
+  color: var(--text-bright);
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 30px var(--jedi-blue-glow);
+}
+.brand-subtitle {
+  font-size: 11px;
+  color: var(--jedi-blue);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(80px, 120px));
+  gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.stat-cell {
+  border: 1px solid var(--border-dim);
+  background: var(--bg-elev);
+  padding: 10px 12px;
+  position: relative;
+}
+.stat-cell.lvl { border-color: var(--jedi-blue-dim); box-shadow: inset 0 0 20px rgba(0,212,255,0.1); }
+.stat-cell.xp { border-color: var(--purple-dim); }
+.stat-cell.pct { border-color: var(--green-dim); }
+.stat-cell.time { border-color: var(--amber); border-color: rgba(255,184,0,0.4); }
+
+.stat-label {
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.stat-value {
+  font-family: var(--futur);
+  font-size: 22px;
+  color: var(--text-bright);
+  line-height: 1;
+}
+.stat-cell.lvl .stat-value { color: var(--jedi-blue); }
+.stat-cell.xp .stat-value { color: var(--purple); }
+.stat-cell.pct .stat-value { color: var(--green); }
+.stat-cell.time .stat-value { color: var(--amber); }
+.stat-sub {
+  font-size: 9px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+/* ================ MAIN GRID ================ */
+.main-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 20px;
+}
+@media (max-width: 960px) {
+  .main-grid { grid-template-columns: 1fr; }
+  .sidebar { position: static !important; }
+}
+
+/* ================ SIDEBAR ================ */
+.sidebar {
+  position: sticky;
+  top: 20px;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+.sidebar::-webkit-scrollbar { width: 6px; }
+.sidebar::-webkit-scrollbar-track { background: var(--bg-deep); }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border-mid); }
+
+.panel {
+  border: 1px solid var(--border-mid);
+  background: var(--bg-panel);
+}
+.panel-header {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-mid);
+  background: var(--bg-elev);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-mid);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.panel-header span:first-child::before {
+  content: '> ';
+  color: var(--jedi-blue);
+}
+.panel-body { padding: 14px; }
+
+/* Current mission card */
+.current-card {
+  border-color: var(--jedi-blue);
+  box-shadow: 0 0 30px rgba(0,212,255,0.15);
+  position: relative;
+}
+.current-card .panel-header {
+  border-color: var(--jedi-blue-dim);
+  color: var(--jedi-blue);
+}
+.current-mission-name {
+  font-size: 14px;
+  color: var(--text-bright);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.current-mission-loc {
+  font-size: 11px;
+  color: var(--jedi-blue);
+  margin-bottom: 4px;
+  letter-spacing: 0.1em;
+}
+.current-mission-meta {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Phase nav */
+.phase-nav-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+.phase-nav-item {
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border-dim);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  transition: background 0.15s;
+  position: relative;
+}
+.phase-nav-item:hover { background: var(--bg-elev); color: var(--text-bright); }
+.phase-nav-item.active {
+  background: rgba(0,212,255,0.08);
+  color: var(--jedi-blue);
+  border-left: 2px solid var(--jedi-blue);
+  padding-left: 12px;
+}
+.phase-nav-item.complete .phase-nav-pct { color: var(--green); }
+.phase-nav-item.complete::after {
+  content: '✓';
+  color: var(--green);
+  font-weight: bold;
+  position: absolute;
+  right: 14px;
+}
+.phase-nav-num {
+  font-family: var(--futur);
+  font-size: 10px;
+  color: var(--text-dim);
+  min-width: 28px;
+}
+.phase-nav-item.active .phase-nav-num { color: var(--jedi-blue); }
+.phase-nav-name {
+  flex: 1;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.phase-nav-pct {
+  font-size: 9px;
+  color: var(--text-dim);
+  font-family: var(--futur);
+}
+
+/* Filter / controls */
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.search-box {
+  background: var(--bg-deep);
+  border: 1px solid var(--border-mid);
+  padding: 8px 10px;
+  color: var(--text-bright);
+  font-family: var(--mono);
+  font-size: 12px;
+  width: 100%;
+}
+.search-box:focus {
+  outline: none;
+  border-color: var(--jedi-blue);
+  box-shadow: 0 0 10px rgba(0,212,255,0.2);
+}
+.search-box::placeholder { color: var(--text-dim); }
+
+.filter-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4px;
+}
+.filter-btn {
+  background: var(--bg-deep);
+  border: 1px solid var(--border-mid);
+  color: var(--text-mid);
+  padding: 6px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.filter-btn:hover { color: var(--text-bright); border-color: var(--border-bright); }
+.filter-btn.active {
+  background: rgba(0,212,255,0.1);
+  color: var(--jedi-blue);
+  border-color: var(--jedi-blue);
+}
+
+.action-btn {
+  background: var(--bg-deep);
+  border: 1px solid var(--border-mid);
+  color: var(--text-base);
+  padding: 8px 12px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+.action-btn:hover { background: var(--bg-elev); color: var(--text-bright); }
+.action-btn::before { content: '> '; color: var(--text-dim); }
+.action-btn.danger:hover { color: var(--sith-red); border-color: var(--sith-red); }
+
+/* ================ MAIN CONTENT ================ */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Overall progress bar */
+.master-bar-panel {
+  padding: 18px 20px;
+  border: 1px solid var(--border-mid);
+  background: var(--bg-panel);
+  position: relative;
+  overflow: hidden;
+}
+.master-bar-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+.master-bar-title {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+.master-bar-pct {
+  font-family: var(--futur);
+  font-size: 24px;
+  color: var(--jedi-blue);
+  text-shadow: 0 0 15px var(--jedi-blue-glow);
+}
+.master-bar-track {
+  height: 8px;
+  background: var(--bg-deep);
+  border: 1px solid var(--border-dim);
+  position: relative;
+  overflow: hidden;
+}
+.master-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--jedi-blue-dim), var(--jedi-blue), var(--green));
+  width: 0%;
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 20px var(--jedi-blue-glow);
+  position: relative;
+}
+.master-bar-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: shine 3s ease-in-out infinite;
+}
+@keyframes shine {
+  0%, 100% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+}
+
+.master-bar-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.15em;
+}
+
+/* F2P Wall warning */
+.f2p-wall {
+  border: 2px solid var(--sith-red);
+  background: linear-gradient(135deg, rgba(255,45,74,0.08), rgba(255,45,74,0.03));
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  display: none;
+  box-shadow: 0 0 40px rgba(255,45,74,0.2);
+}
+.f2p-wall.active { display: block; animation: alertPulse 2s ease-in-out infinite; }
+@keyframes alertPulse {
+  0%, 100% { box-shadow: 0 0 40px rgba(255,45,74,0.2); }
+  50% { box-shadow: 0 0 60px rgba(255,45,74,0.5); }
+}
+.f2p-wall::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,45,74,0.04) 10px, rgba(255,45,74,0.04) 20px);
+  pointer-events: none;
+}
+.f2p-wall-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+  position: relative;
+}
+.f2p-wall-icon {
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--sith-red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: var(--sith-red);
+  text-shadow: 0 0 10px var(--sith-red-glow);
+}
+.f2p-wall-title {
+  font-family: var(--futur);
+  font-size: 18px;
+  color: var(--sith-red);
+  letter-spacing: 0.15em;
+  text-shadow: 0 0 15px var(--sith-red-glow);
+}
+.f2p-wall-body {
+  font-size: 12px;
+  color: var(--text-base);
+  line-height: 1.7;
+  position: relative;
+  margin-bottom: 14px;
+}
+.f2p-wall-body strong { color: var(--text-bright); }
+.f2p-wall-cta {
+  display: inline-block;
+  background: var(--sith-red);
+  color: var(--bg-void);
+  padding: 10px 24px;
+  font-family: var(--futur);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-decoration: none;
+  border: 1px solid var(--sith-red);
+  position: relative;
+  transition: all 0.15s;
+}
+.f2p-wall-cta:hover {
+  background: transparent;
+  color: var(--sith-red);
+  box-shadow: 0 0 20px var(--sith-red-glow);
+}
+
+/* Phase section */
+.phase {
+  border: 1px solid var(--border-mid);
+  background: var(--bg-panel);
+  scroll-margin-top: 20px;
+}
+.phase.complete { border-color: var(--green-dim); }
+.phase.current { border-color: var(--jedi-blue); box-shadow: 0 0 30px rgba(0,212,255,0.1); }
+
+.phase-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-mid);
+  background: linear-gradient(90deg, var(--bg-elev) 0%, var(--bg-panel) 100%);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+.phase.current .phase-header { background: linear-gradient(90deg, rgba(0,212,255,0.08) 0%, var(--bg-panel) 100%); }
+.phase.complete .phase-header { background: linear-gradient(90deg, rgba(0,255,136,0.05) 0%, var(--bg-panel) 100%); }
+
+.phase-num {
+  font-family: var(--futur);
+  font-size: 28px;
+  color: var(--text-dim);
+  line-height: 1;
+  letter-spacing: 0.05em;
+}
+.phase.current .phase-num { color: var(--jedi-blue); text-shadow: 0 0 15px var(--jedi-blue-glow); }
+.phase.complete .phase-num { color: var(--green); }
+
+.phase-meta { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.phase-tag {
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+.phase-name {
+  font-family: var(--display);
+  font-size: clamp(14px, 2.5vw, 20px);
+  color: var(--text-bright);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.phase-info {
+  font-size: 10px;
+  color: var(--text-mid);
+  letter-spacing: 0.15em;
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.phase-info span::before {
+  content: '◇ ';
+  color: var(--jedi-blue);
+  margin-right: 2px;
+}
+
+.phase-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  min-width: 80px;
+}
+.phase-pct {
+  font-family: var(--futur);
+  font-size: 18px;
+  color: var(--text-bright);
+}
+.phase.complete .phase-pct { color: var(--green); }
+.phase-pct-bar {
+  width: 80px;
+  height: 4px;
+  background: var(--bg-deep);
+  border: 1px solid var(--border-dim);
+}
+.phase-pct-fill {
+  height: 100%;
+  background: var(--jedi-blue);
+  width: 0%;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 8px var(--jedi-blue-glow);
+}
+.phase.complete .phase-pct-fill { background: var(--green); box-shadow: 0 0 8px var(--green-glow); }
+.phase-toggle {
+  font-size: 14px;
+  color: var(--text-dim);
+  transition: transform 0.3s;
+  margin-left: 8px;
+}
+.phase.collapsed .phase-toggle { transform: rotate(-90deg); }
+
+.phase-body { padding: 0; }
+.phase.collapsed .phase-body { display: none; }
+
+.phase-section {
+  border-top: 1px solid var(--border-dim);
+}
+.phase-section:first-child { border-top: none; }
+.phase-section-header {
+  padding: 10px 20px;
+  background: var(--bg-deep);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-mid);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.phase-section-header strong { color: var(--text-bright); letter-spacing: 0.15em; }
+.phase-section-meta { font-size: 9px; color: var(--text-dim); }
+
+/* Mission item */
+.mission-list { list-style: none; }
+.mission {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--border-dim);
+  cursor: pointer;
+  transition: background 0.12s, transform 0.12s;
+  position: relative;
+}
+.mission:last-child { border-bottom: none; }
+.mission:hover { background: var(--bg-elev); }
+.mission.complete { opacity: 0.6; }
+.mission.complete .mission-name { color: var(--text-mid); text-decoration: line-through; text-decoration-color: var(--green-dim); }
+
+.mission-check {
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--border-bright);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: transparent;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.mission.complete .mission-check {
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--bg-void);
+  box-shadow: 0 0 10px var(--green-glow);
+}
+.mission-check::before { content: '✓'; }
+
+.mission-content { min-width: 0; }
+.mission-name {
+  color: var(--text-base);
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mission-tags {
+  display: flex;
+  gap: 6px;
+  margin-top: 3px;
+  flex-wrap: wrap;
+}
+.tag {
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 1px 5px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+.tag.class { color: var(--jedi-blue); border-color: var(--jedi-blue-dim); }
+.tag.planet { color: var(--purple); border-color: var(--purple-dim); }
+.tag.flashpoint { color: var(--amber); border-color: rgba(255,184,0,0.3); }
+.tag.companion { color: var(--green); border-color: var(--green-dim); }
+.tag.expansion { color: var(--sith-red); border-color: var(--sith-red-dim); }
+.tag.optional { color: var(--text-dim); border-color: var(--border-mid); }
+.tag.milestone { color: var(--text-bright); border-color: var(--border-bright); }
+.tag.chapter { color: var(--jedi-blue); border-color: var(--jedi-blue-dim); }
+.tag.patch { color: var(--purple); border-color: var(--purple-dim); }
+
+.mission-xp {
+  font-family: var(--futur);
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+.mission.complete .mission-xp { color: var(--green); }
+.mission-xp::after { content: ' XP'; color: var(--text-dim); font-size: 8px; }
+
+/* Mission animation */
+@keyframes missionComplete {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.01); background: rgba(0,255,136,0.15); }
+  100% { transform: scale(1); }
+}
+.mission.just-completed { animation: missionComplete 0.6s ease-out; }
+
+/* ================ ACHIEVEMENT TOAST ================ */
+.toast-container {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  z-index: 9000;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: none;
+  max-width: 380px;
+}
+@media (max-width: 600px) {
+  .toast-container { right: 10px; left: 10px; top: 10px; max-width: none; }
+}
+
+.toast {
+  background: var(--bg-panel);
+  border: 1px solid var(--amber);
+  padding: 16px 20px;
+  position: relative;
+  overflow: hidden;
+  animation: toastIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards, toastOut 0.5s cubic-bezier(0.7, 0, 0.84, 0) forwards 5s;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 30px rgba(255,184,0,0.3);
+  pointer-events: auto;
+}
+.toast.lvlup { border-color: var(--purple); box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 30px rgba(182,117,255,0.4); }
+
+@keyframes toastIn {
+  from { transform: translateX(120%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes toastOut {
+  to { transform: translateX(120%); opacity: 0; }
+}
+
+.toast::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--amber), transparent);
+}
+.toast.lvlup::before { background: linear-gradient(90deg, transparent, var(--purple), transparent); }
+
+.toast-tag {
+  font-size: 9px;
+  color: var(--amber);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.toast.lvlup .toast-tag { color: var(--purple); }
+.toast-title {
+  font-family: var(--futur);
+  font-size: 16px;
+  color: var(--text-bright);
+  margin-bottom: 4px;
+  letter-spacing: 0.05em;
+}
+.toast-body {
+  font-size: 11px;
+  color: var(--text-mid);
+  line-height: 1.5;
+}
+
+/* ================ MODAL ================ */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 9500;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal.show { display: flex; animation: fadeIn 0.3s; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal-content {
+  background: var(--bg-panel);
+  border: 1px solid var(--jedi-blue);
+  max-width: 500px;
+  width: 100%;
+  padding: 30px;
+  box-shadow: 0 0 60px var(--jedi-blue-glow);
+}
+.modal-title {
+  font-family: var(--futur);
+  font-size: 18px;
+  color: var(--jedi-blue);
+  margin-bottom: 16px;
+  letter-spacing: 0.1em;
+}
+.modal-body {
+  font-size: 12px;
+  color: var(--text-base);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+.modal-btn {
+  background: var(--bg-deep);
+  border: 1px solid var(--border-mid);
+  color: var(--text-base);
+  padding: 8px 18px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.modal-btn:hover { background: var(--bg-elev); border-color: var(--border-bright); }
+.modal-btn.danger { color: var(--sith-red); border-color: var(--sith-red-dim); }
+.modal-btn.danger:hover { background: rgba(255,45,74,0.1); border-color: var(--sith-red); }
+.modal-btn.primary { color: var(--jedi-blue); border-color: var(--jedi-blue-dim); }
+.modal-btn.primary:hover { background: rgba(0,212,255,0.1); border-color: var(--jedi-blue); }
+
+/* ================ ACHIEVEMENTS GRID ================ */
+.ach-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+  max-height: 50vh;
+  overflow-y: auto;
+  padding: 4px;
+}
+.ach-cell {
+  border: 1px solid var(--border-dim);
+  background: var(--bg-deep);
+  padding: 12px;
+  text-align: center;
+  position: relative;
+  transition: all 0.2s;
+}
+.ach-cell.unlocked {
+  border-color: var(--amber);
+  background: rgba(255,184,0,0.05);
+  box-shadow: 0 0 12px rgba(255,184,0,0.1);
+}
+.ach-cell.unlocked .ach-icon { filter: none; }
+.ach-icon {
+  font-size: 24px;
+  margin-bottom: 6px;
+  filter: grayscale(1) brightness(0.4);
+  transition: filter 0.3s;
+}
+.ach-name {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-base);
+  margin-bottom: 3px;
+}
+.ach-desc { font-size: 8px; color: var(--text-dim); line-height: 1.4; }
+.ach-cell.unlocked .ach-name { color: var(--amber); }
+
+/* ================ FOOTER ================ */
+.footer {
+  margin-top: 30px;
+  padding: 20px;
+  border: 1px solid var(--border-dim);
+  background: var(--bg-deep);
+  text-align: center;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.15em;
+}
+.footer a { color: var(--jedi-blue); text-decoration: none; }
+.footer-sig { color: var(--jedi-blue); font-family: var(--futur); margin-top: 6px; letter-spacing: 0.2em; font-size: 11px; }
+
+/* ================ SUBSCRIBE BUTTON STATE ================ */
+.sub-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: var(--text-mid);
+  padding: 6px 0;
+}
+.sub-toggle input { display: none; }
+.sub-toggle-box {
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--border-bright);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+.sub-toggle input:checked ~ .sub-toggle-box {
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--bg-void);
+}
+.sub-toggle input:checked ~ .sub-toggle-box::before { content: '✓'; }
+
+/* ================ HIDDEN STATE ================ */
+.mission.hidden { display: none; }
+.phase.hidden-all { display: none; }
+
+/* ================ RESPONSIVE TWEAKS ================ */
+@media (max-width: 600px) {
+  .app { padding: 10px; }
+  .header { padding: 16px; }
+  .phase-header { grid-template-columns: auto 1fr auto; padding: 12px 14px; }
+  .phase-num { font-size: 22px; }
+  .mission { padding: 10px 14px; }
+  .phase-section-header { padding: 10px 14px; }
+  .stats-grid { gap: 6px; }
+  .stat-cell { padding: 8px 10px; }
+  .stat-value { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<div class="noise"></div>
+
+<!-- BOOT SEQUENCE -->
+<div class="boot" id="boot">
+  <div class="boot-logo">HENDERSON.SYS</div>
+  <div class="boot-log" id="bootLog"></div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toasts"></div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <div class="modal-title" id="modalTitle">CONFIRM</div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-actions" id="modalActions"></div>
+  </div>
+</div>
+
+<div class="app">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-grid">
+      <div class="brand">
+        <div class="brand-tag">// PLAYTHROUGH PROTOCOL // v3.7.8.1</div>
+        <div class="brand-title">SWTOR :: JEDI KNIGHT</div>
+        <div class="brand-subtitle">Story-First Operations Manual // No Spoilers</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-cell lvl">
+          <div class="stat-label">Operator LVL</div>
+          <div class="stat-value" id="statLvl">1</div>
+          <div class="stat-sub" id="statLvlSub">0 / 500 XP</div>
+        </div>
+        <div class="stat-cell xp">
+          <div class="stat-label">Total XP</div>
+          <div class="stat-value" id="statXp">0</div>
+          <div class="stat-sub">Cumulative</div>
+        </div>
+        <div class="stat-cell pct">
+          <div class="stat-label">Complete</div>
+          <div class="stat-value" id="statPct">0%</div>
+          <div class="stat-sub" id="statPctSub">0 / 0</div>
+        </div>
+        <div class="stat-cell time">
+          <div class="stat-label">Hours Left</div>
+          <div class="stat-value" id="statTime">~180</div>
+          <div class="stat-sub">Estimated</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="main-grid">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="panel current-card">
+        <div class="panel-header"><span>CURRENT MISSION</span><span id="currentMissionPhase">--</span></div>
+        <div class="panel-body">
+          <div class="current-mission-loc" id="currentLoc">--</div>
+          <div class="current-mission-name" id="currentName">All systems nominal.</div>
+          <div class="current-mission-meta" id="currentMeta">Ready to begin.</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><span>PHASE INDEX</span></div>
+        <ul class="phase-nav-list" id="phaseNav"></ul>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><span>FILTERS</span></div>
+        <div class="panel-body controls">
+          <input type="text" class="search-box" id="searchBox" placeholder="Search missions...">
+          <div class="filter-row">
+            <button class="filter-btn active" data-filter="all">ALL</button>
+            <button class="filter-btn" data-filter="todo">TODO</button>
+            <button class="filter-btn" data-filter="done">DONE</button>
+          </div>
+          <label class="sub-toggle">
+            <input type="checkbox" id="subToggle">
+            <span class="sub-toggle-box"></span>
+            <span>Subscribed</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><span>SYSTEM</span></div>
+        <div class="panel-body" style="display:flex;flex-direction:column;gap:6px;">
+          <button class="action-btn" id="btnAch">View Achievements</button>
+          <button class="action-btn" id="btnExport">Export Progress</button>
+          <button class="action-btn" id="btnImport">Import Progress</button>
+          <button class="action-btn danger" id="btnReset">Wipe All Data</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="content">
+      <div class="master-bar-panel">
+        <div class="master-bar-label">
+          <div class="master-bar-title">PROTOCOL COMPLETION</div>
+          <div class="master-bar-pct" id="masterPct">0%</div>
+        </div>
+        <div class="master-bar-track">
+          <div class="master-bar-fill" id="masterFill"></div>
+        </div>
+        <div class="master-bar-meta">
+          <span id="masterMetaLeft">0 missions complete</span>
+          <span id="masterMetaRight">0 phases complete</span>
+        </div>
+      </div>
+
+      <div class="f2p-wall" id="f2pWall">
+        <div class="f2p-wall-header">
+          <div class="f2p-wall-icon">⚠</div>
+          <div class="f2p-wall-title">FREE-TO-PLAY HARD WALL</div>
+        </div>
+        <div class="f2p-wall-body">
+          You've completed Phase 6 — <strong>Rise of the Hutt Cartel</strong>. The next expansion (Shadow of Revan onward) is <strong>locked behind subscription</strong>.<br><br>
+          <strong>Recommended action:</strong> Subscribe ONCE for $14.99 (30 days). This permanently unlocks every expansion released up to and during your sub period. Cancel anytime, keep the access forever.
+        </div>
+        <a href="https://www.swtor.com/buy" target="_blank" class="f2p-wall-cta">SUBSCRIBE → $14.99</a>
+        <button class="f2p-wall-cta" id="f2pAck" style="margin-left:10px;background:transparent;color:var(--text-mid);border-color:var(--border-bright);">I'M SUBBED — DISMISS</button>
+      </div>
+
+      <div id="phasesContainer"></div>
+    </main>
+  </div>
+
+  <div class="footer">
+    <div>HENDERSON.SYS // SWTOR PROTOCOL // BUILD 7.8.1 // STATUS: OPERATIONAL</div>
+    <div class="footer-sig">⟨ MAY THE FORCE BE WITH YOU ⟩</div>
+  </div>
+</div>
+
+<script>
+// =================================================================
+// MISSION DATA
+// =================================================================
+const PROTOCOL = [
+  // PHASE 1
+  { id:"p1", num:"01", tier:"free", name:"Class Story // Chapter 1", levelRange:"Lvl 1-32", subtitle:"The Hero of Tython Begins", sections:[
+    { name:"Tython", level:"Lvl 1-10", missions:[
+      {id:"m_p1a_1", name:"Attack of the Flesh Raiders", tags:["class"]},
+      {id:"m_p1a_2", name:"The Path of a Jedi", tags:["class"]},
+      {id:"m_p1a_3", name:"The Arm That Holds the Saber", tags:["class"]},
+      {id:"m_p1a_4", name:"High-Tech Savages", tags:["class"]},
+      {id:"m_p1a_5", name:"Enemy Force", tags:["class"]},
+      {id:"m_p1a_6", name:"The Face of the Enemy", tags:["class"]},
+      {id:"m_p1a_7", name:"Dark Temptations", tags:["class"]},
+      {id:"m_p1a_8", name:"Weapon of the Jedi", tags:["class"]},
+      {id:"m_p1a_9", name:"Seeking Darkness", tags:["class"]},
+      {id:"m_p1a_10", name:"The Jedi Envoy", tags:["class"]},
+      {id:"m_p1a_11", name:"Tython Planetary Arc", tags:["planet"]},
+      {id:"m_p1a_12", name:"Advanced Training: Pick Combat Style", tags:["milestone"]},
+    ]},
+    { name:"Coruscant", level:"Lvl 10-16", missions:[
+      {id:"m_p1b_1", name:"Stolen Secrets", tags:["class"]},
+      {id:"m_p1b_2", name:"Kidnapped!", tags:["class"]},
+      {id:"m_p1b_3", name:"The Rescue", tags:["class"]},
+      {id:"m_p1b_4", name:"The Final Piece", tags:["class"]},
+      {id:"m_p1b_5", name:"The Plan to Save Coruscant", tags:["class"]},
+      {id:"m_p1b_6", name:"Stopping the Power Guard Project", tags:["class"]},
+      {id:"m_p1b_7", name:"Capturing the General", tags:["class"]},
+      {id:"m_p1b_8", name:"The Power of the Jedi", tags:["class"]},
+      {id:"m_p1b_9", name:"Coruscant Planetary Arc", tags:["planet"]},
+      {id:"m_p1b_10", name:"Receive Your Starship", tags:["milestone"]},
+      {id:"m_p1b_11", name:"Ship Conversation: T7-O1", tags:["companion"]},
+    ]},
+    { name:"Taris", level:"Lvl 16-20", missions:[
+      {id:"m_p1c_1", name:"Searching for a Padawan", tags:["class"]},
+      {id:"m_p1c_2", name:"The Sith Lord on Taris", tags:["class"]},
+      {id:"m_p1c_3", name:"The Padawan", tags:["class"]},
+      {id:"m_p1c_4", name:"Hidden Crime Lord", tags:["class"]},
+      {id:"m_p1c_5", name:"Hunting the Sith", tags:["class"]},
+      {id:"m_p1c_6", name:"Confrontation on Taris", tags:["class"]},
+      {id:"m_p1c_7", name:"Taris Planetary Arc", tags:["planet"]},
+      {id:"m_p1c_8", name:"Taris Bonus Series", tags:["optional"]},
+      {id:"m_p1c_9", name:"Ship Conversations", tags:["companion"]},
+    ]},
+    { name:"Nar Shaddaa", level:"Lvl 20-24", missions:[
+      {id:"m_p1d_1", name:"Negotiating with the Hutts", tags:["class"]},
+      {id:"m_p1d_2", name:"The Holiday's Plan", tags:["class"]},
+      {id:"m_p1d_3", name:"The Final Trap", tags:["class"]},
+      {id:"m_p1d_4", name:"Bringing Down the Hammer", tags:["class"]},
+      {id:"m_p1d_5", name:"The Cut Off", tags:["class"]},
+      {id:"m_p1d_6", name:"Trial of Mind and Body", tags:["class"]},
+      {id:"m_p1d_7", name:"Nar Shaddaa Planetary Arc", tags:["planet"]},
+      {id:"m_p1d_8", name:"Ship Conversations", tags:["companion"]},
+    ]},
+    { name:"Tatooine", level:"Lvl 24-28", missions:[
+      {id:"m_p1e_1", name:"Sand People", tags:["class"]},
+      {id:"m_p1e_2", name:"The Lost Master", tags:["class"]},
+      {id:"m_p1e_3", name:"The Sand Demon", tags:["class"]},
+      {id:"m_p1e_4", name:"The Imperial Listening Post", tags:["class"]},
+      {id:"m_p1e_5", name:"Final Showdown", tags:["class"]},
+      {id:"m_p1e_6", name:"Tatooine Planetary Arc", tags:["planet"]},
+      {id:"m_p1e_7", name:"Ship Conversations", tags:["companion"]},
+    ]},
+    { name:"Alderaan", level:"Lvl 28-32", missions:[
+      {id:"m_p1f_1", name:"The Captured Master", tags:["class"]},
+      {id:"m_p1f_2", name:"Saving Master Din", tags:["class"]},
+      {id:"m_p1f_3", name:"The Final Confrontation", tags:["class"]},
+      {id:"m_p1f_4", name:"The Death Mark", tags:["class"]},
+      {id:"m_p1f_5", name:"Alderaan Planetary Arc", tags:["planet"]},
+      {id:"m_p1f_6", name:"Return to Tython (Chapter 1 Finale)", tags:["class","milestone"]},
+      {id:"m_p1f_7", name:"Ship Conversations (CRITICAL)", tags:["companion"]},
+    ]},
+  ]},
+  // PHASE 2
+  { id:"p2", num:"02", tier:"free", name:"Class Story // Chapter 2", levelRange:"Lvl 32-43", subtitle:"The Emperor's Threat", sections:[
+    { name:"Balmorra", level:"Lvl 32-36", missions:[
+      {id:"m_p2a_1", name:"Lives in the Balance", tags:["class"]},
+      {id:"m_p2a_2", name:"Sobrik Infiltration", tags:["class"]},
+      {id:"m_p2a_3", name:"Imperial Listening Post", tags:["class"]},
+      {id:"m_p2a_4", name:"Imperial Stronghold", tags:["class"]},
+      {id:"m_p2a_5", name:"Confronting the Threat", tags:["class"]},
+      {id:"m_p2a_6", name:"Balmorra Planetary Arc", tags:["planet"]},
+      {id:"m_p2a_7", name:"Balmorra Bonus Series", tags:["optional"]},
+      {id:"m_p2a_8", name:"Ship Conversations", tags:["companion"]},
+    ]},
+    { name:"Quesh", level:"Lvl 36-37", missions:[
+      {id:"m_p2b_1", name:"Quesh Crisis", tags:["class"]},
+      {id:"m_p2b_2", name:"Republic Aid", tags:["class"]},
+      {id:"m_p2b_3", name:"The Hidden Threat", tags:["class"]},
+      {id:"m_p2b_4", name:"Quesh Planetary Arc", tags:["planet"]},
+      {id:"m_p2b_5", name:"Ship Conversations", tags:["companion"]},
+    ]},
+    { name:"Hoth", level:"Lvl 37-41", missions:[
+      {id:"m_p2c_1", name:"The Crashed Ship", tags:["class"]},
+      {id:"m_p2c_2", name:"The Pirate Camp", tags:["class"]},
+      {id:"m_p2c_3", name:"Hunting the Schematics", tags:["class"]},
+      {id:"m_p2c_4", name:"The Imperial Dreadnaught", tags:["class"]},
+      {id:"m_p2c_5", name:"Hoth Planetary Arc", tags:["planet"]},
+      {id:"m_p2c_6", name:"Hoth Bonus Series", tags:["optional"]},
+      {id:"m_p2c_7", name:"Ship Conversations", tags:["companion"]},
+    ]},
+    { name:"Chapter 2 Finale", level:"Lvl 41-43", missions:[
+      {id:"m_p2d_1", name:"The Emperor's Fortress", tags:["class"]},
+      {id:"m_p2d_2", name:"Return to Tython", tags:["class","milestone"]},
+      {id:"m_p2d_3", name:"All Companion Conversations (CRITICAL)", tags:["companion"]},
+    ]},
+  ]},
+  // PHASE 3
+  { id:"p3", num:"03", tier:"free", name:"Class Story // Chapter 3", levelRange:"Lvl 43-50", subtitle:"Hero of Tython", sections:[
+    { name:"Belsavis", level:"Lvl 43-46", missions:[
+      {id:"m_p3a_1", name:"Belsavis Crisis", tags:["class"]},
+      {id:"m_p3a_2", name:"The Vault", tags:["class"]},
+      {id:"m_p3a_3", name:"The Imperial Plot", tags:["class"]},
+      {id:"m_p3a_4", name:"Belsavis Planetary Arc", tags:["planet"]},
+      {id:"m_p3a_5", name:"Ship Conversations", tags:["companion"]},
+    ]},
+    { name:"Voss", level:"Lvl 46-48", missions:[
+      {id:"m_p3b_1", name:"The Voss Mystics", tags:["class"]},
+      {id:"m_p3b_2", name:"The Shrine of Healing", tags:["class"]},
+      {id:"m_p3b_3", name:"Through the Mists", tags:["class"]},
+      {id:"m_p3b_4", name:"Voss Planetary Arc", tags:["planet"]},
+      {id:"m_p3b_5", name:"Ship Conversations", tags:["companion"]},
+    ]},
+    { name:"Corellia", level:"Lvl 48-50", missions:[
+      {id:"m_p3c_1", name:"Corellia Crisis", tags:["class"]},
+      {id:"m_p3c_2", name:"The Two Sides", tags:["class"]},
+      {id:"m_p3c_3", name:"The Final Battle", tags:["class"]},
+      {id:"m_p3c_4", name:"Corellia Planetary Arc", tags:["planet"]},
+      {id:"m_p3c_5", name:"Ship Conversations", tags:["companion"]},
+    ]},
+    { name:"Class Finale", level:"Lvl 50", missions:[
+      {id:"m_p3d_1", name:"Doomsday (Class Story Finale)", tags:["class","milestone"]},
+      {id:"m_p3d_2", name:"Hero of Tython Title Awarded", tags:["milestone"]},
+      {id:"m_p3d_3", name:"Final Companion Conversation Pass", tags:["companion"]},
+    ]},
+  ]},
+  // PHASE 4
+  { id:"p4", num:"04", tier:"free", name:"KOTOR Legacy Bridge", levelRange:"Lvl 50", subtitle:"Echoes of the Old Republic", sections:[
+    { name:"Bridge Flashpoints", level:"Solo Mode", missions:[
+      {id:"m_p4_1", name:"FP: Taral V (Solo Mode)", tags:["flashpoint"]},
+      {id:"m_p4_2", name:"FP: Maelstrom Prison (Solo Mode)", tags:["flashpoint"]},
+    ]},
+  ]},
+  // PHASE 5
+  { id:"p5", num:"05", tier:"free", name:"The Ilum Bridge", levelRange:"Lvl 50", subtitle:"Confrontation on the Ice World", sections:[
+    { name:"Ilum", level:"Lvl 50", missions:[
+      {id:"m_p5_1", name:"Ilum Planetary Arc", tags:["planet"]},
+      {id:"m_p5_2", name:"FP: The Battle of Ilum (Solo Mode)", tags:["flashpoint"]},
+      {id:"m_p5_3", name:"FP: The False Emperor (Solo Mode)", tags:["flashpoint"]},
+      {id:"m_p5_4", name:"Ship Conversations", tags:["companion"]},
+    ]},
+  ]},
+  // PHASE 6
+  { id:"p6", num:"06", tier:"free", name:"Rise of the Hutt Cartel", levelRange:"Lvl 50-55", subtitle:"First Expansion", sections:[
+    { name:"Makeb", level:"Lvl 50-55", missions:[
+      {id:"m_p6_1", name:"Makeb: Galactic Solutions Industries", tags:["expansion"]},
+      {id:"m_p6_2", name:"Makeb: Catalyst Chain", tags:["expansion"]},
+      {id:"m_p6_3", name:"Makeb: The Hutt Cartel Chain", tags:["expansion"]},
+      {id:"m_p6_4", name:"Makeb: Finale", tags:["expansion","milestone"]},
+      {id:"m_p6_5", name:"Ship Conversations", tags:["companion"]},
+    ]},
+  ]},
+  // PHASE 7
+  { id:"p7", num:"07", tier:"sub", name:"Forged Alliances", levelRange:"Lvl 55", subtitle:"Prelude to Shadow of Revan", sections:[
+    { name:"Forged Alliances", level:"Solo Mode", missions:[
+      {id:"m_p7_1", name:"FP: The Assault on Tython (Solo)", tags:["flashpoint"]},
+      {id:"m_p7_2", name:"FP: Korriban Incursion (Solo)", tags:["flashpoint"]},
+      {id:"m_p7_3", name:"FP: Depths of Manaan (Solo)", tags:["flashpoint"]},
+      {id:"m_p7_4", name:"FP: Legacy of the Rakata (Solo)", tags:["flashpoint"]},
+    ]},
+  ]},
+  // PHASE 8
+  { id:"p8", num:"08", tier:"sub", name:"Shadow of Revan", levelRange:"Lvl 55-60", subtitle:"The Hidden Architect", sections:[
+    { name:"Rishi", level:"Lvl 55-58", missions:[
+      {id:"m_p8a_1", name:"Rishi Planetary Arc", tags:["planet"]},
+      {id:"m_p8a_2", name:"FP: The Battle of Rishi (Solo)", tags:["flashpoint"]},
+      {id:"m_p8a_3", name:"FP: Blood Hunt (Solo)", tags:["flashpoint"]},
+    ]},
+    { name:"Yavin 4", level:"Lvl 58-60", missions:[
+      {id:"m_p8b_1", name:"Yavin 4 Planetary Arc", tags:["planet"]},
+      {id:"m_p8b_2", name:"Yavin 4 Finale", tags:["expansion","milestone"]},
+    ]},
+    { name:"Ziost", level:"Lvl 60", missions:[
+      {id:"m_p8c_1", name:"Ziost Planetary Arc", tags:["planet"]},
+      {id:"m_p8c_2", name:"Ziost Finale (CRITICAL)", tags:["expansion","milestone"]},
+      {id:"m_p8c_3", name:"Ship Conversations", tags:["companion"]},
+    ]},
+  ]},
+  // PHASE 9
+  { id:"p9", num:"09", tier:"sub", name:"Knights of the Fallen Empire", levelRange:"Lvl 60-65", subtitle:"You Become The Outlander", sections:[
+    { name:"KOTFE Chapters 1-8", level:"Lvl 60-63", missions:[
+      {id:"m_p9_1", name:"Chapter 1: The Hero of Tython", tags:["chapter"]},
+      {id:"m_p9_2", name:"Chapter 2: A Dream of Empire", tags:["chapter"]},
+      {id:"m_p9_3", name:"Chapter 3: Outlander", tags:["chapter"]},
+      {id:"m_p9_4", name:"Chapter 4: The Mandalorian's Hunt", tags:["chapter"]},
+      {id:"m_p9_5", name:"Chapter 5: The Gravestone", tags:["chapter"]},
+      {id:"m_p9_6", name:"Chapter 6: Asylum", tags:["chapter"]},
+      {id:"m_p9_7", name:"Chapter 7: The Lady of Sorrow", tags:["chapter"]},
+      {id:"m_p9_8", name:"Chapter 8: Taking Flight", tags:["chapter"]},
+    ]},
+    { name:"KOTFE Chapters 9-16", level:"Lvl 63-65", missions:[
+      {id:"m_p9_9", name:"Chapter 9: The Alliance", tags:["chapter"]},
+      {id:"m_p9_10", name:"Chapter 10: Anarchy in Paradise", tags:["chapter"]},
+      {id:"m_p9_11", name:"Chapter 11: Disavowed", tags:["chapter"]},
+      {id:"m_p9_12", name:"Chapter 12: Visions in the Dark", tags:["chapter"]},
+      {id:"m_p9_13", name:"Chapter 13: Profit and Plunder", tags:["chapter"]},
+      {id:"m_p9_14", name:"Chapter 14: Eternal Champion", tags:["chapter"]},
+      {id:"m_p9_15", name:"Chapter 15: The GEMINI Deception", tags:["chapter"]},
+      {id:"m_p9_16", name:"Chapter 16: The Battle of Odessen", tags:["chapter","milestone"]},
+    ]},
+    { name:"Alliance", level:"All KOTFE", missions:[
+      {id:"m_p9_17", name:"Alliance Alerts (Companion Recruitment)", tags:["companion"]},
+      {id:"m_p9_18", name:"Base of Operations Conversations", tags:["companion"]},
+    ]},
+  ]},
+  // PHASE 10
+  { id:"p10", num:"10", tier:"sub", name:"Knights of the Eternal Throne", levelRange:"Lvl 65-70", subtitle:"The Throne Awaits", sections:[
+    { name:"KOTET Chapters", level:"Lvl 65-70", missions:[
+      {id:"m_p10_1", name:"Chapter 1: The Hunt", tags:["chapter"]},
+      {id:"m_p10_2", name:"Chapter 2: Run for the Shadows", tags:["chapter"]},
+      {id:"m_p10_3", name:"Chapter 3: Bringing Down the Hammer", tags:["chapter"]},
+      {id:"m_p10_4", name:"Chapter 4: Heralds of Victory", tags:["chapter"]},
+      {id:"m_p10_5", name:"Chapter 5: Ascension", tags:["chapter"]},
+      {id:"m_p10_6", name:"Chapter 6: Crisis at the Crown", tags:["chapter"]},
+      {id:"m_p10_7", name:"Chapter 7: On the Brink", tags:["chapter"]},
+      {id:"m_p10_8", name:"Chapter 8: The Beast of Vandin", tags:["chapter"]},
+      {id:"m_p10_9", name:"Chapter 9: The Eternal Throne", tags:["chapter","milestone"]},
+    ]},
+  ]},
+  // PHASE 11
+  { id:"p11", num:"11", tier:"sub", name:"Fractured Alliances", levelRange:"Lvl 70", subtitle:"Republic vs Empire Returns", sections:[
+    { name:"Post-Throne", level:"Lvl 70", missions:[
+      {id:"m_p11_1", name:"Iokath Story Arc", tags:["expansion"]},
+      {id:"m_p11_2", name:"Iokath Daily Area (story-relevant)", tags:["expansion"]},
+      {id:"m_p11_3", name:"FP: Crisis on Umbara (Solo)", tags:["flashpoint"]},
+      {id:"m_p11_4", name:"FP: A Traitor Among the Chiss [Copero] (Solo)", tags:["flashpoint"]},
+      {id:"m_p11_5", name:"FP: The Nathema Conspiracy (Solo)", tags:["flashpoint"]},
+    ]},
+  ]},
+  // PHASE 12
+  { id:"p12", num:"12", tier:"sub", name:"Jedi Under Siege", levelRange:"Lvl 70", subtitle:"Ossus Rising", sections:[
+    { name:"Ossus", level:"Lvl 70", missions:[
+      {id:"m_p12_1", name:"Ossus Planetary Arc", tags:["planet"]},
+      {id:"m_p12_2", name:"Ossus Finale", tags:["expansion","milestone"]},
+    ]},
+  ]},
+  // PHASE 13
+  { id:"p13", num:"13", tier:"sub", name:"Onslaught", levelRange:"Lvl 70-75", subtitle:"The War Reignites", sections:[
+    { name:"Onslaught", level:"Lvl 70-75", missions:[
+      {id:"m_p13_1", name:"Onderon Planetary Arc", tags:["planet"]},
+      {id:"m_p13_2", name:"Mek-Sha Planetary Arc", tags:["planet"]},
+      {id:"m_p13_3", name:"Objective Meridian (Onslaught Conclusion)", tags:["expansion","milestone"]},
+      {id:"m_p13_4", name:"FP: Echoes of Oblivion (Solo)", tags:["flashpoint"]},
+      {id:"m_p13_5", name:"FP: Spirit of Vengeance (Solo)", tags:["flashpoint"]},
+      {id:"m_p13_6", name:"FP: Secrets of the Enclave (Solo)", tags:["flashpoint"]},
+    ]},
+  ]},
+  // PHASE 14
+  { id:"p14", num:"14", tier:"sub", name:"Legacy of the Sith", levelRange:"Lvl 75-80", subtitle:"Current Live Arc", sections:[
+    { name:"Patch 7.0 // Launch", level:"Feb 2022", missions:[
+      {id:"m_p14_1", name:"Manaan Invasion Story", tags:["patch","expansion"]},
+      {id:"m_p14_2", name:"Manaan Conclusion", tags:["patch","expansion"]},
+      {id:"m_p14_3", name:"FP: Ruins of Nul [Elom] (Solo)", tags:["flashpoint","patch"]},
+    ]},
+    { name:"Patch 7.1 // Digging Deeper", level:"Jun 2022", missions:[
+      {id:"m_p14_4", name:"Digging Deeper", tags:["patch","expansion"]},
+    ]},
+    { name:"Patch 7.2 // Showdown on Ruhnuk", level:"Dec 2022", missions:[
+      {id:"m_p14_5", name:"A Rock and a Hard Place", tags:["patch","expansion"]},
+      {id:"m_p14_6", name:"Showdown on Ruhnuk", tags:["patch","expansion"]},
+      {id:"m_p14_7", name:"Ruhnuk Daily Area Story", tags:["patch","expansion"]},
+    ]},
+    { name:"Patch 7.3 // Old Wounds", level:"Jun 2023", missions:[
+      {id:"m_p14_8", name:"Old Wounds (Voss Return)", tags:["patch","expansion"]},
+    ]},
+    { name:"Patch 7.4 // Chains in the Dark", level:"Dec 2023", missions:[
+      {id:"m_p14_9", name:"Chains in the Dark", tags:["patch","expansion"]},
+    ]},
+    { name:"Patch 7.5 // Desperate Defiance", level:"May 2024", missions:[
+      {id:"m_p14_10", name:"Desperate Defiance (Hutta)", tags:["patch","expansion"]},
+      {id:"m_p14_11", name:"Modernized Hutta Content", tags:["patch","optional"]},
+    ]},
+    { name:"Patch 7.7 // Dynamic Worlds", level:"May 2025", missions:[
+      {id:"m_p14_12", name:"Dynamic Worlds Story Arc", tags:["patch","expansion"]},
+    ]},
+    { name:"Patch 7.8 // Galactic Threads", level:"Dec 2025", missions:[
+      {id:"m_p14_13", name:"Galactic Threads (Multi-World Arc)", tags:["patch","expansion"]},
+      {id:"m_p14_14", name:"Wreckage on Dantooine", tags:["patch","expansion"]},
+    ]},
+    { name:"Patch 7.8.1 // Master's Enigma // CURRENT", level:"Mar 2026", missions:[
+      {id:"m_p14_15", name:"Master's Enigma (Latest Released)", tags:["patch","expansion","milestone"]},
+    ]},
+    { name:"Patch 7.9 // Legacy Reborn // UPCOMING", level:"Spring 2026", missions:[
+      {id:"m_p14_16", name:"Legacy Reborn (LotS Finale)", tags:["patch","expansion","milestone"]},
+    ]},
+  ]},
+];
+
+// Compute total mission count
+let TOTAL_MISSIONS = 0;
+PROTOCOL.forEach(p => p.sections.forEach(s => TOTAL_MISSIONS += s.missions.length));
+
+// XP system
+const XP_PER_MISSION = 100;
+const XP_PER_LEVEL = 500;
+const MAX_LVL = Math.ceil((TOTAL_MISSIONS * XP_PER_MISSION) / XP_PER_LEVEL);
+
+// Phase XP cumulative
+function getPhaseXP(phaseIdx) {
+  let xp = 0;
+  for (let i = 0; i < phaseIdx; i++) {
+    PROTOCOL[i].sections.forEach(s => xp += s.missions.length * XP_PER_MISSION);
+  }
+  return xp;
+}
+
+// =================================================================
+// ACHIEVEMENTS
+// =================================================================
+const ACHIEVEMENTS = [
+  { id:"a_first", icon:"🌟", name:"First Contact", desc:"Complete your first mission", check: s => s.completed.size >= 1 },
+  { id:"a_tython", icon:"🏯", name:"Padawan", desc:"Complete Tython", check: s => phaseSectionDone(s, "p1", 0) },
+  { id:"a_ch1", icon:"⚔️", name:"Knight Errant", desc:"Complete Chapter 1", check: s => phaseDone(s, "p1") },
+  { id:"a_ch2", icon:"🛡️", name:"Master's Trust", desc:"Complete Chapter 2", check: s => phaseDone(s, "p2") },
+  { id:"a_classdone", icon:"⚜️", name:"Hero of Tython", desc:"Complete Class Story (Doomsday)", check: s => phaseDone(s, "p3") },
+  { id:"a_kotor", icon:"📜", name:"Echo of the Old Republic", desc:"Complete KOTOR Bridge Flashpoints", check: s => phaseDone(s, "p4") },
+  { id:"a_ilum", icon:"❄️", name:"Cold Confrontation", desc:"Complete Ilum bridge", check: s => phaseDone(s, "p5") },
+  { id:"a_makeb", icon:"💎", name:"Cartel Crusher", desc:"Complete Makeb / RotHC", check: s => phaseDone(s, "p6") },
+  { id:"a_f2pwall", icon:"🧱", name:"F2P Graduate", desc:"Hit the F2P wall", check: s => phaseDone(s, "p6") },
+  { id:"a_revan", icon:"🌑", name:"Architect Hunter", desc:"Complete Shadow of Revan", check: s => phaseDone(s, "p8") },
+  { id:"a_ziost", icon:"💀", name:"Witness to Destruction", desc:"Complete Ziost", check: s => s.completed.has("m_p8c_2") },
+  { id:"a_outlander", icon:"👑", name:"The Outlander", desc:"Complete KOTFE", check: s => phaseDone(s, "p9") },
+  { id:"a_throne", icon:"⚡", name:"Eternal Sovereign", desc:"Complete KOTET", check: s => phaseDone(s, "p10") },
+  { id:"a_iokath", icon:"⚙️", name:"War Reignited", desc:"Complete Fractured Alliances", check: s => phaseDone(s, "p11") },
+  { id:"a_ossus", icon:"🌳", name:"Ossus Defender", desc:"Complete Ossus", check: s => phaseDone(s, "p12") },
+  { id:"a_meridian", icon:"💥", name:"Onslaught Survivor", desc:"Complete Onslaught", check: s => phaseDone(s, "p13") },
+  { id:"a_lots", icon:"🌌", name:"Caught Up", desc:"Reach current live content", check: s => s.completed.has("m_p14_15") },
+  { id:"a_legacy", icon:"♾️", name:"Legacy Eternal", desc:"100% Protocol Complete", check: s => s.completed.size >= TOTAL_MISSIONS },
+  { id:"a_25", icon:"📊", name:"25% Operational", desc:"25% Mission Completion", check: s => (s.completed.size / TOTAL_MISSIONS) >= 0.25 },
+  { id:"a_50", icon:"📈", name:"Halfway There", desc:"50% Mission Completion", check: s => (s.completed.size / TOTAL_MISSIONS) >= 0.5 },
+  { id:"a_75", icon:"📡", name:"Final Stretch", desc:"75% Mission Completion", check: s => (s.completed.size / TOTAL_MISSIONS) >= 0.75 },
+  { id:"a_companion", icon:"🤝", name:"True Crew", desc:"Complete 10+ companion conversations", check: s => countTag(s, "companion") >= 10 },
+  { id:"a_flashpoint", icon:"🔥", name:"Solo Operator", desc:"Complete 10+ flashpoints", check: s => countTag(s, "flashpoint") >= 10 },
+  { id:"a_optional", icon:"🎯", name:"Completionist", desc:"Complete all optional content", check: s => allTagDone(s, "optional") },
+  { id:"a_lvl5", icon:"🆙", name:"Apprentice", desc:"Reach Operator Lvl 5", check: s => calcLvl(s.completed.size * XP_PER_MISSION).lvl >= 5 },
+  { id:"a_lvl10", icon:"⭐", name:"Adept", desc:"Reach Operator Lvl 10", check: s => calcLvl(s.completed.size * XP_PER_MISSION).lvl >= 10 },
+  { id:"a_lvl20", icon:"💫", name:"Master", desc:"Reach Operator Lvl 20", check: s => calcLvl(s.completed.size * XP_PER_MISSION).lvl >= 20 },
+  { id:"a_lvl30", icon:"☀️", name:"Grandmaster", desc:"Reach Operator Lvl 30", check: s => calcLvl(s.completed.size * XP_PER_MISSION).lvl >= 30 },
+  { id:"a_subscriber", icon:"💳", name:"Subscriber", desc:"Toggle subscriber status on", check: s => s.subscribed === true },
+];
+
+function phaseDone(state, pid) {
+  const p = PROTOCOL.find(x => x.id === pid);
+  if (!p) return false;
+  return p.sections.every(sec => sec.missions.every(m => state.completed.has(m.id)));
+}
+function phaseSectionDone(state, pid, secIdx) {
+  const p = PROTOCOL.find(x => x.id === pid);
+  if (!p || !p.sections[secIdx]) return false;
+  return p.sections[secIdx].missions.every(m => state.completed.has(m.id));
+}
+function countTag(state, tag) {
+  let n = 0;
+  PROTOCOL.forEach(p => p.sections.forEach(s => s.missions.forEach(m => {
+    if (m.tags.includes(tag) && state.completed.has(m.id)) n++;
+  })));
+  return n;
+}
+function allTagDone(state, tag) {
+  let total = 0, done = 0;
+  PROTOCOL.forEach(p => p.sections.forEach(s => s.missions.forEach(m => {
+    if (m.tags.includes(tag)) {
+      total++;
+      if (state.completed.has(m.id)) done++;
+    }
+  })));
+  return total > 0 && total === done;
+}
+
+// =================================================================
+// STATE
+// =================================================================
+let state = {
+  completed: new Set(),
+  achievements: new Set(),
+  subscribed: false,
+  collapsed: new Set(),
+  filter: 'all',
+  search: '',
+  f2pAck: false,
+};
+
+const STORAGE_KEY = 'swtor-protocol-state';
+
+async function loadState() {
+  try {
+    const r = await window.storage.get(STORAGE_KEY);
+    if (r && r.value) {
+      const data = JSON.parse(r.value);
+      state.completed = new Set(data.completed || []);
+      state.achievements = new Set(data.achievements || []);
+      state.subscribed = !!data.subscribed;
+      state.collapsed = new Set(data.collapsed || []);
+      state.f2pAck = !!data.f2pAck;
+    }
+  } catch (e) {
+    // Key doesn't exist or storage unavailable; use defaults
+  }
+}
+
+async function saveState() {
+  try {
+    const data = {
+      completed: [...state.completed],
+      achievements: [...state.achievements],
+      subscribed: state.subscribed,
+      collapsed: [...state.collapsed],
+      f2pAck: state.f2pAck,
+      lastUpdated: Date.now(),
+    };
+    await window.storage.set(STORAGE_KEY, JSON.stringify(data));
+  } catch (e) {
+    console.warn('save failed', e);
+  }
+}
+
+function calcLvl(xp) {
+  // Quadratic-ish curve: lvl N requires N * 500 XP cumulative
+  // So: cumulative XP for lvl N = (N-1) * N * 250  (triangular)
+  // Solving: N(N-1)/2 * 500 <= xp  →  N = (1 + sqrt(1 + 8xp/500)) / 2
+  let lvl = Math.floor((1 + Math.sqrt(1 + (8 * xp) / 500)) / 2);
+  if (lvl < 1) lvl = 1;
+  const cumForLvl = (l) => l * (l-1) / 2 * 500;
+  const xpThis = xp - cumForLvl(lvl);
+  const xpNext = cumForLvl(lvl + 1) - cumForLvl(lvl);
+  return { lvl, xpThis, xpNext };
+}
+
+// =================================================================
+// RENDERING
+// =================================================================
+function tagLabel(t) {
+  const map = {
+    class: "Class Story",
+    planet: "Planetary",
+    flashpoint: "Flashpoint",
+    companion: "Companions",
+    expansion: "Expansion",
+    optional: "Optional",
+    milestone: "Milestone",
+    chapter: "Chapter",
+    patch: "Patch",
+  };
+  return map[t] || t.toUpperCase();
+}
+
+function renderPhases() {
+  const container = document.getElementById('phasesContainer');
+  container.innerHTML = '';
+  PROTOCOL.forEach((phase, idx) => {
+    const el = document.createElement('section');
+    el.className = 'phase';
+    el.id = `phase-${phase.id}`;
+    el.dataset.phaseId = phase.id;
+
+    let phaseTotal = 0, phaseDone = 0;
+    phase.sections.forEach(s => s.missions.forEach(m => {
+      phaseTotal++;
+      if (state.completed.has(m.id)) phaseDone++;
+    }));
+    const pct = phaseTotal === 0 ? 0 : Math.round((phaseDone/phaseTotal)*100);
+
+    if (pct === 100) el.classList.add('complete');
+    if (state.collapsed.has(phase.id)) el.classList.add('collapsed');
+
+    const tierClass = phase.tier === 'sub' ? 'SUB REQUIRED' : 'F2P';
+    const tierColor = phase.tier === 'sub' ? 'color:var(--sith-red)' : 'color:var(--green)';
+
+    el.innerHTML = `
+      <header class="phase-header" data-toggle="${phase.id}">
+        <div class="phase-num">${phase.num}</div>
+        <div class="phase-meta">
+          <div class="phase-tag" style="${tierColor}">PHASE // ${tierClass}</div>
+          <div class="phase-name">${phase.name}</div>
+          <div class="phase-info">
+            <span>${phase.levelRange}</span>
+            <span>${phase.subtitle}</span>
+          </div>
+        </div>
+        <div class="phase-progress">
+          <div class="phase-pct">${pct}%</div>
+          <div class="phase-pct-bar"><div class="phase-pct-fill" style="width:${pct}%"></div></div>
+          <div class="phase-toggle">▼</div>
+        </div>
+      </header>
+      <div class="phase-body">
+        ${phase.sections.map(sec => {
+          let secDone = sec.missions.filter(m => state.completed.has(m.id)).length;
+          return `
+            <div class="phase-section">
+              <div class="phase-section-header">
+                <strong>// ${sec.name}</strong>
+                <span class="phase-section-meta">${sec.level} • ${secDone}/${sec.missions.length}</span>
+              </div>
+              <ul class="mission-list">
+                ${sec.missions.map(m => {
+                  const done = state.completed.has(m.id);
+                  return `
+                    <li class="mission ${done?'complete':''}" data-mission-id="${m.id}">
+                      <div class="mission-check"></div>
+                      <div class="mission-content">
+                        <div class="mission-name">${m.name}</div>
+                        <div class="mission-tags">
+                          ${m.tags.map(t => `<span class="tag ${t}">${tagLabel(t)}</span>`).join('')}
+                        </div>
+                      </div>
+                      <div class="mission-xp">+${XP_PER_MISSION}</div>
+                    </li>
+                  `;
+                }).join('')}
+              </ul>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+    container.appendChild(el);
+  });
+
+  // Bind events
+  container.querySelectorAll('.phase-header').forEach(h => {
+    h.addEventListener('click', () => {
+      const pid = h.dataset.toggle;
+      if (state.collapsed.has(pid)) state.collapsed.delete(pid);
+      else state.collapsed.add(pid);
+      const phEl = document.getElementById(`phase-${pid}`);
+      phEl.classList.toggle('collapsed');
+      saveState();
+    });
+  });
+
+  container.querySelectorAll('.mission').forEach(el => {
+    el.addEventListener('click', () => toggleMission(el.dataset.missionId, el));
+  });
+}
+
+function renderPhaseNav() {
+  const nav = document.getElementById('phaseNav');
+  nav.innerHTML = PROTOCOL.map(p => {
+    let total = 0, done = 0;
+    p.sections.forEach(s => s.missions.forEach(m => { total++; if (state.completed.has(m.id)) done++; }));
+    const pct = total === 0 ? 0 : Math.round((done/total)*100);
+    const isComplete = pct === 100;
+    return `
+      <li class="phase-nav-item ${isComplete?'complete':''}" data-jump="${p.id}">
+        <span class="phase-nav-num">${p.num}</span>
+        <span class="phase-nav-name">${p.name.replace('// ',' ')}</span>
+        <span class="phase-nav-pct">${pct}%</span>
+      </li>
+    `;
+  }).join('');
+  nav.querySelectorAll('.phase-nav-item').forEach(el => {
+    el.addEventListener('click', () => {
+      const pid = el.dataset.jump;
+      // Expand if collapsed
+      if (state.collapsed.has(pid)) {
+        state.collapsed.delete(pid);
+        document.getElementById(`phase-${pid}`).classList.remove('collapsed');
+        saveState();
+      }
+      document.getElementById(`phase-${pid}`).scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+}
+
+function updateStats() {
+  const done = state.completed.size;
+  const xp = done * XP_PER_MISSION;
+  const lvl = calcLvl(xp);
+  const pct = Math.round((done/TOTAL_MISSIONS)*100);
+
+  document.getElementById('statLvl').textContent = lvl.lvl;
+  document.getElementById('statLvlSub').textContent = `${lvl.xpThis} / ${lvl.xpNext} XP`;
+  document.getElementById('statXp').textContent = xp.toLocaleString();
+  document.getElementById('statPct').textContent = `${pct}%`;
+  document.getElementById('statPctSub').textContent = `${done} / ${TOTAL_MISSIONS}`;
+
+  // Time estimate (rough hours per phase)
+  const hoursPerPhase = [25, 18, 15, 4, 6, 8, 4, 15, 20, 12, 6, 3, 12, 18];
+  let hoursLeft = 0;
+  PROTOCOL.forEach((p, idx) => {
+    let total = 0, doneCount = 0;
+    p.sections.forEach(s => s.missions.forEach(m => { total++; if (state.completed.has(m.id)) doneCount++; }));
+    const remaining = total === 0 ? 0 : (1 - (doneCount/total)) * hoursPerPhase[idx];
+    hoursLeft += remaining;
+  });
+  document.getElementById('statTime').textContent = `~${Math.round(hoursLeft)}`;
+
+  // Master bar
+  document.getElementById('masterPct').textContent = `${pct}%`;
+  document.getElementById('masterFill').style.width = `${pct}%`;
+  const phasesComplete = PROTOCOL.filter(p => p.sections.every(s => s.missions.every(m => state.completed.has(m.id)))).length;
+  document.getElementById('masterMetaLeft').textContent = `${done.toLocaleString()} of ${TOTAL_MISSIONS} missions complete`;
+  document.getElementById('masterMetaRight').textContent = `${phasesComplete} of ${PROTOCOL.length} phases complete`;
+
+  // Current mission card
+  let next = null, nextLoc = null, nextPhase = null;
+  outer:
+  for (const p of PROTOCOL) {
+    for (const s of p.sections) {
+      for (const m of s.missions) {
+        if (!state.completed.has(m.id)) {
+          next = m;
+          nextLoc = s.name;
+          nextPhase = p;
+          break outer;
+        }
+      }
+    }
+  }
+  if (next) {
+    document.getElementById('currentName').textContent = next.name;
+    document.getElementById('currentLoc').textContent = nextLoc;
+    document.getElementById('currentMeta').textContent = `${nextPhase.levelRange} // Phase ${nextPhase.num}`;
+    document.getElementById('currentMissionPhase').textContent = `P${nextPhase.num}`;
+  } else {
+    document.getElementById('currentName').textContent = 'PROTOCOL COMPLETE';
+    document.getElementById('currentLoc').textContent = '∞ LEGACY ETERNAL ∞';
+    document.getElementById('currentMeta').textContent = 'You have caught up to live content.';
+    document.getElementById('currentMissionPhase').textContent = '✓';
+  }
+
+  // Mark current phase
+  document.querySelectorAll('.phase').forEach(el => el.classList.remove('current'));
+  document.querySelectorAll('.phase-nav-item').forEach(el => el.classList.remove('active'));
+  if (next && nextPhase) {
+    document.getElementById(`phase-${nextPhase.id}`).classList.add('current');
+    const navEl = document.querySelector(`.phase-nav-item[data-jump="${nextPhase.id}"]`);
+    if (navEl) navEl.classList.add('active');
+  }
+
+  // F2P wall
+  const f2pWall = document.getElementById('f2pWall');
+  const phase6Done = PROTOCOL.find(p => p.id === 'p6').sections.every(s => s.missions.every(m => state.completed.has(m.id)));
+  if (phase6Done && !state.subscribed && !state.f2pAck) {
+    f2pWall.classList.add('active');
+  } else {
+    f2pWall.classList.remove('active');
+  }
+
+  // Phase pct bars on header
+  PROTOCOL.forEach(p => {
+    let total = 0, doneCount = 0;
+    p.sections.forEach(s => s.missions.forEach(m => { total++; if (state.completed.has(m.id)) doneCount++; }));
+    const pp = total === 0 ? 0 : Math.round((doneCount/total)*100);
+    const phEl = document.getElementById(`phase-${p.id}`);
+    if (!phEl) return;
+    const fill = phEl.querySelector('.phase-pct-fill');
+    const pctEl = phEl.querySelector('.phase-pct');
+    if (fill) fill.style.width = `${pp}%`;
+    if (pctEl) pctEl.textContent = `${pp}%`;
+    if (pp === 100) phEl.classList.add('complete'); else phEl.classList.remove('complete');
+  });
+
+  document.getElementById('subToggle').checked = state.subscribed;
+}
+
+function toggleMission(mid, el) {
+  const wasComplete = state.completed.has(mid);
+  if (wasComplete) {
+    state.completed.delete(mid);
+    el.classList.remove('complete');
+  } else {
+    state.completed.add(mid);
+    el.classList.add('complete');
+    el.classList.add('just-completed');
+    setTimeout(() => el.classList.remove('just-completed'), 600);
+  }
+  saveState();
+  const oldLvl = calcLvl((state.completed.size + (wasComplete ? 1 : -1)) * XP_PER_MISSION).lvl;
+  const newLvl = calcLvl(state.completed.size * XP_PER_MISSION).lvl;
+  updateStats();
+  renderPhaseNav();
+  applyFilters();
+
+  if (!wasComplete && newLvl > oldLvl) {
+    showToast({ tag:"LEVEL UP", title:`OPERATOR LVL ${newLvl}`, body:`Power ascending. Continue your protocol.`, lvlup:true });
+  }
+  checkAchievements();
+}
+
+function checkAchievements() {
+  ACHIEVEMENTS.forEach(a => {
+    if (state.achievements.has(a.id)) return;
+    if (a.check(state)) {
+      state.achievements.add(a.id);
+      saveState();
+      showToast({ tag:"ACHIEVEMENT UNLOCKED", title:`${a.icon} ${a.name}`, body:a.desc });
+    }
+  });
+}
+
+function showToast({tag, title, body, lvlup}) {
+  const c = document.getElementById('toasts');
+  const t = document.createElement('div');
+  t.className = 'toast' + (lvlup ? ' lvlup' : '');
+  t.innerHTML = `<div class="toast-tag">${tag}</div><div class="toast-title">${title}</div><div class="toast-body">${body}</div>`;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 5500);
+}
+
+function applyFilters() {
+  const filter = state.filter;
+  const search = state.search.trim().toLowerCase();
+  document.querySelectorAll('.phase').forEach(phaseEl => {
+    let anyVisible = false;
+    phaseEl.querySelectorAll('.mission').forEach(m => {
+      const mid = m.dataset.missionId;
+      const isDone = state.completed.has(mid);
+      const name = m.querySelector('.mission-name').textContent.toLowerCase();
+      let show = true;
+      if (filter === 'todo' && isDone) show = false;
+      if (filter === 'done' && !isDone) show = false;
+      if (search && !name.includes(search)) show = false;
+      m.classList.toggle('hidden', !show);
+      if (show) anyVisible = true;
+    });
+    // Hide phase-section if all missions hidden
+    phaseEl.querySelectorAll('.phase-section').forEach(sec => {
+      const visible = [...sec.querySelectorAll('.mission')].some(m => !m.classList.contains('hidden'));
+      sec.style.display = visible ? '' : 'none';
+    });
+    phaseEl.classList.toggle('hidden-all', !anyVisible);
+  });
+}
+
+// =================================================================
+// MODAL HELPERS
+// =================================================================
+function openModal({title, body, actions}) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = body;
+  const a = document.getElementById('modalActions');
+  a.innerHTML = '';
+  actions.forEach(act => {
+    const b = document.createElement('button');
+    b.className = 'modal-btn ' + (act.style || '');
+    b.textContent = act.label;
+    b.onclick = () => { closeModal(); if (act.fn) act.fn(); };
+    a.appendChild(b);
+  });
+  document.getElementById('modal').classList.add('show');
+}
+function closeModal() { document.getElementById('modal').classList.remove('show'); }
+
+// =================================================================
+// INIT / EVENTS
+// =================================================================
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+document.getElementById('searchBox').addEventListener('input', e => {
+  state.search = e.target.value;
+  applyFilters();
+});
+
+document.querySelectorAll('.filter-btn').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    state.filter = b.dataset.filter;
+    applyFilters();
+  });
+});
+
+document.getElementById('subToggle').addEventListener('change', e => {
+  state.subscribed = e.target.checked;
+  saveState();
+  updateStats();
+  checkAchievements();
+});
+
+document.getElementById('f2pAck').addEventListener('click', () => {
+  state.f2pAck = true;
+  state.subscribed = true;
+  document.getElementById('subToggle').checked = true;
+  saveState();
+  updateStats();
+  checkAchievements();
+});
+
+document.getElementById('btnReset').addEventListener('click', () => {
+  openModal({
+    title: 'CONFIRM SYSTEM WIPE',
+    body: 'This will permanently erase all completed missions, achievements, level progress, and settings.<br><br><strong style="color:var(--sith-red)">This action cannot be undone.</strong>',
+    actions: [
+      { label:'CANCEL', style:'' },
+      { label:'WIPE ALL DATA', style:'danger', fn: async () => {
+        state = { completed:new Set(), achievements:new Set(), subscribed:false, collapsed:new Set(), filter:'all', search:'', f2pAck:false };
+        try { await window.storage.delete(STORAGE_KEY); } catch(e){}
+        document.getElementById('searchBox').value = '';
+        document.querySelectorAll('.filter-btn').forEach(x => x.classList.toggle('active', x.dataset.filter==='all'));
+        renderPhases();
+        renderPhaseNav();
+        updateStats();
+        applyFilters();
+      }}
+    ]
+  });
+});
+
+document.getElementById('btnExport').addEventListener('click', () => {
+  const data = {
+    completed: [...state.completed],
+    achievements: [...state.achievements],
+    subscribed: state.subscribed,
+    f2pAck: state.f2pAck,
+    exportedAt: new Date().toISOString(),
+  };
+  const json = JSON.stringify(data, null, 2);
+  openModal({
+    title: 'EXPORT // PROGRESS DATA',
+    body: `<div style="font-size:10px;color:var(--text-mid);margin-bottom:10px;">Copy this data to back up your progress.</div><textarea readonly style="width:100%;height:200px;background:var(--bg-deep);border:1px solid var(--border-mid);color:var(--jedi-blue);font-family:var(--mono);font-size:10px;padding:8px;">${json}</textarea>`,
+    actions: [
+      { label:'COPY', style:'primary', fn: () => navigator.clipboard?.writeText(json) },
+      { label:'CLOSE', style:'' }
+    ]
+  });
+});
+
+document.getElementById('btnImport').addEventListener('click', () => {
+  openModal({
+    title: 'IMPORT // PROGRESS DATA',
+    body: `<div style="font-size:10px;color:var(--text-mid);margin-bottom:10px;">Paste exported JSON below.</div><textarea id="importTA" style="width:100%;height:200px;background:var(--bg-deep);border:1px solid var(--border-mid);color:var(--text-bright);font-family:var(--mono);font-size:10px;padding:8px;"></textarea>`,
+    actions: [
+      { label:'CANCEL', style:'' },
+      { label:'IMPORT', style:'primary', fn: () => {
+        try {
+          const txt = document.getElementById('importTA').value;
+          const data = JSON.parse(txt);
+          state.completed = new Set(data.completed || []);
+          state.achievements = new Set(data.achievements || []);
+          state.subscribed = !!data.subscribed;
+          state.f2pAck = !!data.f2pAck;
+          saveState();
+          renderPhases();
+          renderPhaseNav();
+          updateStats();
+          applyFilters();
+          showToast({tag:"SYSTEM", title:"IMPORT COMPLETE", body:"Progress restored from backup."});
+        } catch(e) { alert('Invalid data'); }
+      }}
+    ]
+  });
+});
+
+document.getElementById('btnAch').addEventListener('click', () => {
+  const total = ACHIEVEMENTS.length;
+  const unlocked = state.achievements.size;
+  const grid = ACHIEVEMENTS.map(a => {
+    const u = state.achievements.has(a.id);
+    return `<div class="ach-cell ${u?'unlocked':''}">
+      <div class="ach-icon">${u ? a.icon : '🔒'}</div>
+      <div class="ach-name">${a.name}</div>
+      <div class="ach-desc">${a.desc}</div>
+    </div>`;
+  }).join('');
+  openModal({
+    title: `ACHIEVEMENTS // ${unlocked} / ${total}`,
+    body: `<div class="ach-grid">${grid}</div>`,
+    actions: [{ label:'CLOSE', style:'primary' }]
+  });
+});
+
+// =================================================================
+// BOOT SEQUENCE
+// =================================================================
+const BOOT_LINES = [
+  "[OK] HENDERSON.SYS kernel loaded",
+  "[OK] CRT vector framebuffer initialized",
+  "[OK] Star map cartography subsystem online",
+  "[OK] Jedi protocol matrix decrypted",
+  "[OK] Mission database synchronized",
+  "[OK] Companion conversation tracker armed",
+  "[OK] F2P wall sentinel deployed",
+  "[OK] XP / leveling subsystem nominal",
+  "[OK] Achievement scanner active",
+  "[..] Loading 14 phases...",
+  "[OK] Loaded " + TOTAL_MISSIONS + " missions across " + PROTOCOL.length + " phases",
+  "[OK] Persistent state retrieved from datacore",
+  "",
+  "&gt; PROTOCOL READY. MAY THE FORCE BE WITH YOU."
+];
+
+async function runBoot() {
+  const log = document.getElementById('bootLog');
+  for (let i = 0; i < BOOT_LINES.length; i++) {
+    const line = document.createElement('div');
+    line.className = 'boot-line';
+    line.innerHTML = BOOT_LINES[i] || '&nbsp;';
+    if (i === BOOT_LINES.length - 1) line.classList.add('boot-cursor');
+    log.appendChild(line);
+    requestAnimationFrame(() => line.classList.add('show'));
+    await new Promise(r => setTimeout(r, 90 + Math.random() * 60));
+  }
+  await new Promise(r => setTimeout(r, 500));
+  document.getElementById('boot').classList.add('done');
+}
+
+async function init() {
+  await loadState();
+  renderPhases();
+  renderPhaseNav();
+  updateStats();
+  applyFilters();
+  await runBoot();
+  // Validate previously-earned achievements (don't fire toasts retroactively)
+  const before = new Set(state.achievements);
+  ACHIEVEMENTS.forEach(a => { if (a.check(state)) state.achievements.add(a.id); });
+  // Only fire toasts for genuinely newly earned (none on init)
+  saveState();
+}
+
+init();
+</script>
+</body>
+</html>
