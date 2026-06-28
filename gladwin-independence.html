@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GLADWIN // Independence Weekend · Jul 2–5 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Saira+Condensed:wght@500;600;700;800&family=Libre+Franklin:wght@400;500;600;800&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0A1B3D; --navy2:#102a5c; --navyline:#23386b;
+    --red:#C8102E; --red2:#E4002B; --white:#FFFFFF; --cream:#FBF7EE;
+    --gold:#FFC72C; --blue:#3A66B0; --ink:#0C1B3A; --muted:#5C6886; --faint:#8A93AB;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--navy);color:var(--white);font-family:'Libre Franklin',system-ui,sans-serif;
+    line-height:1.5;padding-bottom:70px;overflow-x:hidden;
+    background-image:
+      radial-gradient(circle at 12% 18%, rgba(255,255,255,.07) 0 1.2px, transparent 1.6px),
+      radial-gradient(circle at 64% 38%, rgba(255,255,255,.05) 0 1px, transparent 1.4px),
+      radial-gradient(circle at 30% 72%, rgba(255,255,255,.05) 0 1px, transparent 1.4px),
+      radial-gradient(circle at 85% 80%, rgba(255,255,255,.07) 0 1.2px, transparent 1.6px),
+      radial-gradient(circle at 48% 10%, rgba(255,199,44,.05) 0 1.2px, transparent 1.6px);
+    background-size:240px 240px,180px 180px,300px 300px,210px 210px,160px 160px;}
+  .wrap{max-width:780px;margin:0 auto;padding:0 16px;}
+
+  /* bunting */
+  .bunting{display:flex;height:30px;overflow:hidden;}
+  .bunting i{flex:1;height:34px;margin-top:-8px;border-radius:0 0 50% 50%;box-shadow:inset 0 -3px 0 rgba(0,0,0,.18);}
+  .bunting i:nth-child(3n+1){background:var(--red);}
+  .bunting i:nth-child(3n+2){background:var(--white);}
+  .bunting i:nth-child(3n+3){background:var(--blue);}
+
+  /* header */
+  header{position:relative;overflow:hidden;border-bottom:3px solid var(--red);background:linear-gradient(180deg,#0c2150,#0A1B3D);}
+  .fw{position:absolute;width:6px;height:6px;border-radius:50%;opacity:0;pointer-events:none;}
+  @keyframes burst{0%{opacity:0;transform:scale(.2)}8%{opacity:1}55%{opacity:.9}100%{opacity:0;transform:scale(1)}}
+  .fw.a{top:20%;left:14%;box-shadow:20px 0 var(--gold),-20px 0 var(--gold),0 20px var(--gold),0 -20px var(--gold),14px 14px var(--gold),-14px 14px var(--gold),14px -14px var(--gold),-14px -14px var(--gold),34px 0 var(--gold),-34px 0 var(--gold),0 34px var(--gold),0 -34px var(--gold);animation:burst 3s ease-out infinite;}
+  .fw.b{top:28%;right:13%;left:auto;box-shadow:18px 0 var(--red2),-18px 0 var(--red2),0 18px var(--red2),0 -18px var(--red2),13px 13px var(--red2),-13px 13px var(--red2),13px -13px var(--red2),-13px -13px var(--red2),30px 0 var(--red2),-30px 0 var(--red2),0 30px var(--red2),0 -30px var(--red2);animation:burst 3s ease-out .7s infinite;}
+  .fw.c{top:58%;left:30%;box-shadow:16px 0 #6fa3ff,-16px 0 #6fa3ff,0 16px #6fa3ff,0 -16px #6fa3ff,11px 11px #6fa3ff,-11px 11px #6fa3ff,11px -11px #6fa3ff,-11px -11px #6fa3ff;animation:burst 3s ease-out 1.4s infinite;}
+  .fw.d{top:50%;right:24%;left:auto;box-shadow:15px 0 var(--white),-15px 0 var(--white),0 15px var(--white),0 -15px var(--white),11px 11px var(--white),-11px 11px var(--white),11px -11px var(--white),-11px -11px var(--white);animation:burst 3s ease-out 2.1s infinite;}
+  .fw.e{top:16%;left:52%;box-shadow:18px 0 var(--gold),-18px 0 var(--gold),0 18px var(--gold),0 -18px var(--gold),26px 0 var(--red2),-26px 0 var(--red2),0 26px var(--red2),0 -26px var(--red2);animation:burst 3s ease-out 2.6s infinite;}
+  @media(prefers-reduced-motion:reduce){.fw,.confetti i{display:none!important;}}
+  .confetti{position:absolute;inset:0;pointer-events:none;z-index:1;}
+  .confetti i{position:absolute;top:-20px;color:var(--gold);font-size:13px;opacity:0;animation:fall linear infinite;}
+  @keyframes fall{0%{transform:translateY(-10px) rotate(0)}10%{opacity:.9}90%{opacity:.9}100%{transform:translateY(360px) rotate(220deg);opacity:0}}
+  .hdr-inner{position:relative;z-index:2;padding:26px 0 24px;text-align:center;}
+  .overline{font-family:'Saira Condensed',sans-serif;font-weight:700;letter-spacing:.32em;font-size:12px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;}
+  .stars-line{color:#fff;letter-spacing:.3em;font-size:13px;margin-bottom:6px;animation:twinkle 2.4s ease-in-out infinite;}
+  @keyframes twinkle{0%,100%{opacity:1}50%{opacity:.45}}
+  h1{font-family:'Anton',sans-serif;font-size:clamp(58px,18vw,120px);line-height:.84;letter-spacing:.02em;text-transform:uppercase;color:#fff;text-shadow:3px 3px 0 var(--red),6px 6px 0 rgba(0,0,0,.25);}
+  .est{font-family:'Special Elite',monospace;font-size:12px;color:var(--cream);margin-top:14px;opacity:.85;}
+  .brief{margin-top:16px;display:flex;flex-wrap:wrap;gap:7px;justify-content:center;}
+  .brief span{font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase;border:1.5px solid var(--navyline);background:rgba(255,255,255,.05);padding:5px 11px;color:var(--cream);}
+  .brief b{color:var(--gold);}
+  .flagband{height:14px;background:repeating-linear-gradient(90deg,var(--red) 0 40px,var(--white) 40px 80px);background-size:160px 100%;animation:wave 6s linear infinite;}
+  @keyframes wave{0%{background-position:0 0}100%{background-position:160px 0}}
+  @media(prefers-reduced-motion:reduce){.flagband{animation:none}}
+
+  /* tabs */
+  nav{position:sticky;top:0;z-index:40;background:rgba(10,27,61,.96);backdrop-filter:blur(10px);border-bottom:2px solid var(--red);}
+  .tabs{display:flex;max-width:780px;margin:0 auto;overflow-x:auto;scrollbar-width:none;}
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab{flex:0 0 auto;padding:14px 15px;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);background:none;border:none;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:color .15s;}
+  .tab:hover{color:#fff;}
+  .tab.active{color:#fff;border-bottom-color:var(--gold);}
+  .tab .s{color:var(--gold);}
+
+  /* panels */
+  .panel{display:none;padding:22px 0 40px;}
+  .panel.active{display:block;}
+  .lead{font-size:14.5px;color:var(--cream);margin-bottom:20px;max-width:62ch;opacity:.92;}
+  .lead b{color:var(--gold);font-weight:600;}
+
+  /* dividers */
+  .tier,.cat{display:flex;align-items:center;gap:10px;margin:30px 0 14px;}
+  .tier:first-of-type,.cat:first-of-type{margin-top:4px;}
+  .tier .star,.cat .star{color:var(--gold);font-size:16px;animation:twinkle 2.4s ease-in-out infinite;}
+  .tier .ring{font-family:'Anton',sans-serif;font-size:13px;letter-spacing:.04em;color:#fff;background:var(--red);padding:4px 11px 2px;line-height:1;}
+  .tier.t2 .ring{background:var(--blue);}
+  .tier h2,.cat h2{font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:18px;letter-spacing:.07em;text-transform:uppercase;color:#fff;}
+  .cat h2{font-size:20px;color:var(--gold);}
+  .tier .rng{font-family:'Special Elite',monospace;font-size:11px;color:var(--gold);margin-left:auto;}
+  .tier hr,.cat hr{flex:1;border:none;border-top:1px solid var(--navyline);}
+  .cat hr{border-top:1px dashed var(--navyline);}
+
+  /* place card */
+  .grid{display:grid;gap:11px;}
+  .card{background:var(--cream);color:var(--ink);position:relative;border-radius:3px;overflow:hidden;box-shadow:0 2px 0 rgba(0,0,0,.25);}
+  .card::before{content:"";position:absolute;top:0;left:0;width:5px;height:100%;background:var(--red);}
+  .card.t2::before{background:var(--blue);}
+  .cbody{padding:14px 15px 14px 18px;}
+  .card .top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;}
+  .card .name{font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:20px;letter-spacing:.01em;line-height:1.05;color:var(--ink);}
+  .card .rating{font-family:'Special Elite',monospace;font-size:12px;color:var(--red);margin-left:auto;flex:0 0 auto;}
+  .card .rating .ct{color:var(--faint);}
+  .card .meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px;font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:11px;letter-spacing:.05em;text-transform:uppercase;}
+  .card .meta span{color:var(--muted);border:1px solid #d9d2c2;padding:3px 7px;background:#fff;}
+  .card .meta .loc{color:var(--ink);border-color:#c4bca8;}
+  .card .meta .drive{color:#fff;background:var(--red);border-color:var(--red);}
+  .card.t2 .meta .drive{background:var(--blue);border-color:var(--blue);}
+  .card .desc{margin-top:10px;font-size:13.5px;color:#3a4660;line-height:1.46;}
+  .card .desc b{color:var(--ink);font-weight:700;}
+  .pick{position:absolute;top:0;right:0;font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:var(--gold);color:var(--ink);padding:4px 9px;display:flex;align-items:center;gap:4px;}
+  .pick::before{content:"★";}
+
+  /* ===== GAME PLAN ===== */
+  .pday{margin-bottom:30px;}
+  .dayhead{display:flex;align-items:baseline;gap:10px;padding-bottom:8px;border-bottom:2px solid var(--red);margin-bottom:14px;flex-wrap:wrap;}
+  .dayhead .dow{font-family:'Anton',sans-serif;font-size:34px;letter-spacing:.02em;line-height:1;color:#fff;text-transform:uppercase;}
+  .dayhead .date{font-family:'Special Elite',monospace;font-size:12px;color:var(--gold);}
+  .dayhead .theme{font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:13px;color:var(--gold);margin-left:auto;text-transform:uppercase;letter-spacing:.06em;text-align:right;}
+  .slot{margin-bottom:13px;}
+  .slotlabel{display:inline-block;font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);background:var(--gold);padding:3px 10px;margin-bottom:8px;}
+  .slot.track .slotlabel{background:var(--red);color:#fff;}
+  .stop{background:var(--cream);color:var(--ink);position:relative;border-radius:3px;overflow:hidden;margin-bottom:7px;}
+  .stop::before{content:"";position:absolute;top:0;left:0;width:5px;height:100%;background:var(--red);}
+  .stop.fw::before{background:var(--gold);}
+  .stop.alt::before{background:var(--blue);}
+  .stopbody{padding:11px 14px 11px 16px;}
+  .stop .sname{font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:16.5px;color:var(--ink);line-height:1.1;}
+  .stop .swhere{font-family:'Special Elite',monospace;font-size:10px;color:var(--red);margin-left:7px;white-space:nowrap;}
+  .stop .snote{margin-top:5px;font-size:12.5px;color:#3a4660;line-height:1.45;}
+  .stop .snote b{color:var(--ink);font-weight:700;}
+  .tag{font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:1px 6px;margin-left:6px;}
+  .tag.fwt{background:var(--gold);color:var(--ink);}
+  .tag.optt{background:var(--blue);color:#fff;}
+
+  /* events callout etc */
+  .callout{border:2px dashed var(--gold);background:rgba(255,199,44,.07);padding:13px 15px;font-size:13px;color:var(--cream);margin:18px 0;border-radius:4px;}
+  .callout b{color:var(--gold);font-family:'Saira Condensed',sans-serif;font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:12px;display:block;margin-bottom:4px;}
+  .callout .fglist{display:grid;gap:3px;font-size:12.5px;color:var(--cream);margin-top:2px;}
+  .callout .fglist b{display:inline;color:#fff;font-size:12.5px;letter-spacing:0;text-transform:none;}
+
+  footer{border-top:8px solid;border-image:repeating-linear-gradient(90deg,var(--red) 0 28px,var(--white) 28px 56px) 8;padding:22px 0 10px;margin-top:14px;text-align:center;}
+  footer .sig{font-family:'Anton',sans-serif;font-size:18px;letter-spacing:.04em;color:#fff;}
+  footer .sig b{color:var(--red2);}
+  footer .fine{font-family:'Special Elite',monospace;font-size:10px;color:var(--faint);margin-top:7px;line-height:1.8;letter-spacing:.03em;}
+</style>
+</head>
+<body>
+
+<div class="bunting" id="bunting"></div>
+
+<header>
+  <span class="fw a"></span><span class="fw b"></span><span class="fw c"></span><span class="fw d"></span><span class="fw e"></span>
+  <div class="confetti" id="confetti"></div>
+  <div class="wrap hdr-inner">
+    <div class="overline">★ Independence Weekend ★</div>
+    <div class="stars-line">★ ★ ★ ★ ★ ★ ★</div>
+    <h1>Gladwin</h1>
+    <div class="est">— FIELD GUIDE · FILED JUL 2–5, 2026 · 250TH BIRTHDAY EDITION —</div>
+    <div class="brief">
+      <span>BASE: <b>GLADWIN MI</b></span>
+      <span>JUL 4 = <b>SATURDAY</b></span>
+      <span>TAGS = <b>DRIVE TIME</b></span>
+    </div>
+  </div>
+</header>
+<div class="flagband"></div>
+
+<nav>
+  <div class="tabs">
+    <button class="tab active" data-tab="events"><span class="s">★</span> 4th of July</button>
+    <button class="tab" data-tab="do">Things to Do</button>
+    <button class="tab" data-tab="eats">Eat</button>
+    <button class="tab" data-tab="golf">Golf</button>
+    <button class="tab" data-tab="grocery">Grocery</button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- ===================== 4TH OF JULY ===================== -->
+  <section class="panel active" id="events">
+    <p class="lead">Every celebration in range over the long weekend — pick whatever fits, in any order. Fireworks are date-specific, so each card notes the night(s) it runs and the drive time. Split by distance like the other tabs.</p>
+    <div id="eventsBoard"></div>
+
+    <div class="callout"><b>Confirm times before you go</b>
+      Small-town schedules (Beaverton, Houghton Lake, Roscommon) are based on their usual yearly patterns and may shift for the 250th — verify the week of. Bay City and Midland are confirmed for 2026.</div>
+    <div class="callout"><b>★ Beyond the 1.5-hr line ★</b>
+      The <b>100th National Cherry Festival</b> runs Jul 4–11 in Traverse City (parades, air shows, bay fireworks) — but it's ~2 hours each way, so it's only there as a long-day-trip option.</div>
+  </section>
+
+  <!-- ===================== THINGS TO DO ===================== -->
+  <section class="panel" id="do">
+    <p class="lead">The full menu. Gladwin's <b>Cedar River</b> for tubing, free parks, three ice cream parlors, a cidery, axe throwing, a treetop canopy walk, off-road trails, and a crystal-clear beach day. Grouped by type — each card tagged with drive time.</p>
+    <div id="doBoard"></div>
+    <div class="callout"><b>Heads up — the lakes are dry</b>
+      <b>Wixom Lake</b> and <b>Sanford Lake</b> are still drained from the 2020 dam failures (refill ~2028). For water, use the <b>Cedar River</b> in Gladwin or the <b>Higgins / Houghton Lake</b> area north.</div>
+  </section>
+
+  <!-- ===================== EATS ===================== -->
+  <section class="panel" id="eats">
+    <p class="lead">Depth is in <b>Tier 1</b> — Gladwin's own table, plus Clare, Midland (the real food town), West Branch, and the Houghton Lake lake-grills. <b>Tier 2</b> is a destination meal.</p>
+    <div id="eatsBoard"></div>
+  </section>
+
+  <!-- ===================== GOLF ===================== -->
+  <section class="panel" id="golf">
+    <p class="lead">Real golf inside an hour — three courses within 20 minutes of base. Mini golf, go-karts, and batting cages folded in; closest combo is Harrison (35 min).</p>
+    <div id="golfBoard"></div>
+  </section>
+
+  <!-- ===================== GROCERY ===================== -->
+  <section class="panel" id="grocery">
+    <p class="lead">Gladwin covers the stay. <b>Family Fare</b> for a full run, <b>Save A Lot</b> for cheap, <b>Walraven's</b> for produce, <b>Country Corner</b> for bulk snacks &amp; candy.</p>
+    <div id="groceryBoard"></div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="sig">HENDERSON<b>.SYS</b></div>
+  <div class="fine">GLADWIN INDEPENDENCE FIELD GUIDE · v5.0<br>DRIVE TAGS ARE ESTIMATES FROM GLADWIN · VERIFY HOURS &amp; DATES DAY-OF</div>
+</footer>
+
+<script>
+document.getElementById('bunting').innerHTML=Array.from({length:24},()=>'<i></i>').join('');
+document.getElementById('confetti').innerHTML=Array.from({length:14},()=>{
+  const l=Math.round(Math.random()*100),d=(Math.random()*5).toFixed(2),s=(4+Math.random()*4).toFixed(2);
+  return `<i style="left:${l}%;animation-duration:${s}s;animation-delay:${d}s">★</i>`;
+}).join('');
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');document.getElementById(t.dataset.tab).classList.add('active');
+    window.scrollTo({top:0,behavior:'instant'});
+  });
+});
+
+/* ---------- 4TH OF JULY (options) ---------- */
+const eventsT1=[
+ {name:'Beaverton "Happy Little 4th of July"',loc:'BEAVERTON',drive:'15 MIN',tags:['SAT JUL 4','PARADE 11AM','MUSIC 6PM','FIREWORKS DUSK'],pick:'CLOSEST',desc:'The nearest big celebration \u2014 Ross Lake Park hosts a parade (one of central Michigan\u2019s largest), evening music, and fireworks over the lake. A Firecracker 5K, cornhole and pageant run earlier in the week.'},
+ {name:'Midland 4th of July',loc:'MIDLAND',drive:'40 MIN',tags:['SAT JUL 4','DOWNTOWN','FIREWORKS ~10PM'],desc:'Walkable downtown setup \u2014 food trucks on State St (4pm), Commons live music (6pm), a Dow Diamond concert (8pm), and fireworks ~10pm from the St. Charles diamonds. The Loons baseball game runs its own fireworks too.'},
+ {name:'Houghton Lake',loc:'PRUDENVILLE',drive:'45 MIN',tags:['SAT JUL 4','TRESTLE PARK','DUSK'],desc:'Waterfront show at Trestle Park (M-18 & M-55) with a concert in the pavilion from 7pm. Good viewing from Sullivan Beach as well.'},
+ {name:'Bay City Fireworks Festival',loc:'BAY CITY',drive:'55 MIN',tags:['JUL 2 \u00b7 3 \u00b7 4','3 NIGHTS','CARNIVAL'],pick:'BIGGEST',desc:'The marquee \u2014 64th year, billed as their largest, with fireworks over the Saginaw River on three straight nights plus nightly concerts (Confederate Railroad, Hairmania, After It All) and a carnival all weekend.'},
+ {name:'Roscommon',loc:'ROSCOMMON',drive:'55 MIN',tags:['SAT JUL 4','PARADE 10AM','DUSK'],desc:'Classic small-town parade down 5th St (kids can decorate bikes and ride) with fireworks at dusk at the Fire Training Grounds.'},
+ {name:'St. Helen Fireworks',loc:'ST. HELEN',drive:'55 MIN',tags:['SUN JUL 5','RICHFIELD TWP PARK','DUSK'],desc:'The weekend\u2019s last area show and a big draw \u2014 choreographed to music, with games and food at the park.'},
+ {name:'Midland Area Farmers Market',loc:'MIDLAND',drive:'40 MIN',tags:['SAT JUL 4','MORNING','NON-FIREWORKS'],desc:'Open Saturday including July 4 at the riverfront Tridge \u2014 produce, food and makers if you want a daytime option.'}
+];
+const eventsT2=[
+ {name:'National Cherry Festival (100th)',loc:'TRAVERSE CITY',drive:'~2 HR',tier:2,tags:['JUL 4\u201311','PARADES','AIR SHOW','BAY FIREWORKS'],desc:'A centennial blowout \u2014 but well beyond the 1.5-hr line. Here only as a long day-trip option, not a quick hop.'}
+];
+
+/* ---------- CARDS ---------- */
+function card(p){
+  const t2=p.tier===2;
+  const rating=p.r?`<span class="rating">★ ${p.r}<span class="ct"> / ${p.ct}</span></span>`:'';
+  return `<div class="card ${t2?'t2':''}">${p.pick?`<span class="pick">${p.pick}</span>`:''}
+    <div class="cbody"><div class="top"><span class="name">${p.name}</span>${rating}</div>
+    <div class="meta"><span class="loc">${p.loc}</span><span class="drive">◷ ${p.drive}</span>${p.tags.map(t=>`<span>${t}</span>`).join('')}</div>
+    ${p.desc?`<div class="desc">${p.desc}</div>`:''}</div></div>`;
+}
+function tierBlock(label,range,t2){return `<div class="tier ${t2?'t2':''}"><span class="star">★</span><span class="ring">${t2?'TIER 2':'TIER 1'}</span><h2>${label}</h2><span class="rng">${range}</span><hr></div>`;}
+function board(id,t1,t2,t1l,t2l,r1,r2){document.getElementById(id).innerHTML=tierBlock(t1l,r1,false)+`<div class="grid">${t1.map(card).join('')}</div>`+tierBlock(t2l,r2,true)+`<div class="grid">${t2.map(card).join('')}</div>`;}
+function catBoard(id,groups){document.getElementById(id).innerHTML=groups.map(g=>`<div class="cat"><span class="star">★</span><h2>${g.cat}</h2><hr></div><div class="grid">${g.items.map(card).join('')}</div>`).join('');}
+
+/* ===== THINGS TO DO ===== */
+const doGroups=[
+ {cat:'On the Water & Outdoors',items:[
+   {name:'Cedar River Tubing & Kayak',loc:'GLADWIN',drive:'IN TOWN',r:4.1,ct:11,tags:['TUBING','KAYAK','RESERVE AHEAD'],pick:'RIVER FLOAT',desc:'Float one of the clearest rivers in Michigan right through town — bussed upstream, drift back. <b>Reserve and confirm by phone.</b>'},
+   {name:'Higgins Lake State Beach',loc:'ROSCOMMON',drive:'55 MIN',r:4.8,ct:72,tags:['BEACH DAY','CRYSTAL WATER','SWIM'],pick:'BEACH DAY',desc:'Some of the clearest, most turquoise water in the state — a real sandy beach day. Arrive early on the holiday weekend.'},
+   {name:'Gladwin City North Park',loc:'GLADWIN',drive:'5 MIN',r:4.6,ct:32,tags:['FREE','SWIM','DISC GOLF','SKATE PARK'],desc:'All-in-one free park on the Cedar River — swimming holes, kayak access, disc golf, bike park, skate park and the rail trail.'},
+   {name:'Gladwin ORV Trailhead',loc:'BENTLEY',drive:'30 MIN',r:4.6,ct:47,tags:['OFF-ROAD','QUAD/SxS','SAND SCRAMBLE'],desc:'State-land trails rated some of the best in MI for quads and side-by-sides — north & south loops plus a sand-scramble area. Bring your own machine.'},
+   {name:'Gladwin County Recreation Area',loc:'GLADWIN',drive:'15 MIN',r:4.5,ct:34,tags:['HIKE','BIKE','RIVER'],desc:'Cedar-swamp trails with river access and bike paths — shaded, quiet, dog-friendly.'}]},
+ {cat:'Parks & Nature',items:[
+   {name:'Dow Gardens + Whiting Forest Canopy Walk',loc:'MIDLAND',drive:'40 MIN',r:4.8,ct:5462,tags:['GARDENS','CANOPY WALK','CONSERVATORY'],pick:'ICONIC',desc:'The region\u2019s showpiece — 110 acres of gardens plus the longest canopy walkway in the country. Open daily 9–8.'},
+   {name:'Chippewa Nature Center',loc:'MIDLAND',drive:'40 MIN',r:4.9,ct:1075,tags:['FREE','19 MI TRAILS','RIVER','HOMESTEAD'],pick:'FREE 4.9',desc:'One of the best nature centers in the state and totally free — river trails, an 1870s homestead, big visitor center. Pairs with Dow Gardens.'},
+   {name:'Hartwick Pines State Park',loc:'GRAYLING',drive:'65 MIN',r:4.8,ct:2137,tier:2,tags:['OLD-GROWTH PINES','LOGGING MUSEUM'],desc:'Walk a cathedral of 350-year-old virgin white pines — one of the last old-growth stands in Michigan — plus a logging museum.'}]},
+ {cat:'Family Fun & Games',items:[
+   {name:'Orion Sports',loc:'MIDLAND',drive:'40 MIN',r:4.9,ct:63,tags:['AXE THROWING','FREE-ROAM VR','INDOOR GOLF'],pick:'TOP RATED',desc:'A 4.9 — axe throwing, free-roam virtual reality, and indoor golf simulators under one roof.'},
+   {name:'Raven Axe + Code Breakers Escape Rooms',loc:'MIDLAND',drive:'40 MIN',r:4.8,ct:30,tags:['AXE THROWING','ESCAPE ROOMS'],desc:'Throw axes, stars and batarangs on digital lanes, then run a detailed escape room next door. Group-friendly.'},
+   {name:'Soaring Eagle Casino & Waterpark',loc:'MT PLEASANT',drive:'55 MIN',r:3.9,ct:7578,tags:['CASINO','INDOOR WATERPARK'],desc:'Gaming floor plus a big indoor waterpark with slides and a body-board wave. Reviews mixed, but the night-out / rainy-day wildcard.'},
+   {name:'Ogemaw Lanes & Lounge',loc:'WEST BRANCH',drive:'45 MIN',r:4.5,ct:314,tags:['BOWLING','MINI GOLF','BAR'],desc:'Friendly small-town bowling with a lounge and an outdoor mini-golf course attached.'}]},
+ {cat:'Sweets & Sips',items:[
+   {name:'Corner House Ice Cream Parlor',loc:'GLADWIN',drive:'8 MIN',r:4.7,ct:711,tags:['ICE CREAM','2–10 PM DAILY'],pick:'TOP RATED',desc:'The local institution — huge scoops, homemade waffle cones, and the legendary name-on-the-wall "pig platter" boat.'},
+   {name:'2 Scoops & Holy Grounds',loc:'GLADWIN',drive:'12 MIN',r:4.8,ct:38,tags:['ICE CREAM FLIGHTS','COFFEE','GF/DF/SF'],desc:'Ice-cream flights (four mini scoops), coffee, and gluten/dairy/sugar-free options. Warm owners.'},
+   {name:'Scoops & Slices',loc:'GLADWIN',drive:'5 MIN',r:4.4,ct:162,tags:['ICE CREAM','PIZZA','DEEP DISH'],desc:'Downtown two-in-one — ice cream nachos plus a genuinely good deep-dish pizza.'},
+   {name:'The Merry-Hearted Cidery',loc:'GLADWIN',drive:'8 MIN',r:4.9,ct:58,tags:['HARD CIDER','DONUTS','FRI/SAT'],pick:'TOP RATED',desc:'A 4.9 — cider flight, fresh donuts, dog-friendly patio. Open Fri 3–8 and Sat 11–7, lined up with your weekend.'},
+   {name:'Three Bridges Distillery & Taproom',loc:'MIDLAND',drive:'40 MIN',r:4.8,ct:150,tags:['CRAFT SPIRITS','COCKTAILS','LIVE MUSIC'],desc:'Downtown micro-distillery — house bourbon, gin, fig-rye, smoked old fashioneds, pizza, live music.'},
+   {name:'Gwin Girls Winery / Stone House Vineyards',loc:'REMUS / EVART',drive:'50–55 MIN',r:4.8,ct:104,tags:['WINE','CIDER','SLUSHIES','PATIO'],desc:'Two highly-rated country tasting rooms west of base — wine, cider, slushies, fire pits, live music.'}]},
+ {cat:'Culture & Shopping',items:[
+   {name:'Gladwin County Historical Society',loc:'GLADWIN',drive:'5 MIN',r:4.7,ct:16,tags:['MUSEUM','FREE','FRI/SAT 11–3'],desc:'Tiny labor-of-love museum where docents let you handle the artifacts. Free; open Fri & Sat during your stay.'},
+   {name:'Alden B. Dow Home & Studio',loc:'MIDLAND',drive:'40 MIN',r:4.8,ct:251,tags:['ARCHITECTURE','GUIDED TOUR'],desc:'Mid-century-modern home/studio of the Dow architect — 90-min docent tour, then an app-guided drive of Midland\u2019s modernist buildings.'},
+   {name:'Ziibiwing Center',loc:'MT PLEASANT',drive:'55 MIN',r:4.8,ct:391,tags:['ANISHINABE CULTURE','MON–FRI ONLY'],desc:'Award-winning museum of Saginaw Chippewa / Anishinabe history — interactive and moving. <b>Open Mon–Fri</b>, so go Thu or Fri.'},
+   {name:'West Branch Outlet',loc:'WEST BRANCH',drive:'45 MIN',r:4.0,ct:1856,tags:['OUTLET SHOPPING','LOCAL SHOPS'],desc:'Outlet center with name brands plus a few local shops and a small winery. A decent rainy-afternoon browse.'}]},
+ {cat:'Up-North Day Trip',items:[
+   {name:'Frankenmuth + Bronner\u2019s CHRISTmas Wonderland',loc:'FRANKENMUTH',drive:'75 MIN',r:4.7,ct:25000,tier:2,tags:['ICONIC','BAVARIAN TOWN','FREE TO BROWSE'],pick:'BUCKET LIST',desc:'A full day of Little Bavaria — the world\u2019s largest Christmas store (free to walk), covered bridge, riverboat, fudge, and family-style chicken.'}]}
+];
+
+/* ===== EAT ===== */
+const eatsT1=[
+ {name:'Pepper Mill',loc:'GLADWIN',drive:'5 MIN',r:4.6,ct:280,tags:['DINER','BREAKFAST 24/7'],pick:'IN TOWN',desc:'Hometown diner gem — fresh salad bar, homemade soups, all-day breakfast, juicy burgers.'},
+ {name:'Riverwalk Grill',loc:'GLADWIN',drive:'5 MIN',r:4.5,ct:536,tags:['AMERICAN','$$','RIVERFRONT'],desc:'Upscale-casual inside Riverwalk Place hotel. Riverfront patio, full bar, salmon & pasta.'},
+ {name:'Da Spot',loc:'GLADWIN',drive:'5 MIN',r:5.0,ct:68,tags:['WAFFLES','GF/DF FRIENDLY'],desc:'Perfect 5.0. Creative waffles & sandwiches, draw-on-the-wall vibe, nearly all of it GF/DF.'},
+ {name:'Macks On Main',loc:'GLADWIN',drive:'5 MIN',r:4.5,ct:765,tags:['BREAKFAST','$'],desc:'Greasy-spoon breakfast staple. Famous homemade strawberry jam, bottomless coffee.'},
+ {name:'River House Bar & Grill',loc:'GLADWIN (M-61 E)',drive:'10 MIN',r:4.3,ct:392,tags:['BURGERS','PIZZA','LIVE MUSIC'],desc:'Killer burgers, fresh pizzas, live music nights, mules in copper mugs.'},
+ {name:'Beaverton Tavern',loc:'BEAVERTON',drive:'15 MIN',r:4.2,ct:985,tags:['BURRITOS','PIZZA'],desc:'Known for oversized wet burritos and chicken-bacon-ranch pizza. Remodeled and busy.'},
+ {name:'The Whitehouse Restaurant',loc:'CLARE',drive:'30 MIN',r:4.6,ct:2086,tags:['BURGERS','DIVE','SINCE 1930'],pick:'WORTH THE DRIVE',desc:'A 95-year-old burger institution. Dog-friendly patio, lava-cake dessert, huge local following.'},
+ {name:'Herrick House & Mulberry Cafe',loc:'CLARE',drive:'30 MIN',r:4.7,ct:865,tags:['CAFE','BRUNCH','GF'],desc:'Victorian house turned café — paninis, quiche, scones, gift shop. Great daytime stop.'},
+ {name:'Veedu Indian Kitchen',loc:'MIDLAND',drive:'40 MIN',r:4.9,ct:588,tags:['INDIAN','LIVE MUSIC','$$'],pick:'TOP RATED',desc:'4.9 across 588 reviews. Best Indian in mid-Michigan — biryani, lamb, cocktails, patio music.'},
+ {name:'Gratzi',loc:'MIDLAND',drive:'40 MIN',r:4.5,ct:1278,tags:['ITALIAN','$$$','DATE NIGHT'],desc:'Upscale downtown Italian with a tableside parmesan cheese-wheel pasta. Reserve for evenings.'},
+ {name:'Molasses Smokehouse',loc:'MIDLAND',drive:'40 MIN',r:4.5,ct:1380,tags:['BBQ','$$'],desc:'Downtown BBQ — brisket, smoked turkey, loaded tots, baked beans. Lots of GF options.'},
+ {name:'Maru Sushi & Grill',loc:'MIDLAND',drive:'40 MIN',r:4.6,ct:1324,tags:['SUSHI','HIBACHI'],desc:'Polished sushi/Japanese fusion. "Chef\u2019s creation" roll built to your likes/dislikes.'},
+ {name:'Tipsy Bear Bistro',loc:'WEST BRANCH',drive:'45 MIN',r:4.7,ct:1217,tags:['BISTRO','$$'],pick:'WORTH THE DRIVE',desc:'Steak Diane, Korean beef tenderloin, deep wine/liquor list. Reservations recommended.'},
+ {name:'The Highway Brewing Co.',loc:'WEST BRANCH',drive:'45 MIN',r:4.6,ct:1266,tags:['BREWPUB','HAZY IPA'],desc:'Elevated brewpub food — salmon risotto, duck nachos, spiral fries.'},
+ {name:'Garrett\u2019s Place',loc:'HOUGHTON LAKE',drive:'45 MIN',r:4.6,ct:1753,tags:['BREAKFAST','FAMILY'],desc:'Homemade bread/toast, eggs Benedict, big portions. Open early, beloved breakfast.'},
+ {name:'Back Door Saloon',loc:'HOUGHTON LAKE',drive:'45 MIN',r:4.5,ct:1463,tags:['LAKEFRONT','EGG ROLLS'],desc:'Lakeside patio, famous egg-roll sampler and Philly mac & cheese.'}
+];
+const eatsT2=[
+ {name:'Zehnder\u2019s of Frankenmuth',loc:'FRANKENMUTH',drive:'75 MIN',r:4.4,ct:19119,tier:2,tags:['CHICKEN DINNER','FAMILY-STYLE'],pick:'BUCKET LIST',desc:'The all-you-can-eat family-style fried chicken icon. Reserve ahead.'},
+ {name:'Bavarian Inn Restaurant',loc:'FRANKENMUTH',drive:'75 MIN',r:4.3,ct:12802,tier:2,tags:['GERMAN','SCHNITZEL'],desc:'Zehnder\u2019s rival across the street — schnitzel, chicken, carriage rides.'},
+ {name:'Izakaya',loc:'BAY CITY',drive:'55 MIN',r:4.8,ct:114,tier:2,tags:['JAPANESE','SUSHI','$$'],pick:'TOP RATED',desc:'Refined sushi + ramen, fruit-infused sakes. Pair with the Bay City festival.'},
+ {name:'H2O\u2019s Waterside Grill',loc:'BAY CITY',drive:'55 MIN',r:4.6,ct:1126,tier:2,tags:['WATERFRONT','BURGERS'],desc:'Riverfront deck on the Saginaw — olive burgers, lobster mac. Great festival-night view.'},
+ {name:'The Brass',loc:'MT PLEASANT',drive:'55 MIN',r:4.5,ct:467,tier:2,tags:['UPSCALE','$$$'],desc:'Chef-driven — cherry duck, macadamia walleye, lobster bisque.'}
+];
+
+/* ===== GOLF ===== */
+const golfT1=[
+ {name:'Gladwin Heights Golf Course',loc:'GLADWIN (M-61)',drive:'10 MIN',r:4.5,ct:113,tags:['18 HOLES','WIDE OPEN','~$34'],pick:'CLOSEST',desc:'Friendly host, well-kept, wide-open fairways. Friday scrambles.'},
+ {name:'Sugar Springs Golf Course',loc:'GLADWIN',drive:'18 MIN',r:4.5,ct:149,tags:['18 HOLES','SEMI-PRIVATE'],desc:'Prettier, more demanding layout; on-site restaurant (The Hearth).'},
+ {name:'Lakeside Golf Course',loc:'GLADWIN',drive:'18 MIN',r:4.3,ct:73,tags:['9 HOLES','PAR 6!'],desc:'Tight, wooded 9-holer with a rare par-6. A quirky gem.'},
+ {name:'Currie Golf Course',loc:'MIDLAND',drive:'40 MIN',r:4.1,ct:270,tags:['36 HOLES','MUNI','VALUE'],desc:'Two 18s (West/East), affordable, well-kept muni.'},
+ {name:'Putt-R-Golf & More',loc:'HARRISON',drive:'35 MIN',r:4.4,ct:235,tags:['MINI GOLF','GO-KARTS','BATTING','ESCAPE'],pick:'MINI GOLF',desc:'Closest mini course + go-karts, batting cages, escape rooms, ice cream. Thu–Sun.'},
+ {name:'Lost Pirates Adventure Golf',loc:'MIDLAND',drive:'40 MIN',r:4.4,ct:48,tags:['MINI GOLF','INDOOR','ARCADE'],desc:'Indoor pirate course inside a bowling/arcade complex. Rainy-day proof.'},
+ {name:'Lakeland Recreation',loc:'HOUGHTON LAKE',drive:'45 MIN',r:4.3,ct:109,tags:['MINI GOLF','GO-KARTS','BUMPER BOATS'],desc:'Two outdoor mini courses plus go-karts and bumper boats.'}
+];
+const golfT2=[
+ {name:'Maple Leaf Golf Course',loc:'LINWOOD',drive:'55 MIN',r:4.6,ct:327,tier:2,tags:['27 HOLES','FLOWERS'],desc:'Three nines, immaculate flowers, reasonable rates. Near Bay City.'},
+ {name:'Glow Golf Island',loc:'MT PLEASANT',drive:'55 MIN',r:4.6,ct:23,tier:2,tags:['GLOW MINI GOLF','INDOOR'],pick:'NIGHT OPTION',desc:'Indoor blacklight glow mini golf — open later, wheelchair accessible.'}
+];
+
+/* ===== GROCERY ===== */
+const grocT1=[
+ {name:'Family Fare Supermarket',loc:'GLADWIN',drive:'5 MIN',r:4.0,ct:979,tags:['FULL SERVICE','7A–10P','PHARMACY'],pick:'MAIN RUN',desc:'Full-service stock-up, 7am–10pm daily, pharmacy. The one-stop.'},
+ {name:'Save A Lot',loc:'GLADWIN',drive:'7 MIN',r:4.3,ct:622,tags:['DISCOUNT','8A–9P'],desc:'Aldi-style discount grocer — best prices in town.'},
+ {name:'Walraven\u2019s Markets',loc:'GLADWIN',drive:'5 MIN',r:4.5,ct:185,tags:['PRODUCE','LOCAL','8A–7P'],desc:'Fresh local produce, plants, honey, Pinconning cheese.'},
+ {name:'Country Corner Bulk Food',loc:'GLADWIN',drive:'5 MIN',r:4.7,ct:223,tags:['BULK','CANDY','SPICES'],desc:'Step-back-in-time bulk store — flours, nuts, spices, huge candy wall.'},
+ {name:'DG Market',loc:'GLADWIN',drive:'5 MIN',r:4.3,ct:10,tags:['CONVENIENCE','8A–10P'],desc:'Dollar General Market — fills gaps and late runs.'}
+];
+const grocT2=[
+ {name:'Meijer / Costco (big-box run)',loc:'MIDLAND',drive:'40 MIN',r:0,ct:'—',tier:2,tags:['SUPERCENTER','BULK'],desc:'No supercenter in Gladwin. For a full haul, Midland is the move — pair with dinner or the canopy walk.'}
+];
+
+/* RENDER */
+board('eventsBoard',eventsT1,eventsT2,'Inside 1 Hour','Day-Trip Only','≤ 60 MIN','BEYOND 1.5 HR');
+catBoard('doBoard',doGroups);
+board('eatsBoard',eatsT1,eatsT2,'Inside 1 Hour','Destination Meals','≤ 60 MIN','60–90 MIN');
+board('golfBoard',golfT1,golfT2,'Inside 1 Hour','Worth the Drive','≤ 60 MIN','60–90 MIN');
+board('groceryBoard',grocT1,grocT2,'Gladwin','Big-Box Run','≤ 10 MIN','~40 MIN');
+</script>
+</body>
+</html>
