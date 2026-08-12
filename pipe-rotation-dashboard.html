@@ -262,6 +262,8 @@
     return { label:"Full bowl", pct:100, why:"Seasoned. Now it is just a pipe." };
   }
 
+  function plural(n, word){ return word + (n === 1 ? "" : "s"); }
+
   /* ══════════════════ storage ══════════════════ */
   const K_CFG = "rotation:config", K_LOG = "rotation:log";
   let storageOK = true;
@@ -273,6 +275,11 @@
   function setSaveState(txt, warn){
     const el = document.getElementById("savestate");
     if (el) el.innerHTML = warn ? txt : "<b>Saved</b> \u00b7 " + txt;
+  }
+  function refreshSaveState(){
+    if (!storageOK){ setSaveState("Not saving \u2014 back up before you close", true); return; }
+    setSaveState(log.length ? log.length + plural(log.length, " bowl") + " logged"
+                            : "Nothing logged yet");
   }
 
   async function loadAll(){
@@ -288,7 +295,7 @@
       const r = await window.storage.get(K_LOG);
       if (r && r.value) log = JSON.parse(r.value) || [];
     } catch(e){ /* first run \u2014 no log yet */ }
-    setSaveState(log.length + " bowl" + (log.length===1?"":"s") + " logged");
+    refreshSaveState();
   }
 
   let saveTimer = null;
@@ -299,7 +306,7 @@
       try {
         await window.storage.set(K_CFG, JSON.stringify(cfg));
         await window.storage.set(K_LOG, JSON.stringify(log));
-        setSaveState(log.length + " bowl" + (log.length===1?"":"s") + " logged");
+        refreshSaveState();
       } catch(e){
         storageOK = false;
         setSaveState("Could not save \u2014 copy your data out", true);
@@ -329,7 +336,6 @@
     const d = new Date(ts);
     return d.toLocaleDateString(undefined, { month:"short", day:"numeric", year:"numeric" });
   }
-  function plural(n, word){ return word + (n === 1 ? "" : "s"); }
   function daysShort(ts){
     if (!ts) return "\u2014";
     return Math.max(0, Math.floor((Date.now() - ts) / 86400e3)) + "d";
@@ -382,10 +388,117 @@
       '<path d="'+g.band+'" fill="#C9A24A"/></svg>';
   }
 
+  /* ══════════════════ backup & restore ══════════════════ */
+  const BACKUP_VERSION = 1;
+
+  function backupJSON(){
+    return JSON.stringify({
+      app:"pipe-rotation", version:BACKUP_VERSION,
+      exportedAt:new Date().toISOString(),
+      config:cfg, log:log
+    }, null, 2);
+  }
+
+  function backupFilename(){
+    return "pipe-rotation-backup-" + todayISO() + ".json";
+  }
+
+  function downloadBackup(){
+    try {
+      const blob = new Blob([backupJSON()], { type:"application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = backupFilename();
+      a.style.display = "none";
+      document.body.appendChild(a); a.click();
+      setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); }, 1500);
+      toast("Backup downloaded");
+      return true;
+    } catch(e){
+      toast("Download blocked \u2014 use Copy backup instead");
+      return false;
+    }
+  }
+
+  // Reads a backup of unknown provenance. Drops anything malformed rather
+  // than importing junk, and reports how much it dropped.
+  function parseBackup(text){
+    let d;
+    try { d = JSON.parse(String(text).trim()); }
+    catch(e){ return { ok:false, msg:"That is not valid backup data. Paste the whole file, starting with { and ending with }." }; }
+    if (!d || typeof d !== "object" || Array.isArray(d))
+      return { ok:false, msg:"That file is not a rotation backup." };
+    if (d.app && d.app !== "pipe-rotation")
+      return { ok:false, msg:"That backup came from a different app." };
+    if (!Array.isArray(d.log))
+      return { ok:false, msg:"No bowl log found in that file." };
+
+    const clean = [];
+    d.log.forEach(function(e, i){
+      if (!e || typeof e !== "object") return;
+      const pipe = parseInt(e.pipe, 10), ts = parseInt(e.ts, 10);
+      if (!P[pipe] || !ts || isNaN(ts)) return;
+      clean.push({
+        id: String(e.id || ("imp" + ts + "_" + i)),
+        ts: ts, pipe: pipe,
+        blend: String(e.blend || "Unknown blend"),
+        rating: Math.max(0, Math.min(5, parseInt(e.rating, 10) || 0)),
+        note: String(e.note || ""), off: !!e.off
+      });
+    });
+
+    const c = (d.config && typeof d.config === "object") ? d.config : {};
+    const conf = { restHours: Math.max(0, parseInt(c.restHours, 10) || 48),
+                   offsets:{}, cellar:{} };
+    PIPES.forEach(function(p){
+      conf.offsets[p.n] = Math.max(0, parseInt((c.offsets || {})[p.n], 10) || 0); });
+    if (c.cellar && typeof c.cellar === "object"){
+      Object.keys(c.cellar).forEach(function(k){
+        if (B[k] && c.cellar[k] && typeof c.cellar[k] === "object"){
+          const src = c.cellar[k], row = {};
+          ["jarred","oz","opened","notes"].forEach(function(f){
+            if (src[f] != null && src[f] !== "") row[f] = String(src[f]); });
+          if (Object.keys(row).length) conf.cellar[k] = row;
+        }
+      });
+    }
+
+    return { ok:true, data:{ config:conf, log:clean },
+      counts:{ bowls:clean.length, cellar:Object.keys(conf.cellar).length,
+               skipped:d.log.length - clean.length, when:d.exportedAt || null } };
+  }
+
+  function applyImport(mode){
+    const d = imp.data;
+    if (mode === "replace"){
+      cfg = { restHours:d.config.restHours,
+              offsets:JSON.parse(JSON.stringify(d.config.offsets)),
+              cellar:JSON.parse(JSON.stringify(d.config.cellar)) };
+      log = d.log.slice();
+      save(); imp = null;
+      toast("Restored " + log.length + plural(log.length, " bowl"));
+      return;
+    }
+    // merge: add bowls we do not already have, fill only blank cellar fields
+    const have = {}; log.forEach(function(e){ have[e.id] = 1; });
+    let added = 0;
+    d.log.forEach(function(e){ if (!have[e.id]){ log.push(e); added++; } });
+    Object.keys(d.config.cellar).forEach(function(k){
+      const src = d.config.cellar[k];
+      if (!cfg.cellar[k]) cfg.cellar[k] = {};
+      Object.keys(src).forEach(function(f){
+        if (!cfg.cellar[k][f]) cfg.cellar[k][f] = src[f]; });
+    });
+    save(); imp = null;
+    toast(added ? "Added " + added + plural(added, " bowl") : "Nothing new to add");
+  }
+
   /* ══════════════════ app state ══════════════════ */
   let tab = "rack";
   let sel = 1;
   let draft = { blend:"", date:todayISO(), rating:0, note:"", override:false };
+  let imp = null;      // parsed backup awaiting merge/replace
+  let showPaste = false;
 
   const TABS = [
     ["rack","The rack"], ["log","Log a bowl"], ["cellar","Cellar"],
@@ -433,7 +546,7 @@
       return '<button class="tab' + (tab===t[0] ? " on":"") + '" data-tab="' + t[0] + '">' +
         t[1] + '</button>'; }).join("");
     Array.prototype.forEach.call(el.querySelectorAll(".tab"), function(b){
-      b.onclick = function(){ tab = b.dataset.tab; render(); };
+      b.onclick = function(){ tab = b.dataset.tab; imp = null; showPaste = false; render(); };
     });
   }
 
@@ -760,18 +873,77 @@
           '<input type="number" min="0" max="336" id="s-rest" value="' + (cfg.restHours||48) + '" style="max-width:130px">' +
           '<div class="tiny muted" style="margin-top:5px">48 is right for rosewood. Briar can go 24.</div></div>' +
       '</div>' +
-      '<div class="card pad">' +
-        '<h2 style="margin-top:0">Your data</h2>' +
-        '<p class="lede small">Everything lives in this dashboard. Copy it out any time you want it somewhere else.</p>' +
-        '<div class="row"><button class="btn ghost" id="s-copy">Copy log as text</button>' +
-        '<button class="btn ghost danger" id="s-reset">Erase everything</button></div>' +
-        '<div class="note" style="margin-top:16px"><div class="h">What is stored</div>' +
-          '<div class="small">' + log.length + ' bowl' + (log.length===1?"":"s") + ', ' +
-          Object.keys(cfg.cellar).length + ' cellar entr' + (Object.keys(cfg.cellar).length===1?"y":"ies") +
-          ', and your rest and bowl-count settings.' +
-          (storageOK ? "" : " <b style=\"color:var(--ox)\">Storage is unavailable right now, so nothing is being saved.</b>") + '</div></div>' +
+      '<div>' +
+        '<div class="card pad" style="margin-bottom:16px">' +
+          '<h2 style="margin-top:0">Back up</h2>' +
+          '<p class="lede small">Save a copy of everything \u2014 bowls, cellar and settings \u2014 as a file you keep. Do it after a batch of bowls, or before you clear anything.</p>' +
+          '<div class="row"><button class="btn" id="s-download">Download backup file</button>' +
+          '<button class="btn ghost" id="s-copyjson">Copy backup</button></div>' +
+          '<div class="tiny muted" style="margin-top:8px">Saves as <span class="mono">' + backupFilename() + '</span>. If the download is blocked, copy it and paste it into a note.</div>' +
+          '<div class="note" style="margin-top:14px"><div class="h">In this backup</div>' +
+            '<div class="small">' + log.length + plural(log.length, " bowl") + ', ' +
+            Object.keys(cfg.cellar).length + ' cellar entr' + (Object.keys(cfg.cellar).length===1?"y":"ies") +
+            ', rest set to ' + (cfg.restHours||48) + ' hours, and your bowl counts.' +
+            (storageOK ? "" : " <b style=\"color:var(--ox)\">Storage is unavailable right now, so nothing is being saved \u2014 back up before you close this.</b>") +
+            '</div></div>' +
+        '</div>' +
+
+        '<div class="card pad" style="margin-bottom:16px">' +
+          '<h2 style="margin-top:0">Restore</h2>' +
+          (imp ? renderImportPreview() :
+            '<p class="lede small">Load a backup file, or paste one you saved as text. You choose what happens to your current data before anything changes.</p>' +
+            '<div class="row" style="align-items:center">' +
+              '<label class="btn ghost" for="s-file" style="cursor:pointer">Choose backup file</label>' +
+              '<input type="file" id="s-file" accept="application/json,.json,.txt" style="display:none">' +
+              '<button class="btn ghost" id="s-paste">' + (showPaste ? "Hide paste box" : "Paste instead") + '</button>' +
+            '</div>' +
+            (showPaste ?
+              '<div style="margin-top:12px"><span class="fld">Paste backup text</span>' +
+              '<textarea id="s-pastebox" style="min-height:104px;font-family:var(--mono);font-size:12px" placeholder=\'{ "app": "pipe-rotation", ... }\'></textarea>' +
+              '<button class="btn" id="s-check" style="margin-top:9px">Check this backup</button></div>' : "")
+          ) +
+        '</div>' +
+
+        '<div class="card pad">' +
+          '<h2 style="margin-top:0">Other</h2>' +
+          '<div class="row"><button class="btn ghost" id="s-copy">Copy plain-text log</button>' +
+          '<button class="btn ghost danger" id="s-reset">Erase everything</button></div>' +
+          '<div class="tiny muted" style="margin-top:8px">The plain-text log is for reading, not restoring. Back up first if you are about to erase.</div>' +
+        '</div>' +
       '</div>' +
     '</div>';
+  }
+
+  function renderImportPreview(){
+    if (!imp.ok){
+      return '<div class="note warn"><div class="h">Could not read that backup</div>' +
+        '<div class="small">' + esc(imp.msg) + '</div></div>' +
+        '<button class="btn ghost" id="s-cancel" style="margin-top:12px">Try another file</button>';
+    }
+    const c = imp.counts;
+    const dupes = (function(){
+      const have = {}; log.forEach(function(e){ have[e.id] = 1; });
+      return imp.data.log.filter(function(e){ return have[e.id]; }).length;
+    })();
+    const fresh = c.bowls - dupes;
+    return '' +
+      '<div class="note good"><div class="h">Backup looks good</div>' +
+        '<div class="small">' + c.bowls + plural(c.bowls, " bowl") + ' and ' + c.cellar +
+        ' cellar entr' + (c.cellar===1?"y":"ies") +
+        (c.when ? ', saved ' + fmtDate(new Date(c.when).getTime()) : "") + '.' +
+        (c.skipped ? ' <b>' + c.skipped + plural(c.skipped, " entry").replace("entrys","entries") +
+          ' could not be read and will be skipped.</b>' : "") +
+        '</div></div>' +
+      '<div class="grid g2" style="gap:12px;margin-top:14px">' +
+        '<div><button class="btn ghost" id="s-merge" style="width:100%">Add what is missing</button>' +
+          '<div class="tiny muted" style="margin-top:6px">Keeps everything you have now and adds ' +
+          fresh + plural(fresh, " bowl") + ' not already logged' +
+          (dupes ? ' (' + dupes + ' already here)' : "") + '. Fills blank cellar fields only.</div></div>' +
+        '<div><button class="btn danger" id="s-replace" style="width:100%">Replace everything</button>' +
+          '<div class="tiny muted" style="margin-top:6px">Throws away your current ' +
+          log.length + plural(log.length, " bowl") + ' and settings, and uses the backup instead.</div></div>' +
+      '</div>' +
+      '<button class="btn ghost sm" id="s-cancel" style="margin-top:12px">Cancel</button>';
   }
 
   /* ══════════════════ wiring ══════════════════ */
@@ -851,6 +1023,57 @@
       const rs = $("s-rest");
       if (rs) rs.onchange = function(){
         cfg.restHours = Math.max(0, parseInt(rs.value || 48, 10)); save(); scheduleRender(); };
+      const dl = $("s-download");
+      if (dl) dl.onclick = downloadBackup;
+
+      const cj = $("s-copyjson");
+      if (cj) cj.onclick = function(){
+        if (navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(backupJSON()).then(
+            function(){ toast("Backup copied \u2014 paste it somewhere safe"); },
+            function(){ toast("Could not copy \u2014 try the download"); });
+        } else { toast("Clipboard not available \u2014 try the download"); }
+      };
+
+      const pb = $("s-paste");
+      if (pb) pb.onclick = function(){ showPaste = !showPaste; render(); };
+
+      const chk = $("s-check");
+      if (chk) chk.onclick = function(){
+        const box = $("s-pastebox");
+        const txt = box ? box.value.trim() : "";
+        if (!txt){ toast("Paste a backup first"); return; }
+        imp = parseBackup(txt); render();
+      };
+
+      const fi = $("s-file");
+      if (fi) fi.onchange = function(){
+        const f = fi.files && fi.files[0];
+        if (!f) return;
+        const r = new FileReader();
+        r.onload  = function(){ imp = parseBackup(r.result); scheduleRender(); };
+        r.onerror = function(){ imp = { ok:false, msg:"Could not read that file." }; scheduleRender(); };
+        r.readAsText(f);
+      };
+
+      const cancel = $("s-cancel");
+      if (cancel) cancel.onclick = function(){ imp = null; showPaste = false; render(); };
+
+      const mg = $("s-merge");
+      if (mg) mg.onclick = function(){ applyImport("merge"); render(); };
+
+      const rp = $("s-replace");
+      if (rp) rp.onclick = function(){
+        if (rp.dataset.armed !== "1"){
+          rp.dataset.armed = "1"; rp.textContent = "Tap again to replace";
+          setTimeout(function(){
+            if (rp.isConnected){ rp.dataset.armed = ""; rp.textContent = "Replace everything"; }
+          }, 4000);
+          return;
+        }
+        applyImport("replace"); render();
+      };
+
       const cp = $("s-copy");
       if (cp) cp.onclick = function(){
         const lines = log.slice().sort(function(a,b){ return a.ts - b.ts; }).map(function(e){
@@ -879,9 +1102,9 @@
           setTimeout(function(){ rst.dataset.armed = ""; rst.textContent = "Erase everything"; }, 4000);
           return;
         }
-        log = []; cfg = JSON.parse(JSON.stringify(DEFAULT_CFG));
+        log = []; cfg = JSON.parse(JSON.stringify(DEFAULT_CFG)); imp = null; showPaste = false;
         try { await window.storage.delete(K_LOG); await window.storage.delete(K_CFG); } catch(e){}
-        toast("Everything erased"); render();
+        refreshSaveState(); toast("Everything erased"); render();
       };
     }
   }
