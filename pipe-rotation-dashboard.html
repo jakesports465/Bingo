@@ -1,3 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Pipe Rotation Dashboard</title>
+<meta name="description" content="Six pipes, sixteen blends, one lane each. Bowl log, rest timers, cellar and lane rules.">
+<meta name="theme-color" content="#1A1310">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 250 118'%3E%3Crect x='72' y='52' width='48' height='18' rx='3' fill='%23A67C2E'/%3E%3Cpath d='M32,24 C30,52 33,74 40,84 C46,92 60,92 66,84 C73,74 76,52 74,24 Z' fill='%23A67C2E'/%3E%3Cellipse cx='53' cy='24' rx='22' ry='5.8' fill='%23A67C2E'/%3E%3Cellipse cx='53' cy='24.4' rx='14.5' ry='3.8' fill='%230A0806'/%3E%3Cpath d='M124,52 C160,60 182,44 236,26 L238,34 C186,54 162,70 124,70 Z' fill='%231A1512'/%3E%3C/svg%3E">
+<style>
+  html, body { margin:0; padding:0; background:#F7F1E3; }
+  body { -webkit-text-size-adjust:100%; }
+</style>
+</head>
+<body>
 <div id="app-root">
 <style>
   #app-root{
@@ -10,7 +26,7 @@
     --sans:"Arial Narrow","Helvetica Neue Condensed",Arial,sans-serif;
     --mono:"SFMono-Regular",Menlo,Consolas,monospace;
     background:var(--paper); color:var(--ink); font-family:var(--ser);
-    font-size:15px; line-height:1.45; padding:0 0 40px;
+    font-size:15px; line-height:1.45; padding:0 0 40px; min-height:100vh;
   }
   #app-root *{ box-sizing:border-box; margin:0; padding:0; }
   #app-root button, #app-root input, #app-root select, #app-root textarea{
@@ -266,7 +282,49 @@
 
   /* ══════════════════ storage ══════════════════ */
   const K_CFG = "rotation:config", K_LOG = "rotation:log";
-  let storageOK = true;
+
+  // Two homes. Inside a Claude artifact only window.storage exists; on a normal
+  // web host (GitHub Pages) only localStorage does. Try each, then fall back to
+  // memory so the page still runs where neither is allowed.
+  const Store = (function(){
+    if (window.storage && typeof window.storage.get === "function"){
+      return {
+        kind:"claude", ok:true,
+        where:"Saved to your Claude account",
+        detail:"This data lives with your Claude account rather than in the browser.",
+        get: async function(k){
+          try { const r = await window.storage.get(k); return (r && r.value != null) ? r.value : null; }
+          catch(e){ return null; }
+        },
+        set: async function(k,v){ await window.storage.set(k,v); },
+        del: async function(k){ try { await window.storage.delete(k); } catch(e){} }
+      };
+    }
+    try {
+      const probe = "__rotation_probe__";
+      window.localStorage.setItem(probe, "1");
+      window.localStorage.removeItem(probe);
+      return {
+        kind:"local", ok:true,
+        where:"Saved in this browser",
+        detail:"This data is stored by this browser on this device. Another browser, another device, or a private window each start empty, and clearing site data erases it. Keep a backup file.",
+        get: async function(k){ return window.localStorage.getItem(k); },
+        set: async function(k,v){ window.localStorage.setItem(k,v); },
+        del: async function(k){ window.localStorage.removeItem(k); }
+      };
+    } catch(e){ /* private mode, or storage switched off */ }
+    const mem = {};
+    return {
+      kind:"memory", ok:false,
+      where:"Not saving",
+      detail:"This browser will not let the page store anything, so nothing survives a refresh. Download a backup before you close the tab.",
+      get: async function(k){ return (k in mem) ? mem[k] : null; },
+      set: async function(k,v){ mem[k] = v; },
+      del: async function(k){ delete mem[k]; }
+    };
+  })();
+
+  let storageOK = Store.ok;
 
   const DEFAULT_CFG = { restHours:48, offsets:{1:0,2:0,3:0,4:0,5:0,6:0}, cellar:{} };
   let cfg = JSON.parse(JSON.stringify(DEFAULT_CFG));
@@ -277,24 +335,28 @@
     if (el) el.innerHTML = warn ? txt : "<b>Saved</b> \u00b7 " + txt;
   }
   function refreshSaveState(){
-    if (!storageOK){ setSaveState("Not saving \u2014 back up before you close", true); return; }
-    setSaveState(log.length ? log.length + plural(log.length, " bowl") + " logged"
-                            : "Nothing logged yet");
+    const el = document.getElementById("savestate");
+    if (!el) return;
+    if (!storageOK){
+      setSaveState("Not saving \u2014 download a backup before you close", true); return;
+    }
+    const count = log.length ? log.length + plural(log.length, " bowl") + " logged"
+                             : "nothing logged yet";
+    el.innerHTML = "<b>" + Store.where + "</b> \u00b7 " + count;
   }
 
   async function loadAll(){
-    if (!window.storage){ storageOK = false; setSaveState("Not saving \u2014 storage unavailable", true); return; }
     try {
-      const r = await window.storage.get(K_CFG);
-      if (r && r.value){ const v = JSON.parse(r.value);
+      const raw = await Store.get(K_CFG);
+      if (raw){ const v = JSON.parse(raw);
         cfg = Object.assign({}, DEFAULT_CFG, v);
         cfg.offsets = Object.assign({}, DEFAULT_CFG.offsets, v.offsets || {});
         cfg.cellar  = v.cellar || {}; }
-    } catch(e){ /* first run \u2014 no config yet */ }
+    } catch(e){ /* first run, or unreadable \u2014 keep defaults */ }
     try {
-      const r = await window.storage.get(K_LOG);
-      if (r && r.value) log = JSON.parse(r.value) || [];
-    } catch(e){ /* first run \u2014 no log yet */ }
+      const raw = await Store.get(K_LOG);
+      if (raw){ const parsed = JSON.parse(raw); if (Array.isArray(parsed)) log = parsed; }
+    } catch(e){ /* first run, or unreadable \u2014 keep empty log */ }
     refreshSaveState();
   }
 
@@ -304,12 +366,13 @@
     clearTimeout(saveTimer);
     saveTimer = setTimeout(async function(){
       try {
-        await window.storage.set(K_CFG, JSON.stringify(cfg));
-        await window.storage.set(K_LOG, JSON.stringify(log));
+        await Store.set(K_CFG, JSON.stringify(cfg));
+        await Store.set(K_LOG, JSON.stringify(log));
+        storageOK = Store.ok;
         refreshSaveState();
       } catch(e){
         storageOK = false;
-        setSaveState("Could not save \u2014 copy your data out", true);
+        setSaveState("Could not save \u2014 download a backup now", true);
       }
     }, 260);
   }
@@ -884,8 +947,10 @@
             '<div class="small">' + log.length + plural(log.length, " bowl") + ', ' +
             Object.keys(cfg.cellar).length + ' cellar entr' + (Object.keys(cfg.cellar).length===1?"y":"ies") +
             ', rest set to ' + (cfg.restHours||48) + ' hours, and your bowl counts.' +
-            (storageOK ? "" : " <b style=\"color:var(--ox)\">Storage is unavailable right now, so nothing is being saved \u2014 back up before you close this.</b>") +
             '</div></div>' +
+          '<div class="note' + (storageOK ? "" : " warn") + '" style="margin-top:10px">' +
+            '<div class="h">Where this saves</div>' +
+            '<div class="small">' + esc(Store.detail) + '</div></div>' +
         '</div>' +
 
         '<div class="card pad" style="margin-bottom:16px">' +
@@ -1103,7 +1168,7 @@
           return;
         }
         log = []; cfg = JSON.parse(JSON.stringify(DEFAULT_CFG)); imp = null; showPaste = false;
-        try { await window.storage.delete(K_LOG); await window.storage.delete(K_CFG); } catch(e){}
+        try { await Store.del(K_LOG); await Store.del(K_CFG); } catch(e){}
         refreshSaveState(); toast("Everything erased"); render();
       };
     }
@@ -1112,3 +1177,5 @@
   loadAll().then(render, render);
 })();
 </script>
+</body>
+</html>
